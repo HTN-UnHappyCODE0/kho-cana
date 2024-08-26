@@ -135,6 +135,7 @@ function MainScaleTable({}: PropsMainScaleTable) {
 							},
 							{
 								title: 'Tên cầu cân',
+								fixedLeft: true,
 								render: (data: IScalesMachine) => <>{data?.name}</>,
 							},
 							{
@@ -179,6 +180,7 @@ function MainScaleTable({}: PropsMainScaleTable) {
 							},
 							{
 								title: 'Tác vụ',
+								fixedRight: true,
 								render: (data: IScalesMachine) => (
 									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
 										<IconCustom

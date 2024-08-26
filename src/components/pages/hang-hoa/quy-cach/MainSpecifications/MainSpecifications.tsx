@@ -130,6 +130,7 @@ function MainSpecifications({}: PropsMainSpecifications) {
 							},
 							{
 								title: 'Quy cách',
+								fixedLeft: true,
 								render: (data: ISpecifications) => <>{data?.name || '---'}</>,
 							},
 							{
@@ -219,6 +220,7 @@ function MainSpecifications({}: PropsMainSpecifications) {
 							},
 							{
 								title: 'Tác vụ',
+								fixedRight: true,
 								render: (data: ISpecifications) => (
 									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
 										<IconCustom

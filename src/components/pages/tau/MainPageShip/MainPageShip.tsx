@@ -133,13 +133,15 @@ function MainPageShip({}: PropsMainPageShip) {
 								render: (data: IShip, index: number) => <>{index + 1} </>,
 							},
 							{
+								title: 'Mã tàu',
+								fixedLeft: true,
+								render: (data: IShip) => <>{data?.licensePalate || '---'}</>,
+							},
+							{
 								title: 'Logo tàu',
 								render: (data: IShip) => <>{data?.code || '---'}</>,
 							},
-							{
-								title: 'Mã tàu',
-								render: (data: IShip) => <>{data?.licensePalate || '---'}</>,
-							},
+
 							{
 								title: 'Thời gian tạo',
 								render: (data: IShip) => <Moment date={data?.created} format='HH:mm - DD/MM/YYYY'></Moment>,
@@ -186,6 +188,7 @@ function MainPageShip({}: PropsMainPageShip) {
 							},
 							{
 								title: 'Tác vụ',
+								fixedRight: true,
 								render: (data: IShip) => (
 									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
 										<IconCustom

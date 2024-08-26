@@ -137,6 +137,7 @@ function MainQualities({}: PropsMainQualities) {
 							},
 							{
 								title: 'Quốc gia',
+								fixedLeft: true,
 								render: (data: IQualities) => <>{data?.name || '---'}</>,
 							},
 							{
@@ -181,6 +182,7 @@ function MainQualities({}: PropsMainQualities) {
 							},
 							{
 								title: 'Tác vụ',
+								fixedRight: true,
 								render: (data: IQualities) => (
 									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
 										<IconCustom

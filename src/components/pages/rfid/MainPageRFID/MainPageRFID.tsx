@@ -129,6 +129,7 @@ function MainPageRFID({}: PropsMainPageRFID) {
 							},
 							{
 								title: 'CODE RFID',
+								fixedLeft: true,
 								render: (data: IRFID) => <>{data?.code || '---'}</>,
 							},
 							{
@@ -173,6 +174,7 @@ function MainPageRFID({}: PropsMainPageRFID) {
 							},
 							{
 								title: 'Tác vụ',
+								fixedRight: true,
 								render: (data: IRFID) => (
 									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
 										<IconCustom

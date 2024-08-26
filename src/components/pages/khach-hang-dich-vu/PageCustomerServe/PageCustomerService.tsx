@@ -113,6 +113,7 @@ function PageCustomerService({}: PropsPageCustomerService) {
 							},
 							{
 								title: 'Mã KH',
+								fixedLeft: true,
 								render: (data: ICustomer) => (
 									<Link href={`/khach-hang-dich-vu/${data.customerUu?.uuid}`} className={styles.link}>
 										{data?.customerUu?.code || '---'}
@@ -151,6 +152,7 @@ function PageCustomerService({}: PropsPageCustomerService) {
 							},
 							{
 								title: 'Tác vụ',
+								fixedRight: true,
 								render: (data: ICustomer) => (
 									<IconCustom
 										edit
