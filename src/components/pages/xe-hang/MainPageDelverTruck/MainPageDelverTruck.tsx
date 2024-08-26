@@ -133,6 +133,7 @@ function MainPageDelverTruck({}: PropsMainPageDelverTruck) {
 							},
 							{
 								title: 'Mã xe',
+								fixedLeft: true,
 								render: (data: ITruck) => <>{data?.code || '---'}</>,
 							},
 							{
@@ -211,6 +212,7 @@ function MainPageDelverTruck({}: PropsMainPageDelverTruck) {
 							},
 							{
 								title: 'Tác vụ',
+								fixedRight: true,
 								render: (data: ITruck) => (
 									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
 										<IconCustom

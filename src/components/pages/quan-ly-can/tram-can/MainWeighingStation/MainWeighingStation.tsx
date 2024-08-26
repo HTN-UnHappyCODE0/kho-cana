@@ -158,6 +158,7 @@ function MainWeighingStation({}: PropsMainWeighingStation) {
 							},
 							{
 								title: 'Tên trạm cân',
+								fixedLeft: true,
 								render: (data: IScalesStation) => (
 									<Link href={`/quan-ly-can/tram-can/${data?.uuid}`} className={styles.link}>
 										{data?.name}
@@ -214,6 +215,7 @@ function MainWeighingStation({}: PropsMainWeighingStation) {
 							},
 							{
 								title: 'Tác vụ',
+								fixedRight: true,
 								render: (data: IScalesStation) => (
 									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
 										<IconCustom

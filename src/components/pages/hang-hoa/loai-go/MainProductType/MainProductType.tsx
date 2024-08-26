@@ -160,6 +160,7 @@ function MainProductType({}: PropsMainProductType) {
 							},
 							{
 								title: 'Mã loại gỗ',
+								fixedLeft: true,
 								render: (data: IProductType) => <>{data?.code || '---'}</>,
 							},
 							{
@@ -219,6 +220,7 @@ function MainProductType({}: PropsMainProductType) {
 							},
 							{
 								title: 'Tác vụ',
+								fixedRight: true,
 								render: (data: IProductType) => (
 									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
 										<IconCustom

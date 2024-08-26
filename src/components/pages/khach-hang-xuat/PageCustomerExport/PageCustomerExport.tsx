@@ -113,6 +113,7 @@ function PageCustomerExport({}: PropsPageCustomerExport) {
 							},
 							{
 								title: 'Mã KH',
+								fixedLeft: true,
 								render: (data: ICustomer) => (
 									<Link href={`/khach-hang-xuat/${data.customerUu?.uuid}`} className={styles.link}>
 										{data?.customerUu?.code || '---'}
@@ -151,6 +152,7 @@ function PageCustomerExport({}: PropsPageCustomerExport) {
 							},
 							{
 								title: 'Tác vụ',
+								fixedRight: true,
 								render: (data: ICustomer) => (
 									<IconCustom
 										edit

@@ -114,6 +114,7 @@ function MainPagePartner({}: PropsMainPagePartner) {
 							},
 							{
 								title: 'Mã NCC',
+								fixedLeft: true,
 								render: (data: ICustomer) => (
 									<Link href={`/nha-cung-cap/${data?.customerUu?.uuid}`} className={styles.link}>
 										{data?.customerUu?.code}
@@ -152,6 +153,7 @@ function MainPagePartner({}: PropsMainPagePartner) {
 							},
 							{
 								title: 'Tác vụ',
+								fixedRight: true,
 								render: (data: ICustomer) => (
 									<IconCustom
 										edit
