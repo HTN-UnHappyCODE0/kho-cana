@@ -127,6 +127,7 @@ function MainWeightSessionCollection({}: PropsMainWeightSessionCollection) {
 							},
 							{
 								title: 'Logo xe',
+								fixedLeft: true,
 								render: (data: IWeightSessionByTruck) => <>{data?.truckUu?.code}</>,
 							},
 							{

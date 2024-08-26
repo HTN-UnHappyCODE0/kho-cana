@@ -275,6 +275,7 @@ function MainBillSend({}: PropsMainBillSend) {
 							},
 							{
 								title: 'Số phiếu',
+								fixedLeft: true,
 								render: (data: IWeightSession) => <>{data?.code}</>,
 							},
 							{

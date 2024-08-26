@@ -352,6 +352,7 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 							},
 							{
 								title: 'Mã xe',
+								fixedLeft: true,
 								render: (data: any) => <>{data?.code || '---'}</>,
 							},
 							{
