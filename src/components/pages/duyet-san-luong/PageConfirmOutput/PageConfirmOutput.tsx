@@ -334,7 +334,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 											<IconCustom
 												edit
 												icon={<RefreshLeftSquare size={22} fontWeight={600} />}
-												tooltip='Duyệt lại'
+												tooltip='Yêu cầu duyệt lại'
 												color='#D95656'
 												onClick={() => setUuidKTKReject(data?.uuid)}
 											/>

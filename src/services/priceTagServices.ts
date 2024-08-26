@@ -68,7 +68,7 @@ const priceTagServices = {
 				specUuid: string;
 				status: 0 | 1;
 				productTypeUuid: string;
-				priceTagUuid: string | null;
+				priceTagUuid: string | number | null;
 				state: 0 | 1;
 				transportType: number;
 			}[];

@@ -47,13 +47,13 @@ function PopupAddPrice({customerName, onClose, typePartner}: PropsPopupAddPrice)
 		transportType: '',
 	});
 
-	const [priceTag, setPriceTag] = useState<{
-		id: string;
-		name: string;
-	}>({
-		id: '',
-		name: '',
-	});
+	// const [priceTag, setPriceTag] = useState<{
+	// 	id: string;
+	// 	name: string;
+	// }>({
+	// 	id: '',
+	// 	name: '',
+	// });
 
 	const resetForm = () => {
 		setForm({
@@ -63,10 +63,10 @@ function PopupAddPrice({customerName, onClose, typePartner}: PropsPopupAddPrice)
 			transportType: '',
 			state: CONFIG_STATE_SPEC_CUSTOMER.CHUA_CUNG_CAP,
 		});
-		setPriceTag({
-			id: '',
-			name: '',
-		});
+		// setPriceTag({
+		// 	id: '',
+		// 	name: '',
+		// });
 	};
 
 	const listSpecifications = useQuery([QUERY_KEY.dropdown_quy_cach], {
@@ -145,7 +145,8 @@ function PopupAddPrice({customerName, onClose, typePartner}: PropsPopupAddPrice)
 							state: form?.state,
 							productTypeUuid: form.productTypeUuid,
 							transportType: Number(form.transportType),
-							priceTagUuid: priceTag.id === '' ? String(priceTag.name) : priceTag.id,
+							// priceTagUuid: priceTag.id === '' ? String(priceTag.name) : priceTag.id,
+							priceTagUuid: 0,
 						},
 					],
 					customerUuid: [_id as string],
@@ -175,9 +176,9 @@ function PopupAddPrice({customerName, onClose, typePartner}: PropsPopupAddPrice)
 		if (!form.productTypeUuid) {
 			return toastWarn({msg: 'Vui lòng chọn loại gỗ!'});
 		}
-		if (priceTag.name === undefined || priceTag.name === '') {
-			return toastWarn({msg: 'Vui lòng chọn giá tiền áp dụng!'});
-		}
+		// if (priceTag.name === undefined || priceTag.name === '') {
+		// 	return toastWarn({msg: 'Vui lòng chọn giá tiền áp dụng!'});
+		// }
 
 		return fucnAddSpecCustomer.mutate();
 	};
@@ -276,7 +277,7 @@ function PopupAddPrice({customerName, onClose, typePartner}: PropsPopupAddPrice)
 						/>
 					</Select>
 
-					<div className={'mt'}>
+					{/* <div className={'mt'}>
 						<SelectSearch
 							isConvertNumber={true}
 							options={listPriceTag?.data?.map((v: any) => ({
@@ -292,7 +293,7 @@ function PopupAddPrice({customerName, onClose, typePartner}: PropsPopupAddPrice)
 							}
 							placeholder='Nhập giá tiền'
 						/>
-					</div>
+					</div> */}
 					<div className='mt'>
 						<div className={styles.input_price}>
 							<input
@@ -326,7 +327,8 @@ function PopupAddPrice({customerName, onClose, typePartner}: PropsPopupAddPrice)
 					</div>
 					<div>
 						<Button
-							disable={!form.specUuid || !form.productTypeUuid || !priceTag.name}
+							disable={!form.specUuid || !form.productTypeUuid}
+							// disable={!form.specUuid || !form.productTypeUuid || !priceTag.name}
 							p_8_24
 							rounded_2
 							primary

@@ -8,6 +8,7 @@ import Button from '~/components/common/Button';
 import {
 	CONFIG_DESCENDING,
 	CONFIG_PAGING,
+	CONFIG_STATUS,
 	CONFIG_TYPE_FIND,
 	QUERY_KEY,
 	STATUS_CUSTOMER,
@@ -62,7 +63,7 @@ function DetailCustomerService({}: PropsDetailCustomerService) {
 					isPaging: CONFIG_PAGING.IS_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.TABLE,
-					status: null,
+					status: CONFIG_STATUS.HOAT_DONG,
 					customerUuid: _id as string,
 					specUuid: '',
 					productTypeUuid: '',
@@ -175,7 +176,7 @@ function DetailCustomerService({}: PropsDetailCustomerService) {
 			<div className={clsx('mt')}>
 				<div className={styles.main_table}>
 					<h1 className={styles.list_title}>Danh sách hàng hóa</h1>
-					{/* {detailCustomer?.status != STATUS_CUSTOMER.DA_XOA && (
+					{detailCustomer?.status != STATUS_CUSTOMER.DA_XOA && (
 						<div>
 							<Button
 								p_8_16
@@ -186,7 +187,7 @@ function DetailCustomerService({}: PropsDetailCustomerService) {
 								Thêm loại hàng
 							</Button>
 						</div>
-					)} */}
+					)}
 				</div>
 			</div>
 			<div className={clsx('mt')}>
@@ -224,20 +225,20 @@ function DetailCustomerService({}: PropsDetailCustomerService) {
 										</>
 									),
 								},
-								{
-									title: 'Giá tiền (VND)',
-									render: (data: any) => (
-										<p style={{fontWeight: '600', color: '#3772FF'}}>{convertCoin(data?.pricetagUu?.amount)}</p>
-									),
-								},
+								// {
+								// 	title: 'Giá tiền (VND)',
+								// 	render: (data: any) => (
+								// 		<p style={{fontWeight: '600', color: '#3772FF'}}>{convertCoin(data?.pricetagUu?.amount)}</p>
+								// 	),
+								// },
 								{
 									title: 'Cung cấp',
 									render: (data: any) => <TagStatusSpecCustomer status={data.state} />,
 								},
-								{
-									title: 'Trạng thái',
-									render: (data: any) => <TagStatus status={data.status} />,
-								},
+								// {
+								// 	title: 'Trạng thái',
+								// 	render: (data: any) => <TagStatus status={data.status} />,
+								// },
 							]}
 						/>
 					</DataWrapper>

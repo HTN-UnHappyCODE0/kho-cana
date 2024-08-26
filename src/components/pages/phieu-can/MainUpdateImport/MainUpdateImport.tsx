@@ -184,18 +184,11 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 				const listspecUu: any[] = [...new Map(data?.map((v: any) => [v?.specUu?.uuid, v])).values()];
 				const listProductTypeUu: any[] = [...new Map(data?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()];
 
-				if (listspecUu?.length == 1) {
-					setForm((prev) => ({
-						...prev,
-						specificationsUuid: listspecUu?.[0]?.specUu?.uuid,
-					}));
-				}
-				if (listProductTypeUu?.length == 1) {
-					setForm((prev) => ({
-						...prev,
-						productTypeUuid: listProductTypeUu?.[0]?.productTypeUu?.uuid,
-					}));
-				}
+				setForm((prev) => ({
+					...prev,
+					specificationsUuid: listspecUu?.[0]?.specUu?.uuid || '',
+					productTypeUuid: listProductTypeUu?.[0]?.productTypeUu?.uuid || '',
+				}));
 			}
 		},
 		select(data) {

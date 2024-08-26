@@ -7,7 +7,15 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {useQuery, useQueryClient} from '@tanstack/react-query';
-import {CONFIG_DESCENDING, CONFIG_PAGING, CONFIG_TYPE_FIND, QUERY_KEY, TYPE_SIFT, TYPE_TRANSPORT} from '~/constants/config/enum';
+import {
+	CONFIG_DESCENDING,
+	CONFIG_PAGING,
+	CONFIG_STATUS,
+	CONFIG_TYPE_FIND,
+	QUERY_KEY,
+	TYPE_SIFT,
+	TYPE_TRANSPORT,
+} from '~/constants/config/enum';
 import {httpRequest} from '~/services';
 import customerServices from '~/services/customerServices';
 import TagStatus from '~/components/common/TagStatus';
@@ -56,7 +64,7 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 					isPaging: CONFIG_PAGING.IS_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.TABLE,
-					status: null,
+					status: CONFIG_STATUS.HOAT_DONG,
 					customerUuid: _id as string,
 					specUuid: '',
 					productTypeUuid: '',
@@ -170,7 +178,7 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 			<div className={clsx('mt')}>
 				<div className={styles.main_table}>
 					<h1 className={styles.list_title}>Danh sách hàng hóa</h1>
-					{/* <div>
+					<div>
 						<Button
 							p_8_16
 							icon={<Image alt='icon add' src={icons.add} width={20} height={20} />}
@@ -179,7 +187,7 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 						>
 							Thêm loại hàng
 						</Button>
-					</div> */}
+					</div>
 				</div>
 			</div>
 			<div className={clsx('mt')}>
@@ -217,20 +225,20 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 										</>
 									),
 								},
-								{
-									title: 'Giá tiền (VND)',
-									render: (data: any) => (
-										<p style={{fontWeight: '600', color: '#3772FF'}}>{convertCoin(data?.pricetagUu?.amount)}</p>
-									),
-								},
+								// {
+								// 	title: 'Giá tiền (VND)',
+								// 	render: (data: any) => (
+								// 		<p style={{fontWeight: '600', color: '#3772FF'}}>{convertCoin(data?.pricetagUu?.amount)}</p>
+								// 	),
+								// },
 								{
 									title: 'Cung cấp',
 									render: (data: any) => <TagStatusSpecCustomer status={data.state} />,
 								},
-								{
-									title: 'Trạng thái',
-									render: (data: any) => <TagStatus status={data.status} />,
-								},
+								// {
+								// 	title: 'Trạng thái',
+								// 	render: (data: any) => <TagStatus status={data.status} />,
+								// },
 							]}
 						/>
 					</DataWrapper>

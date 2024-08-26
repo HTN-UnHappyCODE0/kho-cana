@@ -1,9 +1,10 @@
 .container {
 	overflow-x: auto;
 	padding-bottom: 4px;
+	scrollbar-color: #ccc #fff;
 
 	&::-webkit-scrollbar {
-		height: 4px;
+		height: 10px;
 	}
 
 	table,
@@ -55,6 +56,19 @@
 	thead {
 		box-sizing: border-box;
 		background: var(--primary);
+
+		.fixedLeft,
+		.fixedRight {
+			background: var(--primary);
+		}
+
+		.fixedLeft {
+			box-shadow: inset -2px 0 2px -2px rgba(0, 0, 0, 0.3);
+		}
+
+		.fixedRight {
+			box-shadow: inset 2px 0 2px -2px rgba(0, 0, 0, 0.3);
+		}
 	}
 
 	td {
@@ -71,12 +85,39 @@
 			width: 100%;
 		}
 	}
+
+	tbody {
+		.fixedLeft,
+		.fixedRight {
+			background: #fff;
+		}
+
+		.fixedLeft {
+			box-shadow: inset -2px 0 2px -2px rgba(0, 0, 0, 0.3);
+		}
+
+		.fixedRight {
+			box-shadow: inset 2px 0 2px -2px rgba(0, 0, 0, 0.3);
+		}
+	}
+
+	.checkbox {
+		cursor: pointer;
+		user-select: none;
+		margin-right: 8px;
+		width: 18px;
+		height: 18px;
+	}
 }
 
-.checkbox {
-	cursor: pointer;
-	user-select: none;
-	margin-right: 8px;
-	width: 18px;
-	height: 18px;
+.fixedRight {
+	position: sticky;
+	right: 0;
+	z-index: 10;
+}
+
+.fixedLeft {
+	position: sticky;
+	left: 0;
+	z-index: 10;
 }

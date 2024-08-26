@@ -62,44 +62,44 @@ function DashboardWarehouse({isTotal, total, productTotal, qualityTotal, specTot
 					<div className={styles.main_chart}>
 						{isTotal ? (
 							<ChartDashboard
-								totalValueChart={total?.amountMT!}
+								totalValueChart={total?.amountTotalBDMT!}
 								dataChart={{
 									productWeight: productTotal?.map((v) => ({
 										name: v?.productTypeUu?.name,
 										color: v?.productTypeUu?.colorShow,
-										value: v?.amountMT,
+										value: v?.amountBDMT,
 									}))!,
 									qualityWeight: qualityTotal?.map((v) => ({
 										name: v?.qualityUu?.name,
 										color: v?.qualityUu?.colorShow,
-										value: v?.amountMT,
+										value: v?.amountBDMT,
 									}))!,
 									specWeight: specTotal?.map((v) => ({
 										name: v?.specUu?.name,
 										color: v?.specUu?.colorShow,
-										value: v?.amountMT,
+										value: v?.amountBDMT,
 									}))!,
 								}}
 								arrayTypeAction={arrayTypeAction}
 							/>
 						) : (
 							<ChartDashboard
-								totalValueChart={dataWarehouse?.amountMT!}
+								totalValueChart={dataWarehouse?.amountTotalBDMT!}
 								dataChart={{
 									productWeight: dataWarehouse?.productWeight?.map((v) => ({
 										name: v?.productTypeUu?.name,
 										color: v?.productTypeUu?.colorShow,
-										value: v?.amountMT,
+										value: v?.amountBDMT,
 									}))!,
 									qualityWeight: dataWarehouse?.qualityWeight?.map((v) => ({
 										name: v?.qualityUu?.name,
 										color: v?.qualityUu?.colorShow,
-										value: v?.amountMT,
+										value: v?.amountBDMT,
 									}))!,
 									specWeight: dataWarehouse?.specWeight?.map((v) => ({
 										name: v?.specUu?.name,
 										color: v?.specUu?.colorShow,
-										value: v?.amountMT,
+										value: v?.amountBDMT,
 									}))!,
 								}}
 								arrayTypeAction={arrayTypeAction}
@@ -114,12 +114,12 @@ function DashboardWarehouse({isTotal, total, productTotal, qualityTotal, specTot
 									? productTotal?.map((v) => ({
 											name: v?.productTypeUu?.name,
 											color: v?.productTypeUu?.colorShow,
-											value: v?.amountMT,
+											value: v?.amountBDMT,
 									  }))!
 									: dataWarehouse?.productWeight?.map((v) => ({
 											name: v?.productTypeUu?.name,
 											color: v?.productTypeUu?.colorShow,
-											value: v?.amountMT,
+											value: v?.amountBDMT,
 									  }))!
 							}
 							keyAction='product'
@@ -133,12 +133,12 @@ function DashboardWarehouse({isTotal, total, productTotal, qualityTotal, specTot
 									? qualityTotal?.map((v) => ({
 											name: v?.qualityUu?.name,
 											color: v?.qualityUu?.colorShow,
-											value: v?.amountMT,
+											value: v?.amountBDMT,
 									  }))!
 									: dataWarehouse?.qualityWeight?.map((v) => ({
 											name: v?.qualityUu?.name,
 											color: v?.qualityUu?.colorShow,
-											value: v?.amountMT,
+											value: v?.amountBDMT,
 									  }))!
 							}
 							keyAction='quality'
@@ -152,12 +152,12 @@ function DashboardWarehouse({isTotal, total, productTotal, qualityTotal, specTot
 									? specTotal?.map((v) => ({
 											name: v?.specUu?.name,
 											color: v?.specUu?.colorShow,
-											value: v?.amountMT,
+											value: v?.amountBDMT,
 									  }))!
 									: dataWarehouse?.specWeight?.map((v) => ({
 											name: v?.specUu?.name,
 											color: v?.specUu?.colorShow,
-											value: v?.amountMT,
+											value: v?.amountBDMT,
 									  }))!
 							}
 							keyAction='spec'
