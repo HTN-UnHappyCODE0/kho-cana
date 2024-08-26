@@ -33,6 +33,7 @@ export enum QUERY_KEY {
 	dropdown_tau_hang,
 	dropdown_tinh_thanh_pho_quan_ly,
 	dropdown_nguoi_quan_ly_nhan_vien,
+	dropdown_nhan_vien_thi_truong,
 
 	table_xe_hang,
 	table_lenh_can_tat_ca,

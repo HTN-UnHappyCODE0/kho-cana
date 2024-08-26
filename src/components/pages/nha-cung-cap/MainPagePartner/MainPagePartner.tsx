@@ -26,6 +26,7 @@ import partnerServices from '~/services/partnerServices';
 import Link from 'next/link';
 import IconCustom from '~/components/common/IconCustom';
 import {Eye} from 'iconsax-react';
+import {LuPencil} from 'react-icons/lu';
 
 function MainPagePartner({}: PropsMainPagePartner) {
 	const router = useRouter();
@@ -155,13 +156,22 @@ function MainPagePartner({}: PropsMainPagePartner) {
 								title: 'Tác vụ',
 								fixedRight: true,
 								render: (data: ICustomer) => (
-									<IconCustom
-										edit
-										icon={<Eye fontSize={20} fontWeight={600} />}
-										tooltip='Xem chi tiết'
-										color='#777E90'
-										href={`/nha-cung-cap/${data?.customerUu?.uuid}`}
-									/>
+									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
+										<IconCustom
+											edit
+											icon={<LuPencil fontSize={20} fontWeight={600} />}
+											tooltip='Chỉnh sửa'
+											color='#777E90'
+											href={`/nha-cung-cap/chinh-sua?_customerUuid=${data?.customerUu?.uuid}`}
+										/>
+										<IconCustom
+											edit
+											icon={<Eye fontSize={20} fontWeight={600} />}
+											tooltip='Xem chi tiết'
+											color='#777E90'
+											href={`/nha-cung-cap/${data?.customerUu?.uuid}`}
+										/>
+									</div>
 								),
 							},
 						]}

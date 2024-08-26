@@ -1,4 +1,4 @@
-import {CONFIG_DESCENDING, CONFIG_PAGING, CONFIG_TYPE_FIND, STATUS_CUSTOMER, TYPE_CUSTOMER} from '~/constants/config/enum';
+import {CONFIG_DESCENDING, CONFIG_PAGING, CONFIG_TYPE_FIND, STATUS_CUSTOMER, TYPE_CUSTOMER, TYPE_TRANSPORT} from '~/constants/config/enum';
 import axiosClient from '.';
 
 const customerServices = {
@@ -74,6 +74,31 @@ const customerServices = {
 		tokenAxios?: any
 	) => {
 		return axiosClient.post(`/Customer/delete-customer`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	upsertCustomer: (
+		data: {
+			uuid: string;
+			name: string;
+			phoneNumber: string;
+			email: string;
+			director: string;
+			isSift: number | null;
+			typeCus: TYPE_CUSTOMER;
+			transportType: TYPE_TRANSPORT;
+			districtId: string;
+			provinceId: string;
+			townId: string;
+			address: string;
+			description: string;
+			partnerUuid: string;
+			userUuid: string;
+			warehouseUuid: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/Customer/upsert-customer`, data, {
 			cancelToken: tokenAxios,
 		});
 	},
