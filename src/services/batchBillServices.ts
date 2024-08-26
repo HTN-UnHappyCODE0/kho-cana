@@ -1,0 +1,129 @@
+import {CONFIG_DESCENDING, CONFIG_PAGING, CONFIG_TYPE_FIND} from '~/constants/config/enum';
+import axiosClient from '.';
+
+const batchBillServices = {
+	getListBill: (
+		data: {
+			pageSize: number;
+			page: number;
+			keyword: string;
+			isDescending: CONFIG_DESCENDING;
+			typeFind: CONFIG_TYPE_FIND;
+			isPaging: CONFIG_PAGING;
+			scalesType: number[];
+			isBatch: number | null;
+			isCreateBatch: number | null;
+			status: number[];
+			state?: number[];
+			timeStart: string | null;
+			timeEnd: string | null;
+			specificationsUuid: string;
+			warehouseUuid: string;
+			customerUuid: string;
+			productTypeUuid: string;
+			qualityUuid: string;
+			transportType: number | null;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/BatchBill/get-list-bill`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	upsertBatchBill: (
+		data: {
+			batchUuid: string;
+			shipUuid: string;
+			shipOutUuid: string;
+			transportType: number | null;
+			timeIntend: string | null;
+			weightIntent: number | null;
+			customerName: string;
+			billUuid: string;
+			isBatch: number | null;
+			isCreateBatch: number | null;
+			isSift: number | null;
+			scalesType: number | null;
+			fromUuid: string;
+			toUuid: string;
+			documentId: string;
+			description: string;
+			isPrint: number | null;
+			specificationsUuid: string;
+			productTypeUuid: string;
+			lstTruckAddUuid: string[];
+			lstTruckRemoveUuid: string[];
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/BatchBill/upsert-batchbill`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	deleteBatchBill: (data: {uuid: string; description: string}, tokenAxios?: any) => {
+		return axiosClient.post(`/BatchBill/delete-batchbill`, data, {cancelToken: tokenAxios});
+	},
+	startBatchbill: (
+		data: {
+			uuid: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/BatchBill/start-batchbill`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	detailBatchbill: (
+		data: {
+			uuid: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/BatchBill/detail-batchbill`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	stopBatchbill: (
+		data: {
+			uuid: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/BatchBill/scale-done-batchbill`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	QLKConfirmBatchbill: (
+		data: {
+			uuid: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/BatchBill/qlk-confirm-bill`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	KTKConfirmBatchbill: (
+		data: {
+			uuid: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/BatchBill/ktk-confirm-bill`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	QLKRejectBatchbill: (
+		data: {
+			uuid: string;
+			description: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/BatchBill/reject-bill-to-qlk`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+};
+
+export default batchBillServices;

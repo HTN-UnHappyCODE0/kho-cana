@@ -1,0 +1,17 @@
+export interface PropsMainUpdateService {}
+
+export interface IFormUpdateService {
+	batchUuid: string;
+	billUuid: string;
+	shipUuid: string;
+	transportType: number;
+	isPrint: number;
+	productTypeUuid: string;
+	timeIntend: string;
+	weightIntent: number | string;
+	documentId: string;
+	description: string;
+	weightTotal: number | string;
+	timeStart: string | null;
+	timeEnd: string | null;
+}

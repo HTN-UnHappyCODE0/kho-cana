@@ -1,0 +1,94 @@
+.grid {
+	display: grid;
+	grid-template-columns: repeat(10, 1fr);
+	grid-template-rows: repeat(10, 1fr);
+	border: 1px solid #c2c7c9;
+
+	&.isNotUpdate {
+		border: 2px solid #c2c7c9;
+
+		.cell {
+			border: 1px solid transparent;
+		}
+	}
+}
+
+.cell {
+	position: relative;
+	width: 80px;
+	height: 80px;
+	border: 1px solid #c2c7c9;
+	background: #fff;
+	cursor: pointer;
+	user-select: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	&.isFirstItemDisabled {
+		z-index: 1;
+
+		.box_disabled {
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 10;
+
+			.storage {
+				position: relative;
+				width: 100%;
+				height: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				flex-direction: column;
+
+				.btn_edit {
+					position: absolute;
+					top: 8px;
+					right: 8px;
+				}
+			}
+		}
+	}
+
+	&.isFirstItemDragged {
+		z-index: 1;
+
+		.overlay {
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 10;
+
+			.group_btn {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				flex-direction: column;
+				gap: 4px;
+			}
+
+			.action_create {
+				position: relative;
+				width: 100%;
+				height: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background-color: rgba(45, 116, 255, 0.3);
+
+				.delete_dragged {
+					position: absolute;
+					top: 3px;
+					right: 3px;
+				}
+			}
+		}
+	}
+
+	&.selected {
+		background: rgba(45, 116, 255, 0.3);
+		border: 1px solid rgba(45, 116, 255, 0.3);
+	}
+}

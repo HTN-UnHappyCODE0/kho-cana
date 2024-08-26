@@ -1,0 +1,25 @@
+.header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+}
+
+.title {
+	color: var(--dark-2);
+	font-size: 24px;
+	font-weight: 700;
+}
+
+.right {
+	display: flex;
+	gap: 12px;
+}
+
+.main {
+	width: 100%;
+	margin-top: 24px;
+	display: flex;
+	justify-content: center;
+	gap: 32px;
+	align-items: stretch;
+}

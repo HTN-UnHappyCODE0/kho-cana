@@ -1,0 +1,33 @@
+.main_chart {
+	position: relative;
+	width: 250px;
+	height: 250px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 10;
+}
+
+.total_value {
+	position: absolute;
+	top: 50%;
+	right: 50%;
+	transform: translate(50%, -50%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	z-index: 1;
+}
+
+.text {
+	color: #788a9b;
+	font-size: 12px;
+	font-weight: 500;
+}
+
+.value {
+	color: #171832;
+	font-size: 14px;
+	font-weight: 600;
+}

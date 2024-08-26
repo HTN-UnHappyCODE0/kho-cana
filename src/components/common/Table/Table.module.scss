@@ -1,0 +1,82 @@
+.container {
+	overflow-x: auto;
+	padding-bottom: 4px;
+
+	&::-webkit-scrollbar {
+		height: 4px;
+	}
+
+	table,
+	td,
+	th {
+		text-align: left;
+	}
+
+	table {
+		border-collapse: collapse;
+		border-spacing: 0 2px;
+		width: 100%;
+	}
+
+	th,
+	td {
+		padding: 12px;
+		line-height: 16px;
+		white-space: nowrap;
+	}
+
+	th {
+		color: var(--light);
+		font-size: 14px;
+		font-weight: 600;
+		white-space: nowrap;
+		padding-right: 24px;
+
+		&.checkBox {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			width: 100%;
+		}
+
+		&.textEnd {
+			text-align: right;
+		}
+
+		&.textStart {
+			text-align: left;
+		}
+
+		&.textCenter {
+			text-align: center;
+		}
+	}
+
+	thead {
+		box-sizing: border-box;
+		background: var(--primary);
+	}
+
+	td {
+		color: var(--neutrals-3);
+		font-size: 14px;
+		font-weight: 500;
+		border-bottom: 1px solid var(--border-color);
+		background-color: var(--bg-light);
+
+		.checkBox {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			width: 100%;
+		}
+	}
+}
+
+.checkbox {
+	cursor: pointer;
+	user-select: none;
+	margin-right: 8px;
+	width: 18px;
+	height: 18px;
+}

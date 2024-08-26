@@ -1,0 +1,10 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="vuesax/linear/ship">
+<g id="ship">
+<path id="Vector" d="M17.0168 10.3083C17.7418 10.6 18.1918 11.4583 18.0251 12.2167L17.6834 13.7666C17.0918 16.4333 15.0001 18.3333 11.9834 18.3333H8.01677C5.00011 18.3333 2.90844 16.4333 2.31678 13.7666L1.97511 12.2167C1.80844 11.4583 2.25843 10.6 2.98343 10.3083L4.16678 9.83331L8.75845 7.99165C9.55845 7.67498 10.4418 7.67498 11.2418 7.99165L15.8334 9.83331L17.0168 10.3083Z" stroke="#777E90" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M10 18.3333V8.33325" stroke="#777E90" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_3" d="M15.8332 6.66675V9.8334L11.2415 7.99174C10.4415 7.67508 9.55818 7.67508 8.75818 7.99174L4.1665 9.8334V6.66675C4.1665 5.29175 5.2915 4.16675 6.6665 4.16675H13.3332C14.7082 4.16675 15.8332 5.29175 15.8332 6.66675Z" stroke="#777E90" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_4" d="M12.0832 4.16675H7.9165V2.50008C7.9165 2.04175 8.2915 1.66675 8.74984 1.66675H11.2498C11.7082 1.66675 12.0832 2.04175 12.0832 2.50008V4.16675Z" stroke="#777E90" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+</svg>

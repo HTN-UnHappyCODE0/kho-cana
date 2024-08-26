@@ -1,0 +1,15 @@
+.main_search {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+
+	gap: 12px;
+}
+
+.search {
+	min-width: 320px;
+}
+
+.filter {
+	min-width: 100px;
+}

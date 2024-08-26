@@ -1,0 +1,36 @@
+.container {
+	flex: 1;
+	border-radius: 4px;
+	border: 1px solid #e2e8ed;
+	background: #fff;
+	padding: 0 20px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	&.isTotal {
+		border: 1px solid transparent;
+	}
+}
+
+.value {
+	color: #141416;
+	font-size: 20px;
+	font-weight: 700;
+}
+
+.text {
+	color: #777e90;
+	font-size: 14px;
+	font-weight: 500;
+	margin-top: 2px;
+}
+
+.box {
+	width: 40px;
+	height: 40px;
+	border-radius: 4px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

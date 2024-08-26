@@ -1,0 +1,47 @@
+.box_note {
+	width: 360px;
+	border: 2px solid #c2c7c9;
+	border-radius: 4px;
+	background: #fff;
+	padding: 16px 20px;
+
+	h4 {
+		color: #23262f;
+		font-size: 18px;
+		font-weight: 600;
+		margin-bottom: 12px;
+	}
+
+	.des {
+		margin-top: 16px;
+
+		& > p {
+			color: #000;
+			font-size: 16px;
+			font-weight: 500;
+		}
+	}
+}
+
+.item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+
+	& + & {
+		margin-top: 4px;
+	}
+
+	.dot {
+		width: 14px;
+		height: 14px;
+		border-radius: 50%;
+		border: 1px solid #d6dce8;
+	}
+
+	& > p {
+		color: #000;
+		font-size: 16px;
+		font-weight: 500;
+	}
+}

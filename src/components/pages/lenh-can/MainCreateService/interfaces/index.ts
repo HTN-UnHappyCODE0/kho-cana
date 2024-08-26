@@ -1,0 +1,12 @@
+export interface PropsMainCreateService {}
+
+export interface IFormCreateService {
+	shipUuid: string;
+	transportType: number;
+	isPrint: number;
+	productTypeUuid: string;
+	timeIntend: string;
+	weightIntent: number;
+	documentId: string;
+	description: string;
+}
