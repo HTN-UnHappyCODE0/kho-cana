@@ -314,6 +314,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 							},
 							{
 								title: 'Mã lô',
+								fixedLeft: true,
 								render: (data: ITableBillScale) => (
 									<Link href={`/phieu-can/${data.uuid}`} className={styles.link}>
 										{data?.code}
@@ -414,6 +415,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 							},
 							{
 								title: 'Tác vụ',
+								fixedRight: true,
 								render: (data: ITableBillScale) => (
 									<div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px'}}>
 										{/* Bắt đầu cân */}

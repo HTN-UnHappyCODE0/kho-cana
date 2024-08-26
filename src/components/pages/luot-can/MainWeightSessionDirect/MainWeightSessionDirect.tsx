@@ -260,6 +260,7 @@ function MainWeightSessionDirect({}: PropsMainWeightSessionDirect) {
 							},
 							{
 								title: 'Mã lô',
+								fixedLeft: true,
 								render: (data: IWeightSession) => (
 									<Link href={`/phieu-can/${data?.billUu?.uuid}`} className={styles.link}>
 										{data?.billUu?.code}

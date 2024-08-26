@@ -313,6 +313,7 @@ function MainSpecification({}: PropsMainSpecification) {
 							},
 							{
 								title: 'Số phiếu',
+								fixedLeft: true,
 								render: (data: IWeightSession) => <>{data?.code}</>,
 							},
 							{
@@ -382,6 +383,7 @@ function MainSpecification({}: PropsMainSpecification) {
 							// },
 							{
 								title: 'Tác vụ',
+								fixedRight: true,
 								render: (data: IWeightSession) => (
 									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
 										<div>

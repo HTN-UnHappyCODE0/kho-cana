@@ -249,6 +249,7 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 							},
 							{
 								title: 'Mã lô hàng',
+								fixedLeft: true,
 								render: (data: IDataBill) => (
 									<Link href={`/lenh-can/${data.uuid}`} className={styles.link}>
 										{data?.code}
@@ -347,6 +348,7 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 							},
 							{
 								title: 'Tác vụ',
+								fixedRight: true,
 								render: (data: IDataBill) => (
 									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
 										{data?.status == STATUS_BILL.CHUA_CAN || data?.status == STATUS_BILL.TAM_DUNG ? (

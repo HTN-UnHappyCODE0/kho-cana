@@ -432,6 +432,7 @@ function MainDryness({}: PropsMainDryness) {
 							},
 							{
 								title: 'Số phiếu',
+								fixedLeft: true,
 								render: (data: IWeightSession) => <>{data?.code}</>,
 							},
 							{
@@ -502,6 +503,7 @@ function MainDryness({}: PropsMainDryness) {
 							},
 							{
 								title: 'Tác vụ',
+								fixedRight: true,
 								render: (data: IWeightSession) => (
 									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
 										<div>
