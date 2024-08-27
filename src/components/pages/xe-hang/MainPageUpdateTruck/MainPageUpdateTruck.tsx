@@ -178,12 +178,7 @@ function MainPageUpdateTruck({}: PropsMainPageUpdateTruck) {
 	const handleSubmit = async () => {
 		if (price(form.minWeight) > price(form.maxWeight)) {
 			return toastWarn({
-				msg: 'Khối lượng không hợp lệ!',
-			});
-		}
-		if (listRFIDChecked.length === 0) {
-			return toastWarn({
-				msg: 'Vui lòng chọn ít nhất một RFID!',
+				msg: 'Trọng lượng không hợp lệ!',
 			});
 		}
 
@@ -345,11 +340,7 @@ function MainPageUpdateTruck({}: PropsMainPageUpdateTruck) {
 					<div className={clsx('mt')}>
 						<ButtonSelectMany
 							isShowCode={false}
-							label={
-								<span>
-									RFID <span style={{color: 'red'}}>*</span>
-								</span>
-							}
+							label={<span>RFID</span>}
 							placeholder='Chọn RFID'
 							title='Thêm RFID'
 							description='Thêm và lựa chọn RFID'

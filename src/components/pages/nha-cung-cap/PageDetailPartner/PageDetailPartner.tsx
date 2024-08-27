@@ -113,7 +113,7 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 					</tr>
 					<tr>
 						<td>
-							<span>Phân loại hàng:</span>
+							<span>Phân loại gỗ:</span>
 							<span style={{marginLeft: '6px', color: '#2A85FF'}}>
 								{detailCustomer?.isSift == TYPE_SIFT.CAN_SANG
 									? 'Cần sàng'
@@ -177,7 +177,7 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 
 			<div className={clsx('mt')}>
 				<div className={styles.main_table}>
-					<h1 className={styles.list_title}>Danh sách hàng hóa</h1>
+					<h1 className={styles.list_title}>Danh sách loại gỗ</h1>
 					<div>
 						<Button
 							p_8_16
@@ -185,7 +185,7 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 							rounded_2
 							onClick={() => setOpenCreate(true)}
 						>
-							Thêm loại hàng
+							Thêm loại gỗ
 						</Button>
 					</div>
 				</div>
@@ -195,7 +195,7 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 					<DataWrapper
 						data={listPriceTagCustomer?.data?.items || []}
 						loading={listPriceTagCustomer?.isLoading}
-						noti={<Noti disableButton des='Hiện tại chưa có hàng hóa nào!' />}
+						noti={<Noti disableButton des='Hiện tại chưa có loại gỗ nào!' />}
 					>
 						<Table
 							data={listPriceTagCustomer?.data?.items || []}

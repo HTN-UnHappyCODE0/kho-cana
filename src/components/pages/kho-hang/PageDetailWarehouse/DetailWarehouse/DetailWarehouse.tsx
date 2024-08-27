@@ -155,7 +155,7 @@ function DetailWarehouse({}: PropsDetailWarehouse) {
 						}
 					/>
 					<DetailBox
-						name={'Khối lượng nhập'}
+						name={'Trọng lượng nhập'}
 						value={detailWarehouse?.totalAmountIn!}
 						action={
 							<div className={styles.action}>
@@ -172,7 +172,7 @@ function DetailWarehouse({}: PropsDetailWarehouse) {
 						}
 					/>
 					<DetailBox
-						name={'Khối lượng xuất'}
+						name={'Trọng lượng xuất'}
 						value={detailWarehouse?.totalAmountOut!}
 						action={
 							<div className={styles.action}>

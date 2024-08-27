@@ -321,6 +321,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 					<Select
 						isSearch
 						name='regencyUuid'
+						readOnly={true}
 						placeholder='Chọn chức vụ'
 						value={form?.regencyUuid}
 						label={
@@ -360,7 +361,11 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 									ownerUuid: e.target.value,
 								}))
 							}
-							label={<span>Người quản lý</span>}
+							label={
+								<span>
+									Người quản lý <span style={{color: 'red'}}>*</span>
+								</span>
+							}
 						>
 							{listUserManager?.data?.map((v: any) => (
 								<Option key={v?.uuid} value={v?.uuid} title={v?.fullName} />
@@ -373,7 +378,11 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 						value={form.provinceOwnerId}
 						readOnly={isReadOnly == false}
 						placeholder='Khu vực quản lý'
-						label={<span>Khu vực quản lý</span>}
+						label={
+							<span>
+								Khu vực quản lý <span style={{color: 'red'}}>*</span>
+							</span>
+						}
 					>
 						{listProvinceOwner?.data?.map((v: any) => (
 							<Option
@@ -398,7 +407,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 						placeholder='Chọn tỉnh/thành phố'
 						label={
 							<span>
-								Tỉnh/Thành phố<span style={{color: 'red'}}>*</span>
+								Tỉnh/Thành phố <span style={{color: 'red'}}>*</span>
 							</span>
 						}
 					>
@@ -426,7 +435,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 							placeholder='Chọn quận/huyện'
 							label={
 								<span>
-									Quận/Huyện<span style={{color: 'red'}}>*</span>
+									Quận/Huyện <span style={{color: 'red'}}>*</span>
 								</span>
 							}
 						>
@@ -453,7 +462,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 						placeholder='Chọn xã/phường'
 						label={
 							<span>
-								Xã/phường<span style={{color: 'red'}}>*</span>
+								Xã/phường <span style={{color: 'red'}}>*</span>
 							</span>
 						}
 					>
@@ -480,7 +489,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 						icon={true}
 						label={
 							<span>
-								Ngày sinh<span style={{color: 'red'}}>*</span>
+								Ngày sinh <span style={{color: 'red'}}>*</span>
 							</span>
 						}
 						placeholder='Chọn ngày sinh'
@@ -496,7 +505,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 					/>
 					<div className={styles.gennder}>
 						<label>
-							Giới tính<span style={{color: 'red'}}>*</span>
+							Giới tính <span style={{color: 'red'}}>*</span>
 						</label>
 						<div className={styles.group_radio}>
 							<div className={styles.item_radio}>
@@ -553,7 +562,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 							max={255}
 							label={
 								<span>
-									Email<span style={{color: 'red'}}>*</span>
+									Email <span style={{color: 'red'}}>*</span>
 								</span>
 							}
 							placeholder='Nhập Email'
@@ -569,7 +578,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 							blur={true}
 							label={
 								<span>
-									Số điện thoại<span style={{color: 'red'}}>*</span>
+									Số điện thoại <span style={{color: 'red'}}>*</span>
 								</span>
 							}
 							placeholder='Nhập số điện thoại'

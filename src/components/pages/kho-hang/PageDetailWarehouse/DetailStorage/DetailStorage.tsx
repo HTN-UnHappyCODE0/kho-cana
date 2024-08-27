@@ -172,7 +172,7 @@ function DetailStorage({}: PropsDetailStorage) {
 						}
 					/>
 					<DetailBox
-						name={'Khối lượng nhập'}
+						name={'Trọng lượng nhập'}
 						value={Number(detailStorage?.totalAmountIn)}
 						action={
 							<div className={styles.action}>
@@ -189,7 +189,7 @@ function DetailStorage({}: PropsDetailStorage) {
 						}
 					/>
 					<DetailBox
-						name={'Khối lượng xuất'}
+						name={'Trọng lượng xuất'}
 						value={Number(detailStorage?.totalAmountOut)}
 						action={
 							<div className={styles.action}>
@@ -294,7 +294,7 @@ function DetailStorage({}: PropsDetailStorage) {
 														<span style={{marginRight: 4}}>
 															{v?.criteriaUu?.ruler == TYPE_RULER.NHO_HON ? '<' : '>'}
 														</span>
-														{v?.criteriaUu?.value}
+														{v?.criteriaUu?.value} %
 													</p>
 												</div>
 											))}

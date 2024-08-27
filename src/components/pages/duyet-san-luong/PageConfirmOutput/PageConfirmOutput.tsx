@@ -45,7 +45,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 	const [uuidKTKConfirm, setUuidKTKConfirm] = useState<string>('');
 	const [uuidKTKReject, setUuidKTKReject] = useState<string>('');
 
-	const {_page, _pageSize, _keyword, _customerUuid, _productTypeUuid, _dateFrom, _dateTo} = router.query;
+	const {_page, _pageSize, _keyword, _customerUuid, _productTypeUuid, _state, _dateFrom, _dateTo} = router.query;
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
@@ -92,7 +92,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 	});
 
 	const listBatch = useQuery(
-		[QUERY_KEY.table_ktk_duyet_san_luong, _page, _pageSize, _keyword, _customerUuid, _productTypeUuid, _dateFrom, _dateTo],
+		[QUERY_KEY.table_ktk_duyet_san_luong, _page, _pageSize, _keyword, _customerUuid, _productTypeUuid, _dateFrom, _state, _dateTo],
 		{
 			queryFn: () =>
 				httpRequest({
@@ -117,7 +117,8 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 							STATUS_BILL.DA_KCS,
 							STATUS_BILL.CHOT_KE_TOAN,
 						],
-						state: [STATE_BILL.QLK_CHECKED, STATE_BILL.KTK_REJECTED],
+
+						state: !!_state ? [Number(_state)] : [STATE_BILL.QLK_CHECKED, STATE_BILL.KTK_REJECTED],
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
 						warehouseUuid: '',
@@ -154,7 +155,6 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 
 	return (
 		<div className={styles.container}>
-			<button></button>
 			<Loading loading={fucnKTKConfirmBatchBill.isLoading} />
 			<div className={styles.header}>
 				<div className={styles.main_search}>
@@ -196,12 +196,40 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 							name: v?.name,
 						}))}
 					/>
+					<FilterCustom
+						isSearch
+						name='Xác Nhận SL'
+						query='_state'
+						listFilter={[
+							{
+								id: STATE_BILL.QLK_CHECKED,
+								name: 'QLK đã duyệt',
+							},
+							{
+								id: STATE_BILL.KTK_REJECTED,
+								name: 'KTK duyệt lại',
+							},
+						]}
+					/>
 
 					<div className={styles.filter}>
 						<DateRangerCustom titleTime='Thời gian' />
 					</div>
 				</div>
 			</div>
+			{/* <div className={clsx('mt')}>
+				<div className={styles.parameter}>
+					<div>
+						TỔNG LÔ HÀNG: <span style={{color: '#2D74FF', marginLeft: 4}}>{listBatch?.data?.pagination?.totalCount}</span>
+					</div>
+					<div>
+						TỔNG CÔNG NỢ TẠM TÍNH: <span style={{marginLeft: 4}}>{convertCoin(listBatch?.data?.debtDemo)} VND</span>
+					</div>
+					<div>
+						TỔNG CÔNG NỢ CHUẨN: <span style={{marginLeft: 4}}>{convertCoin(listBatch?.data?.debtReal)} VND</span>
+					</div>
+				</div>
+			</div> */}
 			<div className={styles.table}>
 				<DataWrapper
 					data={listBatch?.data?.items || []}
@@ -284,19 +312,19 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 								),
 							},
 							{
-								title: 'KL hàng (KG)',
+								title: 'TL hàng (KG)',
 								render: (data: ITableBillScale) => <>{convertCoin(data?.weightTotal) || 0}</>,
 							},
 							{
 								title: 'Xác nhận SL',
 								render: (data: ITableBillScale) => (
 									<p style={{fontWeight: 600, color: ''}}>
-										{data?.state == STATE_BILL.NOT_CHECK && 'Chưa duyệt'}
-										{data?.state == STATE_BILL.QLK_REJECTED && 'QLK duyệt lại'}
-										{data?.state == STATE_BILL.QLK_CHECKED && 'QLK đã duyệt'}
-										{data?.state == STATE_BILL.KTK_REJECTED && 'KTK duyệt lại'}
-										{data?.state == STATE_BILL.KTK_CHECKED && 'KTK đã duyệt'}
-										{data?.state == STATE_BILL.END && 'Kết thúc'}
+										{data?.state == STATE_BILL.NOT_CHECK && <span style={{color: '#FF6838'}}>Chưa duyệt</span>}
+										{data?.state == STATE_BILL.QLK_REJECTED && <span style={{color: '#6170E3'}}>QLK duyệt lại</span>}
+										{data?.state == STATE_BILL.QLK_CHECKED && <span style={{color: '#6FD195'}}>QLK đã duyệt</span>}
+										{data?.state == STATE_BILL.KTK_REJECTED && <span style={{color: '#FFAE4C'}}>KTK duyệt lại</span>}
+										{data?.state == STATE_BILL.KTK_CHECKED && <span style={{color: '#3CC3DF'}}>KTK đã duyệt</span>}
+										{data?.state == STATE_BILL.END && <span style={{color: '#D95656'}}>Kết thúc</span>}
 									</p>
 								),
 							},
@@ -360,7 +388,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 					currentPage={Number(_page) || 1}
 					pageSize={Number(_pageSize) || 20}
 					total={listBatch?.data?.pagination?.totalCount}
-					dependencies={[_pageSize, _keyword, _customerUuid, _productTypeUuid, _dateFrom, _dateTo]}
+					dependencies={[_pageSize, _keyword, _customerUuid, _productTypeUuid, _state, _dateFrom, _dateTo]}
 				/>
 			</div>
 

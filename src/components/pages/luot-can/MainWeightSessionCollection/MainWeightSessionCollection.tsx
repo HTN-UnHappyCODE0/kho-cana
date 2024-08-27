@@ -94,7 +94,7 @@ function MainWeightSessionCollection({}: PropsMainWeightSessionCollection) {
 			<div className={styles.header}>
 				<div className={styles.main_search}>
 					<div className={styles.search}>
-						<Search keyName='_keyword' placeholder='Tìm kiếm theo số phiếu' />
+						<Search keyName='_keyword' placeholder='Tìm kiếm theo biển số xe' />
 					</div>
 					<div className={styles.filter}>
 						<FilterCustom

@@ -293,8 +293,8 @@ function MainUpdateService({}: PropsMainUpdateService) {
 							type='text'
 							isMoney
 							unit='KG'
-							label={<span>Tổng khối lượng hàng</span>}
-							placeholder='Nhập tổng khối lượng hàng'
+							label={<span>Tổng trọng lượng hàng</span>}
+							placeholder='Nhập tổng trọng lượng hàng'
 						/>
 						<DatePicker
 							readonly={true}

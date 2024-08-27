@@ -296,7 +296,7 @@ function MainPageBillImport({}: PropsMainPageBillImport) {
 								),
 							},
 							{
-								title: 'KL dự kiến (KG)',
+								title: 'TL dự kiến (KG)',
 								render: (data: IDataBill) => <>{convertCoin(data?.batchsUu?.weightIntent) || '---'}</>,
 							},
 							{

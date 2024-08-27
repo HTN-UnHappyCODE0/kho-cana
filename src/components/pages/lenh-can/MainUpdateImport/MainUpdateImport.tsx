@@ -775,8 +775,8 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 							type='text'
 							isMoney
 							unit='KG'
-							label={<span>Khối lượng dự kiến</span>}
-							placeholder='Nhập khối lượng dự kiến'
+							label={<span>Trọng lượng dự kiến</span>}
+							placeholder='Nhập trọng lượng dự kiến'
 						/>
 						<DatePicker
 							label={<span>Ngày dự kiến</span>}
@@ -794,7 +794,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 						<Input
 							name='documentId'
 							value={form.documentId || ''}
-							max={255}
+							max={50}
 							type='text'
 							label={<span>Số chứng từ</span>}
 							placeholder='Nhập số chứng từ'
