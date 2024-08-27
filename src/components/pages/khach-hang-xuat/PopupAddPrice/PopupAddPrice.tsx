@@ -145,7 +145,7 @@ function PopupAddPrice({customerName, onClose, typePartner}: PropsPopupAddPrice)
 							state: form?.state,
 							productTypeUuid: form.productTypeUuid,
 							transportType: Number(form.transportType),
-							priceTagUuid: 0,
+							priceTagUuid: '0',
 							// priceTagUuid: priceTag.id === '' ? String(priceTag.name) : priceTag.id,
 						},
 					],
