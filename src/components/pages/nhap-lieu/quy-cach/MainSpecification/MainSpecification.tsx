@@ -35,6 +35,7 @@ import Popup from '~/components/common/Popup';
 import FormUpdateSpecWS from '../FormUpdateSpecWS';
 import {toastWarn} from '~/common/funcs/toast';
 import {convertCoin} from '~/common/funcs/convertCoin';
+import Link from 'next/link';
 
 function MainSpecification({}: PropsMainSpecification) {
 	const router = useRouter();
@@ -312,8 +313,16 @@ function MainSpecification({}: PropsMainSpecification) {
 								render: (data: IWeightSession, index: number) => <>{index + 1}</>,
 							},
 							{
-								title: 'Số phiếu',
+								title: 'Mã lô',
 								fixedLeft: true,
+								render: (data: IWeightSession) => (
+									<Link href={`/phieu-can/${data?.billUu?.uuid}`} className={styles.link}>
+										{data?.billUu?.code}
+									</Link>
+								),
+							},
+							{
+								title: 'Số phiếu',
 								render: (data: IWeightSession) => <>{data?.code}</>,
 							},
 							{

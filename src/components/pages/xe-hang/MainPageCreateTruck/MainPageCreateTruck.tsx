@@ -157,7 +157,7 @@ function MainPageCreateTruck({}: PropsMainPageCreateTruck) {
 	const handleSubmit = async () => {
 		if (price(form.minWeight) > price(form.maxWeight)) {
 			return toastWarn({
-				msg: 'Khối lượng không hợp lệ!',
+				msg: 'Trọng lượng không hợp lệ!',
 			});
 		}
 

@@ -119,6 +119,9 @@ function FormCreateInventory({onClose, nameStorage}: PropsFormCreateInventory) {
 					/>
 				</div>
 				<div className='mt'>
+					<div className={styles.image_upload}>
+						Chọn ảnh <span style={{color: 'red'}}> *</span>
+					</div>
 					<UploadMultipleFile images={images} setImages={setImages} />
 				</div>
 

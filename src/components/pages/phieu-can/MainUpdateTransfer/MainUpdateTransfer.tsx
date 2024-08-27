@@ -399,8 +399,8 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 							type='text'
 							isMoney
 							unit='KG'
-							label={<span>Tổng khối lượng hàng</span>}
-							placeholder='Nhập tổng khối lượng hàng'
+							label={<span>Tổng trọng lượng hàng</span>}
+							placeholder='Nhập tổng trọng lượng hàng'
 						/>
 						<DatePicker
 							readonly={true}
@@ -782,8 +782,8 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 							type='text'
 							isMoney
 							unit='KG'
-							label={<span>Khối lượng dự kiến</span>}
-							placeholder='Nhập khối lượng dự kiến'
+							label={<span>Trọng lượng dự kiến</span>}
+							placeholder='Nhập trọng lượng dự kiến'
 						/>
 						<DatePicker
 							label={<span>Ngày dự kiến</span>}

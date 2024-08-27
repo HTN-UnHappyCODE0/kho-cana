@@ -45,6 +45,7 @@ import Dialog from '~/components/common/Dialog';
 import Popup from '~/components/common/Popup';
 import FormUpdateDryness from '../FormUpdateDryness';
 import {convertCoin} from '~/common/funcs/convertCoin';
+import Link from 'next/link';
 
 function MainDryness({}: PropsMainDryness) {
 	const router = useRouter();
@@ -431,8 +432,16 @@ function MainDryness({}: PropsMainDryness) {
 								render: (data: IWeightSession, index: number) => <>{index + 1}</>,
 							},
 							{
-								title: 'Số phiếu',
+								title: 'Mã lô',
 								fixedLeft: true,
+								render: (data: IWeightSession) => (
+									<Link href={`/phieu-can/${data?.billUu?.uuid}`} className={styles.link}>
+										{data?.billUu?.code}
+									</Link>
+								),
+							},
+							{
+								title: 'Số phiếu',
 								render: (data: IWeightSession) => <>{data?.code}</>,
 							},
 							{

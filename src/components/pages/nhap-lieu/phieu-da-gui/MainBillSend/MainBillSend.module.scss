@@ -25,6 +25,17 @@
 	margin-top: 16px;
 }
 
+.link {
+	font-weight: 600;
+	color: var(--primary);
+	transition: 0.3s;
+
+	&:hover {
+		opacity: 0.8;
+		text-decoration: underline;
+	}
+}
+
 .specification {
 	width: fit-content;
 	font-weight: 600;

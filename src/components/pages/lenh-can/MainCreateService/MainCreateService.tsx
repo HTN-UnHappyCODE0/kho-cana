@@ -444,8 +444,8 @@ function MainCreateService({}: PropsMainCreateService) {
 							type='text'
 							isMoney
 							unit='KG'
-							label={<span>Khối lượng dự kiến</span>}
-							placeholder='Nhập khối lượng dự kiến'
+							label={<span>Trọng lượng dự kiến</span>}
+							placeholder='Nhập trọng lượng dự kiến'
 						/>
 					</div>
 					<div className={clsx('mt', 'col_2')}>
@@ -464,7 +464,7 @@ function MainCreateService({}: PropsMainCreateService) {
 							name='documentId'
 							value={form.documentId || ''}
 							type='text'
-							max={255}
+							max={50}
 							label={<span>Số chứng từ</span>}
 							placeholder='Nhập số chứng từ'
 						/>

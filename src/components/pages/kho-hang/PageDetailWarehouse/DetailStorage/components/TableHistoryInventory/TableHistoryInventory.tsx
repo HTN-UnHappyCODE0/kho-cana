@@ -64,7 +64,7 @@ function TableHistoryInventory({}: PropsTableHistoryInventory) {
 							render: (data: IInventory) => <span>{data?.storageUu?.name || '---'}</span>,
 						},
 						{
-							title: 'Khối lượng ban đầu (KG)',
+							title: 'Trọng lượng ban đầu (KG)',
 							render: (data: IInventory) => <span>{convertCoin(data?.totalAmount) || 0}</span>,
 						},
 
