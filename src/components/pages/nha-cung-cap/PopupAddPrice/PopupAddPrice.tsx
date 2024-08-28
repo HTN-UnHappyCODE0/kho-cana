@@ -69,7 +69,7 @@ function PopupAddPrice({typeCustomer, customerName, onClose}: PropsPopupAddPrice
 		// });
 	};
 
-	const listSpecifications = useQuery([QUERY_KEY.dropdown_quy_cach], {
+	const listSpecifications = useQuery([QUERY_KEY.dropdown_quy_cach, form.productTypeUuid], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -82,11 +82,13 @@ function PopupAddPrice({typeCustomer, customerName, onClose}: PropsPopupAddPrice
 					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
 					status: CONFIG_STATUS.HOAT_DONG,
 					qualityUuid: '',
+					productTypeUuid: form.productTypeUuid,
 				}),
 			}),
 		select(data) {
 			return data;
 		},
+		enabled: !!form.productTypeUuid,
 	});
 
 	const listProductType = useQuery([QUERY_KEY.dropdown_loai_hang], {
@@ -207,12 +209,6 @@ function PopupAddPrice({typeCustomer, customerName, onClose}: PropsPopupAddPrice
 						name='productTypeUuid'
 						value={form.productTypeUuid}
 						placeholder='Lựa chọn loại gỗ'
-						onChange={(e: any) =>
-							setForm((prev: any) => ({
-								...prev,
-								productTypeUuid: e.target.value,
-							}))
-						}
 						label={
 							<span>
 								Loại gỗ<span style={{color: 'red'}}>*</span>
@@ -220,7 +216,18 @@ function PopupAddPrice({typeCustomer, customerName, onClose}: PropsPopupAddPrice
 						}
 					>
 						{listProductType?.data?.map((value: any) => (
-							<Option key={value.uuid} title={value.name} value={value.uuid} />
+							<Option
+								key={value.uuid}
+								title={value.name}
+								value={value.uuid}
+								onClick={() =>
+									setForm((prev: any) => ({
+										...prev,
+										productTypeUuid: value.uuid,
+										specUuid: '',
+									}))
+								}
+							/>
 						))}
 					</Select>
 					<Select
@@ -228,12 +235,7 @@ function PopupAddPrice({typeCustomer, customerName, onClose}: PropsPopupAddPrice
 						name='specUuid'
 						placeholder='Lựa chọn quy cách'
 						value={form.specUuid}
-						onChange={(e: any) =>
-							setForm((prev: any) => ({
-								...prev,
-								specUuid: e.target.value,
-							}))
-						}
+						readOnly={!form.productTypeUuid}
 						label={
 							<span>
 								Quy cách <span style={{color: 'red'}}>*</span>
@@ -241,7 +243,17 @@ function PopupAddPrice({typeCustomer, customerName, onClose}: PropsPopupAddPrice
 						}
 					>
 						{listSpecifications?.data?.map((value: any) => (
-							<Option key={value.uuid} title={value?.name} value={value?.uuid} />
+							<Option
+								key={value.uuid}
+								title={value?.name}
+								value={value?.uuid}
+								onClick={() =>
+									setForm((prev: any) => ({
+										...prev,
+										specUuid: value.uuid,
+									}))
+								}
+							/>
 						))}
 					</Select>
 					<Select

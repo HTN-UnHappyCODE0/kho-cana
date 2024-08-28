@@ -126,7 +126,7 @@ function PageCustomerExport({}: PropsPageCustomerExport) {
 								render: (data: ICustomer) => <>{data?.customerUu?.name || '---'}</>,
 							},
 							{
-								title: 'Loại hàng',
+								title: 'Loại gỗ',
 								render: (data: ICustomer) => <>{data?.productTypeUu?.name || '---'}</>,
 							},
 							{

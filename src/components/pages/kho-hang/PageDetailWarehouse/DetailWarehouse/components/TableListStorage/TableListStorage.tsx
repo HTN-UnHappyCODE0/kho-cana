@@ -64,7 +64,7 @@ function TableListStorage({}: PropsTableListStorage) {
 							render: (data: IDataListStorage) => <span>{data?.name || '---'}</span>,
 						},
 						{
-							title: 'Loại hàng',
+							title: 'Loại gỗ',
 							render: (data: IDataListStorage) => <span>{data?.productUu?.name || '---'}</span>,
 						},
 						{

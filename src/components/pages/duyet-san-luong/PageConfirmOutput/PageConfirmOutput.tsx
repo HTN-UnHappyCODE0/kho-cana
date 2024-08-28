@@ -229,24 +229,18 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 					</div>
 				</div>
 			</div>
-			{/* <div className={clsx('mt')}>
+			<div className={clsx('mt')}>
 				<div className={styles.parameter}>
 					<div>
-						TỔNG LÔ HÀNG: <span style={{color: '#2D74FF', marginLeft: 4}}>{listBatch?.data?.pagination?.totalCount}</span>
-					</div>
-					<div>
-						TỔNG CÔNG NỢ TẠM TÍNH: <span style={{marginLeft: 4}}>{convertCoin(listBatch?.data?.debtDemo)} VND</span>
-					</div>
-					<div>
-						TỔNG CÔNG NỢ CHUẨN: <span style={{marginLeft: 4}}>{convertCoin(listBatch?.data?.debtReal)} VND</span>
+						TỔNG KHỐI LƯỢNG: <span style={{color: '#2D74FF', marginLeft: 4}}>{'---'}</span>
 					</div>
 				</div>
-			</div> */}
+			</div>
 			<div className={styles.table}>
 				<DataWrapper
 					data={listBatch?.data?.items || []}
 					loading={listBatch?.isLoading}
-					noti={<Noti des='Hiện tại chưa có phiếu cân nào!' disableButton />}
+					noti={<Noti des='Hiện tại chưa có lô nào!' disableButton />}
 				>
 					<Table
 						data={listBatch?.data?.items || []}

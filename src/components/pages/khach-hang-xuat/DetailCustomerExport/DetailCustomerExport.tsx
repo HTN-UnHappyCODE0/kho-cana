@@ -112,7 +112,7 @@ function DetailCustomerExport({}: PropsDetailCustomerExport) {
 					</tr>
 					<tr>
 						<td>
-							<span>Phân loại hàng:</span>
+							<span>Phân loại gỗ:</span>
 							<span style={{marginLeft: '6px', color: '#2A85FF'}}>
 								{detailCustomer?.isSift == TYPE_SIFT.CAN_SANG
 									? 'Cần sàng'
@@ -185,7 +185,7 @@ function DetailCustomerExport({}: PropsDetailCustomerExport) {
 								rounded_2
 								onClick={() => setOpenCreate(true)}
 							>
-								Thêm loại hàng
+								Thêm loại gỗ
 							</Button>
 						</div>
 					)}

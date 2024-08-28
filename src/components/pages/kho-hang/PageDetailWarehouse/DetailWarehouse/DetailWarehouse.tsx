@@ -121,7 +121,7 @@ function DetailWarehouse({}: PropsDetailWarehouse) {
 			<div className={'mt'}>
 				<GridColumn col_4>
 					<DetailBox
-						name={'Tổng lượng hàng'}
+						name={'Tổng trọng lượng hàng'}
 						value={detailWarehouse?.totalAmountMT!}
 						action={
 							<div className={styles.action}>
@@ -138,7 +138,7 @@ function DetailWarehouse({}: PropsDetailWarehouse) {
 						}
 					/>
 					<DetailBox
-						name={'Tổng lượng hàng khô'}
+						name={'Tổng trọng lượng hàng khô'}
 						value={detailWarehouse?.totalAmountBDMT!}
 						action={
 							<div className={styles.action}>
@@ -179,10 +179,10 @@ function DetailWarehouse({}: PropsDetailWarehouse) {
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />
 								<div className={styles.note}>
 									<p>
-										Khách hàng: <span>{detailWarehouse?.amountOut}</span>
+										Khách hàng: <span>{convertCoin(detailWarehouse?.amountOut!)}</span>
 									</p>
 									<p style={{marginTop: 2}}>
-										Chuyển kho: <span>{detailWarehouse?.amountChangeOut}</span>
+										Chuyển kho: <span>{convertCoin(detailWarehouse?.amountChangeOut!)}</span>
 									</p>
 								</div>
 							</div>

@@ -138,7 +138,7 @@ function MainSpecifications({}: PropsMainSpecifications) {
 								render: (data: ISpecifications) => <>{data?.qualityUu?.name || '---'}</>,
 							},
 							{
-								title: 'Loại hàng',
+								title: 'Loại gỗ',
 								render: (data: ISpecifications) => <>{data?.productTypeUu?.name || '---'}</>,
 							},
 							{
