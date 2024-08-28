@@ -34,8 +34,8 @@ function TableHistoryStorage({}: PropsTableHistoryStorage) {
 					typeFind: CONFIG_TYPE_FIND.TABLE,
 					status: null,
 					storageUuid: _id as string,
-					timeEnd: _dateFrom ? (_dateFrom as string) : null,
-					timeStart: _dateTo ? (_dateTo as string) : null,
+					timeEnd: _dateTo ? (_dateTo as string) : null,
+					timeStart: _dateFrom ? (_dateFrom as string) : null,
 				}),
 			}),
 		select(data) {
