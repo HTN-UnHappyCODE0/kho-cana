@@ -207,7 +207,7 @@ function FormUpdatePostionStorage({draggedElements, onClose}: PropsFormUpdatePos
 					<Select
 						isSearch
 						name='productUuid'
-						placeholder='Chọn loại hàng'
+						placeholder='Chọn loại gỗ'
 						value={form?.productUuid}
 						readOnly={true}
 						onChange={(e: any) =>
@@ -218,7 +218,7 @@ function FormUpdatePostionStorage({draggedElements, onClose}: PropsFormUpdatePos
 						}
 						label={
 							<span>
-								Thuộc loại hàng <span style={{color: 'red'}}>*</span>
+								Thuộc loại gỗ <span style={{color: 'red'}}>*</span>
 							</span>
 						}
 					>

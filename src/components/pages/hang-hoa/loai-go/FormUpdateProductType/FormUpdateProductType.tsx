@@ -87,7 +87,7 @@ function FormUpdateProductType({dataUpdateProductType, onClose}: PropsFormUpdate
 				<div className={clsx('mb')}>
 					<div className={styles.item}>
 						<label className={styles.label}>
-							Loại hàng <span style={{color: 'red'}}>*</span>
+							Loại gỗ <span style={{color: 'red'}}>*</span>
 						</label>
 						<div className={styles.group_radio}>
 							<div className={styles.item_radio}>

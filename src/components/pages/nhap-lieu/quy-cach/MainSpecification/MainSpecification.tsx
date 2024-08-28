@@ -266,7 +266,7 @@ function MainSpecification({}: PropsMainSpecification) {
 					/>
 					<FilterCustom
 						isSearch
-						name='Loại hàng'
+						name='Loại gỗ'
 						query='_productTypeUuid'
 						listFilter={listProductType?.data?.map((v: any) => ({
 							id: v?.uuid,
@@ -338,7 +338,7 @@ function MainSpecification({}: PropsMainSpecification) {
 								render: (data: IWeightSession) => <>{data?.toUu?.name || '---'}</>,
 							},
 							{
-								title: 'Loại hàng',
+								title: 'Loại gỗ',
 								render: (data: IWeightSession) => <>{data?.producTypeUu?.name || '---'}</>,
 							},
 							{

@@ -149,7 +149,7 @@ function DetailStorage({}: PropsDetailStorage) {
 			<div className={'mt'}>
 				<GridColumn col_4>
 					<DetailBox
-						name={'Tổng lượng hàng'}
+						name={'Tổng trọng lượng hàng'}
 						value={Number(detailStorage?.totalAmountMt)}
 						action={
 							<div className={styles.action}>
@@ -196,10 +196,10 @@ function DetailStorage({}: PropsDetailStorage) {
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />
 								<div className={styles.note}>
 									<p>
-										Khách hàng: <span>{detailStorage?.amountOut}</span>
+										Khách hàng: <span>{convertCoin(detailStorage?.amountOut!)}</span>
 									</p>
 									<p style={{marginTop: 2}}>
-										Xuất kho: <span>{detailStorage?.amountChangeOut}</span>
+										Xuất kho: <span>{convertCoin(detailStorage?.amountChangeOut!)}</span>
 									</p>
 								</div>
 							</div>

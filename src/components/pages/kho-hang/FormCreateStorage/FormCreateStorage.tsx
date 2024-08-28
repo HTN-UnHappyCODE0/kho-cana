@@ -154,11 +154,11 @@ function FormCreateStorage({draggedElements, onClose}: PropsFormCreateStorage) {
 					<Select
 						isSearch
 						name='productUuid'
-						placeholder='Chọn loại hàng'
+						placeholder='Chọn loại gỗ'
 						value={form?.productUuid}
 						label={
 							<span>
-								Thuộc loại hàng <span style={{color: 'red'}}>*</span>
+								Thuộc loại gỗ <span style={{color: 'red'}}>*</span>
 							</span>
 						}
 					>

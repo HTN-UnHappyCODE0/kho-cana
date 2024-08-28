@@ -123,7 +123,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 		},
 	});
 
-	const listSpecification = useQuery([QUERY_KEY.dropdown_quy_cach], {
+	const listSpecification = useQuery([QUERY_KEY.dropdown_quy_cach, form.productTypeUuid], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -136,11 +136,13 @@ function MainCreateExport({}: PropsMainCreateExport) {
 					typeFind: CONFIG_TYPE_FIND.TABLE,
 					status: CONFIG_STATUS.HOAT_DONG,
 					qualityUuid: '',
+					productTypeUuid: form.productTypeUuid,
 				}),
 			}),
 		select(data) {
 			return data;
 		},
+		enabled: !!form.productTypeUuid,
 	});
 
 	const listWarehouse = useQuery([QUERY_KEY.dropdown_kho_hang], {
@@ -619,6 +621,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 										setForm((prev: any) => ({
 											...prev,
 											productTypeUuid: v?.uuid,
+											specificationsUuid: '',
 										}))
 									}
 								/>
