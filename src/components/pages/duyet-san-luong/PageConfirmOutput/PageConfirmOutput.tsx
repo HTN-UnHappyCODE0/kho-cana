@@ -37,6 +37,7 @@ import Loading from '~/components/common/Loading';
 import Dialog from '~/components/common/Dialog';
 import Popup from '~/components/common/Popup';
 import PopupRejectBatchBill from '../../phieu-can/PopupRejectBatchBill';
+import clsx from 'clsx';
 
 function PageConfirmOutput({}: PropsPageConfirmOutput) {
 	const router = useRouter();
@@ -45,7 +46,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 	const [uuidKTKConfirm, setUuidKTKConfirm] = useState<string>('');
 	const [uuidKTKReject, setUuidKTKReject] = useState<string>('');
 
-	const {_page, _pageSize, _keyword, _customerUuid, _productTypeUuid, _state, _dateFrom, _dateTo} = router.query;
+	const {_page, _pageSize, _keyword, _customerUuid, _isBatch, _productTypeUuid, _state, _dateFrom, _dateTo} = router.query;
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
@@ -92,7 +93,18 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 	});
 
 	const listBatch = useQuery(
-		[QUERY_KEY.table_ktk_duyet_san_luong, _page, _pageSize, _keyword, _customerUuid, _productTypeUuid, _dateFrom, _state, _dateTo],
+		[
+			QUERY_KEY.table_ktk_duyet_san_luong,
+			_page,
+			_pageSize,
+			_keyword,
+			_customerUuid,
+			_isBatch,
+			_productTypeUuid,
+			_dateFrom,
+			_state,
+			_dateTo,
+		],
 		{
 			queryFn: () =>
 				httpRequest({
@@ -106,7 +118,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 						typeFind: CONFIG_TYPE_FIND.TABLE,
 						scalesType: [],
 						customerUuid: (_customerUuid as string) || '',
-						isBatch: null,
+						isBatch: Number(_isBatch) || null,
 						isCreateBatch: null,
 						productTypeUuid: (_productTypeUuid as string) || '',
 						specificationsUuid: '',
@@ -388,7 +400,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 					currentPage={Number(_page) || 1}
 					pageSize={Number(_pageSize) || 20}
 					total={listBatch?.data?.pagination?.totalCount}
-					dependencies={[_pageSize, _keyword, _customerUuid, _productTypeUuid, _state, _dateFrom, _dateTo]}
+					dependencies={[_pageSize, _keyword, _customerUuid, _isBatch, _productTypeUuid, _state, _dateFrom, _dateTo]}
 				/>
 			</div>
 
