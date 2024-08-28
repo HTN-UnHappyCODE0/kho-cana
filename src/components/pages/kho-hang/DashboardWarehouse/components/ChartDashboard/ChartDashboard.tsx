@@ -34,7 +34,7 @@ function ChartDashboard({totalValueChart, dataChart, arrayTypeAction}: PropsChar
 			</PieChart>
 
 			<div className={styles.total_value}>
-				<p className={styles.text}>Tổng TL</p>
+				<p className={styles.text}>Tổng khối lượng</p>
 				<p className={styles.value}>{convertCoin(totalValueChart)}</p>
 			</div>
 		</div>
