@@ -92,3 +92,33 @@
 	flex-direction: column;
 	gap: 10px;
 }
+
+@media (max-width: 1400px) {
+	.main {
+		grid-template-columns: 1fr;
+	}
+
+	.main_item {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+}
+
+@media (max-width: 1200px) {
+	.main_info {
+		display: block;
+	}
+
+	.main_chart {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 20px;
+	}
+
+	.main_item {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+}

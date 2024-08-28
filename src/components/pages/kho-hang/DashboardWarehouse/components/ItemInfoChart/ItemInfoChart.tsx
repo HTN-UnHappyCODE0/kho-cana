@@ -27,7 +27,7 @@ function ItemInfoChart({text, arrayData, keyAction, arrayTypeAction, handleActio
 					<div className={styles.head}>
 						<p className={styles.text}>{text}</p>
 					</div>
-					<p className={styles.value}>Trọng lượng</p>
+					<p className={styles.value}>Khối lượng</p>
 				</div>
 				<div className={styles.list}>
 					{arrayData?.map((v, i) => (
