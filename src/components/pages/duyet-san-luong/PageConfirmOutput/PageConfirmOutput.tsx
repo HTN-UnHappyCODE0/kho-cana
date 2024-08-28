@@ -118,7 +118,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 						typeFind: CONFIG_TYPE_FIND.TABLE,
 						scalesType: [],
 						customerUuid: (_customerUuid as string) || '',
-						isBatch: Number(_isBatch) || null,
+						isBatch: !!_isBatch ? Number(_isBatch) : null,
 						isCreateBatch: null,
 						productTypeUuid: (_productTypeUuid as string) || '',
 						specificationsUuid: '',
