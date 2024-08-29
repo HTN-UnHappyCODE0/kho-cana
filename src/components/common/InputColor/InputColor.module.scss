@@ -39,7 +39,7 @@ $font-size-input: 16px;
 	input[type='color'] {
 		width: 54px;
 		height: 24px;
-		border: 1px solid #d6dce8;
+		border: 1px solid #c6c8cb;
 		cursor: pointer;
 	}
 	input[type='color']::-webkit-color-swatch-wrapper {
@@ -47,5 +47,24 @@ $font-size-input: 16px;
 	}
 	input[type='color']::-webkit-color-swatch {
 		border: none;
+	}
+}
+
+.box_input {
+	display: flex;
+	align-items: center;
+
+	input[type='color'] {
+		margin-right: 10px;
+	}
+
+	.text_input {
+		width: 100px;
+		padding: 5px;
+		border: none;
+	}
+
+	.value {
+		margin-left: 10px;
 	}
 }

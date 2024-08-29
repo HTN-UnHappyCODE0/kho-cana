@@ -384,8 +384,8 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 							type='text'
 							isMoney
 							unit='KG'
-							label={<span>Tổng trọng lượng hàng</span>}
-							placeholder='Nhập tổng trọng lượng hàng'
+							label={<span>Tổng khối lượng hàng</span>}
+							placeholder='Nhập tổng khối lượng hàng'
 						/>
 						<DatePicker
 							readonly={true}

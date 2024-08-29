@@ -415,7 +415,7 @@ function MainPageScalesDirect({}: PropsMainPageScalesDirect) {
 								),
 							},
 							{
-								title: 'TL hàng (KG)',
+								title: 'KL hàng (KG)',
 								render: (data: ITableBillScale) => <>{convertCoin(data?.weightTotal) || 0}</>,
 							},
 							{
