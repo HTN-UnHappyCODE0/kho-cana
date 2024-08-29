@@ -157,7 +157,7 @@ function MainPageCreateTruck({}: PropsMainPageCreateTruck) {
 	const handleSubmit = async () => {
 		if (price(form.minWeight) > price(form.maxWeight)) {
 			return toastWarn({
-				msg: 'Trọng lượng không hợp lệ!',
+				msg: 'Khối lượng không hợp lệ!',
 			});
 		}
 
@@ -281,8 +281,8 @@ function MainPageCreateTruck({}: PropsMainPageCreateTruck) {
 								isMoney
 								unit='KG'
 								blur={true}
-								label={<span>Trọng lượng trung bình</span>}
-								placeholder='Nhập trọng lượng trung bình'
+								label={<span>Khối lượng trung bình</span>}
+								placeholder='Nhập khối lượng trung bình'
 							/>
 						</div> */}
 						<div>
@@ -295,10 +295,10 @@ function MainPageCreateTruck({}: PropsMainPageCreateTruck) {
 								blur={true}
 								label={
 									<span>
-										Trọng lượng nhỏ nhất <span style={{color: 'red'}}>*</span>
+										Khối lượng nhỏ nhất <span style={{color: 'red'}}>*</span>
 									</span>
 								}
-								placeholder='Nhập trọng lượng nhỏ nhất'
+								placeholder='Nhập khối lượng nhỏ nhất'
 							/>
 						</div>
 
@@ -311,10 +311,10 @@ function MainPageCreateTruck({}: PropsMainPageCreateTruck) {
 							blur={true}
 							label={
 								<span>
-									Trọng lượng lớn nhất <span style={{color: 'red'}}>*</span>
+									Khối lượng lớn nhất <span style={{color: 'red'}}>*</span>
 								</span>
 							}
-							placeholder='Nhập trọng lượng lớn nhất'
+							placeholder='Nhập khối lượng lớn nhất'
 						/>
 					</div>
 

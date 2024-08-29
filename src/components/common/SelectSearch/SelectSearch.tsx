@@ -60,6 +60,7 @@ function SelectSearch({label, placeholder, options, data, readonly = false, isCo
 					name='keyword'
 					value={isConvertNumber ? convertCoin(price(data.name)) : data.name || keyword}
 					autoComplete='off'
+					max={255}
 					readOnly={readonly}
 					onFocus={() => {
 						if (readonly) {

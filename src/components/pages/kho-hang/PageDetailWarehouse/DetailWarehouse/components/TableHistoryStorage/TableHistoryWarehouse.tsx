@@ -75,19 +75,19 @@ function TableHistoryWarehouse({}: PropsTableHistoryWarehouse) {
 							},
 
 							{
-								title: 'Trọng lượng hàng nhập',
+								title: 'Khối lượng hàng nhập',
 								render: (data: IDataTableHistoryWarehouse) => (
 									<span style={{color: '#2D74FF'}}>{convertCoin(data?.amountIn)}</span>
 								),
 							},
 							{
-								title: 'Trọng lượng hàng xuất',
+								title: 'Khối lượng hàng xuất',
 								render: (data: IDataTableHistoryWarehouse) => (
 									<span style={{color: '#2D74FF'}}>{convertCoin(data?.amountOut)}</span>
 								),
 							},
 							{
-								title: 'Trọng lượng chuyển kho',
+								title: 'Khối lượng chuyển kho',
 								render: (data: IDataTableHistoryWarehouse) => (
 									<span style={{color: '#2D74FF'}}>
 										{convertCoin(Number(data.amountChangeIn) - Number(data?.amountChangeOut))}
