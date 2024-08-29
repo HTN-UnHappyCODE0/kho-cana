@@ -67,17 +67,17 @@ function DashboardWarehouse({isTotal, total, productTotal, qualityTotal, specTot
 									productWeight: productTotal?.map((v) => ({
 										name: v?.productTypeUu?.name,
 										color: v?.productTypeUu?.colorShow,
-										value: v?.amountBDMT,
+										value: v?.amountTotalBDMT,
 									}))!,
 									qualityWeight: qualityTotal?.map((v) => ({
 										name: v?.qualityUu?.name,
 										color: v?.qualityUu?.colorShow,
-										value: v?.amountBDMT,
+										value: v?.amountTotalBDMT,
 									}))!,
 									specWeight: specTotal?.map((v) => ({
 										name: v?.specUu?.name,
 										color: v?.specUu?.colorShow,
-										value: v?.amountBDMT,
+										value: v?.amountTotalBDMT,
 									}))!,
 								}}
 								arrayTypeAction={arrayTypeAction}
@@ -89,17 +89,17 @@ function DashboardWarehouse({isTotal, total, productTotal, qualityTotal, specTot
 									productWeight: dataWarehouse?.productWeight?.map((v) => ({
 										name: v?.productTypeUu?.name,
 										color: v?.productTypeUu?.colorShow,
-										value: v?.amountBDMT,
+										value: v?.amountTotalBDMT,
 									}))!,
 									qualityWeight: dataWarehouse?.qualityWeight?.map((v) => ({
 										name: v?.qualityUu?.name,
 										color: v?.qualityUu?.colorShow,
-										value: v?.amountBDMT,
+										value: v?.amountTotalBDMT,
 									}))!,
 									specWeight: dataWarehouse?.specWeight?.map((v) => ({
 										name: v?.specUu?.name,
 										color: v?.specUu?.colorShow,
-										value: v?.amountBDMT,
+										value: v?.amountTotalBDMT,
 									}))!,
 								}}
 								arrayTypeAction={arrayTypeAction}
@@ -114,12 +114,12 @@ function DashboardWarehouse({isTotal, total, productTotal, qualityTotal, specTot
 									? productTotal?.map((v) => ({
 											name: v?.productTypeUu?.name,
 											color: v?.productTypeUu?.colorShow,
-											value: v?.amountBDMT,
+											value: v?.amountTotalBDMT,
 									  }))!
 									: dataWarehouse?.productWeight?.map((v) => ({
 											name: v?.productTypeUu?.name,
 											color: v?.productTypeUu?.colorShow,
-											value: v?.amountBDMT,
+											value: v?.amountTotalBDMT,
 									  }))!
 							}
 							keyAction='product'
@@ -133,12 +133,12 @@ function DashboardWarehouse({isTotal, total, productTotal, qualityTotal, specTot
 									? qualityTotal?.map((v) => ({
 											name: v?.qualityUu?.name,
 											color: v?.qualityUu?.colorShow,
-											value: v?.amountBDMT,
+											value: v?.amountTotalBDMT,
 									  }))!
 									: dataWarehouse?.qualityWeight?.map((v) => ({
 											name: v?.qualityUu?.name,
 											color: v?.qualityUu?.colorShow,
-											value: v?.amountBDMT,
+											value: v?.amountTotalBDMT,
 									  }))!
 							}
 							keyAction='quality'
@@ -152,12 +152,12 @@ function DashboardWarehouse({isTotal, total, productTotal, qualityTotal, specTot
 									? specTotal?.map((v) => ({
 											name: v?.specUu?.name,
 											color: v?.specUu?.colorShow,
-											value: v?.amountBDMT,
+											value: v?.amountTotalBDMT,
 									  }))!
 									: dataWarehouse?.specWeight?.map((v) => ({
 											name: v?.specUu?.name,
 											color: v?.specUu?.colorShow,
-											value: v?.amountBDMT,
+											value: v?.amountTotalBDMT,
 									  }))!
 							}
 							keyAction='spec'
