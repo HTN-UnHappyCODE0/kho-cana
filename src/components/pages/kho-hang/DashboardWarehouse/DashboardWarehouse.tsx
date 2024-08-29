@@ -48,13 +48,13 @@ function DashboardWarehouse({isTotal, total, productTotal, qualityTotal, specTot
 					<ItemDashboard
 						isTotal={isTotal}
 						value={isTotal ? total?.amountBDMTDemo! : dataWarehouse?.amountBDMTDemo!}
-						text='Khối lượng khô tạm tính (BDMT)'
+						text='Khối lượng quy khô tạm tính (BDMT)'
 						background='#FF6838'
 					/>
 					<ItemDashboard
 						isTotal={isTotal}
 						value={isTotal ? total?.amountBDMT! : dataWarehouse?.amountBDMT!}
-						text='Khối lượng khô (BDMT)'
+						text='Khối lượng quy khô chuẩn (BDMT)'
 						background='#2DA2BC'
 					/>
 				</div>

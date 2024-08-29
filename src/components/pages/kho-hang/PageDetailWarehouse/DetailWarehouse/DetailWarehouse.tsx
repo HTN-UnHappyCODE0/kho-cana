@@ -121,7 +121,7 @@ function DetailWarehouse({}: PropsDetailWarehouse) {
 			<div className={'mt'}>
 				<GridColumn col_4>
 					<DetailBox
-						name={'Tổng trọng lượng hàng'}
+						name={'Tổng khối lượng hàng'}
 						value={detailWarehouse?.totalAmountMT!}
 						action={
 							<div className={styles.action}>
@@ -138,7 +138,7 @@ function DetailWarehouse({}: PropsDetailWarehouse) {
 						}
 					/>
 					<DetailBox
-						name={'Tổng trọng lượng hàng khô'}
+						name={'Tổng khối lượng hàng khô'}
 						value={detailWarehouse?.totalAmountBDMT!}
 						action={
 							<div className={styles.action}>
@@ -155,7 +155,7 @@ function DetailWarehouse({}: PropsDetailWarehouse) {
 						}
 					/>
 					<DetailBox
-						name={'Trọng lượng nhập'}
+						name={'Khối lượng nhập'}
 						value={detailWarehouse?.totalAmountIn!}
 						action={
 							<div className={styles.action}>
@@ -172,7 +172,7 @@ function DetailWarehouse({}: PropsDetailWarehouse) {
 						}
 					/>
 					<DetailBox
-						name={'Trọng lượng xuất'}
+						name={'Khối lượng xuất'}
 						value={detailWarehouse?.totalAmountOut!}
 						action={
 							<div className={styles.action}>

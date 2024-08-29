@@ -80,11 +80,11 @@ function TableListStorage({}: PropsTableListStorage) {
 							render: (data: IDataListStorage) => <span style={{color: '#2A85FF'}}>{convertCoin(data?.totalAmountMt)}</span>,
 						},
 						{
-							title: 'Trọng lượng nhập',
+							title: 'Khối lượng nhập',
 							render: (data: IDataListStorage) => <span>{convertCoin(data?.totalAmountIn) || 0}</span>,
 						},
 						{
-							title: 'Trọng lượng xuất',
+							title: 'Khối lượng xuất',
 							render: (data: IDataListStorage) => <span>{convertCoin(data?.totalAmountOut) || 0}</span>,
 						},
 						{

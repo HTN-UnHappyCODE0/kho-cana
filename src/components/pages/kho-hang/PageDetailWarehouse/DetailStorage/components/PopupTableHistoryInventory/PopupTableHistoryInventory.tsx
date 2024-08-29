@@ -49,7 +49,7 @@ function PopupTableHistoryInventory({onClose}: PropsPopupTableHistoryInventory) 
 									<p>{detailHistoryInventory?.storageUu?.name || '---'}</p>
 								</li>
 								<li>
-									<p>Trọng lượng ban đầu :</p>
+									<p>Khối lượng ban đầu :</p>
 									<p>{convertCoin(detailHistoryInventory?.totalAmount ?? 0)}</p>
 								</li>
 								<li>

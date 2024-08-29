@@ -280,7 +280,7 @@ function MainPageBillService({}: PropsMainPageBillService) {
 								render: (data: IDataBill) => <>{data?.productTypeUu?.name || '---'}</>,
 							},
 							{
-								title: 'TL dự kiến (KG)',
+								title: 'KL dự kiến (KG)',
 								render: (data: IDataBill) => <>{convertCoin(data?.batchsUu?.weightIntent) || '---'}</>,
 							},
 							{

@@ -186,11 +186,11 @@ function MainPageDelverTruck({}: PropsMainPageDelverTruck) {
 								),
 							},
 							{
-								title: 'Trọng lượng nhỏ nhất',
+								title: 'Khối lượng nhỏ nhất',
 								render: (data: ITruck) => <>{convertCoin(data?.minWeight) || '---'}</>,
 							},
 							{
-								title: 'Trọng lượng lớn nhất',
+								title: 'Khối lượng lớn nhất',
 								render: (data: ITruck) => <>{convertCoin(data?.maxWeight) || '---'}</>,
 							},
 							{

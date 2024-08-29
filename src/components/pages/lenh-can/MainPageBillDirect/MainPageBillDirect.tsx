@@ -268,15 +268,15 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 									</p>
 								),
 							},
-							{
-								title: 'Kiểu cân',
-								render: (data: IDataBill) => (
-									<>
-										{data?.isBatch == TYPE_BATCH.CAN_LO && 'Cân lô'}
-										{data?.isBatch == TYPE_BATCH.CAN_LE && 'Cân lẻ'}
-									</>
-								),
-							},
+							// {
+							// 	title: 'Kiểu cân',
+							// 	render: (data: IDataBill) => (
+							// 		<>
+							// 			{data?.isBatch == TYPE_BATCH.CAN_LO && 'Cân lô'}
+							// 			{data?.isBatch == TYPE_BATCH.CAN_LE && 'Cân lẻ'}
+							// 		</>
+							// 	),
+							// },
 							{
 								title: 'Mã tàu',
 								render: (data: IDataBill) => (
@@ -316,7 +316,7 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 								),
 							},
 							{
-								title: 'TL dự kiến (KG)',
+								title: 'KL dự kiến (KG)',
 								render: (data: IDataBill) => <>{convertCoin(data?.batchsUu?.weightIntent) || '---'}</>,
 							},
 							{

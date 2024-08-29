@@ -253,7 +253,7 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 						) : null}
 
 						<div className={styles.item_table}>
-							<p>Trọng lượng dự kiến:</p>
+							<p>Khối lượng dự kiến:</p>
 							<span>{convertCoin(detailBatchBill?.batchsUu?.weightIntent!)} KG</span>
 						</div>
 						<div className={styles.item_table}>
@@ -414,11 +414,11 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 								),
 							},
 							{
-								title: 'Trọng lượng nhỏ nhất (KG)',
+								title: 'Khối lượng nhỏ nhất (KG)',
 								render: (data: any) => <>{convertCoin(data?.minWeight) || '---'}</>,
 							},
 							{
-								title: 'Trọng lượng lớn nhất (KG)',
+								title: 'Khối lượng lớn nhất (KG)',
 								render: (data: any) => <>{convertCoin(data?.maxWeight) || '---'}</>,
 							},
 							{
