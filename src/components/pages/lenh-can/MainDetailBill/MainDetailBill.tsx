@@ -145,6 +145,19 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 				<div className={styles.header_table}>
 					<div className={styles.content_table}>
 						<div className={styles.item_table}>
+							<p>Từ:</p>
+							<span>
+								{detailBatchBill?.fromUu?.name || detailBatchBill?.customerName || '---'} - (
+								{detailBatchBill?.fromUu?.parentUu?.name || '---'})
+							</span>
+						</div>
+						<div className={styles.item_table}>
+							<p>đến:</p>
+							<span>
+								{detailBatchBill?.toUu?.name || '---'} - ({detailBatchBill?.toUu?.parentUu?.name || '---'})
+							</span>
+						</div>
+						<div className={styles.item_table}>
 							<p>Loại cân:</p>
 							<span>
 								{detailBatchBill?.scalesType == TYPE_SCALES.CAN_NHAP && 'Cân nhập'}
