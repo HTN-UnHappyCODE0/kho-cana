@@ -185,7 +185,8 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 						codeEnd: byFilter && !!debounceCodeEnd ? Number(debounceCodeEnd) : null,
 						codeStart: byFilter && !!debounceCodeStart ? Number(debounceCodeStart) : null,
 						specUuid: !!_specUuid ? (_specUuid as string) : null,
-						status: !!_status ? [Number(_status)] : [],
+						// status: !!_status ? [Number(_status)] : [],
+						status: [],
 						truckUuid: !!_truckUuid ? (_truckUuid as string) : '',
 					}),
 				}),
@@ -235,7 +236,7 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 						<div className={styles.filter}>
 							<DateRangerCustom />
 						</div>
-						<div className={clsx(styles.checkbox_right)}>
+						{/* <div className={clsx(styles.checkbox_right)}>
 							<input
 								type='checkbox'
 								id='can-lan-1'
@@ -243,7 +244,7 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 								checked={!!_status}
 							/>
 							<label htmlFor='can-lan-1'>Chỉ hiển thị cân lần 1 </label>
-						</div>
+						</div> */}
 					</div>
 
 					<div className={styles.right}>
