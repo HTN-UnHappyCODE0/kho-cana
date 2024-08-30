@@ -180,99 +180,103 @@ function FormUpdatePostionStorage({draggedElements, onClose}: PropsFormUpdatePos
 	return (
 		<div className={styles.container}>
 			<Loading loading={fucnCreateStorage.isLoading} />
-			<h4>Cập nhật vị trí kho hàng</h4>
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
-				<div className={clsx('mt')}>
-					<Select
-						isSearch
-						name='storageUuid'
-						placeholder='Chọn kho hàng'
-						value={form?.storageUuid}
-						onChange={(e: any) =>
-							setForm((prev: any) => ({
-								...prev,
-								storageUuid: e.target.value,
-							}))
-						}
-						label={
-							<span>
-								Chọn kho hàng <span style={{color: 'red'}}>*</span>
-							</span>
-						}
-					>
-						{listStorage?.data?.map((v: any) => (
-							<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
-						))}
-					</Select>
-					<Select
-						isSearch
-						name='productUuid'
-						placeholder='Chọn loại gỗ'
-						value={form?.productUuid}
-						readOnly={true}
-						onChange={(e: any) =>
-							setForm((prev: any) => ({
-								...prev,
-								productUuid: e.target.value,
-							}))
-						}
-						label={
-							<span>
-								Thuộc loại gỗ <span style={{color: 'red'}}>*</span>
-							</span>
-						}
-					>
-						{listProduct?.data?.map((v: any) => (
-							<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
-						))}
-					</Select>
-					<Select
-						isSearch
-						name='qualityUuid'
-						placeholder='Chọn quốc gia'
-						value={form?.qualityUuid}
-						readOnly={true}
-						onChange={(e: any) =>
-							setForm((prev: any) => ({
-								...prev,
-								qualityUuid: e.target.value,
-							}))
-						}
-						label={
-							<span>
-								Thuộc quốc gia <span style={{color: 'red'}}>*</span>
-							</span>
-						}
-					>
-						{listQuality?.data?.map((v: any) => (
-							<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
-						))}
-					</Select>
-					<Select
-						isSearch
-						name='specificationsUuid'
-						placeholder='Chọn quy cách'
-						value={form?.specificationsUuid}
-						readOnly={true}
-						onChange={(e: any) =>
-							setForm((prev: any) => ({
-								...prev,
-								specificationsUuid: e.target.value,
-							}))
-						}
-						label={
-							<span>
-								Thuộc quy cách <span style={{color: 'red'}}>*</span>
-							</span>
-						}
-					>
-						{listSpecification?.data?.map((v: any) => (
-							<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
-						))}
-					</Select>
-				</div>
-				<div className={clsx('mt')}>
-					<TextArea max={5000} placeholder='Thêm mô tả' name='description' label={<span>Mô tả</span>} blur={true} />
+				<div className={styles.wrapper}>
+					<h4>Cập nhật vị trí kho hàng</h4>
+					<div className={clsx('mt', styles.main_form)}>
+						<div className={clsx('mt')}>
+							<Select
+								isSearch
+								name='storageUuid'
+								placeholder='Chọn kho hàng'
+								value={form?.storageUuid}
+								onChange={(e: any) =>
+									setForm((prev: any) => ({
+										...prev,
+										storageUuid: e.target.value,
+									}))
+								}
+								label={
+									<span>
+										Chọn kho hàng <span style={{color: 'red'}}>*</span>
+									</span>
+								}
+							>
+								{listStorage?.data?.map((v: any) => (
+									<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
+								))}
+							</Select>
+							<Select
+								isSearch
+								name='productUuid'
+								placeholder='Chọn loại gỗ'
+								value={form?.productUuid}
+								readOnly={true}
+								onChange={(e: any) =>
+									setForm((prev: any) => ({
+										...prev,
+										productUuid: e.target.value,
+									}))
+								}
+								label={
+									<span>
+										Thuộc loại gỗ <span style={{color: 'red'}}>*</span>
+									</span>
+								}
+							>
+								{listProduct?.data?.map((v: any) => (
+									<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
+								))}
+							</Select>
+							<Select
+								isSearch
+								name='qualityUuid'
+								placeholder='Chọn quốc gia'
+								value={form?.qualityUuid}
+								readOnly={true}
+								onChange={(e: any) =>
+									setForm((prev: any) => ({
+										...prev,
+										qualityUuid: e.target.value,
+									}))
+								}
+								label={
+									<span>
+										Thuộc quốc gia <span style={{color: 'red'}}>*</span>
+									</span>
+								}
+							>
+								{listQuality?.data?.map((v: any) => (
+									<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
+								))}
+							</Select>
+							<Select
+								isSearch
+								name='specificationsUuid'
+								placeholder='Chọn quy cách'
+								value={form?.specificationsUuid}
+								readOnly={true}
+								onChange={(e: any) =>
+									setForm((prev: any) => ({
+										...prev,
+										specificationsUuid: e.target.value,
+									}))
+								}
+								label={
+									<span>
+										Thuộc quy cách <span style={{color: 'red'}}>*</span>
+									</span>
+								}
+							>
+								{listSpecification?.data?.map((v: any) => (
+									<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
+								))}
+							</Select>
+						</div>
+						<div className={clsx('mt')}>
+							<TextArea max={5000} placeholder='Thêm mô tả' name='description' label={<span>Mô tả</span>} blur={true} />
+						</div>
+					</div>
 				</div>
 
 				<div className={styles.btn}>

@@ -238,7 +238,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 		},
 	});
 
-	const listStorage = useQuery([QUERY_KEY.dropdown_bai, form.specificationsUuid, form.productTypeUuid, form.warehouseUuid], {
+	const listStorage = useQuery([QUERY_KEY.dropdown_bai, form.warehouseUuid], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -250,9 +250,9 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
-					specificationsUuid: form.specificationsUuid,
+					specificationsUuid: '',
 					warehouseUuid: form.warehouseUuid,
-					productUuid: form.productTypeUuid,
+					productUuid: '',
 					qualityUuid: '',
 				}),
 			}),
@@ -671,7 +671,6 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 										setForm((prev: any) => ({
 											...prev,
 											productTypeUuid: v?.productTypeUu?.uuid,
-											toUuid: '',
 										}))
 									}
 								/>
@@ -698,7 +697,6 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 											setForm((prev: any) => ({
 												...prev,
 												specificationsUuid: v?.specUu?.uuid,
-												toUuid: '',
 											}))
 										}
 									/>
