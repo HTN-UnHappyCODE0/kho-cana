@@ -366,7 +366,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 							placeholder='Chọn thời gian kết thúc'
 						/>
 					</div>
-					<div className={clsx('mb', 'col_2')}>
+					<div className={clsx('mt', 'col_2')}>
 						<div className='col_2'>
 							<div className={styles.item}>
 								<label className={styles.label}>

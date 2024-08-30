@@ -202,7 +202,7 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 				<div className={styles.main_search}>
 					<div className={styles.left}>
 						<div className={styles.search}>
-							<Search keyName='_keyword' placeholder='Tìm kiếm theo số phiếu' />
+							<Search keyName='_keyword' placeholder='Tìm kiếm theo mã lô' />
 						</div>
 						<FilterCustom
 							isSearch

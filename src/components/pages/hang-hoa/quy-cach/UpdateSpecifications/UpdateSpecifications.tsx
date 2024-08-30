@@ -251,6 +251,7 @@ function UpdateSpecifications({}: PropsUpdateSpecifications) {
 							name='name'
 							value={form.name || ''}
 							isRequired
+							readOnly={true}
 							max={255}
 							type='text'
 							blur={true}
@@ -268,6 +269,7 @@ function UpdateSpecifications({}: PropsUpdateSpecifications) {
 								isSearch
 								name='qualityUuid'
 								value={form.qualityUuid}
+								readOnly={true}
 								placeholder='Lựa chọn'
 								onChange={(e) =>
 									setForm((prev: any) => ({
@@ -290,6 +292,7 @@ function UpdateSpecifications({}: PropsUpdateSpecifications) {
 							isSearch
 							name='productTypeUuid'
 							value={form.productTypeUuid}
+							readOnly={true}
 							placeholder='Lựa chọn'
 							onChange={(e) =>
 								setForm((prev: any) => ({

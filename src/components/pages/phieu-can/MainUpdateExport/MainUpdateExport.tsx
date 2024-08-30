@@ -754,7 +754,6 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 											setForm((prev: any) => ({
 												...prev,
 												specificationsUuid: v?.uuid,
-												fromUuid: '',
 											}))
 										}
 									/>
