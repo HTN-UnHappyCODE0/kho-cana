@@ -82,8 +82,8 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 					isSift: data?.isSift,
 					specificationsUuid: data?.specificationsUu?.uuid,
 					toUuid: data?.toUu?.uuid,
-					warehouseFromUuid: '',
-					warehouseToUuid: '',
+					warehouseFromUuid: data?.fromUu?.parentUu?.uuid || '',
+					warehouseToUuid: data?.toUu?.parentUu?.uuid || '',
 				});
 
 				setListTruckChecked(
@@ -103,44 +103,6 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 			}
 		},
 		enabled: !!_id,
-	});
-
-	// Lấy kho warehouse từ
-	useQuery([QUERY_KEY.chi_tiet_bai, form.fromUuid], {
-		queryFn: () =>
-			httpRequest({
-				http: storageServices.detailStorage({
-					uuid: form.fromUuid,
-				}),
-			}),
-		onSuccess(data) {
-			if (data) {
-				setForm((prev) => ({
-					...prev,
-					warehouseFromUuid: data?.warehouseUu?.uuid,
-				}));
-			}
-		},
-		enabled: !!form.fromUuid,
-	});
-
-	// Lấy kho warehouse đến
-	useQuery([QUERY_KEY.chi_tiet_bai_den, form.toUuid], {
-		queryFn: () =>
-			httpRequest({
-				http: storageServices.detailStorage({
-					uuid: form.toUuid,
-				}),
-			}),
-		onSuccess(data) {
-			if (data) {
-				setForm((prev) => ({
-					...prev,
-					warehouseToUuid: data?.warehouseUu?.uuid,
-				}));
-			}
-		},
-		enabled: !!form.toUuid,
 	});
 
 	const listProductType = useQuery([QUERY_KEY.dropdown_loai_go], {

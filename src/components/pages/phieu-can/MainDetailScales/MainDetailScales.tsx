@@ -112,16 +112,6 @@ function MainDetailScales({}: PropsMainDetailScales) {
 							<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.specificationsUu?.name || '---'}</span>
 						</td>
 					</tr>
-					{/* <tr>
-						<td>
-							<span>Nhà cung cấp:</span>
-							<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.fromUu?. || '---'}</span>
-						</td>
-						<td>
-							<span>Khách hàng xuất:</span>
-							<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.specificationsUu?.name || '---'}</span>
-						</td>
-					</tr> */}
 					<tr>
 						<td>
 							<span>Loại cân: </span>
@@ -153,7 +143,7 @@ function MainDetailScales({}: PropsMainDetailScales) {
 							</span>
 						</td>
 						<td>
-							<span>Tổng khối lượng:</span>
+							<span>Tổng trọng lượng:</span>
 							<span style={{marginLeft: '6px', fontWeight: 600}}>{convertCoin(detailBatchBill?.weightTotal!) || 0} KG</span>
 						</td>
 					</tr>

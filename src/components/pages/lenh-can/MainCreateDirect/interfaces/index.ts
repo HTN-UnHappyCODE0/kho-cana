@@ -11,7 +11,7 @@ export interface IFormCreateDirect {
 	productTypeUuid: string;
 	specificationsUuid: string;
 	weightIntent: number;
-	timeIntend: string;
+	timeIntend: string | Date;
 	documentId: string;
 	description: string;
 }

@@ -84,7 +84,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 					weightIntent: convertCoin(data?.batchsUu?.weightIntent),
 					isSift: data?.isSift,
 					specificationsUuid: data?.specificationsUu?.uuid,
-					warehouseUuid: '',
+					warehouseUuid: data?.fromUu?.parentUu?.uuid || '',
 					productTypeUuid: data?.productTypeUu?.uuid,
 					documentId: data?.documentId,
 					description: data?.description,
@@ -111,25 +111,6 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 			}
 		},
 		enabled: !!_id,
-	});
-
-	// Get warehouseUuid to storageUuid
-	useQuery([QUERY_KEY.chi_tiet_bai, form.fromUuid], {
-		queryFn: () =>
-			httpRequest({
-				http: storageServices.detailStorage({
-					uuid: form.fromUuid,
-				}),
-			}),
-		onSuccess(data) {
-			if (data) {
-				setForm((prev) => ({
-					...prev,
-					warehouseUuid: data?.warehouseUu?.uuid,
-				}));
-			}
-		},
-		enabled: !!form.fromUuid,
 	});
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
@@ -255,6 +236,16 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 					qualityUuid: '',
 				}),
 			}),
+		onSuccess(data) {
+			if (data) {
+				setForm((prev) => ({
+					...prev,
+					fromUuid: data?.[0]?.uuid || '',
+					productTypeUuid: data?.[0]?.productUu?.uuid || '',
+					specificationsUuid: data?.[0]?.specificationsUu?.uuid || '',
+				}));
+			}
+		},
 		select(data) {
 			return data;
 		},
@@ -741,7 +732,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 							name='documentId'
 							value={form.documentId || ''}
 							type='text'
-							max={50}
+							max={255}
 							label={<span>Số chứng từ</span>}
 							placeholder='Nhập số chứng từ'
 						/>

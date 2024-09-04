@@ -293,8 +293,8 @@ function MainUpdateService({}: PropsMainUpdateService) {
 							type='text'
 							isMoney
 							unit='KG'
-							label={<span>Tổng khối lượng hàng</span>}
-							placeholder='Nhập tổng khối lượng hàng'
+							label={<span>Tổng trọng lượng hàng</span>}
+							placeholder='Nhập tổng trọng lượng hàng'
 						/>
 						<DatePicker
 							readonly={true}
@@ -440,21 +440,6 @@ function MainUpdateService({}: PropsMainUpdateService) {
 										}
 									/>
 									<label htmlFor='4_ban'>4 bản</label>
-								</div>
-								<div className={styles.item_radio}>
-									<input
-										type='radio'
-										id='5_ban'
-										name='isPrint'
-										checked={form.isPrint == 5}
-										onChange={() =>
-											setForm((prev) => ({
-												...prev,
-												isPrint: 5,
-											}))
-										}
-									/>
-									<label htmlFor='5_ban'>5 bản</label>
 								</div>
 							</div>
 						</div>

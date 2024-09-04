@@ -40,7 +40,7 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 	const [listTruckChecked, setListTruckChecked] = useState<any[]>([]);
 
 	const [form, setForm] = useState<IFormCreateTransfer>({
-		timeIntend: '',
+		timeIntend: new Date(),
 		weightIntent: 0,
 		isSift: TYPE_SIFT.KHONG_CAN_SANG,
 		specificationsUuid: '',
@@ -176,6 +176,14 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 					warehouseUuid: form.warehouseFromUuid,
 				}),
 			}),
+		onSuccess(data) {
+			if (data) {
+				setForm((prev) => ({
+					...prev,
+					fromUuid: data?.[0]?.uuid || '',
+				}));
+			}
+		},
 		select(data) {
 			return data;
 		},
@@ -200,6 +208,14 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 					specificationsUuid: '',
 				}),
 			}),
+		onSuccess(data) {
+			if (data) {
+				setForm((prev) => ({
+					...prev,
+					toUuid: data?.[0]?.uuid || '',
+				}));
+			}
+		},
 		select(data) {
 			return data;
 		},
@@ -248,6 +264,9 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 	});
 
 	const handleSubmit = async () => {
+		const today = new Date(timeSubmit(new Date())!);
+		const timeIntend = new Date(form.timeIntend);
+
 		if (!form.fromUuid) {
 			return toastWarn({msg: 'Vui lòng chọn bãi chuyển!'});
 		}
@@ -266,13 +285,8 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 		if (listTruckChecked.length == 0) {
 			return toastWarn({msg: 'Vui lòng chọn xe hàng!'});
 		}
-		if (form.timeIntend) {
-			const today = new Date(timeSubmit(new Date())!);
-			const timeIntend = new Date(form.timeIntend);
-
-			if (today > timeIntend) {
-				return toastWarn({msg: 'Ngày dự kiến không hợp lệ!'});
-			}
+		if (today > timeIntend) {
+			return toastWarn({msg: 'Ngày dự kiến không hợp lệ!'});
 		}
 
 		return fucnCreateBatchBill.mutate();
@@ -645,7 +659,11 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 							placeholder='Nhập khối lượng dự kiến'
 						/>
 						<DatePicker
-							label={<span>Ngày dự kiến</span>}
+							label={
+								<span>
+									Ngày dự kiến <span style={{color: 'red'}}>*</span>
+								</span>
+							}
 							value={form.timeIntend}
 							onSetValue={(date) =>
 								setForm((prev: any) => ({

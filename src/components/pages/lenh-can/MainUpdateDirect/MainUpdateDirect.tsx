@@ -678,7 +678,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 							name='documentId'
 							value={form.documentId || ''}
 							type='text'
-							max={50}
+							max={255}
 							label={<span>Số chứng từ</span>}
 							placeholder='Nhập số chứng từ'
 						/>

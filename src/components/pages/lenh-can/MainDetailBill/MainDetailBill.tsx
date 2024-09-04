@@ -145,19 +145,6 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 				<div className={styles.header_table}>
 					<div className={styles.content_table}>
 						<div className={styles.item_table}>
-							<p>Từ:</p>
-							<span>
-								{detailBatchBill?.fromUu?.name || detailBatchBill?.customerName || '---'} - (
-								{detailBatchBill?.fromUu?.parentUu?.name || '---'})
-							</span>
-						</div>
-						<div className={styles.item_table}>
-							<p>đến:</p>
-							<span>
-								{detailBatchBill?.toUu?.name || '---'} - ({detailBatchBill?.toUu?.parentUu?.name || '---'})
-							</span>
-						</div>
-						<div className={styles.item_table}>
 							<p>Loại cân:</p>
 							<span>
 								{detailBatchBill?.scalesType == TYPE_SCALES.CAN_NHAP && 'Cân nhập'}
@@ -234,7 +221,7 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 							</div>
 						) : null}
 
-						{/* PHIẾU NHẬP  */}
+						{/* PHIẾU XUẤT  */}
 						{detailBatchBill?.scalesType == TYPE_SCALES.CAN_XUAT ? (
 							<div className={styles.item_table}>
 								<p>Kho hàng:</p>
@@ -265,7 +252,7 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 							</>
 						) : null}
 
-						{/* PHIẾU XUẤT THẲNG  */}
+						{/* CÂN XUẤT THẲNG */}
 						{detailBatchBill?.scalesType == TYPE_SCALES.CAN_TRUC_TIEP ? (
 							<>
 								<div className={styles.item_table}>
@@ -286,7 +273,7 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 						) : null}
 
 						<div className={styles.item_table}>
-							<p>Khối lượng dự kiến:</p>
+							<p>khối lượng dự kiến:</p>
 							<span>{convertCoin(detailBatchBill?.batchsUu?.weightIntent!)} KG</span>
 						</div>
 						<div className={styles.item_table}>
@@ -447,11 +434,11 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 								),
 							},
 							{
-								title: 'Khối lượng nhỏ nhất (KG)',
+								title: 'Trọng lượng nhỏ nhất (KG)',
 								render: (data: any) => <>{convertCoin(data?.minWeight) || '---'}</>,
 							},
 							{
-								title: 'Khối lượng lớn nhất (KG)',
+								title: 'Trọng lượng lớn nhất (KG)',
 								render: (data: any) => <>{convertCoin(data?.maxWeight) || '---'}</>,
 							},
 							{

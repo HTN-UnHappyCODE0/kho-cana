@@ -84,8 +84,8 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 					isSift: data?.isSift,
 					specificationsUuid: data?.specificationsUu?.uuid,
 					toUuid: data?.toUu?.uuid,
-					warehouseFromUuid: '',
-					warehouseToUuid: '',
+					warehouseFromUuid: data?.fromUu?.parentUu?.uuid || '',
+					warehouseToUuid: data?.toUu?.parentUu?.uuid || '',
 					weightTotal: convertCoin(data?.weightTotal!),
 					timeStart: data?.timeStart,
 					timeEnd: data?.timeEnd,
@@ -108,44 +108,6 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 			}
 		},
 		enabled: !!_id,
-	});
-
-	// Lấy kho warehouse từ
-	useQuery([QUERY_KEY.chi_tiet_bai, form.fromUuid], {
-		queryFn: () =>
-			httpRequest({
-				http: storageServices.detailStorage({
-					uuid: form.fromUuid,
-				}),
-			}),
-		onSuccess(data) {
-			if (data) {
-				setForm((prev) => ({
-					...prev,
-					warehouseFromUuid: data?.warehouseUu?.uuid,
-				}));
-			}
-		},
-		enabled: !!form.fromUuid,
-	});
-
-	// Lấy kho warehouse đến
-	useQuery([QUERY_KEY.chi_tiet_bai_den, form.toUuid], {
-		queryFn: () =>
-			httpRequest({
-				http: storageServices.detailStorage({
-					uuid: form.toUuid,
-				}),
-			}),
-		onSuccess(data) {
-			if (data) {
-				setForm((prev) => ({
-					...prev,
-					warehouseToUuid: data?.warehouseUu?.uuid,
-				}));
-			}
-		},
-		enabled: !!form.toUuid,
 	});
 
 	const listProductType = useQuery([QUERY_KEY.dropdown_loai_go], {
@@ -399,8 +361,8 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 							type='text'
 							isMoney
 							unit='KG'
-							label={<span>Tổng khối lượng hàng</span>}
-							placeholder='Nhập tổng khối lượng hàng'
+							label={<span>Tổng trọng lượng hàng</span>}
+							placeholder='Nhập tổng trọng lượng hàng'
 						/>
 						<DatePicker
 							readonly={true}
@@ -427,7 +389,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 							placeholder='Chọn thời gian kết thúc'
 						/>
 					</div>
-					<div className={clsx('mt', 'col_2')}>
+					<div className={clsx('mb', 'col_2', 'mt')}>
 						<div className='col_2'>
 							<div className={styles.item}>
 								<label className={styles.label}>
@@ -584,21 +546,6 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 										}
 									/>
 									<label htmlFor='4_ban'>4 bản</label>
-								</div>
-								<div className={styles.item_radio}>
-									<input
-										type='radio'
-										id='5_ban'
-										name='isPrint'
-										checked={form.isPrint == 5}
-										onChange={() =>
-											setForm((prev) => ({
-												...prev,
-												isPrint: 5,
-											}))
-										}
-									/>
-									<label htmlFor='5_ban'>5 bản</label>
 								</div>
 							</div>
 						</div>
@@ -782,8 +729,8 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 							type='text'
 							isMoney
 							unit='KG'
-							label={<span>Khối lượng dự kiến</span>}
-							placeholder='Nhập khối lượng dự kiến'
+							label={<span>Trọng lượng dự kiến</span>}
+							placeholder='Nhập trọng lượng dự kiến'
 						/>
 						<DatePicker
 							label={<span>Ngày dự kiến</span>}

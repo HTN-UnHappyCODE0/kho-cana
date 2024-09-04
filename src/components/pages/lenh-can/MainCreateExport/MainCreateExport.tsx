@@ -47,7 +47,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 	const [form, setForm] = useState<IFormCreateExport>({
 		shipUuid: '',
 		transportType: TYPE_TRANSPORT.DUONG_THUY,
-		timeIntend: '',
+		timeIntend: new Date(),
 		weightIntent: 0,
 		isSift: TYPE_SIFT.KHONG_CAN_SANG,
 		specificationsUuid: '',
@@ -123,7 +123,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 		},
 	});
 
-	const listSpecification = useQuery([QUERY_KEY.dropdown_quy_cach, form.productTypeUuid], {
+	const listSpecification = useQuery([QUERY_KEY.dropdown_quy_cach], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -136,13 +136,11 @@ function MainCreateExport({}: PropsMainCreateExport) {
 					typeFind: CONFIG_TYPE_FIND.TABLE,
 					status: CONFIG_STATUS.HOAT_DONG,
 					qualityUuid: '',
-					productTypeUuid: form.productTypeUuid,
 				}),
 			}),
 		select(data) {
 			return data;
 		},
-		enabled: !!form.productTypeUuid,
 	});
 
 	const listWarehouse = useQuery([QUERY_KEY.dropdown_kho_hang], {
@@ -185,9 +183,20 @@ function MainCreateExport({}: PropsMainCreateExport) {
 					qualityUuid: '',
 				}),
 			}),
+		onSuccess(data) {
+			if (data) {
+				setForm((prev) => ({
+					...prev,
+					fromUuid: data?.[0]?.uuid || '',
+					productTypeUuid: data?.[0]?.productUu?.uuid || '',
+					specificationsUuid: data?.[0]?.specificationsUu?.uuid || '',
+				}));
+			}
+		},
 		select(data) {
 			return data;
 		},
+
 		enabled: !!form.warehouseUuid,
 	});
 
@@ -252,6 +261,9 @@ function MainCreateExport({}: PropsMainCreateExport) {
 	});
 
 	const handleSubmit = async () => {
+		const today = new Date(timeSubmit(new Date())!);
+		const timeIntend = new Date(form.timeIntend);
+
 		if (form.transportType == TYPE_TRANSPORT.DUONG_THUY && !form.shipUuid) {
 			return toastWarn({msg: 'Vui lòng chọn tàu!'});
 		}
@@ -273,13 +285,9 @@ function MainCreateExport({}: PropsMainCreateExport) {
 		if (listTruckChecked.length == 0) {
 			return toastWarn({msg: 'Vui lòng chọn xe hàng!'});
 		}
-		if (form.timeIntend) {
-			const today = new Date(timeSubmit(new Date())!);
-			const timeIntend = new Date(form.timeIntend);
 
-			if (today > timeIntend) {
-				return toastWarn({msg: 'Ngày dự kiến không hợp lệ!'});
-			}
+		if (today > timeIntend) {
+			return toastWarn({msg: 'Ngày dự kiến không hợp lệ!'});
 		}
 
 		return fucnCreateBatchBill.mutate();
@@ -606,7 +614,6 @@ function MainCreateExport({}: PropsMainCreateExport) {
 										setForm((prev: any) => ({
 											...prev,
 											productTypeUuid: v?.uuid,
-											specificationsUuid: '',
 										}))
 									}
 								/>
@@ -652,7 +659,11 @@ function MainCreateExport({}: PropsMainCreateExport) {
 							placeholder='Nhập khối lượng dự kiến'
 						/>
 						<DatePicker
-							label={<span>Ngày dự kiến</span>}
+							label={
+								<span>
+									Ngày dự kiến <span style={{color: 'red'}}>*</span>
+								</span>
+							}
 							value={form.timeIntend}
 							onSetValue={(date) =>
 								setForm((prev: any) => ({
@@ -668,7 +679,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 							name='documentId'
 							value={form.documentId || ''}
 							type='text'
-							max={50}
+							max={255}
 							label={<span>Số chứng từ</span>}
 							placeholder='Nhập số chứng từ'
 						/>
