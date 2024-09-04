@@ -86,7 +86,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 					weightIntent: convertCoin(data?.batchsUu?.weightIntent),
 					isSift: data?.isSift,
 					specificationsUuid: data?.specificationsUu?.uuid,
-					warehouseUuid: '',
+					warehouseUuid: data?.fromUu?.parentUu?.uuid || '',
 					productTypeUuid: data?.productTypeUu?.uuid,
 					documentId: data?.documentId,
 					description: data?.description,
@@ -116,25 +116,6 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 			}
 		},
 		enabled: !!_id,
-	});
-
-	// Get warehouseUuid to storageUuid
-	useQuery([QUERY_KEY.chi_tiet_bai, form.fromUuid], {
-		queryFn: () =>
-			httpRequest({
-				http: storageServices.detailStorage({
-					uuid: form.fromUuid,
-				}),
-			}),
-		onSuccess(data) {
-			if (data) {
-				setForm((prev) => ({
-					...prev,
-					warehouseUuid: data?.warehouseUu?.uuid,
-				}));
-			}
-		},
-		enabled: !!form.fromUuid,
 	});
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
@@ -387,8 +368,8 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 							type='text'
 							isMoney
 							unit='KG'
-							label={<span>Tổng khối lượng hàng</span>}
-							placeholder='Nhập tổng khối lượng hàng'
+							label={<span>Tổng trọng lượng hàng</span>}
+							placeholder='Nhập tổng trọng lượng hàng'
 						/>
 						<DatePicker
 							readonly={true}
@@ -603,21 +584,6 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 									/>
 									<label htmlFor='4_ban'>4 bản</label>
 								</div>
-								<div className={styles.item_radio}>
-									<input
-										type='radio'
-										id='5_ban'
-										name='isPrint'
-										checked={form.isPrint == 5}
-										onChange={() =>
-											setForm((prev) => ({
-												...prev,
-												isPrint: 5,
-											}))
-										}
-									/>
-									<label htmlFor='5_ban'>5 bản</label>
-								</div>
 							</div>
 						</div>
 					</div>
@@ -754,6 +720,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 											setForm((prev: any) => ({
 												...prev,
 												specificationsUuid: v?.uuid,
+												fromUuid: '',
 											}))
 										}
 									/>

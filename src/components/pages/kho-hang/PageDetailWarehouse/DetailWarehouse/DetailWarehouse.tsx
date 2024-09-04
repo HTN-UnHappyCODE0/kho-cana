@@ -119,8 +119,8 @@ function DetailWarehouse({}: PropsDetailWarehouse) {
 				</div>
 			</div>
 			<div className={'mt'}>
-				<GridColumn col_4>
-					<DetailBox
+				<GridColumn col_3>
+					{/* <DetailBox
 						name={'Tổng khối lượng hàng'}
 						value={detailWarehouse?.totalAmountMT!}
 						action={
@@ -136,19 +136,19 @@ function DetailWarehouse({}: PropsDetailWarehouse) {
 								</div>
 							</div>
 						}
-					/>
+					/> */}
 					<DetailBox
-						name={'Tổng khối lượng hàng khô'}
+						name={'Tổng khối lượng quy khô'}
 						value={detailWarehouse?.totalAmountBDMT!}
 						action={
 							<div className={styles.action}>
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />
 								<div className={styles.note}>
 									<p>
-										Chuẩn: <span>{convertCoin(detailWarehouse?.amountBDMT!)}</span>
+										Quy khô chuẩn: <span>{convertCoin(detailWarehouse?.amountBDMT!)}</span>
 									</p>
 									<p style={{marginTop: 2}}>
-										Tạm tính: <span>{convertCoin(detailWarehouse?.amountBDMTDemo!)}</span>
+										Quy khô tạm tính: <span>{convertCoin(detailWarehouse?.amountBDMTDemo!)}</span>
 									</p>
 								</div>
 							</div>
@@ -179,7 +179,7 @@ function DetailWarehouse({}: PropsDetailWarehouse) {
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />
 								<div className={styles.note}>
 									<p>
-										Khách hàng: <span>{convertCoin(detailWarehouse?.amountOut!)}</span>
+										Khách hàng xuất: <span>{convertCoin(detailWarehouse?.amountOut!)}</span>
 									</p>
 									<p style={{marginTop: 2}}>
 										Chuyển kho: <span>{convertCoin(detailWarehouse?.amountChangeOut!)}</span>

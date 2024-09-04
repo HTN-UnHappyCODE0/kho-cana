@@ -46,7 +46,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 	const [form, setForm] = useState<IFormCreateImport>({
 		shipUuid: '',
 		transportType: TYPE_TRANSPORT.DUONG_THUY,
-		timeIntend: '',
+		timeIntend: new Date(),
 		weightIntent: 0,
 		isSift: TYPE_SIFT.KHONG_CAN_SANG,
 		specificationsUuid: '',
@@ -173,16 +173,24 @@ function MainCreateImport({}: PropsMainCreateImport) {
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					qualityUuid: '',
 					specificationsUuid: form.specificationsUuid,
 					warehouseUuid: form.warehouseUuid,
 					productUuid: form.productTypeUuid,
-					qualityUuid: '',
 				}),
 			}),
+		onSuccess(data) {
+			if (data) {
+				setForm((prev) => ({
+					...prev,
+					toUuid: data?.[0]?.uuid || '',
+				}));
+			}
+		},
 		select(data) {
 			return data;
 		},
-		enabled: !!form.warehouseUuid,
+		enabled: !!form.warehouseUuid && !!form.productTypeUuid && !!form.warehouseUuid,
 	});
 
 	const listTruck = useQuery([QUERY_KEY.dropdown_xe_hang], {
@@ -246,6 +254,9 @@ function MainCreateImport({}: PropsMainCreateImport) {
 	});
 
 	const handleSubmit = async () => {
+		const today = new Date(timeSubmit(new Date())!);
+		const timeIntend = new Date(form.timeIntend);
+
 		if (form.transportType == TYPE_TRANSPORT.DUONG_THUY && !form.shipUuid) {
 			return toastWarn({msg: 'Vui lòng chọn tàu!'});
 		}
@@ -267,13 +278,9 @@ function MainCreateImport({}: PropsMainCreateImport) {
 		if (listTruckChecked.length == 0) {
 			return toastWarn({msg: 'Vui lòng chọn xe hàng!'});
 		}
-		if (form.timeIntend) {
-			const today = new Date(timeSubmit(new Date())!);
-			const timeIntend = new Date(form.timeIntend);
 
-			if (today > timeIntend) {
-				return toastWarn({msg: 'Ngày dự kiến không hợp lệ!'});
-			}
+		if (today > timeIntend) {
+			return toastWarn({msg: 'Ngày dự kiến không hợp lệ!'});
 		}
 
 		return fucnCreateBatchBill.mutate();
@@ -493,21 +500,6 @@ function MainCreateImport({}: PropsMainCreateImport) {
 									/>
 									<label htmlFor='4_ban'>4 bản</label>
 								</div>
-								<div className={styles.item_radio}>
-									<input
-										type='radio'
-										id='5_ban'
-										name='isPrint'
-										checked={form.isPrint == 5}
-										onChange={() =>
-											setForm((prev) => ({
-												...prev,
-												isPrint: 5,
-											}))
-										}
-									/>
-									<label htmlFor='5_ban'>5 bản</label>
-								</div>
 							</div>
 						</div>
 					</div>
@@ -629,7 +621,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 								name='toUuid'
 								placeholder='Chọn bãi'
 								value={form?.toUuid}
-								readOnly={!form.warehouseUuid}
+								readOnly={!form.warehouseUuid || !form.productTypeUuid || !form.specificationsUuid}
 								label={
 									<span>
 										Bãi <span style={{color: 'red'}}>*</span>
@@ -663,7 +655,11 @@ function MainCreateImport({}: PropsMainCreateImport) {
 							placeholder='Nhập khối lượng dự kiến'
 						/>
 						<DatePicker
-							label={<span>Ngày dự kiến</span>}
+							label={
+								<span>
+									Ngày dự kiến <span style={{color: 'red'}}>*</span>
+								</span>
+							}
 							value={form.timeIntend}
 							onSetValue={(date) =>
 								setForm((prev: any) => ({
@@ -678,7 +674,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 						<Input
 							name='documentId'
 							value={form.documentId || ''}
-							max={50}
+							max={255}
 							type='text'
 							label={<span>Số chứng từ</span>}
 							placeholder='Nhập số chứng từ'

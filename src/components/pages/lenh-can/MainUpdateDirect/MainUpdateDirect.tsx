@@ -476,21 +476,6 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 									/>
 									<label htmlFor='4_ban'>4 bản</label>
 								</div>
-								<div className={styles.item_radio}>
-									<input
-										type='radio'
-										id='5_ban'
-										name='isPrint'
-										checked={form.isPrint == 5}
-										onChange={() =>
-											setForm((prev) => ({
-												...prev,
-												isPrint: 5,
-											}))
-										}
-									/>
-									<label htmlFor='5_ban'>5 bản</label>
-								</div>
 							</div>
 						</div>
 					</div>
@@ -693,7 +678,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 							name='documentId'
 							value={form.documentId || ''}
 							type='text'
-							max={50}
+							max={255}
 							label={<span>Số chứng từ</span>}
 							placeholder='Nhập số chứng từ'
 						/>

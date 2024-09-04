@@ -10,7 +10,7 @@ export interface IFormCreateTransfer {
 	specificationsUuid: string;
 	warehouseToUuid: string;
 	toUuid: string;
-	timeIntend: string;
+	timeIntend: string | Date;
 	weightIntent: number;
 	description: string;
 }

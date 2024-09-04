@@ -45,7 +45,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 		shipUuid: '',
 		shipOutUuid: '',
 		transportType: TYPE_TRANSPORT.DUONG_THUY,
-		timeIntend: '',
+		timeIntend: new Date(),
 		weightIntent: 0,
 		isSift: TYPE_SIFT.KHONG_CAN_SANG,
 		specificationsUuid: '',
@@ -161,45 +161,6 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 		},
 	});
 
-	// const listProductType = useQuery([QUERY_KEY.dropdown_loai_hang], {
-	// 	queryFn: () =>
-	// 		httpRequest({
-	// 			isDropdown: true,
-	// 			http: wareServices.listProductType({
-	// 				page: 1,
-	// 				pageSize: 20,
-	// 				keyword: '',
-	// 				status: CONFIG_STATUS.HOAT_DONG,
-	// 				isPaging: CONFIG_PAGING.NO_PAGING,
-	// 				isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-	// 				typeFind: CONFIG_TYPE_FIND.TABLE,
-	// 			}),
-	// 		}),
-	// 	select(data) {
-	// 		return data;
-	// 	},
-	// });
-
-	// const listSpecification = useQuery([QUERY_KEY.dropdown_quy_cach], {
-	// 	queryFn: () =>
-	// 		httpRequest({
-	// 			isDropdown: true,
-	// 			http: wareServices.listSpecification({
-	// 				page: 1,
-	// 				pageSize: 20,
-	// 				keyword: '',
-	// 				isPaging: CONFIG_PAGING.NO_PAGING,
-	// 				isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-	// 				typeFind: CONFIG_TYPE_FIND.TABLE,
-	// 				status: CONFIG_STATUS.HOAT_DONG,
-	// 				qualityUuid: '',
-	// 			}),
-	// 		}),
-	// 	select(data) {
-	// 		return data;
-	// 	},
-	// });
-
 	const listTruck = useQuery([QUERY_KEY.dropdown_xe_hang], {
 		queryFn: () =>
 			httpRequest({
@@ -261,6 +222,9 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 	});
 
 	const handleSubmit = async () => {
+		const today = new Date(timeSubmit(new Date())!);
+		const timeIntend = new Date(form.timeIntend);
+
 		if (form.transportType == TYPE_TRANSPORT.DUONG_THUY && !form.shipUuid) {
 			return toastWarn({msg: 'Vui lòng nhập mã tàu đến!'});
 		}
@@ -282,13 +246,9 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 		if (listTruckChecked.length == 0) {
 			return toastWarn({msg: 'Vui lòng chọn xe hàng!'});
 		}
-		if (form.timeIntend) {
-			const today = new Date(timeSubmit(new Date())!);
-			const timeIntend = new Date(form.timeIntend);
 
-			if (today > timeIntend) {
-				return toastWarn({msg: 'Ngày dự kiến không hợp lệ!'});
-			}
+		if (today > timeIntend) {
+			return toastWarn({msg: 'Ngày dự kiến không hợp lệ!'});
 		}
 
 		return fucnCreateBatchBill.mutate();
@@ -459,21 +419,6 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 										}
 									/>
 									<label htmlFor='4_ban'>4 bản</label>
-								</div>
-								<div className={styles.item_radio}>
-									<input
-										type='radio'
-										id='5_ban'
-										name='isPrint'
-										checked={form.isPrint == 5}
-										onChange={() =>
-											setForm((prev) => ({
-												...prev,
-												isPrint: 5,
-											}))
-										}
-									/>
-									<label htmlFor='5_ban'>5 bản</label>
 								</div>
 							</div>
 						</div>
@@ -661,7 +606,11 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 							placeholder='Nhập khối lượng dự kiến'
 						/>
 						<DatePicker
-							label={<span>Ngày dự kiến</span>}
+							label={
+								<span>
+									Ngày dự kiến <span style={{color: 'red'}}>*</span>
+								</span>
+							}
 							value={form.timeIntend}
 							onSetValue={(date) =>
 								setForm((prev: any) => ({
@@ -677,7 +626,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 							name='documentId'
 							value={form.documentId || ''}
 							type='text'
-							max={50}
+							max={255}
 							label={<span>Số chứng từ</span>}
 							placeholder='Nhập số chứng từ'
 						/>

@@ -5,7 +5,7 @@ export interface IFormCreateService {
 	transportType: number;
 	isPrint: number;
 	productTypeUuid: string;
-	timeIntend: string;
+	timeIntend: string | Date;
 	weightIntent: number;
 	documentId: string;
 	description: string;

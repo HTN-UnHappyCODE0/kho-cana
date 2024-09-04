@@ -41,7 +41,7 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 
-	const {_page, _pageSize, _keyword, _isBatch, _customerUuid, _productTypeUuid, _state, _status, _dateFrom, _dateTo} = router.query;
+	const {_page, _pageSize, _keyword, _isBatch, _customerUuid, _productTypeUuid, _status, _dateFrom, _dateTo, _state} = router.query;
 
 	const [uuidPlay, setUuidPlay] = useState<string>('');
 	const [uuidStop, setUuidStop] = useState<string>('');
@@ -99,11 +99,11 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 			_keyword,
 			_isBatch,
 			_customerUuid,
-			_state,
 			_productTypeUuid,
 			_status,
 			_dateFrom,
 			_dateTo,
+			_state,
 		],
 		{
 			queryFn: () =>
@@ -122,15 +122,6 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 						isCreateBatch: null,
 						productTypeUuid: (_productTypeUuid as string) || '',
 						specificationsUuid: '',
-						status: !!_status
-							? [Number(_status)]
-							: [
-									STATUS_BILL.DANG_CAN,
-									STATUS_BILL.TAM_DUNG,
-									STATUS_BILL.DA_CAN_CHUA_KCS,
-									STATUS_BILL.DA_KCS,
-									STATUS_BILL.CHOT_KE_TOAN,
-							  ],
 						state: !!_state
 							? [Number(_state)]
 							: [
@@ -140,6 +131,15 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 									STATE_BILL.KTK_REJECTED,
 									STATE_BILL.KTK_CHECKED,
 									STATE_BILL.END,
+							  ],
+						status: !!_status
+							? [Number(_status)]
+							: [
+									STATUS_BILL.DANG_CAN,
+									STATUS_BILL.TAM_DUNG,
+									STATUS_BILL.DA_CAN_CHUA_KCS,
+									STATUS_BILL.DA_KCS,
+									STATUS_BILL.CHOT_KE_TOAN,
 							  ],
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
@@ -261,7 +261,7 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 					/>
 					<FilterCustom
 						isSearch
-						name='Xác Nhận SL'
+						name='Xác nhận SL'
 						query='_state'
 						listFilter={[
 							{
@@ -511,7 +511,7 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 					currentPage={Number(_page) || 1}
 					pageSize={Number(_pageSize) || 20}
 					total={listBatch?.data?.pagination?.totalCount}
-					dependencies={[_pageSize, _keyword, _isBatch, _customerUuid, _state, _productTypeUuid, _status, _dateFrom, _dateTo]}
+					dependencies={[_pageSize, _keyword, _isBatch, _customerUuid, _productTypeUuid, _status, _dateFrom, _dateTo, _state]}
 				/>
 			</div>
 			<Dialog

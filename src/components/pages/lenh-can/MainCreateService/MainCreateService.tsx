@@ -47,7 +47,7 @@ function MainCreateService({}: PropsMainCreateService) {
 	const [form, setForm] = useState<IFormCreateService>({
 		shipUuid: '',
 		transportType: TYPE_TRANSPORT.DUONG_THUY,
-		timeIntend: '',
+		timeIntend: new Date(),
 		weightIntent: 0,
 		productTypeUuid: '',
 		documentId: '',
@@ -179,6 +179,13 @@ function MainCreateService({}: PropsMainCreateService) {
 	});
 
 	const handleSubmit = async () => {
+		const today = new Date(timeSubmit(new Date())!);
+		const timeIntend = new Date(form.timeIntend);
+
+		if (today > timeIntend) {
+			return toastWarn({msg: 'Ngày dự kiến không hợp lệ!'});
+		}
+
 		if (form.transportType == TYPE_TRANSPORT.DUONG_THUY && !form.shipUuid) {
 			return toastWarn({msg: 'Vui lòng chọn tàu!'});
 		}
@@ -190,14 +197,6 @@ function MainCreateService({}: PropsMainCreateService) {
 		}
 		if (listTruckChecked.length == 0) {
 			return toastWarn({msg: 'Vui lòng chọn xe hàng!'});
-		}
-		if (form.timeIntend) {
-			const today = new Date(timeSubmit(new Date())!);
-			const timeIntend = new Date(form.timeIntend);
-
-			if (today > timeIntend) {
-				return toastWarn({msg: 'Ngày dự kiến không hợp lệ!'});
-			}
 		}
 
 		return fucnCreateBatchBill.mutate();
@@ -346,21 +345,6 @@ function MainCreateService({}: PropsMainCreateService) {
 									/>
 									<label htmlFor='4_ban'>4 bản</label>
 								</div>
-								<div className={styles.item_radio}>
-									<input
-										type='radio'
-										id='5_ban'
-										name='isPrint'
-										checked={form.isPrint == 5}
-										onChange={() =>
-											setForm((prev) => ({
-												...prev,
-												isPrint: 5,
-											}))
-										}
-									/>
-									<label htmlFor='5_ban'>5 bản</label>
-								</div>
 							</div>
 						</div>
 					</div>
@@ -417,7 +401,7 @@ function MainCreateService({}: PropsMainCreateService) {
 								value={form?.productTypeUuid}
 								label={
 									<span>
-										Loại gỗ<span style={{color: 'red'}}>*</span>
+										Loại gỗ <span style={{color: 'red'}}>*</span>
 									</span>
 								}
 							>
@@ -450,7 +434,11 @@ function MainCreateService({}: PropsMainCreateService) {
 					</div>
 					<div className={clsx('mt', 'col_2')}>
 						<DatePicker
-							label={<span>Ngày dự kiến</span>}
+							label={
+								<span>
+									Ngày dự kiến <span style={{color: 'red'}}>*</span>
+								</span>
+							}
 							value={form.timeIntend}
 							onSetValue={(date) =>
 								setForm((prev: any) => ({
@@ -464,7 +452,7 @@ function MainCreateService({}: PropsMainCreateService) {
 							name='documentId'
 							value={form.documentId || ''}
 							type='text'
-							max={50}
+							max={255}
 							label={<span>Số chứng từ</span>}
 							placeholder='Nhập số chứng từ'
 						/>

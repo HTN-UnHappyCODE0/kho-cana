@@ -185,11 +185,18 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 				const listspecUu: any[] = [...new Map(data?.map((v: any) => [v?.specUu?.uuid, v])).values()];
 				const listProductTypeUu: any[] = [...new Map(data?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()];
 
-				setForm((prev) => ({
-					...prev,
-					specificationsUuid: listspecUu?.[0]?.specUu?.uuid || '',
-					productTypeUuid: listProductTypeUu?.[0]?.productTypeUu?.uuid || '',
-				}));
+				if (listspecUu?.length == 1) {
+					setForm((prev) => ({
+						...prev,
+						specificationsUuid: listspecUu?.[0]?.specUu?.uuid,
+					}));
+				}
+				if (listProductTypeUu?.length == 1) {
+					setForm((prev) => ({
+						...prev,
+						productTypeUuid: listProductTypeUu?.[0]?.productTypeUu?.uuid,
+					}));
+				}
 			}
 		},
 		select(data) {
@@ -338,8 +345,8 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 							type='text'
 							isMoney
 							unit='KG'
-							label={<span>Tổng khối lượng hàng</span>}
-							placeholder='Nhập tổng khối lượng hàng'
+							label={<span>Tổng trọng lượng hàng</span>}
+							placeholder='Nhập tổng trọng lượng hàng'
 						/>
 						<DatePicker
 							readonly={true}
@@ -366,7 +373,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 							placeholder='Chọn thời gian kết thúc'
 						/>
 					</div>
-					<div className={clsx('mt', 'col_2')}>
+					<div className={clsx('mb', 'col_2', 'mt')}>
 						<div className='col_2'>
 							<div className={styles.item}>
 								<label className={styles.label}>
@@ -508,21 +515,6 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 										}
 									/>
 									<label htmlFor='4_ban'>4 bản</label>
-								</div>
-								<div className={styles.item_radio}>
-									<input
-										type='radio'
-										id='5_ban'
-										name='isPrint'
-										checked={form.isPrint == 5}
-										onChange={() =>
-											setForm((prev) => ({
-												...prev,
-												isPrint: 5,
-											}))
-										}
-									/>
-									<label htmlFor='5_ban'>5 bản</label>
 								</div>
 							</div>
 						</div>
@@ -706,8 +698,8 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 							type='text'
 							isMoney
 							unit='KG'
-							label={<span>Khối lượng</span>}
-							placeholder='Nhập khối lượng'
+							label={<span>Trọng lượng</span>}
+							placeholder='Nhập trọng lượng'
 						/>
 						<DatePicker
 							label={<span>Ngày</span>}

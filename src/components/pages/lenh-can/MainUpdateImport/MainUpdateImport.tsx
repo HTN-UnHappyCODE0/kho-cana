@@ -83,7 +83,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					weightIntent: convertCoin(data?.batchsUu?.weightIntent),
 					isSift: data?.isSift,
 					specificationsUuid: data?.specificationsUu?.uuid,
-					warehouseUuid: '',
+					warehouseUuid: data?.toUu?.parentUu?.uuid || '',
 					productTypeUuid: data?.productTypeUu?.uuid,
 					documentId: data?.documentId,
 					description: data?.description,
@@ -110,25 +110,6 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 			}
 		},
 		enabled: !!_id,
-	});
-
-	// Get warehouseUuid to storageUuid
-	useQuery([QUERY_KEY.chi_tiet_bai, form.toUuid], {
-		queryFn: () =>
-			httpRequest({
-				http: storageServices.detailStorage({
-					uuid: form.toUuid,
-				}),
-			}),
-		onSuccess(data) {
-			if (data) {
-				setForm((prev) => ({
-					...prev,
-					warehouseUuid: data?.warehouseUu?.uuid,
-				}));
-			}
-		},
-		enabled: !!form.toUuid,
 	});
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
@@ -192,45 +173,6 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 		enabled: !!form.fromUuid,
 	});
 
-	// const listProductType = useQuery([QUERY_KEY.dropdown_loai_hang], {
-	// 	queryFn: () =>
-	// 		httpRequest({
-	// 			isDropdown: true,
-	// 			http: wareServices.listProductType({
-	// 				page: 1,
-	// 				pageSize: 20,
-	// 				keyword: '',
-	// 				status: CONFIG_STATUS.HOAT_DONG,
-	// 				isPaging: CONFIG_PAGING.NO_PAGING,
-	// 				isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-	// 				typeFind: CONFIG_TYPE_FIND.TABLE,
-	// 			}),
-	// 		}),
-	// 	select(data) {
-	// 		return data;
-	// 	},
-	// });
-
-	// const listSpecification = useQuery([QUERY_KEY.dropdown_quy_cach], {
-	// 	queryFn: () =>
-	// 		httpRequest({
-	// 			isDropdown: true,
-	// 			http: wareServices.listSpecification({
-	// 				page: 1,
-	// 				pageSize: 20,
-	// 				keyword: '',
-	// 				isPaging: CONFIG_PAGING.NO_PAGING,
-	// 				isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-	// 				typeFind: CONFIG_TYPE_FIND.TABLE,
-	// 				status: CONFIG_STATUS.HOAT_DONG,
-	// 				qualityUuid: '',
-	// 			}),
-	// 		}),
-	// 	select(data) {
-	// 		return data;
-	// 	},
-	// });
-
 	const listShip = useQuery([QUERY_KEY.dropdown_tau_hang], {
 		queryFn: () =>
 			httpRequest({
@@ -284,16 +226,24 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					qualityUuid: '',
 					specificationsUuid: form.specificationsUuid,
 					warehouseUuid: form.warehouseUuid,
 					productUuid: form.productTypeUuid,
-					qualityUuid: '',
 				}),
 			}),
+		onSuccess(data) {
+			if (data) {
+				setForm((prev) => ({
+					...prev,
+					toUuid: data?.[0]?.uuid || '',
+				}));
+			}
+		},
 		select(data) {
 			return data;
 		},
-		enabled: !!form.warehouseUuid,
+		enabled: !!form.warehouseUuid && !!form.productTypeUuid && !!form.warehouseUuid,
 	});
 
 	const listTruck = useQuery([QUERY_KEY.dropdown_xe_hang], {
@@ -609,21 +559,6 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 									/>
 									<label htmlFor='4_ban'>4 bản</label>
 								</div>
-								<div className={styles.item_radio}>
-									<input
-										type='radio'
-										id='5_ban'
-										name='isPrint'
-										checked={form.isPrint == 5}
-										onChange={() =>
-											setForm((prev) => ({
-												...prev,
-												isPrint: 5,
-											}))
-										}
-									/>
-									<label htmlFor='5_ban'>5 bản</label>
-								</div>
 							</div>
 						</div>
 					</div>
@@ -745,7 +680,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 								name='toUuid'
 								placeholder='Chọn bãi'
 								value={form?.toUuid}
-								readOnly={!form.warehouseUuid}
+								readOnly={!form.warehouseUuid || !form.productTypeUuid || !form.specificationsUuid}
 								label={
 									<span>
 										Bãi <span style={{color: 'red'}}>*</span>
@@ -794,7 +729,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 						<Input
 							name='documentId'
 							value={form.documentId || ''}
-							max={50}
+							max={255}
 							type='text'
 							label={<span>Số chứng từ</span>}
 							placeholder='Nhập số chứng từ'

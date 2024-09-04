@@ -6,7 +6,7 @@ import Button from '~/components/common/Button';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import weightSessionServices from '~/services/weightSessionServices';
 import {httpRequest} from '~/services';
-import {QUERY_KEY} from '~/constants/config/enum';
+import {QUERY_KEY, TYPE_RULER} from '~/constants/config/enum';
 import {toastWarn} from '~/common/funcs/toast';
 import Loading from '~/components/common/Loading';
 
@@ -18,6 +18,8 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 			uuid: string;
 			title: string;
 			value: number;
+			ruler: number;
+			valuecriteria: number;
 		}[]
 	>([]);
 
@@ -27,6 +29,8 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 				uuid: v?.criteriaUu?.uuid!,
 				title: v?.criteriaUu?.title!,
 				value: v?.value!,
+				ruler: v?.criteriaUu?.ruler!,
+				valuecriteria: v?.criteriaUu.value!,
 			}))!
 		);
 	}, [dataUpdateSpec]);
@@ -84,7 +88,12 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 			<div className={styles.main}>
 				{dataRules?.map((v, i) => (
 					<div key={i} className={styles.item}>
-						<p>{v?.title}</p>
+						<p>
+							{v?.title}
+							<span style={{margin: '0 6px'}}>{v?.ruler == TYPE_RULER.NHO_HON ? '<' : '>'}</span>
+							{v?.valuecriteria}
+						</p>
+
 						<input
 							className={styles.input}
 							type='number'
