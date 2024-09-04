@@ -265,6 +265,26 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 							</>
 						) : null}
 
+						{/* PHIẾU XUẤT THẲNG  */}
+						{detailBatchBill?.scalesType == TYPE_SCALES.CAN_TRUC_TIEP ? (
+							<>
+								<div className={styles.item_table}>
+									<p>Nhà cung cấp:</p>
+									<span>
+										{detailBatchBill.fromUu?.name}{' '}
+										<span style={{color: '#777E90'}}>({detailBatchBill.fromUu?.parentUu?.name || '---'})</span>
+									</span>
+								</div>
+								<div className={styles.item_table}>
+									<p>Khách hàng xuất:</p>
+									<span>
+										{detailBatchBill.toUu?.name}{' '}
+										<span style={{color: '#777E90'}}>({detailBatchBill.toUu?.parentUu?.name || '---'})</span>
+									</span>
+								</div>
+							</>
+						) : null}
+
 						<div className={styles.item_table}>
 							<p>Khối lượng dự kiến:</p>
 							<span>{convertCoin(detailBatchBill?.batchsUu?.weightIntent!)} KG</span>

@@ -11,7 +11,7 @@ export interface IFormCreateImport {
 	warehouseUuid: string;
 	toUuid: string;
 	weightIntent: number;
-	timeIntend: string;
+	timeIntend: string | Date;
 	documentId: string;
 	description: string;
 }

@@ -46,7 +46,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 	const [form, setForm] = useState<IFormCreateImport>({
 		shipUuid: '',
 		transportType: TYPE_TRANSPORT.DUONG_THUY,
-		timeIntend: '',
+		timeIntend: new Date(),
 		weightIntent: 0,
 		isSift: TYPE_SIFT.KHONG_CAN_SANG,
 		specificationsUuid: '',
@@ -492,21 +492,6 @@ function MainCreateImport({}: PropsMainCreateImport) {
 										}
 									/>
 									<label htmlFor='4_ban'>4 bản</label>
-								</div>
-								<div className={styles.item_radio}>
-									<input
-										type='radio'
-										id='5_ban'
-										name='isPrint'
-										checked={form.isPrint == 5}
-										onChange={() =>
-											setForm((prev) => ({
-												...prev,
-												isPrint: 5,
-											}))
-										}
-									/>
-									<label htmlFor='5_ban'>5 bản</label>
 								</div>
 							</div>
 						</div>
