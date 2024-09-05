@@ -77,7 +77,9 @@ function TableListStorage({}: PropsTableListStorage) {
 						// },
 						{
 							title: 'Tổng lượng hàng',
-							render: (data: IDataListStorage) => <span style={{color: '#2A85FF'}}>{convertCoin(data?.totalAmountMt)}</span>,
+							render: (data: IDataListStorage) => (
+								<span style={{color: '#2A85FF'}}>{convertCoin(data?.totalAmountBdmt)}</span>
+							),
 						},
 						{
 							title: 'Khối lượng nhập',

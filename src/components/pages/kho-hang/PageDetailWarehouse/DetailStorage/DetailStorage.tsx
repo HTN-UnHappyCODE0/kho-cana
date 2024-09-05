@@ -155,12 +155,12 @@ function DetailStorage({}: PropsDetailStorage) {
 							<div className={styles.action}>
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />
 								<div className={styles.note}>
-									<p>
+									{/* <p>
 										Đã KCS: <span>{convertCoin(detailStorage?.amountKcs!)}</span>
 									</p>
 									<p style={{marginTop: 2}}>
 										Chưa KCS: <span>{convertCoin(detailStorage?.amountMt!)}</span>
-									</p>
+									</p> */}
 									<p style={{marginTop: 2}}>
 										Chuẩn: <span>{convertCoin(detailStorage?.amountBdmt!)}</span>
 									</p>
