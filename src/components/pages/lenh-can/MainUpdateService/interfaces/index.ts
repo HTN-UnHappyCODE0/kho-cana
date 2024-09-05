@@ -6,6 +6,7 @@ export interface IFormUpdateService {
 	shipUuid: string;
 	transportType: number;
 	isPrint: number;
+	customerUuid: string;
 	productTypeUuid: string;
 	timeIntend: string;
 	weightIntent: number | string;
