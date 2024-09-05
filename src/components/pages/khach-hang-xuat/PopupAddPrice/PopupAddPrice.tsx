@@ -42,7 +42,7 @@ function PopupAddPrice({customerName, onClose, typePartner}: PropsPopupAddPrice)
 	}>({
 		specUuid: '',
 		productTypeUuid: '',
-		state: CONFIG_STATE_SPEC_CUSTOMER.CHUA_CUNG_CAP,
+		state: CONFIG_STATE_SPEC_CUSTOMER.DANG_CUNG_CAP,
 		customerName: customerName,
 		transportType: '',
 	});

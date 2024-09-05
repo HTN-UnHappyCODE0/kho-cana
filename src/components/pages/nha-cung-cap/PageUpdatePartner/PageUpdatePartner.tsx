@@ -389,11 +389,11 @@ function PageUpdatePartner({}: PropsPageUpdatePartner) {
 							}
 							label={
 								<span>
-									{TYPE_PARTNER.NCC === Number(_typeCus)
-										? 'Thuộc nhà cung cấp'
-										: TYPE_PARTNER.KH_XUAT === Number(_typeCus)
+									{TYPE_PARTNER.KH_XUAT === Number(_typeCus)
 										? 'Thuộc khách hàng xuất'
-										: 'Thuộc khách hàng dịch vụ'}{' '}
+										: TYPE_PARTNER.KH_DICH_VU === Number(_typeCus)
+										? 'Thuộc khách hàng dịch vụ'
+										: 'Thuộc nhà cung cấp'}{' '}
 									<span style={{color: 'red'}}>*</span>
 								</span>
 							}
@@ -411,10 +411,10 @@ function PageUpdatePartner({}: PropsPageUpdatePartner) {
 							blur={true}
 							label={
 								<span>
-									Tên xưởng <span style={{color: 'red'}}>*</span>
+									Tên NCC <span style={{color: 'red'}}>*</span>
 								</span>
 							}
-							placeholder='Nhập tên xưởng'
+							placeholder='Nhập tên NCC'
 						/>
 						<div>
 							<Input
