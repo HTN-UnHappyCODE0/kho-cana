@@ -60,6 +60,7 @@ function TableListStorage({}: PropsTableListStorage) {
 							render: (data: IDataListStorage) => <span>{data?.code || '---'}</span>,
 						},
 						{
+							fixedLeft: true,
 							title: 'Tên kho hàng',
 							render: (data: IDataListStorage) => <span>{data?.name || '---'}</span>,
 						},
@@ -90,6 +91,7 @@ function TableListStorage({}: PropsTableListStorage) {
 							render: (data: IDataListStorage) => <span>{convertCoin(data?.totalAmountOut) || 0}</span>,
 						},
 						{
+							fixedRight: true,
 							title: 'Tác vụ',
 							render: (data: IDataListStorage) => (
 								<Link href={`/kho-hang/${data?.uuid}?_storage=true`} className={styles.linkdetail}>
