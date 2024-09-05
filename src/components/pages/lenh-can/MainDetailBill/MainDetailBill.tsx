@@ -169,7 +169,7 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 						{/* PHIẾU NHẬP  */}
 						{detailBatchBill?.scalesType == TYPE_SCALES.CAN_NHAP ? (
 							<div className={styles.item_table}>
-								<p>Khách hàng:</p>
+								<p>Nhà cung cấp:</p>
 								<span>{detailBatchBill?.fromUu?.name}</span>
 							</div>
 						) : null}

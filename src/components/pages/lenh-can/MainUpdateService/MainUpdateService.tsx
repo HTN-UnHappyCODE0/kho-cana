@@ -33,7 +33,6 @@ import Select, {Option} from '~/components/common/Select';
 import DatePicker from '~/components/common/DatePicker';
 import ButtonSelectMany from '~/components/common/ButtonSelectMany';
 import TextArea from '~/components/common/Form/components/TextArea';
-import SelectSearch from '~/components/common/SelectSearch';
 import {timeSubmit} from '~/common/funcs/optionConvert';
 import batchBillServices from '~/services/batchBillServices';
 import {IDetailBatchBill} from '../MainDetailBill/interfaces';
@@ -44,7 +43,6 @@ function MainUpdateService({}: PropsMainUpdateService) {
 
 	const {_id} = router.query;
 
-	const [dataCustomer, setDataCustomer] = useState<any>({});
 	const [listTruckChecked, setListTruckChecked] = useState<any[]>([]);
 	const [listTruckBatchBill, setListTruckBatchBill] = useState<any[]>([]);
 
@@ -55,6 +53,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 		transportType: TYPE_TRANSPORT.DUONG_THUY,
 		timeIntend: '',
 		weightIntent: 0,
+		customerUuid: '',
 		productTypeUuid: '',
 		documentId: '',
 		description: '',
@@ -77,6 +76,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 					shipUuid: data?.batchsUu?.shipUu?.uuid || '',
 					timeIntend: data?.batchsUu?.timeIntend,
 					weightIntent: convertCoin(data?.batchsUu?.weightIntent),
+					customerUuid: data?.fromUu?.uuid,
 					productTypeUuid: data?.productTypeUu?.uuid,
 					documentId: data?.documentId,
 					description: data?.description,
@@ -97,17 +97,6 @@ function MainUpdateService({}: PropsMainUpdateService) {
 						code: v?.code,
 					}))
 				);
-				setDataCustomer(
-					data?.customerName
-						? {
-								id: '',
-								name: data?.customerName,
-						  }
-						: {
-								id: data?.fromUu?.uuid,
-								name: data?.fromUu?.name,
-						  }
-				);
 			}
 		},
 		enabled: !!_id,
@@ -123,7 +112,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-					typeFind: CONFIG_TYPE_FIND.FILTER,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
 					partnerUUid: '',
 					userUuid: '',
 					status: STATUS_CUSTOMER.HOP_TAC,
@@ -217,9 +206,9 @@ function MainUpdateService({}: PropsMainUpdateService) {
 					productTypeUuid: form.productTypeUuid,
 					documentId: form.documentId,
 					description: form.description,
-					customerName: !dataCustomer?.id ? dataCustomer?.name : '',
-					fromUuid: dataCustomer?.id ? dataCustomer?.id : '',
-					toUuid: dataCustomer?.id ? dataCustomer?.id : '',
+					customerName: '',
+					fromUuid: form.customerUuid,
+					toUuid: form.customerUuid,
 					isPrint: form.isPrint,
 					lstTruckAddUuid: listTruckChecked
 						.filter((v) => !listTruckBatchBill.some((x) => v.uuid === x.uuid))
@@ -244,7 +233,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 		if (form.transportType == TYPE_TRANSPORT.DUONG_THUY && !form.shipUuid) {
 			return toastWarn({msg: 'Vui lòng chọn tàu!'});
 		}
-		if (!dataCustomer?.id && !dataCustomer?.name) {
+		if (!form.customerUuid) {
 			return toastWarn({msg: 'Vui lòng chọn khách hàng!'});
 		}
 		if (!form.productTypeUuid) {
@@ -442,20 +431,31 @@ function MainUpdateService({}: PropsMainUpdateService) {
 					</div>
 
 					<div className={clsx('mt', 'col_2')}>
-						<SelectSearch
-							options={listCustomer?.data?.map((v: any) => ({
-								id: v?.uuid,
-								name: v?.name,
-							}))}
-							data={dataCustomer}
-							setData={setDataCustomer}
+						<Select
+							isSearch
+							name='customerUuid'
+							placeholder='Chọn khách hàng'
+							value={form?.customerUuid}
 							label={
 								<span>
 									Khách hàng <span style={{color: 'red'}}>*</span>
 								</span>
 							}
-							placeholder='Nhập, chọn khách hàng'
-						/>
+						>
+							{listCustomer?.data?.map((v: any) => (
+								<Option
+									key={v?.uuid}
+									value={v?.uuid}
+									title={v?.name}
+									onClick={() =>
+										setForm((prev: any) => ({
+											...prev,
+											customerUuid: v?.uuid,
+										}))
+									}
+								/>
+							))}
+						</Select>
 						<div>
 							<Select
 								isSearch
@@ -476,7 +476,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 										onClick={() =>
 											setForm((prev: any) => ({
 												...prev,
-												productTypeUuid: v?.uuid,
+												id: v?.uuid,
 											}))
 										}
 									/>
@@ -497,7 +497,11 @@ function MainUpdateService({}: PropsMainUpdateService) {
 					</div>
 					<div className={clsx('mt', 'col_2')}>
 						<DatePicker
-							label={<span>Ngày dự kiến</span>}
+							label={
+								<span>
+									Ngày dự kiến <span style={{color: 'red'}}>*</span>
+								</span>
+							}
 							value={form.timeIntend}
 							onSetValue={(date) =>
 								setForm((prev: any) => ({

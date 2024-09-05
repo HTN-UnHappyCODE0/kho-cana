@@ -33,7 +33,6 @@ import Select, {Option} from '~/components/common/Select';
 import DatePicker from '~/components/common/DatePicker';
 import ButtonSelectMany from '~/components/common/ButtonSelectMany';
 import TextArea from '~/components/common/Form/components/TextArea';
-import SelectSearch from '~/components/common/SelectSearch';
 import {timeSubmit} from '~/common/funcs/optionConvert';
 import batchBillServices from '~/services/batchBillServices';
 import shipServices from '~/services/shipServices';
@@ -41,7 +40,6 @@ import shipServices from '~/services/shipServices';
 function MainCreateService({}: PropsMainCreateService) {
 	const router = useRouter();
 
-	const [dataCustomer, setDataCustomer] = useState<any>({});
 	const [listTruckChecked, setListTruckChecked] = useState<any[]>([]);
 
 	const [form, setForm] = useState<IFormCreateService>({
@@ -49,8 +47,8 @@ function MainCreateService({}: PropsMainCreateService) {
 		transportType: TYPE_TRANSPORT.DUONG_THUY,
 		timeIntend: new Date(),
 		weightIntent: 0,
-		productTypeUuid: '',
 		customerUuid: '',
+		productTypeUuid: '',
 		documentId: '',
 		description: '',
 		isPrint: 0,
@@ -66,7 +64,7 @@ function MainCreateService({}: PropsMainCreateService) {
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-					typeFind: CONFIG_TYPE_FIND.FILTER,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
 					partnerUUid: '',
 					userUuid: '',
 					status: STATUS_CUSTOMER.HOP_TAC,
@@ -160,9 +158,9 @@ function MainCreateService({}: PropsMainCreateService) {
 					productTypeUuid: form.productTypeUuid,
 					documentId: form.documentId,
 					description: form.description,
-					customerName: form.customerUuid,
-					fromUuid: dataCustomer?.id ? dataCustomer?.id : '',
-					toUuid: dataCustomer?.id ? dataCustomer?.id : '',
+					customerName: '',
+					fromUuid: form.customerUuid,
+					toUuid: form.customerUuid,
 					isPrint: form.isPrint,
 					lstTruckAddUuid: listTruckChecked?.map((v) => v.uuid),
 					lstTruckRemoveUuid: [],
@@ -380,32 +378,18 @@ function MainCreateService({}: PropsMainCreateService) {
 					</div>
 
 					<div className={clsx('mt', 'col_2')}>
-						{/* <SelectSearch
-							options={listCustomer?.data?.map((v: any) => ({
-								id: v?.uuid,
-								name: v?.name,
-							}))}
-							data={dataCustomer}
-							setData={setDataCustomer}
+						<Select
+							isSearch
+							name='customerUuid'
+							placeholder='Chọn khách hàng'
+							value={form?.customerUuid}
 							label={
 								<span>
 									Khách hàng <span style={{color: 'red'}}>*</span>
 								</span>
 							}
-							placeholder='Nhập, chọn khách hàng'
-						/> */}
-						<Select
-							isSearch
-							name='productTypeUuid'
-							placeholder='Chọn loại gỗ'
-							value={form?.productTypeUuid}
-							label={
-								<span>
-									Loại gỗ <span style={{color: 'red'}}>*</span>
-								</span>
-							}
 						>
-							{listProductType?.data?.map((v: any) => (
+							{listCustomer?.data?.map((v: any) => (
 								<Option
 									key={v?.uuid}
 									value={v?.uuid}
@@ -413,7 +397,7 @@ function MainCreateService({}: PropsMainCreateService) {
 									onClick={() =>
 										setForm((prev: any) => ({
 											...prev,
-											productTypeUuid: v?.uuid,
+											customerUuid: v?.uuid,
 										}))
 									}
 								/>

@@ -662,7 +662,11 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 							placeholder='Nhập khối lượng dự kiến'
 						/>
 						<DatePicker
-							label={<span>Ngày dự kiến</span>}
+							label={
+								<span>
+									Ngày dự kiến <span style={{color: 'red'}}>*</span>
+								</span>
+							}
 							value={form.timeIntend}
 							onSetValue={(date) =>
 								setForm((prev: any) => ({

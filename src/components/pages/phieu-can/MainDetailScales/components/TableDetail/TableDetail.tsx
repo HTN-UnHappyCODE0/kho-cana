@@ -7,7 +7,7 @@ import Pagination from '~/components/common/Pagination';
 import clsx from 'clsx';
 import Search from '~/components/common/Search';
 import {useRouter} from 'next/router';
-import {CONFIG_DESCENDING, CONFIG_PAGING, CONFIG_TYPE_FIND, QUERY_KEY, STATUS_WEIGHT_SESSION} from '~/constants/config/enum';
+import {CONFIG_DESCENDING, CONFIG_PAGING, CONFIG_TYPE_FIND, QUERY_KEY} from '~/constants/config/enum';
 import {useQuery} from '@tanstack/react-query';
 import {httpRequest} from '~/services';
 import Noti from '~/components/common/DataWrapper/components/Noti';
@@ -53,38 +53,6 @@ function TableDetail({}: PropsTableDetail) {
 		enabled: !!_id,
 	});
 
-	const handleChangeCheckBox = (e: any) => {
-		const {checked} = e.target;
-		const {_status, ...rest} = router.query;
-
-		if (checked) {
-			return router.replace(
-				{
-					query: {
-						...router.query,
-						_status: STATUS_WEIGHT_SESSION.CAN_LAN_1,
-					},
-				},
-				undefined,
-				{
-					scroll: false,
-				}
-			);
-		} else {
-			return router.replace(
-				{
-					query: {
-						...rest,
-					},
-				},
-				undefined,
-				{
-					scroll: false,
-				}
-			);
-		}
-	};
-
 	return (
 		<Fragment>
 			<div className={clsx('mt')}>
@@ -92,10 +60,6 @@ function TableDetail({}: PropsTableDetail) {
 					<div className={styles.main_search}>
 						<div className={styles.search}>
 							<Search keyName='_keyword' placeholder='Tìm kiếm theo số phiếu' />
-						</div>
-						<div className={clsx(styles.checkbox_right)}>
-							<input type='checkbox' id='can-lan-1' onChange={handleChangeCheckBox} />
-							<label htmlFor='can-lan-1'>Chỉ hiển thị cân lần 1 </label>
 						</div>
 					</div>
 				</div>

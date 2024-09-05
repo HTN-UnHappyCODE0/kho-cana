@@ -143,7 +143,7 @@ function MainDetailScales({}: PropsMainDetailScales) {
 							</span>
 						</td>
 						<td>
-							<span>Tổng trọng lượng:</span>
+							<span>Tổng khối lượng:</span>
 							<span style={{marginLeft: '6px', fontWeight: 600}}>{convertCoin(detailBatchBill?.weightTotal!) || 0} KG</span>
 						</td>
 					</tr>
