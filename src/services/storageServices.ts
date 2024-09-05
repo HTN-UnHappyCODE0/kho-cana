@@ -77,6 +77,8 @@ const storageServices = {
 			uuid: string;
 			description: string;
 			path: string[];
+			amountKcs: number;
+			dryness: number;
 		},
 		tokenAxios?: any
 	) => {
