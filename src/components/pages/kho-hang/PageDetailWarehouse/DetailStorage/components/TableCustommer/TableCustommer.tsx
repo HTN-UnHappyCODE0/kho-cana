@@ -62,7 +62,7 @@ function TableCustomer({setTotalCustomer}: PropsTableCustomer) {
 							render: (data: IDataTableCustomerStorage, index: number) => <>{index + 1}</>,
 						},
 						{
-							title: 'Khách hàng',
+							title: 'Tên NCC',
 							render: (data: IDataTableCustomerStorage) => <span>{data?.customerUu?.name || '---'}</span>,
 						},
 
