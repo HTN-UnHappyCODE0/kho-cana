@@ -258,12 +258,11 @@ function FormCreateStorage({draggedElements, onClose}: PropsFormCreateStorage) {
 							</FormContext.Consumer>
 						</div>
 					</div>
-
-					<div className={styles.close} onClick={onClose}>
-						<IoClose />
-					</div>
 				</div>
 			</Form>
+			<div className={styles.close} onClick={onClose}>
+				<IoClose />
+			</div>
 		</div>
 	);
 }
