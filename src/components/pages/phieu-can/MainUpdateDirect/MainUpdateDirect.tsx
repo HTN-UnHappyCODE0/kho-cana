@@ -345,8 +345,8 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 							type='text'
 							isMoney
 							unit='KG'
-							label={<span>Tổng trọng lượng hàng</span>}
-							placeholder='Nhập tổng trọng lượng hàng'
+							label={<span>Tổng khối lượng hàng</span>}
+							placeholder='Nhập tổng khối lượng hàng'
 						/>
 						<DatePicker
 							readonly={true}
@@ -698,8 +698,8 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 							type='text'
 							isMoney
 							unit='KG'
-							label={<span>Trọng lượng</span>}
-							placeholder='Nhập trọng lượng'
+							label={<span>Khối lượng</span>}
+							placeholder='Nhập khối lượng'
 						/>
 						<DatePicker
 							label={<span>Ngày</span>}

@@ -46,6 +46,7 @@ export interface IDetailStorage {
 	totalAmountIn: number;
 	totalAmountOut: number;
 	totalAmountMt: number;
+	totalAmountBdmt: number;
 	listSpecValue: {
 		criteriaUu: {
 			uuid: string;

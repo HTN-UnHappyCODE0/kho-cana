@@ -149,8 +149,8 @@ function DetailStorage({}: PropsDetailStorage) {
 			<div className={'mt'}>
 				<GridColumn col_4>
 					<DetailBox
-						name={'Tổng khối lượng hàng'}
-						value={Number(detailStorage?.totalAmountMt)}
+						name={'Tổng khối lượng quy khô'}
+						value={Number(detailStorage?.totalAmountBdmt)}
 						action={
 							<div className={styles.action}>
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />

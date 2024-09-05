@@ -50,6 +50,7 @@ function MainCreateService({}: PropsMainCreateService) {
 		timeIntend: new Date(),
 		weightIntent: 0,
 		productTypeUuid: '',
+		customerUuid: '',
 		documentId: '',
 		description: '',
 		isPrint: 0,
@@ -159,7 +160,7 @@ function MainCreateService({}: PropsMainCreateService) {
 					productTypeUuid: form.productTypeUuid,
 					documentId: form.documentId,
 					description: form.description,
-					customerName: !dataCustomer?.id ? dataCustomer?.name : '',
+					customerName: form.customerUuid,
 					fromUuid: dataCustomer?.id ? dataCustomer?.id : '',
 					toUuid: dataCustomer?.id ? dataCustomer?.id : '',
 					isPrint: form.isPrint,
@@ -189,7 +190,7 @@ function MainCreateService({}: PropsMainCreateService) {
 		if (form.transportType == TYPE_TRANSPORT.DUONG_THUY && !form.shipUuid) {
 			return toastWarn({msg: 'Vui lòng chọn tàu!'});
 		}
-		if (!dataCustomer?.id && !dataCustomer?.name) {
+		if (!form.customerUuid) {
 			return toastWarn({msg: 'Vui lòng chọn khách hàng!'});
 		}
 		if (!form.productTypeUuid) {
@@ -379,7 +380,7 @@ function MainCreateService({}: PropsMainCreateService) {
 					</div>
 
 					<div className={clsx('mt', 'col_2')}>
-						<SelectSearch
+						{/* <SelectSearch
 							options={listCustomer?.data?.map((v: any) => ({
 								id: v?.uuid,
 								name: v?.name,
@@ -392,7 +393,32 @@ function MainCreateService({}: PropsMainCreateService) {
 								</span>
 							}
 							placeholder='Nhập, chọn khách hàng'
-						/>
+						/> */}
+						<Select
+							isSearch
+							name='productTypeUuid'
+							placeholder='Chọn loại gỗ'
+							value={form?.productTypeUuid}
+							label={
+								<span>
+									Loại gỗ <span style={{color: 'red'}}>*</span>
+								</span>
+							}
+						>
+							{listProductType?.data?.map((v: any) => (
+								<Option
+									key={v?.uuid}
+									value={v?.uuid}
+									title={v?.name}
+									onClick={() =>
+										setForm((prev: any) => ({
+											...prev,
+											productTypeUuid: v?.uuid,
+										}))
+									}
+								/>
+							))}
+						</Select>
 						<div>
 							<Select
 								isSearch
