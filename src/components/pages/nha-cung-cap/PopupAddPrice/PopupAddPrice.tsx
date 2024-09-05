@@ -20,7 +20,6 @@ import {
 } from '~/constants/config/enum';
 import {httpRequest} from '~/services';
 import wareServices from '~/services/wareServices';
-import SelectSearch from '~/components/common/SelectSearch';
 import {toastWarn} from '~/common/funcs/toast';
 import {useRouter} from 'next/router';
 import Loading from '~/components/common/Loading';
@@ -42,7 +41,7 @@ function PopupAddPrice({typeCustomer, customerName, onClose}: PropsPopupAddPrice
 	}>({
 		specUuid: '',
 		productTypeUuid: '',
-		state: CONFIG_STATE_SPEC_CUSTOMER.CHUA_CUNG_CAP,
+		state: CONFIG_STATE_SPEC_CUSTOMER.DANG_CUNG_CAP,
 		customerName: customerName,
 		transportType: '',
 	});
