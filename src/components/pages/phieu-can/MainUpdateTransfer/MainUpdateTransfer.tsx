@@ -60,6 +60,8 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 		weightTotal: 0,
 		timeEnd: null,
 		timeStart: null,
+		code: '',
+		isBatch: TYPE_BATCH.CAN_LO,
 	});
 
 	useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -89,6 +91,8 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 					weightTotal: convertCoin(data?.weightTotal!),
 					timeStart: data?.timeStart,
 					timeEnd: data?.timeEnd,
+					code: data?.code,
+					isBatch: data?.isBatch,
 				});
 
 				setListTruckChecked(
@@ -276,7 +280,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 					transportType: form.transportType,
 					timeIntend: form?.timeIntend ? moment(form?.timeIntend!).format('YYYY-MM-DD') : null,
 					weightIntent: price(form?.weightIntent),
-					isBatch: TYPE_BATCH.CAN_LO,
+					isBatch: form?.isBatch,
 					isCreateBatch: 1,
 					isSift: form.isSift != null ? form.isSift : TYPE_SIFT.KHONG_CAN_SANG,
 					scalesType: TYPE_SCALES.CAN_CHUYEN_KHO,
@@ -336,7 +340,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>
-						<h4>Chỉnh sửa phiếu cân chuyển kho</h4>
+						<h4>Chỉnh sửa phiếu cân chuyển kho #{form.code}</h4>
 						<p>Điền đầy đủ các thông tin phiếu cân chuyển kho</p>
 					</div>
 					<div className={styles.right}>

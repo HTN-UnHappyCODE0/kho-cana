@@ -338,6 +338,9 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 		if (listTruckChecked.length == 0) {
 			return toastWarn({msg: 'Vui lòng chọn xe hàng!'});
 		}
+		if (!form.timeIntend) {
+			return toastWarn({msg: 'Vui lòng chọn ngày dự kiến!'});
+		}
 		if (form.timeIntend) {
 			const today = new Date(timeSubmit(new Date())!);
 			const timeIntend = new Date(form.timeIntend);

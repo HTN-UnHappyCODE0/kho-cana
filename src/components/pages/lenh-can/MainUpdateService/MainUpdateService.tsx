@@ -33,6 +33,7 @@ import Select, {Option} from '~/components/common/Select';
 import DatePicker from '~/components/common/DatePicker';
 import ButtonSelectMany from '~/components/common/ButtonSelectMany';
 import TextArea from '~/components/common/Form/components/TextArea';
+import SelectSearch from '~/components/common/SelectSearch';
 import {timeSubmit} from '~/common/funcs/optionConvert';
 import batchBillServices from '~/services/batchBillServices';
 import {IDetailBatchBill} from '../MainDetailBill/interfaces';
@@ -53,11 +54,11 @@ function MainUpdateService({}: PropsMainUpdateService) {
 		transportType: TYPE_TRANSPORT.DUONG_THUY,
 		timeIntend: '',
 		weightIntent: 0,
-		customerUuid: '',
 		productTypeUuid: '',
 		documentId: '',
 		description: '',
 		isPrint: 0,
+		customerUuid: '',
 	});
 
 	useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -76,11 +77,11 @@ function MainUpdateService({}: PropsMainUpdateService) {
 					shipUuid: data?.batchsUu?.shipUu?.uuid || '',
 					timeIntend: data?.batchsUu?.timeIntend,
 					weightIntent: convertCoin(data?.batchsUu?.weightIntent),
-					customerUuid: data?.fromUu?.uuid,
 					productTypeUuid: data?.productTypeUu?.uuid,
 					documentId: data?.documentId,
 					description: data?.description,
 					isPrint: data?.isPrint,
+					customerUuid: data?.fromUu?.uuid,
 				});
 
 				setListTruckChecked(
@@ -112,7 +113,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					typeFind: CONFIG_TYPE_FIND.FILTER,
 					partnerUUid: '',
 					userUuid: '',
 					status: STATUS_CUSTOMER.HOP_TAC,
@@ -241,6 +242,9 @@ function MainUpdateService({}: PropsMainUpdateService) {
 		}
 		if (listTruckChecked.length == 0) {
 			return toastWarn({msg: 'Vui lòng chọn xe hàng!'});
+		}
+		if (!form.timeIntend) {
+			return toastWarn({msg: 'Vui lòng chọn ngày dự kiến!'});
 		}
 		if (form.timeIntend) {
 			const today = new Date(timeSubmit(new Date())!);
@@ -438,7 +442,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 							value={form?.customerUuid}
 							label={
 								<span>
-									Khách hàng <span style={{color: 'red'}}>*</span>
+									khách hàng <span style={{color: 'red'}}>*</span>
 								</span>
 							}
 						>
@@ -456,6 +460,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 								/>
 							))}
 						</Select>
+
 						<div>
 							<Select
 								isSearch
@@ -476,7 +481,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 										onClick={() =>
 											setForm((prev: any) => ({
 												...prev,
-												id: v?.uuid,
+												productTypeUuid: v?.uuid,
 											}))
 										}
 									/>

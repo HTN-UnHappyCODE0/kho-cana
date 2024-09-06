@@ -33,6 +33,7 @@ import Select, {Option} from '~/components/common/Select';
 import DatePicker from '~/components/common/DatePicker';
 import ButtonSelectMany from '~/components/common/ButtonSelectMany';
 import TextArea from '~/components/common/Form/components/TextArea';
+import SelectSearch from '~/components/common/SelectSearch';
 import {timeSubmit} from '~/common/funcs/optionConvert';
 import batchBillServices from '~/services/batchBillServices';
 import shipServices from '~/services/shipServices';
@@ -47,9 +48,9 @@ function MainCreateService({}: PropsMainCreateService) {
 		transportType: TYPE_TRANSPORT.DUONG_THUY,
 		timeIntend: new Date(),
 		weightIntent: 0,
-		customerUuid: '',
 		productTypeUuid: '',
 		documentId: '',
+		customerUuid: '',
 		description: '',
 		isPrint: 0,
 	});
@@ -64,7 +65,7 @@ function MainCreateService({}: PropsMainCreateService) {
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					typeFind: CONFIG_TYPE_FIND.FILTER,
 					partnerUUid: '',
 					userUuid: '',
 					status: STATUS_CUSTOMER.HOP_TAC,
@@ -184,7 +185,6 @@ function MainCreateService({}: PropsMainCreateService) {
 		if (today > timeIntend) {
 			return toastWarn({msg: 'Ngày dự kiến không hợp lệ!'});
 		}
-
 		if (form.transportType == TYPE_TRANSPORT.DUONG_THUY && !form.shipUuid) {
 			return toastWarn({msg: 'Vui lòng chọn tàu!'});
 		}
@@ -403,6 +403,7 @@ function MainCreateService({}: PropsMainCreateService) {
 								/>
 							))}
 						</Select>
+
 						<div>
 							<Select
 								isSearch
