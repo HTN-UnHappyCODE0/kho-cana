@@ -14,4 +14,6 @@ export interface IFormUpdateService {
 	weightTotal: number | string;
 	timeStart: string | null;
 	timeEnd: string | null;
+	code: string;
+	isBatch: number;
 }

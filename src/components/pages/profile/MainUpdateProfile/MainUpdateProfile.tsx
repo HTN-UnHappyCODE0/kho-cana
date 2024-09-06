@@ -25,6 +25,7 @@ import AvatarChange from '~/components/common/AvatarChange';
 import {useSelector} from 'react-redux';
 import {RootState, store} from '~/redux/store';
 import {setInfoUser} from '~/redux/reducer/user';
+import uploadImageService from '~/services/uploadService';
 
 function MainUpdateProfile({}: PropsMainUpdateProfile) {
 	const router = useRouter();
@@ -34,7 +35,8 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 	const {infoUser} = useSelector((state: RootState) => state.user);
 
 	const [file, setFile] = useState<any>(null);
-	const [openWarning, setOpenWarning] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(false);
+	// const [openWarning, setOpenWarning] = useState<boolean>(false);
 
 	const [form, setForm] = useState<IFormUpdate>({
 		fullName: '',
@@ -191,7 +193,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 	});
 
 	const funUpdateUser = useMutation({
-		mutationFn: () =>
+		mutationFn: (body: {path: string}) =>
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
@@ -207,7 +209,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 					accountUsername: '',
 					regencyUuid: form.regencyUuid,
 					sex: form.sex,
-					linkImage: '',
+					linkImage: body.path,
 					ownerUuid:
 						form.regencyUuid == listRegency?.data?.find((x: any) => x?.code == REGENCY_NAME['Nhân viên thị trường'])?.uuid
 							? form.ownerUuid
@@ -266,15 +268,31 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 		if (today < birthDay) {
 			return toastWarn({msg: 'Ngày sinh không hợp lệ!'});
 		}
-
-		if (
-			form.provinceOwnerId != userDetails?.provinceOwner?.uuid &&
-			form.regencyUuid == listRegency?.data?.find((x: any) => x?.code == REGENCY_NAME['Nhân viên thị trường'])?.uuid
-		) {
-			return setOpenWarning(true);
+		if (!!file) {
+			const dataImage = await httpRequest({
+				setLoading,
+				isData: true,
+				http: uploadImageService.uploadSingleImage(file),
+			});
+			if (dataImage?.error?.code == 0) {
+				return funUpdateUser.mutate({
+					path: dataImage.data,
+				});
+			} else {
+				return toastWarn({msg: 'Upload ảnh thất bại!'});
+			}
 		} else {
-			return funUpdateUser.mutate();
+			return funUpdateUser.mutate({path: infoUser?.avatar || ''});
 		}
+
+		// if (
+		// 	form.provinceOwnerId != userDetails?.provinceOwner?.uuid &&
+		// 	form.regencyUuid == listRegency?.data?.find((x: any) => x?.code == REGENCY_NAME['Nhân viên thị trường'])?.uuid
+		// ) {
+		// 	return setOpenWarning(true);
+		// } else {
+		// 	return funUpdateUser.mutate();
+		// }
 	};
 
 	return (
@@ -590,7 +608,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 					<TextArea max={5000} placeholder='Nhập ghi chú' name='description' label={<span>Ghi chú</span>} blur={true} />
 				</div>
 			</Form>
-			<DialogWarning
+			{/* <DialogWarning
 				warn
 				open={openWarning}
 				onClose={() => setOpenWarning(false)}
@@ -599,7 +617,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 					'Khi bạn thay đổi khu vực quản lý, toàn bộ dữ liệu của nhân viên sẽ được chuyển sang khu vực mới. Bạn có chắc chắn muốn thay đổi không?'
 				}
 				onSubmit={funUpdateUser.mutate}
-			/>
+			/> */}
 		</div>
 	);
 }

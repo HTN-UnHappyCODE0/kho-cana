@@ -62,6 +62,8 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 		weightTotal: 0,
 		timeEnd: null,
 		timeStart: null,
+		code: '',
+		isBatch: TYPE_BATCH.CAN_LO,
 	});
 
 	useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -92,6 +94,8 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 					weightTotal: convertCoin(data?.weightTotal!),
 					timeStart: data?.timeStart,
 					timeEnd: data?.timeEnd,
+					code: data?.code,
+					isBatch: data?.isBatch,
 				});
 
 				setListTruckChecked(
@@ -267,7 +271,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 					fromUuid: form.fromUuid,
 					toUuid: form?.toUuid,
 					isPrint: form.isPrint,
-					isBatch: TYPE_BATCH.CAN_LO,
+					isBatch: form?.isBatch,
 					shipOutUuid: form.shipOutUuid,
 					lstTruckAddUuid: listTruckChecked
 						.filter((v) => !listTruckBatchBill.some((x) => v.uuid === x.uuid))
@@ -320,7 +324,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>
-						<h4>Chỉnh sửa phiếu cân xuất thẳng</h4>
+						<h4>Chỉnh sửa phiếu cân xuất thẳng #{form.code}</h4>
 						<p>Điền đầy đủ các thông tin phiếu cân xuất thẳng</p>
 					</div>
 					<div className={styles.right}>

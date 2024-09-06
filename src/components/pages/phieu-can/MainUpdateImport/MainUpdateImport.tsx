@@ -65,6 +65,8 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 		weightTotal: 0,
 		timeEnd: null,
 		timeStart: null,
+		code: '',
+		isBatch: TYPE_BATCH.CAN_LO,
 	});
 
 	useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -95,6 +97,8 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					weightTotal: convertCoin(data?.weightTotal!),
 					timeStart: data?.timeStart,
 					timeEnd: data?.timeEnd,
+					isBatch: data?.isBatch,
+					code: data?.code,
 				});
 
 				// SET LIST TRUCK
@@ -237,6 +241,16 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					qualityUuid: '',
 				}),
 			}),
+		onSuccess(data) {
+			if (data) {
+				const listStorage: any[] = [...new Map(data?.map((v: any) => [v?.specUu?.uuid, v])).values()];
+
+				setForm((prev) => ({
+					...prev,
+					toUuid: listStorage?.[0]?.uuid || '',
+				}));
+			}
+		},
 		select(data) {
 			return data;
 		},
@@ -277,7 +291,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					shipUuid: form?.shipUuid,
 					timeIntend: form?.timeIntend ? moment(form?.timeIntend!).format('YYYY-MM-DD') : null,
 					weightIntent: price(form?.weightIntent),
-					isBatch: TYPE_BATCH.CAN_LO,
+					isBatch: form?.isBatch,
 					isSift: form.isSift != null ? form.isSift : TYPE_SIFT.KHONG_CAN_SANG,
 					scalesType: TYPE_SCALES.CAN_NHAP,
 					specificationsUuid: form.specificationsUuid,
@@ -340,7 +354,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>
-						<h4>Chỉnh sửa phiếu cân nhập</h4>
+						<h4>Chỉnh sửa phiếu cân nhập #{form.code}</h4>
 						<p>Điền đầy đủ các thông tin phiếu cân nhập</p>
 					</div>
 					<div className={styles.right}>
@@ -710,7 +724,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 									</span>
 								}
 							>
-								{listStorage?.data?.map((v: any) => (
+								{[...new Map(listStorage?.data?.map((v: any) => [v?.uuid, v])).values()]?.map((v: any) => (
 									<Option
 										key={v?.uuid}
 										value={v?.uuid}
