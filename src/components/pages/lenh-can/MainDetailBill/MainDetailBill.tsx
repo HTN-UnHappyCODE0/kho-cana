@@ -340,7 +340,7 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 								<div className={styles.item_table}>
 									<p>Thời gian cập nhật:</p>
 									<span>
-										{detailBatchBill?.updatedTime ? (
+										{!!detailBatchBill?.accountUpdateUu && detailBatchBill?.updatedTime ? (
 											<Moment date={detailBatchBill?.updatedTime} format='HH:mm, DD/MM/YYYY' />
 										) : (
 											'---'
@@ -434,11 +434,11 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 								),
 							},
 							{
-								title: 'Khối lượng nhỏ nhất (KG)',
+								title: 'Khối lượng nhỏ nhất (Tấn)',
 								render: (data: any) => <>{convertCoin(data?.minWeight) || '---'}</>,
 							},
 							{
-								title: 'Khối lượng lớn nhất (KG)',
+								title: 'Khối lượng lớn nhất (Tấn)',
 								render: (data: any) => <>{convertCoin(data?.maxWeight) || '---'}</>,
 							},
 							{

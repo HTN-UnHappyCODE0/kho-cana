@@ -33,7 +33,6 @@ import Select, {Option} from '~/components/common/Select';
 import DatePicker from '~/components/common/DatePicker';
 import ButtonSelectMany from '~/components/common/ButtonSelectMany';
 import TextArea from '~/components/common/Form/components/TextArea';
-import SelectSearch from '~/components/common/SelectSearch';
 import {timeSubmit} from '~/common/funcs/optionConvert';
 import batchBillServices from '~/services/batchBillServices';
 import {IDetailBatchBill} from '../MainDetailBill/interfaces';
@@ -59,6 +58,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 		description: '',
 		isPrint: 0,
 		customerUuid: '',
+		code: '',
 	});
 
 	useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -82,6 +82,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 					description: data?.description,
 					isPrint: data?.isPrint,
 					customerUuid: data?.fromUu?.uuid,
+					code: data?.code,
 				});
 
 				setListTruckChecked(
@@ -264,7 +265,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>
-						<h4>Chỉnh sửa lệnh cân dịch vụ dự kiến</h4>
+						<h4>Chỉnh sửa lệnh cân dịch vụ dự kiến #{form.code}</h4>
 						<p>Điền đầy đủ các thông tin lệnh cân dịch vụ dự kiến</p>
 					</div>
 					<div className={styles.right}>

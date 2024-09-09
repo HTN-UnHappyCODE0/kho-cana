@@ -349,15 +349,15 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 								),
 							},
 							{
-								title: 'KL 1 (KG)',
+								title: 'KL 1 (Tấn)',
 								render: (data: IWeightSession) => <>{convertCoin(data?.weight1?.weight)}</>,
 							},
 							{
-								title: 'KL 2 (KG)',
+								title: 'KL 2 (Tấn)',
 								render: (data: IWeightSession) => <>{convertCoin(data?.weight2?.weight)}</>,
 							},
 							{
-								title: 'KL hàng (KG)',
+								title: 'KL hàng (Tấn)',
 								render: (data: IWeightSession) => <>{convertCoin(data?.weightReal)}</>,
 							},
 							{

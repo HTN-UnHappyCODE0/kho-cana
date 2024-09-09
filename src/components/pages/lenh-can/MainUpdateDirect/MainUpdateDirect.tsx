@@ -60,6 +60,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 		fromUuid: '',
 		toUuid: '',
 		isPrint: 0,
+		code: '',
 	});
 
 	useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -87,6 +88,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 					documentId: data?.documentId,
 					shipUuid: data?.batchsUu?.shipUu?.uuid || '',
 					shipOutUuid: data?.batchsUu?.shipOutUu?.uuid || '',
+					code: data?.code,
 				});
 
 				setListTruckChecked(
@@ -169,14 +171,14 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 					typeFind: CONFIG_TYPE_FIND.TABLE,
 					status: CONFIG_STATUS.HOAT_DONG,
 					state: 1,
-					customerUuid: form.fromUuid,
 					priceTagUuid: '',
+					customerUuid: form.fromUuid,
 					productTypeUuid: '',
 					specUuid: '',
 				}),
 			}),
 		onSuccess(data) {
-			if (data) {
+			if (data && !form.productTypeUuid && !form.specificationsUuid) {
 				const listspecUu: any[] = [...new Map(data?.map((v: any) => [v?.specUu?.uuid, v])).values()];
 				const listProductTypeUu: any[] = [...new Map(data?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()];
 
@@ -316,7 +318,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>
-						<h4>Chỉnh sửa lệnh cân xuất thẳng dự kiến</h4>
+						<h4>Chỉnh sửa lệnh cân xuất thẳng dự kiến #{form.code}</h4>
 						<p>Điền đầy đủ các thông tin lệnh cân xuất thẳng dự kiến</p>
 					</div>
 					<div className={styles.right}>

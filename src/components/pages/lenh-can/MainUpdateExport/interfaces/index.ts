@@ -16,4 +16,5 @@ export interface IFormUpdateExport {
 	timeIntend: string;
 	documentId: string;
 	description: string;
+	code: string;
 }

@@ -77,7 +77,11 @@ function TableListStorage({}: PropsTableListStorage) {
 						// 	render: (data: IDataListStorage) => <span>{data?.countCustomer || 0}</span>,
 						// },
 						{
-							title: 'Tổng lượng hàng',
+							title: 'TL tươi (Tấn)',
+							render: (data: IDataListStorage) => <span style={{color: '#2A85FF'}}>{convertCoin(data?.totalAmountMt)}</span>,
+						},
+						{
+							title: 'TL quy khô (Tấn)',
 							render: (data: IDataListStorage) => (
 								<span style={{color: '#2A85FF'}}>{convertCoin(data?.totalAmountBdmt)}</span>
 							),

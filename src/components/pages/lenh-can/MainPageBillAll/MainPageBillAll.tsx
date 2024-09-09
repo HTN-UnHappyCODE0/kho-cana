@@ -355,7 +355,7 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 								),
 							},
 							{
-								title: 'KL dự kiến (KG)',
+								title: 'KL dự kiến (Tấn)',
 								render: (data: IDataBill) => <>{convertCoin(data?.batchsUu?.weightIntent) || '---'}</>,
 							},
 							{

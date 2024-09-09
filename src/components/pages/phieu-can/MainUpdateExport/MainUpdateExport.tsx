@@ -66,8 +66,8 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 		weightTotal: 0,
 		timeEnd: null,
 		timeStart: null,
-		isBath: TYPE_BATCH.CAN_LO,
 		code: '',
+		isBatch: TYPE_BATCH.CAN_LO,
 	});
 
 	useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -98,8 +98,8 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 					weightTotal: convertCoin(data?.weightTotal!),
 					timeStart: data?.timeStart,
 					timeEnd: data?.timeEnd,
-					isBath: data?.isBatch,
 					code: data?.code,
+					isBatch: data?.isBatch,
 				});
 
 				// SET LIST TRUCK
@@ -239,12 +239,22 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.TABLE,
-					specificationsUuid: '',
 					warehouseUuid: form.warehouseUuid,
-					productUuid: '',
+					specificationsUuid: form.specificationsUuid,
+					productUuid: form.productTypeUuid,
 					qualityUuid: '',
 				}),
 			}),
+		onSuccess(data) {
+			if (data) {
+				setForm((prev) => ({
+					...prev,
+					fromUuid: data?.[0]?.uuid || '',
+					productTypeUuid: data?.[0]?.productUu?.uuid || '',
+					specificationsUuid: data?.[0]?.specificationsUu?.uuid || '',
+				}));
+			}
+		},
 		select(data) {
 			return data;
 		},
@@ -294,7 +304,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 					fromUuid: form.fromUuid,
 					toUuid: form?.toUuid,
 					isPrint: form.isPrint,
-					isBatch: form.isBath,
+					isBatch: form.isBatch,
 					shipOutUuid: '',
 					lstTruckAddUuid: listTruckChecked
 						.filter((v) => !listTruckBatchBill.some((x) => v.uuid === x.uuid))
@@ -641,6 +651,8 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 											...prev,
 											warehouseUuid: v?.uuid,
 											fromUuid: '',
+											specificationsUuid: '',
+											productTypeUuid: '',
 										}))
 									}
 								/>

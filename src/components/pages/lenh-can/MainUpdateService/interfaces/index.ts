@@ -12,4 +12,5 @@ export interface IFormUpdateService {
 	documentId: string;
 	description: string;
 	customerUuid: string;
+	code: string;
 }
