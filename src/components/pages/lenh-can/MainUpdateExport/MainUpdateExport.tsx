@@ -64,6 +64,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 		fromUuid: '',
 		toUuid: '',
 		isPrint: 0,
+		code: '',
 	});
 
 	useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -91,6 +92,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 					fromUuid: data?.fromUu?.uuid,
 					toUuid: data?.toUu?.uuid,
 					isPrint: data?.isPrint,
+					code: data?.code,
 				});
 
 				// SET LIST TRUCK
@@ -230,9 +232,9 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.TABLE,
-					specificationsUuid: '',
 					warehouseUuid: form.warehouseUuid,
-					productUuid: '',
+					specificationsUuid: form.specificationsUuid,
+					productUuid: form.productTypeUuid,
 					qualityUuid: '',
 				}),
 			}),
@@ -359,7 +361,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>
-						<h4>Chỉnh sửa lệnh cân xuất dự kiến</h4>
+						<h4>Chỉnh sửa lệnh cân xuất dự kiến #{form.code}</h4>
 						<p>Điền đầy đủ các thông tin lệnh cân</p>
 					</div>
 					<div className={styles.right}>
@@ -617,6 +619,8 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 											...prev,
 											warehouseUuid: v?.uuid,
 											fromUuid: '',
+											specificationsUuid: '',
+											productTypeUuid: '',
 										}))
 									}
 								/>

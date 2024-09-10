@@ -87,7 +87,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					specificationsUuid: data?.specificationsUu?.uuid,
 					warehouseUuid: data?.toUu?.parentUu?.uuid || '',
 					productTypeUuid: data?.productTypeUu?.uuid,
-					documentId: data?.documentId,
+					documentId: data?.documentId || '',
 					description: data?.description,
 					fromUuid: data?.fromUu?.uuid,
 					toUuid: data?.toUu?.uuid,
@@ -97,8 +97,8 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					weightTotal: convertCoin(data?.weightTotal!),
 					timeStart: data?.timeStart,
 					timeEnd: data?.timeEnd,
-					isBatch: data?.isBatch,
 					code: data?.code,
+					isBatch: data?.isBatch,
 				});
 
 				// SET LIST TRUCK
@@ -158,14 +158,14 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					typeFind: CONFIG_TYPE_FIND.TABLE,
 					status: CONFIG_STATUS.HOAT_DONG,
 					state: 1,
-					customerUuid: form.fromUuid,
 					priceTagUuid: '',
+					customerUuid: form.fromUuid,
 					productTypeUuid: '',
 					specUuid: '',
 				}),
 			}),
 		onSuccess(data) {
-			if (data) {
+			if (data && !form.productTypeUuid && !form.specificationsUuid) {
 				const listspecUu: any[] = [...new Map(data?.map((v: any) => [v?.specUu?.uuid, v])).values()];
 				const listProductTypeUu: any[] = [...new Map(data?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()];
 
@@ -223,7 +223,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 		},
 	});
 
-	const listStorage = useQuery([QUERY_KEY.dropdown_bai, form.warehouseUuid], {
+	const listStorage = useQuery([QUERY_KEY.dropdown_bai, form.warehouseUuid, form.specificationsUuid], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -235,7 +235,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
-					specificationsUuid: '',
+					specificationsUuid: form.specificationsUuid,
 					warehouseUuid: form.warehouseUuid,
 					productUuid: '',
 					qualityUuid: '',
@@ -291,7 +291,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					shipUuid: form?.shipUuid,
 					timeIntend: form?.timeIntend ? moment(form?.timeIntend!).format('YYYY-MM-DD') : null,
 					weightIntent: price(form?.weightIntent),
-					isBatch: form?.isBatch,
+					isBatch: form.isBatch,
 					isSift: form.isSift != null ? form.isSift : TYPE_SIFT.KHONG_CAN_SANG,
 					scalesType: TYPE_SCALES.CAN_NHAP,
 					specificationsUuid: form.specificationsUuid,
@@ -651,6 +651,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 										setForm((prev: any) => ({
 											...prev,
 											productTypeUuid: v?.productTypeUu?.uuid,
+											toUuid: '',
 										}))
 									}
 								/>
@@ -677,6 +678,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 											setForm((prev: any) => ({
 												...prev,
 												specificationsUuid: v?.specUu?.uuid,
+												toUuid: '',
 											}))
 										}
 									/>

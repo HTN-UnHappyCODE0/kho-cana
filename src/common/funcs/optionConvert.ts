@@ -65,7 +65,13 @@ export function getTextAddress(detailAddress: any, address?: string): string {
 	}
 }
 
-export function getFromToBatchBill(data: {scalesType: TYPE_SCALES; fromUu?: any; toUu?: any; customerUu?: any}): {
+export function getFromToBatchBill(data: {
+	scalesType: TYPE_SCALES;
+	fromUu?: any;
+	toUu?: any;
+	customerUu?: any;
+	customerName?: string | null;
+}): {
 	from: string;
 	to: string;
 } {
@@ -85,7 +91,7 @@ export function getFromToBatchBill(data: {scalesType: TYPE_SCALES; fromUu?: any;
 
 	if (data.scalesType == TYPE_SCALES.CAN_DICH_VU) {
 		return {
-			from: data?.customerUu?.name || data?.fromUu?.name || '---',
+			from: data?.customerName || data?.customerUu?.name || data?.fromUu?.name || '---',
 			to: data?.toUu?.name || '---',
 		};
 	}
@@ -96,15 +102,18 @@ export function getFromToBatchBill(data: {scalesType: TYPE_SCALES; fromUu?: any;
 			to: data?.toUu?.name || '---',
 		};
 	}
-
-	if (data.scalesType == TYPE_SCALES.CAN_TRUC_TIEP) {
-		return {
-			from: data?.fromUu?.name || '---',
-			to: data?.toUu?.name || '---',
-		};
-	}
 	return {
 		from: '---',
 		to: '---',
 	};
+}
+
+export function convertWeight(weight: number | null) {
+	if (!weight) {
+		return 0;
+	}
+
+	const weightConver = weight / 1000;
+
+	return weightConver.toFixed(2);
 }

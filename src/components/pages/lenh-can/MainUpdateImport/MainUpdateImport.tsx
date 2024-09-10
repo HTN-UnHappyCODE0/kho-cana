@@ -63,6 +63,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 		fromUuid: '',
 		toUuid: '',
 		isPrint: 0,
+		code: '',
 	});
 
 	useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -85,11 +86,12 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					specificationsUuid: data?.specificationsUu?.uuid,
 					warehouseUuid: data?.toUu?.parentUu?.uuid || '',
 					productTypeUuid: data?.productTypeUu?.uuid,
-					documentId: data?.documentId,
+					documentId: data?.documentId || '',
 					description: data?.description,
 					fromUuid: data?.fromUu?.uuid,
 					toUuid: data?.toUu?.uuid,
 					isPrint: data?.isPrint,
+					code: data?.code,
 				});
 
 				// SET LIST TRUCK
@@ -149,14 +151,14 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					typeFind: CONFIG_TYPE_FIND.TABLE,
 					status: CONFIG_STATUS.HOAT_DONG,
 					state: 1,
-					customerUuid: form.fromUuid,
 					priceTagUuid: '',
+					customerUuid: form.fromUuid,
 					productTypeUuid: '',
 					specUuid: '',
 				}),
 			}),
 		onSuccess(data) {
-			if (data) {
+			if (data && !form.productTypeUuid && !form.specificationsUuid) {
 				const listspecUu: any[] = [...new Map(data?.map((v: any) => [v?.specUu?.uuid, v])).values()];
 				const listProductTypeUu: any[] = [...new Map(data?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()];
 
@@ -354,7 +356,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>
-						<h4>Chỉnh sửa lệnh cân nhập dự kiến</h4>
+						<h4>Chỉnh sửa lệnh cân nhập dự kiến #{form.code}</h4>
 						<p>Điền đầy đủ các thông tin lệnh cân nhập dự kiến</p>
 					</div>
 					<div className={styles.right}>

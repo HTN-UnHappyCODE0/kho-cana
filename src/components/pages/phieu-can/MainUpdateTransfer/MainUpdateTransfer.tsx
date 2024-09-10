@@ -236,6 +236,14 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 					warehouseUuid: form.warehouseFromUuid,
 				}),
 			}),
+		onSuccess(data) {
+			if (data && !form?.fromUuid) {
+				setForm((prev) => ({
+					...prev,
+					fromUuid: data?.[0]?.uuid || '',
+				}));
+			}
+		},
 		select(data) {
 			return data;
 		},
@@ -254,12 +262,22 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.TABLE,
-					productUuid: '',
 					qualityUuid: '',
+					productUuid: form.productTypeUuid,
+					specificationsUuid: form.specificationsUuid,
 					warehouseUuid: form.warehouseToUuid,
-					specificationsUuid: '',
 				}),
 			}),
+		onSuccess(data) {
+			if (data) {
+				setForm((prev) => ({
+					...prev,
+					toUuid: data?.filter((x: any) => x?.uuid != form?.fromUuid)?.[0]?.uuid || '',
+					productTypeUuid: data?.filter((x: any) => x?.uuid != form?.fromUuid)?.[0]?.productUu?.uuid,
+					specificationsUuid: data?.filter((x: any) => x?.uuid != form?.fromUuid)?.[0]?.specificationsUu?.uuid,
+				}));
+			}
+		},
 		select(data) {
 			return data;
 		},
@@ -280,7 +298,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 					transportType: form.transportType,
 					timeIntend: form?.timeIntend ? moment(form?.timeIntend!).format('YYYY-MM-DD') : null,
 					weightIntent: price(form?.weightIntent),
-					isBatch: form?.isBatch,
+					isBatch: form.isBatch,
 					isCreateBatch: 1,
 					isSift: form.isSift != null ? form.isSift : TYPE_SIFT.KHONG_CAN_SANG,
 					scalesType: TYPE_SCALES.CAN_CHUYEN_KHO,
@@ -633,6 +651,8 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 											...prev,
 											warehouseToUuid: v?.uuid,
 											toUuid: '',
+											specificationsUuid: '',
+											productTypeUuid: '',
 										}))
 									}
 								/>
@@ -733,11 +753,11 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 							type='text'
 							isMoney
 							unit='KG'
-							label={<span>Trọng lượng dự kiến</span>}
-							placeholder='Nhập trọng lượng dự kiến'
+							label={<span>Khối lượng dự kiến</span>}
+							placeholder='Nhập khối lượng dự kiến'
 						/>
 						<DatePicker
-							label={<span>Ngày dự kiến</span>}
+							label={<span>Ngày dự kiến </span>}
 							value={form.timeIntend}
 							onSetValue={(date) =>
 								setForm((prev: any) => ({

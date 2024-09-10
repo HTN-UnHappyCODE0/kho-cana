@@ -15,4 +15,5 @@ export interface IFormUpdateTransfer {
 	timeIntend: string;
 	weightIntent: number | string;
 	description: string;
+	code: string;
 }

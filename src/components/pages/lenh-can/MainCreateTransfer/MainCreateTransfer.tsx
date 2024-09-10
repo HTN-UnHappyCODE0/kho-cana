@@ -212,9 +212,9 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 			if (data) {
 				setForm((prev) => ({
 					...prev,
-					toUuid: data?.[0]?.uuid || '',
-					productTypeUuid: data?.[0]?.productUu?.uuid,
-					specificationsUuid: data?.[0]?.specificationsUu?.uuid,
+					toUuid: data?.filter((x: any) => x?.uuid != form?.fromUuid)?.[0]?.uuid || '',
+					productTypeUuid: data?.filter((x: any) => x?.uuid != form?.fromUuid)?.[0]?.productUu?.uuid,
+					specificationsUuid: data?.filter((x: any) => x?.uuid != form?.fromUuid)?.[0]?.specificationsUu?.uuid,
 				}));
 			}
 		},
