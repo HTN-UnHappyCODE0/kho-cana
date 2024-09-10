@@ -139,7 +139,6 @@ function DetailWarehouse({}: PropsDetailWarehouse) {
 					/> */}
 					<DetailBox
 						name={'Tổng khối lượng quy khô'}
-						unit='Tấn'
 						value={detailWarehouse?.totalAmountBDMT!}
 						action={
 							<div className={styles.action}>
@@ -157,7 +156,6 @@ function DetailWarehouse({}: PropsDetailWarehouse) {
 					/>
 					<DetailBox
 						name={' Khối lượng nhập'}
-						unit='Tấn'
 						value={detailWarehouse?.totalAmountIn!}
 						action={
 							<div className={styles.action}>
@@ -175,7 +173,6 @@ function DetailWarehouse({}: PropsDetailWarehouse) {
 					/>
 					<DetailBox
 						name={'Khối lượng xuất'}
-						unit='Tấn'
 						value={detailWarehouse?.totalAmountOut!}
 						action={
 							<div className={styles.action}>
