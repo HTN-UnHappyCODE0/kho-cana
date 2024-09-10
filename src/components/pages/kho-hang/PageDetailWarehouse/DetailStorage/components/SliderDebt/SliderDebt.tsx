@@ -39,7 +39,7 @@ function SliderDebt({listImage = []}: PropsSliderDebt) {
 					{listImage?.map((v, index) => (
 						<div className={styles.container_image} key={index}>
 							<Image
-								src={`${process.env.NEXT_PUBLIC_IMAGE}${v}`}
+								src={`${process.env.NEXT_PUBLIC_IMAGE}/${v}`}
 								alt='image slider'
 								layout='fill'
 								objectFit='contain'
