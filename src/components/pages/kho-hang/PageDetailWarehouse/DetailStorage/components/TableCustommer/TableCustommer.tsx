@@ -3,7 +3,6 @@ import {useRouter} from 'next/router';
 import React, {Fragment} from 'react';
 
 import Table from '~/components/common/Table';
-import {convertCoin} from '~/common/funcs/convertCoin';
 import Pagination from '~/components/common/Pagination';
 import DataWrapper from '~/components/common/DataWrapper';
 
@@ -15,6 +14,7 @@ import {httpRequest} from '~/services';
 import Noti from '~/components/common/DataWrapper/components/Noti';
 import Link from 'next/link';
 import storageServices from '~/services/storageServices';
+import {convertCoin} from '~/common/funcs/convertCoin';
 
 function TableCustomer({setTotalCustomer}: PropsTableCustomer) {
 	const router = useRouter();
@@ -63,6 +63,7 @@ function TableCustomer({setTotalCustomer}: PropsTableCustomer) {
 						},
 						{
 							title: 'Tên NCC',
+							fixedLeft: true,
 							render: (data: IDataTableCustomerStorage) => <span>{data?.customerUu?.name || '---'}</span>,
 						},
 
@@ -79,7 +80,7 @@ function TableCustomer({setTotalCustomer}: PropsTableCustomer) {
 							),
 						},
 						{
-							title: 'Sản lượng trong kho',
+							title: 'Lượng quy khô nhập (tấn)',
 							render: (data: IDataTableCustomerStorage) => (
 								<span style={{color: '#2D74FF'}}>{convertCoin(data?.amount)}</span>
 							),
@@ -90,6 +91,7 @@ function TableCustomer({setTotalCustomer}: PropsTableCustomer) {
 						},
 						{
 							title: 'Tác vụ',
+							fixedRight: true,
 							render: (data: IDataTableCustomerStorage) => (
 								<Link href={`/xuong/${data?.customerUu?.uuid}`} className={styles.linkdetail}>
 									Chi tiết

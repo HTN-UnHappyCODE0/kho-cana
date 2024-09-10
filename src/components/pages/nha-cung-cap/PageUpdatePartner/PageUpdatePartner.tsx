@@ -393,7 +393,7 @@ function PageUpdatePartner({}: PropsPageUpdatePartner) {
 										? 'Thuộc khách hàng xuất'
 										: TYPE_PARTNER.KH_DICH_VU === Number(_typeCus)
 										? 'Thuộc khách hàng dịch vụ'
-										: 'Thuộc nhà cung cấp'}{' '}
+										: 'Thuộc đối tác'}{' '}
 									<span style={{color: 'red'}}>*</span>
 								</span>
 							}

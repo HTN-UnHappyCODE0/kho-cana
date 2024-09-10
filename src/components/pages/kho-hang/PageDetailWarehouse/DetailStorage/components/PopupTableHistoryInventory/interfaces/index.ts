@@ -16,6 +16,8 @@ export interface IInventory {
 	};
 	totalAmount: number;
 	description: string;
+	totalAmountBefore: number;
+	totalAmountAfter: number;
 	path: string;
 	status: number;
 	created: string;

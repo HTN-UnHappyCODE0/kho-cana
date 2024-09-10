@@ -42,8 +42,8 @@ function NoteSpecWarehouse({isUpdate, numberElement}: PropsNoteSpecWarehouse) {
 
 			{isUpdate && (
 				<div className={styles.des}>
-					<p>1 đơn vị ô = {convertCoin(WEIGHT_WAREHOUSE)} KG</p>
-					<p>KL kho tạm tính: {convertCoin(WEIGHT_WAREHOUSE * numberElement!)} KG</p>
+					<p>1 đơn vị ô = {convertCoin(WEIGHT_WAREHOUSE)} Tấn</p>
+					<p>KL kho tạm tính: {convertCoin(WEIGHT_WAREHOUSE * numberElement!)} Tấn</p>
 				</div>
 			)}
 		</div>

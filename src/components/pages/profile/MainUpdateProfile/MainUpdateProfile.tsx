@@ -18,7 +18,6 @@ import commonServices from '~/services/commonServices';
 import {toastWarn} from '~/common/funcs/toast';
 import moment from 'moment';
 import {useRouter} from 'next/router';
-import DialogWarning from '~/components/common/DialogWarning';
 import Loading from '~/components/common/Loading';
 import {timeSubmit} from '~/common/funcs/optionConvert';
 import AvatarChange from '~/components/common/AvatarChange';
@@ -274,6 +273,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 				isData: true,
 				http: uploadImageService.uploadSingleImage(file),
 			});
+
 			if (dataImage?.error?.code == 0) {
 				return funUpdateUser.mutate({
 					path: dataImage.data,
@@ -284,20 +284,11 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 		} else {
 			return funUpdateUser.mutate({path: infoUser?.avatar || ''});
 		}
-
-		// if (
-		// 	form.provinceOwnerId != userDetails?.provinceOwner?.uuid &&
-		// 	form.regencyUuid == listRegency?.data?.find((x: any) => x?.code == REGENCY_NAME['Nhân viên thị trường'])?.uuid
-		// ) {
-		// 	return setOpenWarning(true);
-		// } else {
-		// 	return funUpdateUser.mutate();
-		// }
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={funUpdateUser.isLoading} />
+			<Loading loading={funUpdateUser.isLoading || loading} />
 
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>

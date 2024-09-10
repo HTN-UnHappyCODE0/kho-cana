@@ -29,7 +29,7 @@ function TableHistoryWarehouse({}: PropsTableHistoryWarehouse) {
 					pageSize: Number(_pageSize) || 20,
 					keyword: (_keyword as string) || '',
 					isPaging: CONFIG_PAGING.IS_PAGING,
-					isDescending: CONFIG_DESCENDING.IS_DESCENDING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.TABLE,
 					status: null,
 					warehouseUuid: _id as string,
@@ -75,19 +75,19 @@ function TableHistoryWarehouse({}: PropsTableHistoryWarehouse) {
 							},
 
 							{
-								title: 'Khối lượng hàng nhập',
+								title: 'Tổng lượng quy khô nhập (Tấn)',
 								render: (data: IDataTableHistoryWarehouse) => (
 									<span style={{color: '#2D74FF'}}>{convertCoin(data?.amountIn)}</span>
 								),
 							},
 							{
-								title: 'Khối lượng hàng xuất',
+								title: 'Tổng lượng quy khô xuất (Tấn)',
 								render: (data: IDataTableHistoryWarehouse) => (
 									<span style={{color: '#2D74FF'}}>{convertCoin(data?.amountOut)}</span>
 								),
 							},
 							{
-								title: 'Khối lượng chuyển kho',
+								title: 'Tổng lượng quy khô chuyển kho (Tấn)',
 								render: (data: IDataTableHistoryWarehouse) => (
 									<span style={{color: '#2D74FF'}}>
 										{convertCoin(Number(data.amountChangeIn) - Number(data?.amountChangeOut))}

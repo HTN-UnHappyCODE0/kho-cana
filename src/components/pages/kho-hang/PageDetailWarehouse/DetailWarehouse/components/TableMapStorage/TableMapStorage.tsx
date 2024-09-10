@@ -9,10 +9,10 @@ import {QUERY_KEY} from '~/constants/config/enum';
 import {httpRequest} from '~/services';
 import warehouseServices from '~/services/warehouseServices';
 
-import GridTemplateWarehouse from '~/components/pages/kho-hang/GridTemplateWarehouse';
-import NoteSpecWarehouse from '~/components/pages/kho-hang/NoteSpecWarehouse';
-import {IArrayDisabledGrid} from '~/components/pages/kho-hang/GridTemplateWarehouse/interfaces';
 import {calculateDimensions} from '~/common/funcs/convertPositonStorage';
+import {IArrayDisabledGrid} from '../../../../GridTemplateWarehouse/interfaces';
+import GridTemplateWarehouse from '../../../../GridTemplateWarehouse';
+import NoteSpecWarehouse from '../../../../NoteSpecWarehouse';
 
 function TableMapStorage({}: PropsTableMapStorage) {
 	const router = useRouter();

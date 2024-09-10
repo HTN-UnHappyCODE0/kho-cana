@@ -155,12 +155,6 @@ function DetailStorage({}: PropsDetailStorage) {
 							<div className={styles.action}>
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />
 								<div className={styles.note}>
-									{/* <p>
-										Đã KCS: <span>{convertCoin(detailStorage?.amountKcs!)}</span>
-									</p>
-									<p style={{marginTop: 2}}>
-										Chưa KCS: <span>{convertCoin(detailStorage?.amountMt!)}</span>
-									</p> */}
 									<p style={{marginTop: 2}}>
 										Chuẩn: <span>{convertCoin(detailStorage?.amountBdmt!)}</span>
 									</p>
@@ -179,7 +173,7 @@ function DetailStorage({}: PropsDetailStorage) {
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />
 								<div className={styles.note}>
 									<p>
-										Từ NCC: <span>{convertCoin(detailStorage?.amountIn!)}</span>
+										Từ nhà cung cấp: <span>{convertCoin(detailStorage?.amountIn!)}</span>
 									</p>
 									<p style={{marginTop: 2}}>
 										Từ kho: <span>{convertCoin(detailStorage?.amountChangeIn!)}</span>
@@ -196,7 +190,7 @@ function DetailStorage({}: PropsDetailStorage) {
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />
 								<div className={styles.note}>
 									<p>
-										Khách hàng: <span>{convertCoin(detailStorage?.amountOut!)}</span>
+										Khách hàng xuất: <span>{convertCoin(detailStorage?.amountOut!)}</span>
 									</p>
 									<p style={{marginTop: 2}}>
 										Xuất kho: <span>{convertCoin(detailStorage?.amountChangeOut!)}</span>
@@ -258,7 +252,7 @@ function DetailStorage({}: PropsDetailStorage) {
 					</tr>
 					<tr>
 						<td>
-							<span>Tổng khách hàng:</span>
+							<span>Tổng nhà cung cấp:</span>
 							<span style={{marginLeft: '6px', color: '#2A85FF'}}>{totalCustomer}</span>
 						</td>
 						<td rowSpan={3} className={styles.description}>
@@ -287,14 +281,14 @@ function DetailStorage({}: PropsDetailStorage) {
 									placement='top'
 									render={(attrs) => (
 										<div className={styles.main_rule}>
-											{detailStorage?.listSpecValue?.map((v) => (
-												<div key={v?.criteriaUu?.uuid} className={styles.item}>
+											{detailStorage?.listSpecValue?.map((v, i) => (
+												<div key={i} className={styles.item}>
 													<p>{v?.criteriaUu?.title}</p>
 													<p style={{color: '#2D74FF', fontWeight: 600}}>
 														<span style={{marginRight: 4}}>
 															{v?.criteriaUu?.ruler == TYPE_RULER.NHO_HON ? '<' : '>'}
 														</span>
-														{v?.criteriaUu?.value} %
+														{v?.criteriaUu?.value}
 													</p>
 												</div>
 											))}
@@ -319,7 +313,7 @@ function DetailStorage({}: PropsDetailStorage) {
 						{
 							pathname: router.pathname,
 							query: null,
-							title: 'Lịch sử khách hàng',
+							title: 'Lịch sử nhà cung cấp',
 						},
 						{
 							pathname: router.pathname,

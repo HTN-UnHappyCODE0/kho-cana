@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-import {PropsPageConfirmOutput} from './interfaces';
+import {ITableBillScale, PropsPageConfirmOutput} from './interfaces';
 import styles from './PageConfirmOutput.module.scss';
 import Search from '~/components/common/Search';
 import FilterCustom from '~/components/common/FilterCustom';
@@ -26,7 +26,7 @@ import DateRangerCustom from '~/components/common/DateRangerCustom';
 import DataWrapper from '~/components/common/DataWrapper';
 import Noti from '~/components/common/DataWrapper/components/Noti';
 import Table from '~/components/common/Table';
-import {ITableBillScale} from '../../phieu-can/MainPageScalesAll/interfaces';
+// import {ITableBillScale} from '../../phieu-can/MainPageScalesAll/interfaces';
 import Link from 'next/link';
 import {convertCoin} from '~/common/funcs/convertCoin';
 import Pagination from '~/components/common/Pagination';
@@ -232,7 +232,12 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 			<div className={clsx('mt')}>
 				<div className={styles.parameter}>
 					<div>
-						TỔNG KHỐI LƯỢNG: <span style={{color: '#2D74FF', marginLeft: 4}}>{'---'}</span>
+						TỔNG LƯỢNG HÀNG TƯƠI:
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{listBatch?.data?.amountMt || 0} </span>(Tấn)
+					</div>
+					<div>
+						TỔNG LƯỢNG HÀNG QUY KHÔ:
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{listBatch?.data?.amountBdmt || 0} </span>(Tấn)
 					</div>
 				</div>
 			</div>
@@ -318,8 +323,16 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 								),
 							},
 							{
-								title: 'KL hàng (TẤN)',
+								title: 'KL tươi (Tấn)',
 								render: (data: ITableBillScale) => <>{convertCoin(data?.weightTotal) || 0}</>,
+							},
+							{
+								title: 'KL độ khô (Tấn)',
+								render: (data: ITableBillScale) => <>{convertCoin(data?.weightBdmt) || 0}</>,
+							},
+							{
+								title: 'Độ khô (%)',
+								render: (data: ITableBillScale) => <>{convertCoin(data?.drynessAvg) || 0}</>,
 							},
 							{
 								title: 'Xác nhận SL',
