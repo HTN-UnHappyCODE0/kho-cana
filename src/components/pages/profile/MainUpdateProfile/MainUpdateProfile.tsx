@@ -310,7 +310,11 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 					</div>
 				</div>
 				<div className={'mt'}>
-					<AvatarChange path='' name='avatar' onSetFile={(file) => setFile(file)} />
+					<AvatarChange
+						path={`${process.env.NEXT_PUBLIC_IMAGE}/${form?.linkImage}`}
+						name='avatar'
+						onSetFile={(file) => setFile(file)}
+					/>
 				</div>
 				<div className={clsx('col_2', 'mt')}>
 					<Input
