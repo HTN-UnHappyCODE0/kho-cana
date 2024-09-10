@@ -60,12 +60,12 @@ function TableListStorage({}: PropsTableListStorage) {
 							render: (data: IDataListStorage) => <span>{data?.code || '---'}</span>,
 						},
 						{
-							fixedLeft: true,
 							title: 'Tên kho hàng',
+							fixedLeft: true,
 							render: (data: IDataListStorage) => <span>{data?.name || '---'}</span>,
 						},
 						{
-							title: 'Loại gỗ',
+							title: 'Loại hàng',
 							render: (data: IDataListStorage) => <span>{data?.productUu?.name || '---'}</span>,
 						},
 						{
@@ -77,26 +77,26 @@ function TableListStorage({}: PropsTableListStorage) {
 						// 	render: (data: IDataListStorage) => <span>{data?.countCustomer || 0}</span>,
 						// },
 						{
-							title: 'TL tươi (Tấn)',
+							title: 'Tổng lượng tươi (Tấn)',
 							render: (data: IDataListStorage) => <span style={{color: '#2A85FF'}}>{convertCoin(data?.totalAmountMt)}</span>,
 						},
 						{
-							title: 'TL quy khô (Tấn)',
+							title: 'Tổng lượng quy khô (Tấn)',
 							render: (data: IDataListStorage) => (
 								<span style={{color: '#2A85FF'}}>{convertCoin(data?.totalAmountBdmt)}</span>
 							),
 						},
 						{
-							title: 'Khối lượng nhập',
+							title: 'Khối lượng quy khô nhập (Tấn)',
 							render: (data: IDataListStorage) => <span>{convertCoin(data?.totalAmountIn) || 0}</span>,
 						},
 						{
-							title: 'Khối lượng xuất',
+							title: 'Lượng quy khô xuất (Tấn)',
 							render: (data: IDataListStorage) => <span>{convertCoin(data?.totalAmountOut) || 0}</span>,
 						},
 						{
-							fixedRight: true,
 							title: 'Tác vụ',
+							fixedRight: true,
 							render: (data: IDataListStorage) => (
 								<Link href={`/kho-hang/${data?.uuid}?_storage=true`} className={styles.linkdetail}>
 									Chi tiết

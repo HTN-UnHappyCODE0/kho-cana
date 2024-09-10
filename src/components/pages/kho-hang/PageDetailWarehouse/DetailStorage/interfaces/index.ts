@@ -38,6 +38,7 @@ export interface IDetailStorage {
 	amountOut: number;
 	amountChangeIn: number;
 	amountChangeOut: number;
+	totalAmountBdmt: number;
 	locationMap: string;
 	uuid: string;
 	countCustomer: number;
@@ -46,7 +47,6 @@ export interface IDetailStorage {
 	totalAmountIn: number;
 	totalAmountOut: number;
 	totalAmountMt: number;
-	totalAmountBdmt: number;
 	listSpecValue: {
 		criteriaUu: {
 			uuid: string;

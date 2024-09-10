@@ -3,7 +3,6 @@ import {IInventory, PropsPopupTableHistoryInventory} from './interfaces';
 import styles from './PopupTableHistoryInventory.module.scss';
 import {IoClose} from 'react-icons/io5';
 import {useRouter} from 'next/router';
-import {convertCoin} from '~/common/funcs/convertCoin';
 import {useQuery} from '@tanstack/react-query';
 import {QUERY_KEY} from '~/constants/config/enum';
 import {httpRequest} from '~/services';
@@ -11,6 +10,7 @@ import {httpRequest} from '~/services';
 import SliderDebt from '../SliderDebt';
 import storageServices from '~/services/storageServices';
 import Moment from 'react-moment';
+import {convertCoin} from '~/common/funcs/convertCoin';
 
 function PopupTableHistoryInventory({onClose}: PropsPopupTableHistoryInventory) {
 	const router = useRouter();
@@ -49,8 +49,12 @@ function PopupTableHistoryInventory({onClose}: PropsPopupTableHistoryInventory) 
 									<p>{detailHistoryInventory?.storageUu?.name || '---'}</p>
 								</li>
 								<li>
-									<p>Khối lượng ban đầu :</p>
-									<p>{convertCoin(detailHistoryInventory?.totalAmount ?? 0)}</p>
+									<p>Tổng lượng quy khô ban đầu (tấn):</p>
+									<p>{convertCoin(detailHistoryInventory?.totalAmountBefore ?? 0)}</p>
+								</li>
+								<li>
+									<p>Tổng lượng quy khô còn lại (tấn):</p>
+									<p>{convertCoin(detailHistoryInventory?.totalAmountAfter ?? 0)}</p>
 								</li>
 								<li>
 									<p>Thời gian thay đổi :</p>
