@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useState} from 'react';
 
 import {IFormUpdate, PropsMainUpdateProfile} from './interfaces';
 import styles from './MainUpdateProfile.module.scss';
@@ -35,7 +35,6 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 
 	const [file, setFile] = useState<any>(null);
 	const [loading, setLoading] = useState<boolean>(false);
-	// const [openWarning, setOpenWarning] = useState<boolean>(false);
 
 	const [form, setForm] = useState<IFormUpdate>({
 		fullName: '',
@@ -55,7 +54,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 		provinceOwnerId: '',
 	});
 
-	const {data: userDetails} = useQuery([QUERY_KEY.chi_tiet_nhan_vien], {
+	useQuery([QUERY_KEY.chi_tiet_nhan_vien], {
 		queryFn: () =>
 			httpRequest({
 				http: userServices.detailUser({
@@ -222,11 +221,11 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 							: '',
 				}),
 			}),
-		onSuccess(data) {
+		onSuccess(data, variables) {
 			if (data) {
 				store.dispatch(
 					setInfoUser({
-						avatar: infoUser?.avatar || '',
+						avatar: variables?.path || '',
 						regencyUuid: infoUser?.regencyUuid || '',
 						userUuid: infoUser?.userUuid || '',
 						uuid: infoUser?.uuid || '',
@@ -242,31 +241,21 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 		},
 	});
 
-	const isReadOnly = useMemo(() => {
-		return !!(form.regencyUuid == listRegency?.data?.find((x: any) => x?.code == REGENCY_NAME['Nhân viên thị trường'])?.uuid);
-	}, [form.regencyUuid, listRegency]);
-
 	const handleSubmit = async () => {
+		const today = new Date(timeSubmit(new Date())!);
+		const birthDay = new Date(form.birthDay);
+
 		if (!form.regencyUuid) {
 			return toastWarn({msg: 'Vui lòng chọn chức vụ!'});
 		}
 		if (!form.birthDay) {
 			return toastWarn({msg: 'Vui lòng chọn ngày sinh!'});
 		}
-		if (isReadOnly) {
-			if (!form.provinceOwnerId) {
-				return toastWarn({msg: 'Vui lòng chọn khu vực quản lý!'});
-			}
-			if (!form.ownerUuid) {
-				return toastWarn({msg: 'Vui lòng chọn người quản lý!'});
-			}
-		}
-		const today = new Date(timeSubmit(new Date())!);
-		const birthDay = new Date(form.birthDay);
 
 		if (today < birthDay) {
 			return toastWarn({msg: 'Ngày sinh không hợp lệ!'});
 		}
+
 		if (!!file) {
 			const dataImage = await httpRequest({
 				setLoading,
@@ -365,7 +354,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 						<Select
 							isSearch
 							name='ownerUuid'
-							readOnly={isReadOnly == false}
+							readOnly={true}
 							placeholder='Chọn người quản lý'
 							value={form?.ownerUuid}
 							onChange={(e: any) =>
@@ -389,7 +378,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 						isSearch
 						name='provinceOwnerId'
 						value={form.provinceOwnerId}
-						readOnly={isReadOnly == false}
+						readOnly={true}
 						placeholder='Khu vực quản lý'
 						label={
 							<span>
@@ -603,16 +592,6 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 					<TextArea max={5000} placeholder='Nhập ghi chú' name='description' label={<span>Ghi chú</span>} blur={true} />
 				</div>
 			</Form>
-			{/* <DialogWarning
-				warn
-				open={openWarning}
-				onClose={() => setOpenWarning(false)}
-				title={'Cảnh báo!'}
-				note={
-					'Khi bạn thay đổi khu vực quản lý, toàn bộ dữ liệu của nhân viên sẽ được chuyển sang khu vực mới. Bạn có chắc chắn muốn thay đổi không?'
-				}
-				onSubmit={funUpdateUser.mutate}
-			/> */}
 		</div>
 	);
 }
