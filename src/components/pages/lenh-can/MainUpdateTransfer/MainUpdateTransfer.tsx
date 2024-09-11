@@ -34,12 +34,15 @@ import {timeSubmit} from '~/common/funcs/optionConvert';
 import batchBillServices from '~/services/batchBillServices';
 import {IDetailBatchBill} from '../MainDetailBill/interfaces';
 import {convertCoin, price} from '~/common/funcs/convertCoin';
+import Popup from '~/components/common/Popup';
+import FormReasonUpdateBill from '../FormReasonUpdateBill';
 
 function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 	const router = useRouter();
 
 	const {_id} = router.query;
 
+	const [openWarning, setOpenWarning] = useState<boolean>(false);
 	const [listTruckChecked, setListTruckChecked] = useState<any[]>([]);
 	const [listTruckBatchBill, setListTruckBatchBill] = useState<any[]>([]);
 
@@ -59,6 +62,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 		isPrint: 0,
 		transportType: TYPE_TRANSPORT.DUONG_BO,
 		code: '',
+		reason: '',
 	});
 
 	useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -86,6 +90,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 					warehouseFromUuid: data?.fromUu?.parentUu?.uuid || '',
 					warehouseToUuid: data?.toUu?.parentUu?.uuid || '',
 					code: data?.code,
+					reason: '',
 				});
 
 				setListTruckChecked(
@@ -277,7 +282,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 		enabled: !!form.warehouseToUuid,
 	});
 
-	const fucnCreateBatchBill = useMutation({
+	const fucnUpdateBatchBill = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -309,10 +314,12 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 					lstTruckRemoveUuid: listTruckBatchBill
 						.filter((v) => !listTruckChecked.some((x) => v.uuid === x.uuid))
 						?.map((item) => item.uuid),
+					reason: form.reason,
 				}),
 			}),
 		onSuccess(data) {
 			if (data) {
+				setOpenWarning(false);
 				router.back();
 			}
 		},
@@ -353,12 +360,20 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 			}
 		}
 
-		return fucnCreateBatchBill.mutate();
+		return setOpenWarning(true);
+	};
+
+	const handleSubmitReason = async () => {
+		if (!form.reason) {
+			return toastWarn({msg: 'Vui lòng nhập lý do thay đổi!'});
+		}
+
+		return fucnUpdateBatchBill.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnCreateBatchBill.isLoading} />
+			<Loading loading={fucnUpdateBatchBill.isLoading} />
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>
@@ -720,7 +735,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 							value={form.weightIntent || ''}
 							type='text'
 							isMoney
-							unit='Tấn'
+							unit='tấn'
 							label={<span>Khối lượng dự kiến</span>}
 							placeholder='Nhập khối lượng dự kiến'
 						/>
@@ -765,6 +780,27 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 						<TextArea name='description' placeholder='Nhập ghi chú' max={5000} blur label={<span>Ghi chú</span>} />
 					</div>
 				</div>
+				<Popup
+					open={openWarning}
+					onClose={() => {
+						setOpenWarning(false);
+						setForm((prev) => ({
+							...prev,
+							reason: '',
+						}));
+					}}
+				>
+					<FormReasonUpdateBill
+						onSubmit={handleSubmitReason}
+						onClose={() => {
+							setOpenWarning(false);
+							setForm((prev) => ({
+								...prev,
+								reason: '',
+							}));
+						}}
+					/>
+				</Popup>
 			</Form>
 		</div>
 	);

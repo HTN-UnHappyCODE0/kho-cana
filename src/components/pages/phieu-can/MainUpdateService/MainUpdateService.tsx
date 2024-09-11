@@ -37,12 +37,16 @@ import SelectSearch from '~/components/common/SelectSearch';
 import batchBillServices from '~/services/batchBillServices';
 import shipServices from '~/services/shipServices';
 import {IDetailBatchBill} from '../../lenh-can/MainDetailBill/interfaces';
+import Popup from '~/components/common/Popup';
+import FormReasonUpdateBill from '../FormReasonUpdateBill';
+import {set} from 'nprogress';
 
 function MainUpdateService({}: PropsMainUpdateService) {
 	const router = useRouter();
 
 	const {_id} = router.query;
 
+	const [openWarning, setOpenWarning] = useState<boolean>(false);
 	const [dataCustomer, setDataCustomer] = useState<any>({});
 	const [listTruckChecked, setListTruckChecked] = useState<any[]>([]);
 	const [listTruckBatchBill, setListTruckBatchBill] = useState<any[]>([]);
@@ -63,6 +67,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 		timeStart: null,
 		code: '',
 		isBatch: TYPE_BATCH.CAN_LO,
+		reason: '',
 	});
 
 	useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -90,6 +95,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 					timeEnd: data?.timeEnd,
 					code: data?.code,
 					isBatch: data?.isBatch,
+					reason: '',
 				});
 
 				setListTruckChecked(
@@ -236,10 +242,12 @@ function MainUpdateService({}: PropsMainUpdateService) {
 					lstTruckRemoveUuid: listTruckBatchBill
 						.filter((v) => !listTruckChecked.some((x) => v.uuid === x.uuid))
 						?.map((item) => item.uuid),
+					reason: form.reason,
 				}),
 			}),
 		onSuccess(data) {
 			if (data) {
+				setOpenWarning(false);
 				router.back();
 			}
 		},
@@ -263,9 +271,16 @@ function MainUpdateService({}: PropsMainUpdateService) {
 			return toastWarn({msg: 'Vui lòng chọn xe hàng!'});
 		}
 
-		return fucnUpdateBatchBill.mutate();
+		return setOpenWarning(true);
 	};
 
+	const handleSubmitReason = async () => {
+		if (!form.reason) {
+			return toastWarn({msg: 'Vui lòng nhập lý do thay đổi!'});
+		}
+
+		return fucnUpdateBatchBill.mutate();
+	};
 	return (
 		<div className={styles.container}>
 			<Loading loading={fucnUpdateBatchBill.isLoading} />
@@ -296,7 +311,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 							value={form.weightTotal || ''}
 							type='text'
 							isMoney
-							unit='Tấn'
+							unit='tấn'
 							label={<span>Tổng khối lượng hàng</span>}
 							placeholder='Nhập tổng khối lượng hàng'
 						/>
@@ -546,6 +561,27 @@ function MainUpdateService({}: PropsMainUpdateService) {
 						<TextArea name='description' placeholder='Nhập ghi chú' max={5000} blur label={<span>Ghi chú</span>} />
 					</div>
 				</div>
+				<Popup
+					open={openWarning}
+					onClose={() => {
+						setOpenWarning(false);
+						setForm((prev) => ({
+							...prev,
+							reason: '',
+						}));
+					}}
+				>
+					<FormReasonUpdateBill
+						onSubmit={handleSubmitReason}
+						onClose={() => {
+							setOpenWarning(false);
+							setForm((prev) => ({
+								...prev,
+								reason: '',
+							}));
+						}}
+					/>
+				</Popup>
 			</Form>
 		</div>
 	);

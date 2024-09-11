@@ -20,4 +20,5 @@ export interface IFormUpdateTransfer {
 	timeEnd: string | null;
 	code: string;
 	isBatch: number;
+	reason: string;
 }

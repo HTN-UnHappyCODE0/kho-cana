@@ -16,4 +16,5 @@ export interface IFormUpdateTransfer {
 	weightIntent: number | string;
 	description: string;
 	code: string;
+	reason: string;
 }

@@ -17,4 +17,5 @@ export interface IFormUpdateDirect {
 	documentId: string;
 	description: string;
 	code: string;
+	reason: string;
 }

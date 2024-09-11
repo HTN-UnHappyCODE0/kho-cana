@@ -16,4 +16,5 @@ export interface IFormUpdateService {
 	timeEnd: string | null;
 	code: string;
 	isBatch: number;
+	reason: string;
 }

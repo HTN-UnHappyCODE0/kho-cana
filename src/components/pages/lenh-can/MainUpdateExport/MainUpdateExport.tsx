@@ -39,12 +39,15 @@ import {timeSubmit} from '~/common/funcs/optionConvert';
 import batchBillServices from '~/services/batchBillServices';
 import {IDetailBatchBill} from '../MainDetailBill/interfaces';
 import shipServices from '~/services/shipServices';
+import Popup from '~/components/common/Popup';
+import FormReasonUpdateBill from '../FormReasonUpdateBill';
 
 function MainUpdateExport({}: PropsMainUpdateExport) {
 	const router = useRouter();
 
 	const {_id} = router.query;
 
+	const [openWarning, setOpenWarning] = useState<boolean>(false);
 	const [listTruckChecked, setListTruckChecked] = useState<any[]>([]);
 	const [listTruckBatchBill, setListTruckBatchBill] = useState<any[]>([]);
 
@@ -65,6 +68,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 		toUuid: '',
 		isPrint: 0,
 		code: '',
+		reason: '',
 	});
 
 	useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -93,6 +97,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 					toUuid: data?.toUu?.uuid,
 					isPrint: data?.isPrint,
 					code: data?.code,
+					reason: '',
 				});
 
 				// SET LIST TRUCK
@@ -305,10 +310,12 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 					lstTruckRemoveUuid: listTruckBatchBill
 						.filter((v) => !listTruckChecked.some((x) => v.uuid === x.uuid))
 						?.map((item) => item.uuid),
+					reason: form.reason,
 				}),
 			}),
 		onSuccess(data) {
 			if (data) {
+				setOpenWarning(false);
 				router.back();
 			}
 		},
@@ -350,6 +357,14 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 			if (today > timeIntend) {
 				return toastWarn({msg: 'Ngày dự kiến không hợp lệ!'});
 			}
+		}
+
+		return setOpenWarning(true);
+	};
+
+	const handleSubmitReason = async () => {
+		if (!form.reason) {
+			return toastWarn({msg: 'Vui lòng nhập lý do thay đổi!'});
 		}
 
 		return fucnUpdateBatchBill.mutate();
@@ -718,7 +733,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 							value={form.weightIntent || ''}
 							type='text'
 							isMoney
-							unit='Tấn'
+							unit='tấn'
 							label={<span>Khối lượng dự kiến</span>}
 							placeholder='Nhập khối lượng dự kiến'
 						/>
@@ -773,6 +788,27 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 						<TextArea name='description' placeholder='Nhập ghi chú' max={5000} blur label={<span>Ghi chú</span>} />
 					</div>
 				</div>
+				<Popup
+					open={openWarning}
+					onClose={() => {
+						setOpenWarning(false);
+						setForm((prev) => ({
+							...prev,
+							reason: '',
+						}));
+					}}
+				>
+					<FormReasonUpdateBill
+						onSubmit={handleSubmitReason}
+						onClose={() => {
+							setOpenWarning(false);
+							setForm((prev) => ({
+								...prev,
+								reason: '',
+							}));
+						}}
+					/>
+				</Popup>
 			</Form>
 		</div>
 	);

@@ -35,12 +35,15 @@ import {IDetailBatchBill} from '../MainDetailBill/interfaces';
 import priceTagServices from '~/services/priceTagServices';
 import customerServices from '~/services/customerServices';
 import shipServices from '~/services/shipServices';
+import FormReasonUpdateBill from '../FormReasonUpdateBill';
+import Popup from '~/components/common/Popup';
 
 function MainUpdateDirect({}: PropsMainUpdateDirect) {
 	const router = useRouter();
 
 	const {_id} = router.query;
 
+	const [openWarning, setOpenWarning] = useState<boolean>(false);
 	const [listTruckChecked, setListTruckChecked] = useState<any[]>([]);
 	const [listTruckBatchBill, setListTruckBatchBill] = useState<any[]>([]);
 
@@ -61,6 +64,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 		toUuid: '',
 		isPrint: 0,
 		code: '',
+		reason: '',
 	});
 
 	useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -89,6 +93,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 					shipUuid: data?.batchsUu?.shipUu?.uuid || '',
 					shipOutUuid: data?.batchsUu?.shipOutUu?.uuid || '',
 					code: data?.code,
+					reason: '',
 				});
 
 				setListTruckChecked(
@@ -233,7 +238,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 		},
 	});
 
-	const fucnCreateBatchBill = useMutation({
+	const fucnUpdateBatchBill = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -265,10 +270,12 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 					lstTruckRemoveUuid: listTruckBatchBill
 						.filter((v) => !listTruckChecked.some((x) => v.uuid === x.uuid))
 						?.map((item) => item.uuid),
+					reason: form.reason,
 				}),
 			}),
 		onSuccess(data) {
 			if (data) {
+				setOpenWarning(false);
 				router.back();
 			}
 		},
@@ -309,12 +316,20 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 			}
 		}
 
-		return fucnCreateBatchBill.mutate();
+		return setOpenWarning(true);
+	};
+
+	const handleSubmitReason = async () => {
+		if (!form.reason) {
+			return toastWarn({msg: 'Vui lòng nhập lý do thay đổi!'});
+		}
+
+		return fucnUpdateBatchBill.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnCreateBatchBill.isLoading} />
+			<Loading loading={fucnUpdateBatchBill.isLoading} />
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>
@@ -659,7 +674,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 							value={form.weightIntent || ''}
 							type='text'
 							isMoney
-							unit='Tấn'
+							unit='tấn'
 							label={<span>Khối lượng dự kiến</span>}
 							placeholder='Nhập khối lượng dự kiến'
 						/>
@@ -714,6 +729,27 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 						<TextArea name='description' placeholder='Nhập ghi chú' max={5000} blur label={<span>Ghi chú</span>} />
 					</div>
 				</div>
+				<Popup
+					open={openWarning}
+					onClose={() => {
+						setOpenWarning(false);
+						setForm((prev) => ({
+							...prev,
+							reason: '',
+						}));
+					}}
+				>
+					<FormReasonUpdateBill
+						onSubmit={handleSubmitReason}
+						onClose={() => {
+							setOpenWarning(false);
+							setForm((prev) => ({
+								...prev,
+								reason: '',
+							}));
+						}}
+					/>
+				</Popup>
 			</Form>
 		</div>
 	);

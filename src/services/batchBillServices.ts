@@ -53,6 +53,7 @@ const batchBillServices = {
 			productTypeUuid: string;
 			lstTruckAddUuid: string[];
 			lstTruckRemoveUuid: string[];
+			reason?: string;
 		},
 		tokenAxios?: any
 	) => {
