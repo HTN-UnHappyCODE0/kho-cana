@@ -20,5 +20,6 @@ export interface IFormUpdateExport {
 	timeStart: string | null;
 	timeEnd: string | null;
 	code: string;
+	reason: string;
 	isBatch: number;
 }
