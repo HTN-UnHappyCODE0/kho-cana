@@ -20,7 +20,7 @@ import TableListStorage from './components/TableListStorage';
 import TableMapStorage from './components/TableMapStorage';
 import clsx from 'clsx';
 import {PiSealWarningFill} from 'react-icons/pi';
-import {convertCoin} from '~/common/funcs/convertCoin';
+import {convertWeight} from '~/common/funcs/optionConvert';
 import {LuPencil} from 'react-icons/lu';
 import {HiOutlineLockClosed, HiOutlineLockOpen} from 'react-icons/hi';
 import Dialog from '~/components/common/Dialog';
@@ -128,10 +128,10 @@ function DetailWarehouse({}: PropsDetailWarehouse) {
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />
 								<div className={styles.note}>
 									<p>
-										Đã KCS: <span>{convertCoin(detailWarehouse?.amountKCS!)}</span>
+										Đã KCS: <span>{convertWeight(detailWarehouse?.amountKCS!)}</span>
 									</p>
 									<p style={{marginTop: 2}}>
-										Chưa KCS: <span>{convertCoin(detailWarehouse?.amountMT!)}</span>
+										Chưa KCS: <span>{convertWeight(detailWarehouse?.amountMT!)}</span>
 									</p>
 								</div>
 							</div>
@@ -145,10 +145,10 @@ function DetailWarehouse({}: PropsDetailWarehouse) {
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />
 								<div className={styles.note}>
 									<p>
-										Quy khô chuẩn: <span>{convertCoin(detailWarehouse?.amountBDMT!)}</span>
+										Quy khô chuẩn: <span>{convertWeight(detailWarehouse?.amountBDMT!)}</span>
 									</p>
 									<p style={{marginTop: 2}}>
-										Quy khô tạm tính: <span>{convertCoin(detailWarehouse?.amountBDMTDemo!)}</span>
+										Quy khô tạm tính: <span>{convertWeight(detailWarehouse?.amountBDMTDemo!)}</span>
 									</p>
 								</div>
 							</div>
@@ -162,10 +162,10 @@ function DetailWarehouse({}: PropsDetailWarehouse) {
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />
 								<div className={styles.note}>
 									<p>
-										Từ nhà cung cấp: <span>{convertCoin(detailWarehouse?.amountIn!)}</span>
+										Từ nhà cung cấp: <span>{convertWeight(detailWarehouse?.amountIn!)}</span>
 									</p>
 									<p style={{marginTop: 2}}>
-										Từ kho: <span>{convertCoin(detailWarehouse?.amountChangeIn!)}</span>
+										Từ kho: <span>{convertWeight(detailWarehouse?.amountChangeIn!)}</span>
 									</p>
 								</div>
 							</div>
@@ -179,10 +179,10 @@ function DetailWarehouse({}: PropsDetailWarehouse) {
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />
 								<div className={styles.note}>
 									<p>
-										Khách hàng xuất: <span>{convertCoin(detailWarehouse?.amountOut!)}</span>
+										Khách hàng xuất: <span>{convertWeight(detailWarehouse?.amountOut!)}</span>
 									</p>
 									<p style={{marginTop: 2}}>
-										Chuyển kho: <span>{convertCoin(detailWarehouse?.amountChangeOut!)}</span>
+										Chuyển kho: <span>{convertWeight(detailWarehouse?.amountChangeOut!)}</span>
 									</p>
 								</div>
 							</div>

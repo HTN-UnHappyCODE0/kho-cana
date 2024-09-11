@@ -115,5 +115,5 @@ export function convertWeight(weight: number | null) {
 
 	const weightConver = weight / 1000;
 
-	return weightConver.toFixed(2);
+	return weightConver.toFixed(3);
 }

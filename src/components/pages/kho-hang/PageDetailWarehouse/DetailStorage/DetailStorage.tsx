@@ -22,7 +22,7 @@ import storageServices from '~/services/storageServices';
 import TableHistoryInventory from './components/TableHistoryInventory';
 import FormCreateInventory from './components/FormCreateInventory';
 import {PiSealWarningFill} from 'react-icons/pi';
-import {convertCoin} from '~/common/funcs/convertCoin';
+import {convertWeight} from '~/common/funcs/optionConvert';
 import Button from '~/components/common/Button';
 import {ShieldTick} from 'iconsax-react';
 import {LuPencil} from 'react-icons/lu';
@@ -156,10 +156,10 @@ function DetailStorage({}: PropsDetailStorage) {
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />
 								<div className={styles.note}>
 									<p style={{marginTop: 2}}>
-										Chuẩn: <span>{convertCoin(detailStorage?.amountBdmt!)}</span>
+										Chuẩn: <span>{convertWeight(detailStorage?.amountBdmt!)}</span>
 									</p>
 									<p style={{marginTop: 2}}>
-										Tạm tính: <span>{convertCoin(detailStorage?.amountBdmtDemo!)}</span>
+										Tạm tính: <span>{convertWeight(detailStorage?.amountBdmtDemo!)}</span>
 									</p>
 								</div>
 							</div>
@@ -173,10 +173,10 @@ function DetailStorage({}: PropsDetailStorage) {
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />
 								<div className={styles.note}>
 									<p>
-										Từ nhà cung cấp: <span>{convertCoin(detailStorage?.amountIn!)}</span>
+										Từ nhà cung cấp: <span>{convertWeight(detailStorage?.amountIn!)}</span>
 									</p>
 									<p style={{marginTop: 2}}>
-										Từ kho: <span>{convertCoin(detailStorage?.amountChangeIn!)}</span>
+										Từ kho: <span>{convertWeight(detailStorage?.amountChangeIn!)}</span>
 									</p>
 								</div>
 							</div>
@@ -190,10 +190,10 @@ function DetailStorage({}: PropsDetailStorage) {
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />
 								<div className={styles.note}>
 									<p>
-										Khách hàng xuất: <span>{convertCoin(detailStorage?.amountOut!)}</span>
+										Khách hàng xuất: <span>{convertWeight(detailStorage?.amountOut!)}</span>
 									</p>
 									<p style={{marginTop: 2}}>
-										Xuất kho: <span>{convertCoin(detailStorage?.amountChangeOut!)}</span>
+										Xuất kho: <span>{convertWeight(detailStorage?.amountChangeOut!)}</span>
 									</p>
 								</div>
 							</div>

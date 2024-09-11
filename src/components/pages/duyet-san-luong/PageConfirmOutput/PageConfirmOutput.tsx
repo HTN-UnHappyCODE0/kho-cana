@@ -233,11 +233,11 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 				<div className={styles.parameter}>
 					<div>
 						TỔNG LƯỢNG HÀNG TƯƠI:
-						<span style={{color: '#2D74FF', marginLeft: 4}}>{listBatch?.data?.amountMt || 0} </span>(Tấn)
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertCoin(listBatch?.data?.amountMt) || 0} </span>(Tấn)
 					</div>
 					<div>
 						TỔNG LƯỢNG HÀNG QUY KHÔ:
-						<span style={{color: '#2D74FF', marginLeft: 4}}>{listBatch?.data?.amountBdmt || 0} </span>(Tấn)
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertCoin(listBatch?.data?.amountBdmt) || 0} </span>(Tấn)
 					</div>
 				</div>
 			</div>

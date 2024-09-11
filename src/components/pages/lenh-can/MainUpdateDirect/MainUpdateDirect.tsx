@@ -674,7 +674,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 							value={form.weightIntent || ''}
 							type='text'
 							isMoney
-							unit='tấn'
+							unit='KG'
 							label={<span>Khối lượng dự kiến</span>}
 							placeholder='Nhập khối lượng dự kiến'
 						/>

@@ -4,6 +4,7 @@ import {PieChart, Pie, Cell, Tooltip} from 'recharts';
 import {PropsChartDashboard} from './interfaces';
 import styles from './ChartDashboard.module.scss';
 import {convertCoin} from '~/common/funcs/convertCoin';
+import {convertWeight} from '~/common/funcs/optionConvert';
 
 function ChartDashboard({totalValueChart, dataChart, arrayTypeAction}: PropsChartDashboard) {
 	return (
@@ -35,7 +36,7 @@ function ChartDashboard({totalValueChart, dataChart, arrayTypeAction}: PropsChar
 
 			<div className={styles.total_value}>
 				<p className={styles.text}>Tổng khối lượng</p>
-				<p className={styles.value}>{convertCoin(totalValueChart)}</p>
+				<p className={styles.value}>{convertWeight(totalValueChart)}</p>
 			</div>
 		</div>
 	);
