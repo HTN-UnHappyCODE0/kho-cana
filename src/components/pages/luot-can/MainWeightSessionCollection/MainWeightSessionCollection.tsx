@@ -141,15 +141,15 @@ function MainWeightSessionCollection({}: PropsMainWeightSessionCollection) {
 								render: (data: IWeightSessionByTruck) => <p style={{fontWeight: 600}}>{data?.count}</p>,
 							},
 							{
-								title: 'Tổng khối lượng 1 (Tấn)',
+								title: 'Tổng khối lượng 1 (kg)',
 								render: (data: IWeightSessionByTruck) => <>{convertCoin(data?.weight1?.weight)}</>,
 							},
 							{
-								title: 'Tổng khối lượng 2 (Tấn)',
+								title: 'Tổng khối lượng 2 (kg)',
 								render: (data: IWeightSessionByTruck) => <>{convertCoin(data?.weight2?.weight)}</>,
 							},
 							{
-								title: 'Tổng khối lượng hàng (Tấn)',
+								title: 'Tổng khối lượng hàng (kg)',
 								render: (data: IWeightSessionByTruck) => <>{convertCoin(data?.weightReal)}</>,
 							},
 							{

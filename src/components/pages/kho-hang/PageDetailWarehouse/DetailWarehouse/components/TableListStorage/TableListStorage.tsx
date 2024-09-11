@@ -12,7 +12,7 @@ import {CONFIG_DESCENDING, CONFIG_PAGING, CONFIG_TYPE_FIND, QUERY_KEY} from '~/c
 import {httpRequest} from '~/services';
 import Noti from '~/components/common/DataWrapper/components/Noti';
 import Link from 'next/link';
-import {convertCoin} from '~/common/funcs/convertCoin';
+import {convertWeight} from '~/common/funcs/optionConvert';
 import storageServices from '~/services/storageServices';
 
 function TableListStorage({}: PropsTableListStorage) {
@@ -78,21 +78,23 @@ function TableListStorage({}: PropsTableListStorage) {
 						// },
 						{
 							title: 'Tổng lượng tươi (tấn)',
-							render: (data: IDataListStorage) => <span style={{color: '#2A85FF'}}>{convertCoin(data?.totalAmountMt)}</span>,
+							render: (data: IDataListStorage) => (
+								<span style={{color: '#2A85FF'}}>{convertWeight(data?.totalAmountMt)}</span>
+							),
 						},
 						{
 							title: 'Tổng lượng quy khô (tấn)',
 							render: (data: IDataListStorage) => (
-								<span style={{color: '#2A85FF'}}>{convertCoin(data?.totalAmountBdmt)}</span>
+								<span style={{color: '#2A85FF'}}>{convertWeight(data?.totalAmountBdmt)}</span>
 							),
 						},
 						{
 							title: 'Khối lượng quy khô nhập (tấn)',
-							render: (data: IDataListStorage) => <span>{convertCoin(data?.totalAmountIn) || 0}</span>,
+							render: (data: IDataListStorage) => <span>{convertWeight(data?.totalAmountIn) || 0}</span>,
 						},
 						{
 							title: 'Lượng quy khô xuất (tấn)',
-							render: (data: IDataListStorage) => <span>{convertCoin(data?.totalAmountOut) || 0}</span>,
+							render: (data: IDataListStorage) => <span>{convertWeight(data?.totalAmountOut) || 0}</span>,
 						},
 						{
 							title: 'Tác vụ',

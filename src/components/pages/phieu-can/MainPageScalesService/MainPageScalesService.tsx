@@ -402,7 +402,7 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 								),
 							},
 							{
-								title: 'KL hàng (tấn)',
+								title: 'KL hàng (kg)',
 								render: (data: ITableBillScale) => <>{convertCoin(data?.weightTotal) || 0}</>,
 							},
 							{

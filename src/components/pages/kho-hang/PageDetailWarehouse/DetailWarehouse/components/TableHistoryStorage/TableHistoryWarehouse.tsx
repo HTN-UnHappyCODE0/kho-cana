@@ -3,11 +3,10 @@ import {IDataTableHistoryWarehouse, PropsTableHistoryWarehouse} from './interfac
 import styles from './TableHistoryWarehouse.module.scss';
 import {useRouter} from 'next/router';
 import DataWrapper from '~/components/common/DataWrapper';
-import {convertCoin} from '~/common/funcs/convertCoin';
+import {convertWeight} from '~/common/funcs/optionConvert';
 import Moment from 'react-moment';
 import Pagination from '~/components/common/Pagination';
 import Table from '~/components/common/Table';
-import Search from '~/components/common/Search';
 import DateRangerCustom from '~/components/common/DateRangerCustom';
 import {useQuery} from '@tanstack/react-query';
 import {CONFIG_DESCENDING, CONFIG_PAGING, CONFIG_TYPE_FIND, QUERY_KEY} from '~/constants/config/enum';
@@ -77,27 +76,27 @@ function TableHistoryWarehouse({}: PropsTableHistoryWarehouse) {
 							{
 								title: 'Tổng lượng quy khô nhập (tấn)',
 								render: (data: IDataTableHistoryWarehouse) => (
-									<span style={{color: '#2D74FF'}}>{convertCoin(data?.amountIn)}</span>
+									<span style={{color: '#2D74FF'}}>{convertWeight(data?.amountIn)}</span>
 								),
 							},
 							{
 								title: 'Tổng lượng quy khô xuất (tấn)',
 								render: (data: IDataTableHistoryWarehouse) => (
-									<span style={{color: '#2D74FF'}}>{convertCoin(data?.amountOut)}</span>
+									<span style={{color: '#2D74FF'}}>{convertWeight(data?.amountOut)}</span>
 								),
 							},
 							{
 								title: 'Tổng lượng quy khô chuyển kho (tấn)',
 								render: (data: IDataTableHistoryWarehouse) => (
 									<span style={{color: '#2D74FF'}}>
-										{convertCoin(Number(data.amountChangeIn) - Number(data?.amountChangeOut))}
+										{convertWeight(Number(data.amountChangeIn) - Number(data?.amountChangeOut))}
 									</span>
 								),
 							},
 							// {
 							// 	title: 'Tổng hàng trong kho',
 							// 	render: (data: IDataTableHistoryWarehouse) => (
-							// 		<span style={{color: '#2D74FF'}}>{convertCoin(data?.totalAmount)}</span>
+							// 		<span style={{color: '#2D74FF'}}>{convertWeight(data?.totalAmount)}</span>
 							// 	),
 							// },
 						]}

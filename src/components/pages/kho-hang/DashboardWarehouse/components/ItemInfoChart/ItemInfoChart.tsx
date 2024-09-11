@@ -6,6 +6,7 @@ import {Eye, EyeSlash} from 'iconsax-react';
 import {convertCoin} from '~/common/funcs/convertCoin';
 import clsx from 'clsx';
 import Tippy from '@tippyjs/react';
+import {convertWeight} from '~/common/funcs/optionConvert';
 
 function ItemInfoChart({text, arrayData, keyAction, arrayTypeAction, handleAction}: PropsItemInfoChart) {
 	return (
@@ -36,7 +37,7 @@ function ItemInfoChart({text, arrayData, keyAction, arrayTypeAction, handleActio
 								<div style={{background: v.color}} className={styles.dot}></div>
 								<p className={styles.text}>{v?.name}</p>
 							</div>
-							<p className={styles.value}>{convertCoin(v?.value)}</p>
+							<p className={styles.value}>{convertWeight(v?.value)}</p>
 						</div>
 					))}
 				</div>

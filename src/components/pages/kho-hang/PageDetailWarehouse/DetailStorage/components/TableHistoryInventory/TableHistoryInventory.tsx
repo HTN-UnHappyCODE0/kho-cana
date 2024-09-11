@@ -14,7 +14,7 @@ import Moment from 'react-moment';
 import Noti from '~/components/common/DataWrapper/components/Noti';
 import Popup from '~/components/common/Popup';
 import PopupTableHistoryInventory from '../PopupTableHistoryInventory';
-import {convertCoin} from '~/common/funcs/convertCoin';
+import {convertWeight} from '~/common/funcs/optionConvert';
 
 function TableHistoryInventory({}: PropsTableHistoryInventory) {
 	const router = useRouter();
@@ -62,11 +62,11 @@ function TableHistoryInventory({}: PropsTableHistoryInventory) {
 
 						{
 							title: 'Tổng lượng quy khô ban đầu (tấn)',
-							render: (data: IInventory) => <span>{convertCoin(data?.totalAmountBefore) || 0}</span>,
+							render: (data: IInventory) => <span>{convertWeight(data?.totalAmountBefore) || 0}</span>,
 						},
 						{
 							title: 'Tổng lượng quy khô còn lại (tấn)',
-							render: (data: IInventory) => <span>{convertCoin(data?.totalAmountAfter) || 0}</span>,
+							render: (data: IInventory) => <span>{convertWeight(data?.totalAmountAfter) || 0}</span>,
 						},
 
 						{

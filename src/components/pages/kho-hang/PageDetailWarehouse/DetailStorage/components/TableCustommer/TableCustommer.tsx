@@ -14,7 +14,7 @@ import {httpRequest} from '~/services';
 import Noti from '~/components/common/DataWrapper/components/Noti';
 import Link from 'next/link';
 import storageServices from '~/services/storageServices';
-import {convertCoin} from '~/common/funcs/convertCoin';
+import {convertWeight} from '~/common/funcs/optionConvert';
 
 function TableCustomer({setTotalCustomer}: PropsTableCustomer) {
 	const router = useRouter();
@@ -82,7 +82,7 @@ function TableCustomer({setTotalCustomer}: PropsTableCustomer) {
 						{
 							title: 'Lượng quy khô nhập (tấn)',
 							render: (data: IDataTableCustomerStorage) => (
-								<span style={{color: '#2D74FF'}}>{convertCoin(data?.amount)}</span>
+								<span style={{color: '#2D74FF'}}>{convertWeight(data?.amount)}</span>
 							),
 						},
 						{
@@ -93,7 +93,7 @@ function TableCustomer({setTotalCustomer}: PropsTableCustomer) {
 							title: 'Tác vụ',
 							fixedRight: true,
 							render: (data: IDataTableCustomerStorage) => (
-								<Link href={`/xuong/${data?.customerUu?.uuid}`} className={styles.linkdetail}>
+								<Link href={`/nha-cung-cap/${data?.customerUu?.uuid}`} className={styles.linkdetail}>
 									Chi tiết
 								</Link>
 							),

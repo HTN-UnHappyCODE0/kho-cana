@@ -10,7 +10,7 @@ import {httpRequest} from '~/services';
 import SliderDebt from '../SliderDebt';
 import storageServices from '~/services/storageServices';
 import Moment from 'react-moment';
-import {convertCoin} from '~/common/funcs/convertCoin';
+import {convertWeight} from '~/common/funcs/optionConvert';
 
 function PopupTableHistoryInventory({onClose}: PropsPopupTableHistoryInventory) {
 	const router = useRouter();
@@ -50,11 +50,11 @@ function PopupTableHistoryInventory({onClose}: PropsPopupTableHistoryInventory) 
 								</li>
 								<li>
 									<p>Tổng lượng quy khô ban đầu (tấn):</p>
-									<p>{convertCoin(detailHistoryInventory?.totalAmountBefore ?? 0)}</p>
+									<p>{convertWeight(detailHistoryInventory?.totalAmountBefore ?? 0)}</p>
 								</li>
 								<li>
 									<p>Tổng lượng quy khô còn lại (tấn):</p>
-									<p>{convertCoin(detailHistoryInventory?.totalAmountAfter ?? 0)}</p>
+									<p>{convertWeight(detailHistoryInventory?.totalAmountAfter ?? 0)}</p>
 								</li>
 								<li>
 									<p>Thời gian thay đổi :</p>

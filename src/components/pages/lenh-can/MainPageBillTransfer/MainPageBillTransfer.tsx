@@ -294,7 +294,7 @@ function MainPageBillTransfer({}: PropsMainPageBillTransfer) {
 								),
 							},
 							{
-								title: 'KL dự kiến (tấn)',
+								title: 'KL dự kiến (kg)',
 								render: (data: IDataBill) => <>{convertCoin(data?.batchsUu?.weightIntent) || '---'}</>,
 							},
 							{

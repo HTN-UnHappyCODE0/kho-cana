@@ -355,7 +355,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 							value={form.weightTotal || ''}
 							type='text'
 							isMoney
-							unit='tấn'
+							unit='kg'
 							label={<span>Tổng khối lượng hàng</span>}
 							placeholder='Nhập tổng khối lượng hàng'
 						/>
@@ -707,7 +707,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 							value={form.weightIntent || ''}
 							type='text'
 							isMoney
-							unit='tấn'
+							unit='kg'
 							label={<span>Khối lượng</span>}
 							placeholder='Nhập khối lượng'
 						/>
