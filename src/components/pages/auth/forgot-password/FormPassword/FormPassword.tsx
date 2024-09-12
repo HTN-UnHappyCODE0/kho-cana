@@ -9,26 +9,62 @@ import {ShieldSecurity} from 'iconsax-react';
 import Popup from '~/components/common/Popup';
 import {useRouter} from 'next/router';
 import FormSusses from '../FormSusses';
+import {useMutation} from '@tanstack/react-query';
+import {httpRequest} from '~/services';
+import accountServices from '~/services/accountServices';
+import md5 from 'md5';
+import Loading from '~/components/common/Loading';
+import {toastWarn} from '~/common/funcs/toast';
 
 function FormPassword({}: PropsFormPassword) {
 	const router = useRouter();
 
 	const {open, ...rest} = router.query;
 
+	const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+
 	const context = useContext<IContextForgotPassword>(ContextForgotPassword);
 
+	// Đổi mật khẩu
+	const funcChangePassForget = useMutation({
+		mutationFn: () => {
+			return httpRequest({
+				showMessageFailed: true,
+				showMessageSuccess: true,
+				msgSuccess: 'Lấy lại mật khẩu thành công!',
+				http: accountServices.changePassForget({
+					email: context?.form?.email!,
+					otp: context?.form?.otp!,
+					newPass: md5(context?.form?.password!),
+				}),
+			});
+		},
+		onSuccess(data) {
+			if (data) {
+				router.replace(
+					{
+						query: {...router.query, open: 'susses'},
+					},
+					undefined,
+					{scroll: false}
+				);
+			}
+		},
+	});
+
 	const handleSubmit = () => {
-		router.replace(
-			{
-				query: {...router.query, open: 'susses'},
-			},
-			undefined,
-			{scroll: false}
-		);
+		if (!regex.test(context?.form?.password!)) {
+			return toastWarn({
+				msg: 'Mật khẩu phải chứa ít nhất 6 ký tự, bao gồm chữ cái và số',
+			});
+		}
+
+		return funcChangePassForget.mutate();
 	};
 
 	return (
 		<div>
+			<Loading loading={funcChangePassForget.isLoading} />
 			<Form form={context.form} setForm={context.setForm} onSubmit={handleSubmit}>
 				<Input
 					type='password'

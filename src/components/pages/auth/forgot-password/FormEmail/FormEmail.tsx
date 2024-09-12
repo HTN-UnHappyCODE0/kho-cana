@@ -9,6 +9,10 @@ import Button from '~/components/common/Button';
 import {useRouter} from 'next/router';
 import Popup from '~/components/common/Popup';
 import FormOTP from '../FormOTP';
+import { useMutation } from '@tanstack/react-query';
+import { httpRequest } from '~/services';
+import accountServices from '~/services/accountServices';
+import Loading from '~/components/common/Loading';
 
 function FormEmail({}: PropsFormEmail) {
 	const router = useRouter();
@@ -17,18 +21,37 @@ function FormEmail({}: PropsFormEmail) {
 
 	const context = useContext<IContextForgotPassword>(ContextForgotPassword);
 
+	const funcSendOTP = useMutation({
+		mutationFn: () => {
+			return httpRequest({
+				showMessageFailed: true,
+				showMessageSuccess: true,
+				msgSuccess: "OTP đã được gửi về email của bạn!",
+				http: accountServices.sendOTP({
+					email: context?.form?.email!,
+				}),
+			});
+		},
+		onSuccess(data) {
+			if (data) {
+				router.replace(
+					{
+						query: {...router.query, open: 'otp'},
+					},
+					undefined,
+					{scroll: false}
+				);
+			}
+		},
+	});
+
 	const handleSendEmail = () => {
-		router.replace(
-			{
-				query: {...router.query, open: 'otp'},
-			},
-			undefined,
-			{scroll: false}
-		);
+		return funcSendOTP.mutate();
 	};
 
 	return (
 		<div>
+			<Loading loading={funcSendOTP.isLoading} />
 			<Form form={context.form} setForm={context.setForm} onSubmit={handleSendEmail}>
 				<Input
 					type='text'

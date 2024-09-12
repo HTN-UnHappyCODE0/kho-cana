@@ -331,7 +331,7 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 										{data?.billUu?.scalesType == TYPE_SCALES.CAN_XUAT && 'Cân xuất'}
 										{data?.billUu?.scalesType == TYPE_SCALES.CAN_DICH_VU && 'Cân dịch vụ'}
 										{data?.billUu?.scalesType == TYPE_SCALES.CAN_CHUYEN_KHO && 'Cân chuyển kho'}
-										{data?.billUu?.scalesType == TYPE_SCALES.CAN_TRUC_TIEP && 'Cân   thẳng'}
+										{data?.billUu?.scalesType == TYPE_SCALES.CAN_TRUC_TIEP && 'Cân xuất thẳng'}
 									</p>
 								),
 							},

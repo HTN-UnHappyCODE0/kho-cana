@@ -16,6 +16,7 @@ import Button from '~/components/common/Button';
 import {LuPencil} from 'react-icons/lu';
 import {convertCoin} from '~/common/funcs/convertCoin';
 import {IDetailBatchBill} from '../../lenh-can/MainDetailBill/interfaces';
+import Moment from 'react-moment';
 
 function MainDetailScales({}: PropsMainDetailScales) {
 	const router = useRouter();
@@ -131,6 +132,7 @@ function MainDetailScales({}: PropsMainDetailScales) {
 							</span>
 						</td>
 					</tr>
+					
 					<tr>
 						<td>
 							<span>Vận chuyển:</span>
@@ -146,6 +148,23 @@ function MainDetailScales({}: PropsMainDetailScales) {
 							<span>Tổng khối lượng:</span>
 							<span style={{marginLeft: '6px', fontWeight: 600}}>{convertCoin(detailBatchBill?.weightTotal!) || 0} kg</span>
 						</td>
+					</tr>
+					<tr>
+						<td>
+							<span>Người chỉnh sửa:</span>
+							<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.accountUpdateUu?.username || '---'}</span>
+						</td>
+						<td>
+							<span>Thời gian chỉnh sửa:</span>
+							<span style={{marginLeft: '6px', fontWeight: 600}}>
+							{detailBatchBill?.updatedTime ? (
+											<Moment date={detailBatchBill?.updatedTime} format='DD/MM/YYYY' />
+										) : (
+											'---'
+										)}
+								</span>
+						</td>
+						
 					</tr>
 					<tr>
 						<td>

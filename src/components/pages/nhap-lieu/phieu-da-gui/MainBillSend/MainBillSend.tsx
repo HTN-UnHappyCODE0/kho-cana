@@ -201,7 +201,7 @@ function MainBillSend({}: PropsMainBillSend) {
 			<div className={styles.header}>
 				<div className={styles.main_search}>
 					<div className={styles.search}>
-						<Search keyName='_keyword' placeholder='Tìm kiếm theo số phiếu' />
+						<Search keyName='_keyword' placeholder='Tìm kiếm theo mã lô hàng, số phiếu, biển số, lô gô xe' />
 					</div>
 					<div className={styles.filter}>
 						<FilterCustom

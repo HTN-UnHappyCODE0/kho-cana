@@ -8,9 +8,10 @@ interface props {
 	onSetValue?: (value: any) => void;
 	name?: string;
 	className?: string;
+	reset?: boolean;
 }
 
-function InputSingle({className, lenght = 6, onSetValue, name = 'otp_code'}: props) {
+function InputSingle({className, lenght = 6, onSetValue, name = 'otp_code', reset}: props) {
 	const [count, setCount] = useState<number>(0);
 	const ref = useRef<any>([]);
 
@@ -62,6 +63,14 @@ function InputSingle({className, lenght = 6, onSetValue, name = 'otp_code'}: pro
 			}
 		}
 	};
+
+	/********** reset values **********/
+	useEffect(() => {
+		ref.current.forEach((input: HTMLInputElement) => {
+			input.value = '';
+		});
+		setCount(count + 1);
+	}, [reset]);
 
 	const handlePushRef = (e: any) => {
 		ref.current.push(e);
