@@ -9,6 +9,10 @@ import fancyTimeFormat from '~/common/funcs/fancyTimeFormat';
 import Button from '~/components/common/Button';
 import {useRouter} from 'next/router';
 import {obfuscateEmail} from '~/common/funcs/optionConvert';
+import accountServices from '~/services/accountServices';
+import {httpRequest} from '~/services';
+import {useMutation} from '@tanstack/react-query';
+import Loading from '~/components/common/Loading';
 
 function FormOTP({}: PropsFormOTP) {
 	const TIME_OTP = 60;
@@ -30,23 +34,64 @@ function FormOTP({}: PropsFormOTP) {
 		}
 	}, [countDown]);
 
+	// Gửi lại OTP
+	const funcSendOTP = useMutation({
+		mutationFn: () => {
+			return httpRequest({
+				showMessageFailed: true,
+				showMessageSuccess: true,
+				msgSuccess: 'OTP đã được gửi về email của bạn!',
+				http: accountServices.sendOTP({
+					email: context?.form?.email!,
+				}),
+			});
+		},
+		onSuccess(data) {
+			if (data) {
+				setCoutDown(TIME_OTP);
+			}
+		},
+	});
+
+	// FUCN submit OTP
+	const funcSubmitOTP = useMutation({
+		mutationFn: () => {
+			return httpRequest({
+				showMessageFailed: true,
+				showMessageSuccess: true,
+				msgSuccess: 'Xác thực OTP thành công!',
+				http: accountServices.enterOTP({
+					email: context?.form?.email!,
+					otp: context?.form?.otp!,
+				}),
+			});
+		},
+		onSuccess(data) {
+			if (data) {
+				context?.setType(1);
+				router.replace(
+					{
+						query: rest,
+					},
+					undefined,
+					{scroll: false}
+				);
+			}
+		},
+	});
+
 	const handleSendcode = () => {
-		setCoutDown(TIME_OTP);
+		return funcSendOTP.mutate();
 	};
 
 	const handleSubmit = () => {
-		context?.setType(1);
-		router.replace(
-			{
-				query: rest,
-			},
-			undefined,
-			{scroll: false}
-		);
+		return funcSubmitOTP.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
+			<Loading loading={funcSendOTP.isLoading || funcSubmitOTP.isLoading} />
+
 			<h4 className={styles.title}>Xác thực mã OTP</h4>
 			<p className={styles.text}>
 				Một mã xác thực đã được gửi cho bạn qua địa chỉ email: <span>{obfuscateEmail(context?.form?.email!)}</span>

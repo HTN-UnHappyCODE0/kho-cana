@@ -42,6 +42,39 @@ const accountServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	sendOTP: (
+		data: {
+			email: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/Account/send_otp`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	enterOTP: (
+		data: {
+			email: string;
+			otp: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/Account/enter_otp`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	changePassForget: (
+		data: {
+			email: string;
+			otp: string;
+			newPass: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/Account/change_pass_forget`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 };
 
 export default accountServices;
