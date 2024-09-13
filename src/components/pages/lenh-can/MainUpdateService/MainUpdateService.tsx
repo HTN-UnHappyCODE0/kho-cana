@@ -37,15 +37,12 @@ import {timeSubmit} from '~/common/funcs/optionConvert';
 import batchBillServices from '~/services/batchBillServices';
 import {IDetailBatchBill} from '../MainDetailBill/interfaces';
 import shipServices from '~/services/shipServices';
-import Popup from '~/components/common/Popup';
-import FormReasonUpdateBill from '../FormReasonUpdateBill';
 
 function MainUpdateService({}: PropsMainUpdateService) {
 	const router = useRouter();
 
 	const {_id} = router.query;
 
-	const [openWarning, setOpenWarning] = useState<boolean>(false);
 	const [listTruckChecked, setListTruckChecked] = useState<any[]>([]);
 	const [listTruckBatchBill, setListTruckBatchBill] = useState<any[]>([]);
 
@@ -223,12 +220,10 @@ function MainUpdateService({}: PropsMainUpdateService) {
 					lstTruckRemoveUuid: listTruckBatchBill
 						.filter((v) => !listTruckChecked.some((x) => v.uuid === x.uuid))
 						?.map((item) => item.uuid),
-					reason: form.reason,
 				}),
 			}),
 		onSuccess(data) {
 			if (data) {
-				setOpenWarning(false);
 				router.back();
 			}
 		},
@@ -261,13 +256,6 @@ function MainUpdateService({}: PropsMainUpdateService) {
 			if (today > timeIntend) {
 				return toastWarn({msg: 'Ngày dự kiến không hợp lệ!'});
 			}
-		}
-		return setOpenWarning(true);
-	};
-
-	const handleSubmitReason = async () => {
-		if (!form.reason) {
-			return toastWarn({msg: 'Vui lòng nhập lý do thay đổi!'});
 		}
 
 		return fucnUpdateBatchBill.mutate();
@@ -457,7 +445,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 							value={form?.customerUuid}
 							label={
 								<span>
-									khách hàng <span style={{color: 'red'}}>*</span>
+									Khách hàng <span style={{color: 'red'}}>*</span>
 								</span>
 							}
 						>
@@ -565,27 +553,6 @@ function MainUpdateService({}: PropsMainUpdateService) {
 						<TextArea name='description' placeholder='Nhập ghi chú' max={5000} blur label={<span>Ghi chú</span>} />
 					</div>
 				</div>
-				<Popup
-					open={openWarning}
-					onClose={() => {
-						setOpenWarning(false);
-						setForm((prev) => ({
-							...prev,
-							reason: '',
-						}));
-					}}
-				>
-					<FormReasonUpdateBill
-						onSubmit={handleSubmitReason}
-						onClose={() => {
-							setOpenWarning(false);
-							setForm((prev) => ({
-								...prev,
-								reason: '',
-							}));
-						}}
-					/>
-				</Popup>
 			</Form>
 		</div>
 	);

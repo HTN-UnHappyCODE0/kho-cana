@@ -68,7 +68,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 		reason: '',
 	});
 
-	useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
+	const {data: detailBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
 		queryFn: () =>
 			httpRequest({
 				http: batchBillServices.detailBatchbill({
@@ -268,8 +268,8 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.TABLE,
 					qualityUuid: '',
-					productUuid: form.productTypeUuid,
-					specificationsUuid: form.specificationsUuid,
+					productUuid: '',
+					specificationsUuid: '',
 					warehouseUuid: form.warehouseToUuid,
 				}),
 			}),
@@ -356,7 +356,16 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 			return toastWarn({msg: 'Vui lòng chọn xe hàng!'});
 		}
 
-		return setOpenWarning(true);
+		if (
+			form.toUuid != detailBill?.toUu?.uuid ||
+			form.fromUuid != detailBill?.fromUu?.uuid ||
+			form.productTypeUuid != detailBill?.productTypeUu?.uuid ||
+			form.specificationsUuid != detailBill?.specificationsUu?.uuid
+		) {
+			return setOpenWarning(true);
+		} else {
+			return fucnUpdateBatchBill.mutate();
+		}
 	};
 
 	const handleSubmitReason = async () => {
@@ -397,7 +406,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 							value={form.weightTotal || ''}
 							type='text'
 							isMoney
-							unit='kg'
+							unit='KG'
 							label={<span>Tổng khối lượng hàng</span>}
 							placeholder='Nhập tổng khối lượng hàng'
 						/>
@@ -767,7 +776,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 							value={form.weightIntent || ''}
 							type='text'
 							isMoney
-							unit='kg'
+							unit='KG'
 							label={<span>Khối lượng dự kiến</span>}
 							placeholder='Nhập khối lượng dự kiến'
 						/>

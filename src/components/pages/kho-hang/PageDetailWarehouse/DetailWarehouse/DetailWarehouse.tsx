@@ -119,7 +119,7 @@ function DetailWarehouse({}: PropsDetailWarehouse) {
 				</div>
 			</div>
 			<div className={'mt'}>
-				<GridColumn col_4>
+				<GridColumn col_3>
 					{/* <DetailBox
 						name={'Tổng khối lượng hàng'}
 						value={detailWarehouse?.totalAmountMT!}

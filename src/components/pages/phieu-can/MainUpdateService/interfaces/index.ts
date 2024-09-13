@@ -2,6 +2,7 @@ export interface PropsMainUpdateService {}
 
 export interface IFormUpdateService {
 	batchUuid: string;
+	customerUuid: string;
 	billUuid: string;
 	shipUuid: string;
 	transportType: number;

@@ -39,7 +39,6 @@ import shipServices from '~/services/shipServices';
 import {IDetailBatchBill} from '../../lenh-can/MainDetailBill/interfaces';
 import Popup from '~/components/common/Popup';
 import FormReasonUpdateBill from '../FormReasonUpdateBill';
-import {set} from 'nprogress';
 
 function MainUpdateService({}: PropsMainUpdateService) {
 	const router = useRouter();
@@ -47,13 +46,13 @@ function MainUpdateService({}: PropsMainUpdateService) {
 	const {_id} = router.query;
 
 	const [openWarning, setOpenWarning] = useState<boolean>(false);
-	const [dataCustomer, setDataCustomer] = useState<any>({});
 	const [listTruckChecked, setListTruckChecked] = useState<any[]>([]);
 	const [listTruckBatchBill, setListTruckBatchBill] = useState<any[]>([]);
 
 	const [form, setForm] = useState<IFormUpdateService>({
 		batchUuid: '',
 		billUuid: '',
+		customerUuid: '',
 		shipUuid: '',
 		transportType: TYPE_TRANSPORT.DUONG_THUY,
 		timeIntend: '',
@@ -70,7 +69,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 		reason: '',
 	});
 
-	useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
+	const {data: detailBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
 		queryFn: () =>
 			httpRequest({
 				http: batchBillServices.detailBatchbill({
@@ -87,7 +86,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 					timeIntend: data?.batchsUu?.timeIntend,
 					weightIntent: convertCoin(data?.batchsUu?.weightIntent),
 					productTypeUuid: data?.productTypeUu?.uuid,
-					documentId: data?.documentId,
+					documentId: data?.documentId || '',
 					description: data?.description,
 					isPrint: data?.isPrint,
 					weightTotal: convertCoin(data?.weightTotal!),
@@ -95,6 +94,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 					timeEnd: data?.timeEnd,
 					code: data?.code,
 					isBatch: data?.isBatch,
+					customerUuid: data?.fromUu?.uuid,
 					reason: '',
 				});
 
@@ -111,17 +111,6 @@ function MainUpdateService({}: PropsMainUpdateService) {
 						name: v?.licensePalate,
 						code: v?.code,
 					}))
-				);
-				setDataCustomer(
-					data?.customerName
-						? {
-								id: '',
-								name: data?.customerName,
-						  }
-						: {
-								id: data?.fromUu?.uuid,
-								name: data?.fromUu?.name,
-						  }
 				);
 			}
 		},
@@ -232,9 +221,9 @@ function MainUpdateService({}: PropsMainUpdateService) {
 					productTypeUuid: form.productTypeUuid,
 					documentId: form.documentId,
 					description: form.description,
-					customerName: !dataCustomer?.id ? dataCustomer?.name : '',
-					fromUuid: dataCustomer?.id ? dataCustomer?.id : '',
-					toUuid: dataCustomer?.id ? dataCustomer?.id : '',
+					customerName: '',
+					fromUuid: form.customerUuid,
+					toUuid: form.customerUuid,
 					isPrint: form.isPrint,
 					lstTruckAddUuid: listTruckChecked
 						.filter((v) => !listTruckBatchBill.some((x) => v.uuid === x.uuid))
@@ -261,7 +250,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 		if (form.transportType == TYPE_TRANSPORT.DUONG_THUY && !form.shipUuid) {
 			return toastWarn({msg: 'Vui lòng chọn tàu!'});
 		}
-		if (!dataCustomer?.id && !dataCustomer?.name) {
+		if (!form.customerUuid) {
 			return toastWarn({msg: 'Vui lòng chọn khách hàng!'});
 		}
 		if (!form.productTypeUuid) {
@@ -271,7 +260,11 @@ function MainUpdateService({}: PropsMainUpdateService) {
 			return toastWarn({msg: 'Vui lòng chọn xe hàng!'});
 		}
 
-		return setOpenWarning(true);
+		if (form.customerUuid != detailBill?.fromUu?.uuid || form.productTypeUuid != detailBill?.productTypeUu?.uuid) {
+			return setOpenWarning(true);
+		} else {
+			return fucnUpdateBatchBill.mutate();
+		}
 	};
 
 	const handleSubmitReason = async () => {
@@ -311,7 +304,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 							value={form.weightTotal || ''}
 							type='text'
 							isMoney
-							unit='kg'
+							unit='KG'
 							label={<span>Tổng khối lượng hàng</span>}
 							placeholder='Nhập tổng khối lượng hàng'
 						/>
@@ -494,20 +487,31 @@ function MainUpdateService({}: PropsMainUpdateService) {
 					</div>
 
 					<div className={clsx('mt', 'col_2')}>
-						<SelectSearch
-							options={listCustomer?.data?.map((v: any) => ({
-								id: v?.uuid,
-								name: v?.name,
-							}))}
-							data={dataCustomer}
-							setData={setDataCustomer}
+						<Select
+							isSearch
+							name='customerUuid'
+							placeholder='Chọn khách hàng'
+							value={form?.customerUuid}
 							label={
 								<span>
 									Khách hàng <span style={{color: 'red'}}>*</span>
 								</span>
 							}
-							placeholder='Nhập, chọn khách hàng'
-						/>
+						>
+							{listCustomer?.data?.map((v: any) => (
+								<Option
+									key={v?.uuid}
+									value={v?.uuid}
+									title={v?.name}
+									onClick={() =>
+										setForm((prev: any) => ({
+											...prev,
+											customerUuid: v?.uuid,
+										}))
+									}
+								/>
+							))}
+						</Select>
 						<div>
 							<Select
 								isSearch
