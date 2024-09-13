@@ -74,7 +74,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 		isBatch: TYPE_BATCH.CAN_LO,
 	});
 
-	useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
+	const {data: detailBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
 		queryFn: () =>
 			httpRequest({
 				http: batchBillServices.detailBatchbill({
@@ -94,7 +94,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 					specificationsUuid: data?.specificationsUu?.uuid,
 					warehouseUuid: data?.fromUu?.parentUu?.uuid || '',
 					productTypeUuid: data?.productTypeUu?.uuid,
-					documentId: data?.documentId,
+					documentId: data?.documentId || '',
 					description: data?.description,
 					fromUuid: data?.fromUu?.uuid,
 					toUuid: data?.toUu?.uuid,
@@ -355,7 +355,16 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 			return toastWarn({msg: 'Vui lòng chọn xe hàng!'});
 		}
 
-		return setOpenWarning(true);
+		if (
+			form.toUuid != detailBill?.toUu?.uuid ||
+			form.fromUuid != detailBill?.fromUu?.uuid ||
+			form.productTypeUuid != detailBill?.productTypeUu?.uuid ||
+			form.specificationsUuid != detailBill?.specificationsUu?.uuid
+		) {
+			return setOpenWarning(true);
+		} else {
+			return fucnUpdateBatchBill.mutate();
+		}
 	};
 
 	const handleSubmitReason = async () => {
@@ -396,7 +405,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 							value={form.weightTotal || ''}
 							type='text'
 							isMoney
-							unit='kg'
+							unit='KG'
 							label={<span>Tổng khối lượng hàng</span>}
 							placeholder='Nhập tổng khối lượng hàng'
 						/>
@@ -751,7 +760,6 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 											setForm((prev: any) => ({
 												...prev,
 												specificationsUuid: v?.uuid,
-												fromUuid: '',
 											}))
 										}
 									/>

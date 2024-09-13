@@ -34,15 +34,12 @@ import {timeSubmit} from '~/common/funcs/optionConvert';
 import batchBillServices from '~/services/batchBillServices';
 import {IDetailBatchBill} from '../MainDetailBill/interfaces';
 import {convertCoin, price} from '~/common/funcs/convertCoin';
-import Popup from '~/components/common/Popup';
-import FormReasonUpdateBill from '../FormReasonUpdateBill';
 
 function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 	const router = useRouter();
 
 	const {_id} = router.query;
 
-	const [openWarning, setOpenWarning] = useState<boolean>(false);
 	const [listTruckChecked, setListTruckChecked] = useState<any[]>([]);
 	const [listTruckBatchBill, setListTruckBatchBill] = useState<any[]>([]);
 
@@ -261,8 +258,8 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.TABLE,
 					qualityUuid: '',
-					productUuid: form.productTypeUuid,
-					specificationsUuid: form.specificationsUuid,
+					productUuid: '',
+					specificationsUuid: '',
 					warehouseUuid: form.warehouseToUuid,
 				}),
 			}),
@@ -314,12 +311,10 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 					lstTruckRemoveUuid: listTruckBatchBill
 						.filter((v) => !listTruckChecked.some((x) => v.uuid === x.uuid))
 						?.map((item) => item.uuid),
-					reason: form.reason,
 				}),
 			}),
 		onSuccess(data) {
 			if (data) {
-				setOpenWarning(false);
 				router.back();
 			}
 		},
@@ -359,15 +354,6 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 				return toastWarn({msg: 'Ngày dự kiến không hợp lệ!'});
 			}
 		}
-
-		return setOpenWarning(true);
-	};
-
-	const handleSubmitReason = async () => {
-		if (!form.reason) {
-			return toastWarn({msg: 'Vui lòng nhập lý do thay đổi!'});
-		}
-
 		return fucnUpdateBatchBill.mutate();
 	};
 
@@ -780,27 +766,6 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 						<TextArea name='description' placeholder='Nhập ghi chú' max={5000} blur label={<span>Ghi chú</span>} />
 					</div>
 				</div>
-				<Popup
-					open={openWarning}
-					onClose={() => {
-						setOpenWarning(false);
-						setForm((prev) => ({
-							...prev,
-							reason: '',
-						}));
-					}}
-				>
-					<FormReasonUpdateBill
-						onSubmit={handleSubmitReason}
-						onClose={() => {
-							setOpenWarning(false);
-							setForm((prev) => ({
-								...prev,
-								reason: '',
-							}));
-						}}
-					/>
-				</Popup>
 			</Form>
 		</div>
 	);

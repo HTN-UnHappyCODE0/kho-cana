@@ -73,7 +73,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 		reason: '',
 	});
 
-	useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
+	const {data: detailBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
 		queryFn: () =>
 			httpRequest({
 				http: batchBillServices.detailBatchbill({
@@ -334,7 +334,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 			return toastWarn({msg: 'Vui lòng chọn tàu!'});
 		}
 		if (!form.fromUuid) {
-			return toastWarn({msg: 'Vui lòng chọn khách hàng!'});
+			return toastWarn({msg: 'Vui lòng chọn nhà cung cấp!'});
 		}
 		if (!form.productTypeUuid) {
 			return toastWarn({msg: 'Vui lòng chọn loại gỗ!'});
@@ -352,7 +352,16 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 			return toastWarn({msg: 'Vui lòng chọn xe hàng!'});
 		}
 
-		return setOpenWarning(true);
+		if (
+			form.fromUuid != detailBill?.fromUu?.uuid ||
+			form.toUuid != detailBill?.toUu?.uuid ||
+			form.productTypeUuid != detailBill?.productTypeUu?.uuid ||
+			form.specificationsUuid != detailBill?.specificationsUu?.uuid
+		) {
+			return setOpenWarning(true);
+		} else {
+			return fucnUpdateBatchBill.mutate();
+		}
 	};
 
 	const handleSubmitReason = async () => {
@@ -393,7 +402,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 							value={form.weightTotal || ''}
 							type='text'
 							isMoney
-							unit='kg'
+							unit='KG'
 							label={<span>Tổng khối lượng hàng</span>}
 							placeholder='Nhập tổng khối lượng hàng'
 						/>
@@ -666,7 +675,6 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 										setForm((prev: any) => ({
 											...prev,
 											productTypeUuid: v?.productTypeUu?.uuid,
-											toUuid: '',
 										}))
 									}
 								/>
