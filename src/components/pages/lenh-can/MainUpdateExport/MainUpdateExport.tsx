@@ -235,13 +235,13 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.TABLE,
 					warehouseUuid: form.warehouseUuid,
-					specificationsUuid: form.specificationsUuid,
-					productUuid: form.productTypeUuid,
+					specificationsUuid: '',
+					productUuid: '',
 					qualityUuid: '',
 				}),
 			}),
 		onSuccess(data) {
-			if (data) {
+			if (data && !form.fromUuid) {
 				setForm((prev) => ({
 					...prev,
 					fromUuid: data?.[0]?.uuid || '',
@@ -324,7 +324,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 		if (form.transportType == TYPE_TRANSPORT.DUONG_THUY && !form.shipUuid) {
 			return toastWarn({msg: 'Vui lòng chọn tàu!'});
 		}
-		if (!form.fromUuid) {
+		if (!form.toUuid) {
 			return toastWarn({msg: 'Vui lòng chọn khách hàng!'});
 		}
 		if (!form.productTypeUuid) {
@@ -336,7 +336,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 		if (!form.warehouseUuid) {
 			return toastWarn({msg: 'Vui lòng chọn kho chính!'});
 		}
-		if (!form.toUuid) {
+		if (!form.fromUuid) {
 			return toastWarn({msg: 'Vui lòng chọn bãi!'});
 		}
 		if (listTruckChecked.length == 0) {
