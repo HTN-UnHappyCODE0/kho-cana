@@ -113,7 +113,5 @@ export function convertWeight(weight: number | null) {
 		return 0;
 	}
 
-	const weightConver = weight / 1000;
-
-	return weightConver.toFixed(3);
+	return (weight / 1000).toLocaleString('vi-VN', {minimumFractionDigits: 3, maximumFractionDigits: 3});
 }
