@@ -264,7 +264,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 				}),
 			}),
 		onSuccess(data) {
-			if (data) {
+			if (data && !form?.toUuid) {
 				setForm((prev) => ({
 					...prev,
 					toUuid: data?.filter((x: any) => x?.uuid != form?.fromUuid)?.[0]?.uuid || '',
