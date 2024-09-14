@@ -70,7 +70,7 @@ function MainPageProfile({}: PropsMainPageProfile) {
 		<div className={styles.container}>
 			<div className={styles.left}>
 				<h4>Thông tin tài khoản</h4>
-				<p>Chào mừng {detaillUser?.fullName || '---'} đến với hệ thống quản lý kho hàng Thái Hưng</p>
+				<p>Chào mừng {detaillUser?.fullName || '---'} đến với hệ thống quản lý cân Thái Hưng</p>
 			</div>
 			<div className={styles.box_info}>
 				<ImageFill
@@ -132,7 +132,7 @@ function MainPageProfile({}: PropsMainPageProfile) {
 								<UserOctagon fontSize={24} fontWeight={600} />
 								Giới tính
 							</p>
-							<span>{detaillUser?.sex == GENDER.NAM ? 'Nam' : 'Nữ'}</span>
+							<span>{detaillUser?.sex == GENDER.NAM ? 'Nam' : 'Nữ' || '---'}</span>
 						</div>
 						<div className={styles.item_table}>
 							<p>

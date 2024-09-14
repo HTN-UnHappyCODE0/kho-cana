@@ -1,19 +1,21 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {PropsFormChangePassword} from './interfaces';
 import styles from './FormChangePassword.module.scss';
 import Button from '~/components/common/Button';
 import {IoClose} from 'react-icons/io5';
 import Form, {FormContext, Input} from '~/components/common/Form';
-import {useMutation} from '@tanstack/react-query';
+import Select, {Option} from '~/components/common/Select';
+import {useMutation, useQuery} from '@tanstack/react-query';
 import {httpRequest} from '~/services';
+import {CONFIG_DESCENDING, CONFIG_PAGING, CONFIG_STATUS, CONFIG_TYPE_FIND, QUERY_KEY} from '~/constants/config/enum';
 import Loading from '~/components/common/Loading';
 import {toastWarn} from '~/common/funcs/toast';
+import regencyServices from '~/services/regencyServices';
 import clsx from 'clsx';
-
+import accountServices from '~/services/accountServices';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/redux/store';
 import md5 from 'md5';
-import accountServices from '~/services/accountServices';
 
 function FormChangePassword({onClose}: PropsFormChangePassword) {
 	const {infoUser} = useSelector((state: RootState) => state.user);
@@ -33,8 +35,8 @@ function FormChangePassword({onClose}: PropsFormChangePassword) {
 				msgSuccess: 'Chỉnh sửa mật khẩu thành công',
 				http: accountServices.changePassword({
 					username: infoUser?.userName as string,
-					oldPass: md5(`${form?.oldpassword}`),
-					newPass: md5(`${form?.newpassword}`),
+					oldPass: md5(form?.oldpassword),
+					newPass: md5(form?.newpassword),
 				}),
 			}),
 		onSuccess(data) {
@@ -74,7 +76,6 @@ function FormChangePassword({onClose}: PropsFormChangePassword) {
 						isRequired
 						type='password'
 						placeholder='Nhập mật khẩu cũ'
-						min={6}
 						name='oldpassword'
 						value={form.oldpassword}
 						label={
@@ -89,7 +90,6 @@ function FormChangePassword({onClose}: PropsFormChangePassword) {
 						isRequired
 						type='password'
 						placeholder='Nhập mật khẩu mới'
-						min={6}
 						name='newpassword'
 						value={form.newpassword}
 						label={
@@ -104,7 +104,6 @@ function FormChangePassword({onClose}: PropsFormChangePassword) {
 						isRequired
 						type='password'
 						placeholder='Nhập lại mật khẩu'
-						min={6}
 						name='confirmpassword'
 						value={form.confirmpassword}
 						label={

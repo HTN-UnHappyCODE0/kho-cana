@@ -84,6 +84,9 @@ function FormCreateInventory({onClose, nameStorage}: PropsFormCreateInventory) {
 		if ((!!form.amountKcs && form.dryness < 0) || form.dryness > 100) {
 			return toastWarn({msg: 'Độ khô không hợp lệ!'});
 		}
+		if (!form.decription) {
+			return toastWarn({msg: 'Vui lòng nhập mô tả!'});
+		}
 
 		const dataImage = await httpRequest({
 			setLoading,

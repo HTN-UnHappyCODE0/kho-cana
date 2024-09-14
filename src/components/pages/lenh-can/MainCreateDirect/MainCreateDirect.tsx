@@ -465,19 +465,21 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 									</span>
 								}
 							>
-								{listShip?.data?.map((v: any) => (
-									<Option
-										key={v?.uuid}
-										value={v?.uuid}
-										title={v?.licensePalate}
-										onClick={() =>
-											setForm((prev) => ({
-												...prev,
-												shipUuid: v?.uuid,
-											}))
-										}
-									/>
-								))}
+								{listShip?.data
+									?.filter((x: any) => x?.uuid != form.shipOutUuid)
+									?.map((v: any) => (
+										<Option
+											key={v?.uuid}
+											value={v?.uuid}
+											title={v?.licensePalate}
+											onClick={() =>
+												setForm((prev) => ({
+													...prev,
+													shipUuid: v?.uuid,
+												}))
+											}
+										/>
+									))}
 							</Select>
 						</div>
 					</div>
