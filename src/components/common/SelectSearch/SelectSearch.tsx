@@ -5,24 +5,29 @@ import styles from './SelectSearch.module.scss';
 import clsx from 'clsx';
 import {removeVietnameseTones} from '~/common/funcs/optionConvert';
 import {convertCoin, price} from '~/common/funcs/convertCoin';
+import TippyHeadless from '@tippyjs/react/headless';
 
 function SelectSearch({label, placeholder, options, data, readonly = false, isConvertNumber = false, setData, unit}: PropsSelectSearch) {
 	const ref = useRef<any>(null);
 
+	const [width, setWidth] = useState<number>(0);
 	const [open, setOpen] = useState<boolean>(false);
 	const [keyword, setKeyword] = useState<string>(isConvertNumber ? '0' : '');
 
-	const handleClickOutside = (event: any) => {
-		if (ref.current && !ref.current.contains(event.target)) {
-			setOpen(false);
-		}
-	};
-
 	useEffect(() => {
-		document.addEventListener('mousedown', handleClickOutside);
-		return () => {
-			document.removeEventListener('mousedown', handleClickOutside);
-		};
+		if (ref.current) {
+			const resizeObserver = new ResizeObserver((entries) => {
+				if (entries[0].contentRect) {
+					setWidth(entries[0].contentRect.width);
+				}
+			});
+
+			resizeObserver.observe(ref.current);
+
+			return () => {
+				resizeObserver.disconnect();
+			};
+		}
 	}, []);
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,63 +57,68 @@ function SelectSearch({label, placeholder, options, data, readonly = false, isCo
 	return (
 		<div className={styles.container}>
 			<label className={styles.label}>{label}</label>
-			<div className={styles.box_input} ref={ref}>
-				<input
-					type='text'
-					className={clsx(styles.input, {[styles.readonly]: readonly})}
-					placeholder={placeholder || 'Tìm kiếm...'}
-					name='keyword'
-					value={isConvertNumber ? convertCoin(price(data.name)) : data.name || keyword}
-					autoComplete='off'
-					max={255}
-					readOnly={readonly}
-					onFocus={() => {
-						if (readonly) {
-							return;
-						} else {
-							setOpen(true);
-						}
-					}}
-					onChange={handleChange}
-				/>
-
-				{!!unit && <div className={styles.unit}>{unit}</div>}
-
-				<div
-					className={clsx(styles.main_option, {
-						[styles.open]:
-							open &&
-							options?.filter((v) =>
+			<TippyHeadless
+				maxWidth={'100%'}
+				interactive
+				visible={
+					open &&
+					options?.filter((v) =>
+						removeVietnameseTones(v.name)?.includes(
+							keyword ? removeVietnameseTones(isConvertNumber ? String(price(keyword)) : keyword) : ''
+						)
+					)?.length > 0
+				}
+				onClickOutside={() => setOpen(false)}
+				placement='bottom-start'
+				render={(attrs: any) => (
+					<div style={{width: width}} className={clsx(styles.main_option)}>
+						{options
+							?.filter((v) =>
 								removeVietnameseTones(v.name)?.includes(
 									keyword ? removeVietnameseTones(isConvertNumber ? String(price(keyword)) : keyword) : ''
 								)
-							)?.length > 0,
-					})}
-				>
-					{options
-						?.filter((v) =>
-							removeVietnameseTones(v.name)?.includes(
-								keyword ? removeVietnameseTones(isConvertNumber ? String(price(keyword)) : keyword) : ''
 							)
-						)
-						?.map((v) => (
-							<div
-								key={v.id}
-								className={clsx(styles.item, {[styles.active]: v.id == data.id})}
-								onClick={() => {
-									setData({
-										id: v?.id,
-										name: isConvertNumber ? price(Number(v?.name)) : v?.name,
-									});
-									setOpen(false);
-									setKeyword(isConvertNumber ? convertCoin(Number(v?.name)) : v?.name);
-								}}
-							>
-								{isConvertNumber ? convertCoin(Number(v.name)) : v.name}
-							</div>
-						))}
+							?.map((v) => (
+								<div
+									key={v.id}
+									className={clsx(styles.item, {[styles.active]: v.id == data.id})}
+									onClick={() => {
+										setData({
+											id: v?.id,
+											name: isConvertNumber ? price(Number(v?.name)) : v?.name,
+										});
+										setOpen(false);
+										setKeyword(isConvertNumber ? convertCoin(Number(v?.name)) : v?.name);
+									}}
+								>
+									{isConvertNumber ? convertCoin(Number(v.name)) : v.name}
+								</div>
+							))}
+					</div>
+				)}
+			>
+				<div className={styles.box_input} ref={ref}>
+					<input
+						type='text'
+						className={clsx(styles.input, {[styles.readonly]: readonly})}
+						placeholder={placeholder || 'Tìm kiếm...'}
+						name='keyword'
+						value={isConvertNumber ? convertCoin(price(data.name)) : data.name || keyword}
+						autoComplete='off'
+						readOnly={readonly}
+						onFocus={() => {
+							if (readonly) {
+								return;
+							} else {
+								setOpen(true);
+							}
+						}}
+						onChange={handleChange}
+					/>
+
+					{!!unit && <div className={styles.unit}>{unit}</div>}
 				</div>
-			</div>
+			</TippyHeadless>
 		</div>
 	);
 }
