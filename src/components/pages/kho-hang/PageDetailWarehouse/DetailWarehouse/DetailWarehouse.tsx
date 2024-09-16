@@ -139,7 +139,7 @@ function DetailWarehouse({}: PropsDetailWarehouse) {
 					/> */}
 					<DetailBox
 						name={'Tổng khối lượng quy khô'}
-						value={detailWarehouse?.totalAmountBDMT!}
+						value={convertWeight(detailWarehouse?.totalAmountBDMT || 0)}
 						action={
 							<div className={styles.action}>
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />
@@ -156,7 +156,7 @@ function DetailWarehouse({}: PropsDetailWarehouse) {
 					/>
 					<DetailBox
 						name={' Khối lượng nhập'}
-						value={detailWarehouse?.totalAmountIn!}
+						value={convertWeight(detailWarehouse?.totalAmountIn || 0)}
 						action={
 							<div className={styles.action}>
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />
@@ -173,7 +173,7 @@ function DetailWarehouse({}: PropsDetailWarehouse) {
 					/>
 					<DetailBox
 						name={'Khối lượng xuất'}
-						value={detailWarehouse?.totalAmountOut!}
+						value={convertWeight(detailWarehouse?.totalAmountOut || 0)}
 						action={
 							<div className={styles.action}>
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />

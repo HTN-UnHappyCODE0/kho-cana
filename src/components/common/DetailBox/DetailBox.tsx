@@ -6,7 +6,7 @@ import {convertCoin} from '~/common/funcs/convertCoin';
 import clsx from 'clsx';
 import {BiLoader} from 'react-icons/bi';
 
-function DetailBox({isConvert = true, value, link, color, name, action, unit, isLoading}: PropsDetailBox) {
+function DetailBox({value, link, color, name, action, unit, isLoading}: PropsDetailBox) {
 	return (
 		<div className={styles.container}>
 			<div className={styles.box_name}>
@@ -26,7 +26,7 @@ function DetailBox({isConvert = true, value, link, color, name, action, unit, is
 				</div>
 			) : (
 				<div style={{color: color}} className={clsx(styles.box_value, {[styles.check]: value < 0})}>
-					{isConvert ? convertCoin(value) : value} {unit && <span>{unit}</span>}
+					{value} {unit && <span>{unit}</span>}
 				</div>
 			)}
 		</div>
