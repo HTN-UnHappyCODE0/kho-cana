@@ -1,8 +1,7 @@
 export interface PropsDetailBox {
-	isConvert?: boolean;
 	isLoading?: boolean;
 	name: string;
-	value: number;
+	value: any;
 	link?: string;
 	color?: string;
 	unit?: string;

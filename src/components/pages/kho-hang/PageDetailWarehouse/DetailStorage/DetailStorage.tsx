@@ -150,7 +150,7 @@ function DetailStorage({}: PropsDetailStorage) {
 				<GridColumn col_4>
 					<DetailBox
 						name={'Tổng khối lượng quy khô'}
-						value={Number(detailStorage?.totalAmountBdmt)}
+						value={convertWeight(detailStorage?.totalAmountBdmt || 0)}
 						action={
 							<div className={styles.action}>
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />
@@ -167,7 +167,7 @@ function DetailStorage({}: PropsDetailStorage) {
 					/>
 					<DetailBox
 						name={'Khối lượng nhập'}
-						value={Number(detailStorage?.totalAmountIn)}
+						value={convertWeight(detailStorage?.totalAmountIn || 0)}
 						action={
 							<div className={styles.action}>
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />
@@ -184,7 +184,7 @@ function DetailStorage({}: PropsDetailStorage) {
 					/>
 					<DetailBox
 						name={'Khối lượng xuất'}
-						value={Number(detailStorage?.totalAmountOut)}
+						value={convertWeight(detailStorage?.totalAmountOut || 0)}
 						action={
 							<div className={styles.action}>
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />
