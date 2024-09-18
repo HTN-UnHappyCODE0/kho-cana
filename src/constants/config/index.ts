@@ -147,6 +147,10 @@ export const ListOptionTimePicker: {
 		value: TYPE_DATE.LAST_WEEK,
 	},
 	{
+		name: '7 ngày trước',
+		value: TYPE_DATE.LAST_7_DAYS,
+	},
+	{
 		name: 'Tháng này',
 		value: TYPE_DATE.THIS_MONTH,
 	},

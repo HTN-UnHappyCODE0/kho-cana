@@ -125,7 +125,8 @@ $font-size-input: 16px;
 		.inputElement {
 			font-size: $font-size-input;
 			font-weight: 500;
-			border: 1px solid transparent;
+			border: none;
+			outline: none;
 			padding: $padding-input;
 
 			&::placeholder {
@@ -162,7 +163,6 @@ $font-size-input: 16px;
 
 	.inputElement {
 		width: 100%;
-		border: 1px solid $border-input;
 		border-radius: $border-radius;
 
 		&::placeholder {
@@ -216,11 +216,5 @@ $font-size-input: 16px;
 
 	.toggleType {
 		color: $color-error !important;
-	}
-}
-
-.focus {
-	.inputElement {
-		border: 1px solid $color-focus;
 	}
 }

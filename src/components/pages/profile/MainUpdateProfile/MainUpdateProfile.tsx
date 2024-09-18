@@ -77,7 +77,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 				provinceId: data?.detailAddress?.province?.uuid,
 				districtId: data?.detailAddress?.district?.uuid,
 				townId: data?.detailAddress?.town?.uuid,
-				provinceOwnerId: data?.provinceOwner?.uuid,
+				provinceOwnerId: data?.provinceOwner || '',
 			});
 		},
 		select(data) {
@@ -87,20 +87,6 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 	});
 
 	const listProvince = useQuery([QUERY_KEY.dropdown_tinh_thanh_pho], {
-		queryFn: () =>
-			httpRequest({
-				isDropdown: true,
-				http: commonServices.listProvince({
-					keyword: '',
-					status: CONFIG_STATUS.HOAT_DONG,
-				}),
-			}),
-		select(data) {
-			return data;
-		},
-	});
-
-	const listProvinceOwner = useQuery([QUERY_KEY.dropdown_tinh_thanh_pho_quan_ly], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -216,7 +202,8 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 					districtId: form.districtId,
 					townId: form.townId,
 					provinceOwnerId:
-						form.regencyUuid == listRegency?.data?.find((x: any) => x?.code == REGENCY_NAME['Nhân viên thị trường'])?.uuid
+						form.regencyUuid == listRegency?.data?.find((x: any) => x?.code == REGENCY_NAME['Nhân viên thị trường'])?.uuid ||
+						form.regencyUuid == listRegency?.data?.find((x: any) => x?.code == REGENCY_NAME['Quản lý nhập hàng'])?.uuid
 							? form.provinceOwnerId
 							: '',
 				}),
@@ -350,56 +337,42 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 					</Select>
 				</div>
 				<div className={clsx('mt', 'col_2')}>
-					<div>
-						<Select
-							isSearch
-							name='ownerUuid'
-							readOnly={true}
-							placeholder='Chọn người quản lý'
-							value={form?.ownerUuid}
-							onChange={(e: any) =>
-								setForm((prev: any) => ({
-									...prev,
-									ownerUuid: e.target.value,
-								}))
-							}
-							label={
-								<span>
-									Người quản lý <span style={{color: 'red'}}>*</span>
-								</span>
-							}
-						>
-							{listUserManager?.data?.map((v: any) => (
-								<Option key={v?.uuid} value={v?.uuid} title={v?.fullName} />
-							))}
-						</Select>
-					</div>
 					<Select
 						isSearch
-						name='provinceOwnerId'
-						value={form.provinceOwnerId}
+						name='ownerUuid'
 						readOnly={true}
-						placeholder='Khu vực quản lý'
+						placeholder='Chọn người quản lý'
+						value={form?.ownerUuid}
+						onChange={(e: any) =>
+							setForm((prev: any) => ({
+								...prev,
+								ownerUuid: e.target.value,
+							}))
+						}
+						label={
+							<span>
+								Người quản lý <span style={{color: 'red'}}>*</span>
+							</span>
+						}
+					>
+						{listUserManager?.data?.map((v: any) => (
+							<Option key={v?.uuid} value={v?.uuid} title={v?.fullName} />
+						))}
+					</Select>
+					<Input
+						name='provinceOwnerId'
+						value={form.provinceOwnerId || ''}
+						readOnly={true}
+						min={5}
+						max={255}
+						blur={true}
 						label={
 							<span>
 								Khu vực quản lý <span style={{color: 'red'}}>*</span>
 							</span>
 						}
-					>
-						{listProvinceOwner?.data?.map((v: any) => (
-							<Option
-								key={v?.matp}
-								value={v?.matp}
-								title={v?.name}
-								onClick={() =>
-									setForm((prev: any) => ({
-										...prev,
-										provinceOwnerId: v?.matp,
-									}))
-								}
-							/>
-						))}
-					</Select>
+						placeholder='Nhập khu vực quản lý'
+					/>
 				</div>
 				<div className={clsx('mt', 'col_3')}>
 					<Select

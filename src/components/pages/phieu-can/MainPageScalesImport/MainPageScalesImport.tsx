@@ -13,6 +13,7 @@ import {
 	STATE_BILL,
 	STATUS_BILL,
 	TYPE_BATCH,
+	TYPE_DATE,
 	TYPE_PRODUCT,
 	TYPE_SCALES,
 	TYPE_SIFT,
@@ -318,7 +319,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 						]}
 					/>
 					<div className={styles.filter}>
-						<DateRangerCustom titleTime='Thời gian' />
+						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.LAST_7_DAYS} />
 					</div>
 				</div>
 			</div>

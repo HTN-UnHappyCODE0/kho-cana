@@ -15,6 +15,7 @@ import {
 	STATUS_BILL,
 	STATUS_CUSTOMER,
 	TYPE_BATCH,
+	TYPE_DATE,
 	TYPE_PRODUCT,
 	TYPE_SCALES,
 } from '~/constants/config/enum';
@@ -223,7 +224,7 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 					/>
 
 					<div className={styles.filter}>
-						<DateRangerCustom titleTime='Thời gian' />
+						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.LAST_7_DAYS} />
 					</div>
 				</div>
 

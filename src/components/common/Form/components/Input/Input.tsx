@@ -6,7 +6,7 @@ import {FormContext} from '../../contexts';
 import clsx from 'clsx';
 import styles from './Input.module.scss';
 import {convertCoin, price} from '~/common/funcs/convertCoin';
-import {isEmail, isPhoneNumber, isShipCode} from '~/common/funcs/validate';
+import {isEmail, isPhoneNumber, isShipCode, isLicensePalate} from '~/common/funcs/validate';
 
 function Input({
 	label,
@@ -103,6 +103,13 @@ function Input({
 			}));
 		}
 
+		if (props?.isUppercase) {
+			return data.setForm((prev: any) => ({
+				...prev,
+				[name]: value.toUpperCase(),
+			}));
+		}
+
 		return data.setForm((prev: any) => ({
 			...prev,
 			[name]: value,
@@ -187,6 +194,13 @@ function Input({
 				return data.setErrorText((prev: any) => ({
 					...prev,
 					[name]: 'Mã tàu không đúng định dạng',
+				}));
+			}
+
+			if (props.isLicensePalate && !isLicensePalate(data.form[name])) {
+				return data.setErrorText((prev: any) => ({
+					...prev,
+					[name]: 'Biển số không đúng định dạng',
 				}));
 			}
 

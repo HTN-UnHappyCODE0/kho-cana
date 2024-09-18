@@ -130,7 +130,7 @@ function PageUpdatePartner({}: PropsPageUpdatePartner) {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
-				http: userServices.listUser({
+				http: userServices.listUser2({
 					page: 1,
 					pageSize: 20,
 					keyword: '',
@@ -138,11 +138,11 @@ function PageUpdatePartner({}: PropsPageUpdatePartner) {
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
 					status: CONFIG_STATUS.HOAT_DONG,
-					provinceIDOwer: form.provinceId,
-					regencyUuid: listRegency?.data?.find((v: any) => v?.code == REGENCY_NAME['Nhân viên thị trường'])
-						? listRegency?.data?.find((v: any) => v?.code == REGENCY_NAME['Nhân viên thị trường'])?.uuid
-						: null,
-					regencyUuidExclude: '',
+					provinceIDOwer: '',
+					regencyUuid: [
+						listRegency?.data?.find((v: any) => v?.code == REGENCY_NAME['Quản lý nhập hàng'])?.uuid,
+						listRegency?.data?.find((v: any) => v?.code == REGENCY_NAME['Nhân viên thị trường'])?.uuid,
+					],
 				}),
 			}),
 		select(data) {
@@ -462,6 +462,53 @@ function PageUpdatePartner({}: PropsPageUpdatePartner) {
 						</div>
 					</div>
 
+					<div className={clsx('mt', 'col_2')}>
+						<div>
+							<Select
+								isSearch
+								name='userUuid'
+								placeholder='Chọn nhân viên'
+								value={form?.userUuid}
+								onChange={(e: any) =>
+									setForm((prev: any) => ({
+										...prev,
+										userUuid: e.target.value,
+									}))
+								}
+								label={
+									<span>
+										Thuộc nhân viên quản lý <span style={{color: 'red'}}>*</span>
+									</span>
+								}
+							>
+								{listUser?.data?.map((v: any) => (
+									<Option key={v?.uuid} value={v?.uuid} title={v?.fullName} />
+								))}
+							</Select>
+						</div>
+						<Select
+							isSearch
+							name='warehouseUuid'
+							placeholder='Chọn kho hàng chính'
+							value={form?.warehouseUuid}
+							label={<span>Kho hàng chính</span>}
+						>
+							{listWarehouse?.data?.map((v: any) => (
+								<Option
+									key={v?.uuid}
+									value={v?.uuid}
+									title={v?.name}
+									onClick={() =>
+										setForm((prev: any) => ({
+											...prev,
+											warehouseUuid: v?.uuid,
+										}))
+									}
+								/>
+							))}
+						</Select>
+					</div>
+
 					<div className={clsx('mt', 'col_3')}>
 						<Select
 							isSearch
@@ -553,52 +600,6 @@ function PageUpdatePartner({}: PropsPageUpdatePartner) {
 							label={<span>Địa chỉ chi tiết</span>}
 							placeholder='Nhập địa chỉ chi tiết'
 						/>
-					</div>
-					<div className={clsx('mt', 'col_2')}>
-						<div>
-							<Select
-								isSearch
-								name='userUuid'
-								placeholder='Chọn nhân viên'
-								value={form?.userUuid}
-								onChange={(e: any) =>
-									setForm((prev: any) => ({
-										...prev,
-										userUuid: e.target.value,
-									}))
-								}
-								label={
-									<span>
-										Thuộc nhân viên quản lý <span style={{color: 'red'}}>*</span>
-									</span>
-								}
-							>
-								{listUser?.data?.map((v: any) => (
-									<Option key={v?.uuid} value={v?.uuid} title={v?.fullName} />
-								))}
-							</Select>
-						</div>
-						<Select
-							isSearch
-							name='warehouseUuid'
-							placeholder='Chọn kho hàng chính'
-							value={form?.warehouseUuid}
-							label={<span>Kho hàng chính</span>}
-						>
-							{listWarehouse?.data?.map((v: any) => (
-								<Option
-									key={v?.uuid}
-									value={v?.uuid}
-									title={v?.name}
-									onClick={() =>
-										setForm((prev: any) => ({
-											...prev,
-											warehouseUuid: v?.uuid,
-										}))
-									}
-								/>
-							))}
-						</Select>
 					</div>
 
 					<div className={clsx('mt')}>

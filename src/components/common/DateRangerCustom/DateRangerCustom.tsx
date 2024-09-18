@@ -13,7 +13,13 @@ import {timeSubmit} from '~/common/funcs/optionConvert';
 import {RiCalendarScheduleLine} from 'react-icons/ri';
 import Moment from 'react-moment';
 
-function DateRangerCustom({titleTime, keyTypeDate = '_typeDate', keyDateForm = '_dateFrom', keyDateTo = '_dateTo'}: PropsDateRangerCustom) {
+function DateRangerCustom({
+	titleTime,
+	keyTypeDate = '_typeDate',
+	keyDateForm = '_dateFrom',
+	keyDateTo = '_dateTo',
+	typeDateDefault,
+}: PropsDateRangerCustom) {
 	const router = useRouter();
 
 	const {[keyTypeDate]: typeDate, [keyDateForm]: dateForm, [keyDateTo]: dateTo} = router.query;
@@ -57,18 +63,20 @@ function DateRangerCustom({titleTime, keyTypeDate = '_typeDate', keyDateForm = '
 
 	// Mặc định sẽ là ngày hôm nay
 	useEffect(() => {
-		router.replace(
-			{
-				pathname: router.pathname,
-				query: {
-					...router.query,
-					[keyTypeDate]: TYPE_DATE.TODAY,
+		if (!!typeDateDefault) {
+			router.replace(
+				{
+					pathname: router.pathname,
+					query: {
+						...router.query,
+						[keyTypeDate]: typeDateDefault,
+					},
 				},
-			},
-			undefined,
-			{scroll: false}
-		);
-	}, []);
+				undefined,
+				{scroll: false}
+			);
+		}
+	}, [typeDateDefault]);
 
 	return (
 		<TippyHeadless
@@ -96,7 +104,7 @@ function DateRangerCustom({titleTime, keyTypeDate = '_typeDate', keyDateForm = '
 					{titleTime && <span className={styles.title}>{`${titleTime}:`}</span>}
 					{date?.from && date?.to ? (
 						<>
-							{Number(typeDate) == 8 ? (
+							{Number(typeDate) == TYPE_DATE.LUA_CHON ? (
 								<span className={styles.value}>
 									<Moment date={date?.from} format='DD/MM/YYYY' /> - <Moment date={date?.to} format='DD/MM/YYYY' />
 								</span>

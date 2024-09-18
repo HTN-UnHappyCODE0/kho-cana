@@ -30,8 +30,7 @@ const userServices = {
 			isDescending: CONFIG_DESCENDING;
 			typeFind: CONFIG_TYPE_FIND;
 			isPaging: CONFIG_PAGING;
-			regencyUuid: string;
-			regencyUuidExclude: string[];
+			regencyUuid: string[];
 			provinceIDOwer: string;
 		},
 		tokenAxios?: any
