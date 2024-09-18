@@ -271,7 +271,7 @@ function MainPageUpdateTruck({}: PropsMainPageUpdateTruck) {
 												}))
 											}
 										/>
-										<label htmlFor='xe_cong_ty'>Xe công ty</label>
+										<label htmlFor='xe_cong_ty'>Xe KV cảng xuất khẩu</label>
 									</div>
 									<div className={styles.item_radio}>
 										<input

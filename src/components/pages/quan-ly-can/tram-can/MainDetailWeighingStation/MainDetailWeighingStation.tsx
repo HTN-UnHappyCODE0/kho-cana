@@ -168,7 +168,7 @@ function MainDetailWeighingStation({}: PropsMainDetailWeighingStation) {
 							<span style={{fontWeight: 600, marginLeft: '6px'}}>{scalesStation?.name}</span>
 						</td>
 						<td>
-							<span>Thuộc công ty:</span>
+							<span>Thuộc KV cảng xuất khẩu:</span>
 							<span style={{fontWeight: 600, marginLeft: '6px'}}>{scalesStation?.companyUu?.name}</span>
 						</td>
 					</tr>
