@@ -79,7 +79,7 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 					data?.map((v: any) => ({
 						uuid: v?.uuid,
 						title: v?.title,
-						value: 0,
+						value: null,
 					}))
 				);
 			}

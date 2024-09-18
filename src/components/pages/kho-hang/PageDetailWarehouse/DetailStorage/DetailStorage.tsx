@@ -199,7 +199,7 @@ function DetailStorage({}: PropsDetailStorage) {
 							</div>
 						}
 					/>
-					<DetailBox name={'Độ khô trung bình'} value={detailStorage?.drynessAvg!} />
+					<DetailBox name={'Độ khô trung bình'} value={detailStorage?.drynessAvg!?.toFixed(3)} />
 				</GridColumn>
 			</div>
 			<div className={'mt'}>
