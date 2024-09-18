@@ -96,7 +96,7 @@ function MainProductType({}: PropsMainProductType) {
 							listFilter={[
 								{
 									id: TYPE_PRODUCT.CONG_TY,
-									name: 'Công ty',
+									name: 'KV cảng xuất khẩu',
 								},
 								{
 									id: TYPE_PRODUCT.DICH_VU,
@@ -171,9 +171,9 @@ function MainProductType({}: PropsMainProductType) {
 								title: 'Loại hàng',
 								render: (data: IProductType) => (
 									<>
-										{data?.type == TYPE_PRODUCT.CONG_TY && 'Công ty'}
+										{data?.type == TYPE_PRODUCT.CONG_TY && 'KV cảng xuất khẩu'}
 										{data?.type == TYPE_PRODUCT.DICH_VU && 'Dịch vụ'}
-										{data?.type == TYPE_PRODUCT.DUNG_CHUNG && 'Công ty + Dịch vụ'}
+										{data?.type == TYPE_PRODUCT.DUNG_CHUNG && 'KV cảng xuất khẩu + Dịch vụ'}
 									</>
 								),
 							},

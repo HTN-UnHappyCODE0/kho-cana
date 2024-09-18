@@ -197,7 +197,7 @@ function MainPageDelverTruck({}: PropsMainPageDelverTruck) {
 								title: 'Phân loại xe',
 								render: (data: ITruck) => (
 									<>
-										{data?.ownerType == OWNEW_TYPE_TRUCK.XE_CONG_TY && <span>Xe công ty</span>}
+										{data?.ownerType == OWNEW_TYPE_TRUCK.XE_CONG_TY && <span>Xe KV cảng xuất khẩu</span>}
 										{data?.ownerType == OWNEW_TYPE_TRUCK.XE_KHACH_HANG && <span>Xe khách hàng</span>}
 									</>
 								),

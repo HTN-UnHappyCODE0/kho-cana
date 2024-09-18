@@ -21,6 +21,25 @@ const userServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	listUser2: (
+		data: {
+			pageSize: number;
+			page: number;
+			keyword: string;
+			status: CONFIG_STATUS | null;
+			isDescending: CONFIG_DESCENDING;
+			typeFind: CONFIG_TYPE_FIND;
+			isPaging: CONFIG_PAGING;
+			regencyUuid: string;
+			regencyUuidExclude: string[];
+			provinceIDOwer: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/User/get-list-user2`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 	changeStatus: (
 		data: {
 			uuid: string;

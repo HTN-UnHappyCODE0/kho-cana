@@ -87,7 +87,7 @@ function PageCustomerExport({}: PropsPageCustomerExport) {
 					<div className={styles.filter}>
 						<FilterCustom
 							isSearch
-							name='Công ty'
+							name='KV cảng xuất khẩu'
 							query='_partnerUuid'
 							listFilter={listPartner?.data?.map((v: any) => ({
 								id: v?.uuid,

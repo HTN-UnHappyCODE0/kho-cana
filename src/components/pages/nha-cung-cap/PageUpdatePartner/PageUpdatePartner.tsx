@@ -126,7 +126,7 @@ function PageUpdatePartner({}: PropsPageUpdatePartner) {
 		},
 	});
 
-	const listUser = useQuery([QUERY_KEY.dropdown_nhan_vien_thi_truong, form.provinceId], {
+	const listUser = useQuery([QUERY_KEY.dropdown_nhan_vien_thi_truong], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -148,7 +148,7 @@ function PageUpdatePartner({}: PropsPageUpdatePartner) {
 		select(data) {
 			return data;
 		},
-		enabled: listRegency.isSuccess && !!form.provinceId,
+		enabled: listRegency.isSuccess,
 	});
 
 	const listProvince = useQuery([QUERY_KEY.dropdown_tinh_thanh_pho], {
@@ -393,7 +393,7 @@ function PageUpdatePartner({}: PropsPageUpdatePartner) {
 										? 'Thuộc khách hàng xuất'
 										: TYPE_PARTNER.KH_DICH_VU === Number(_typeCus)
 										? 'Thuộc khách hàng dịch vụ'
-										: 'Thuộc đối tác'}{' '}
+										: 'Thuộc công ty'}{' '}
 									<span style={{color: 'red'}}>*</span>
 								</span>
 							}

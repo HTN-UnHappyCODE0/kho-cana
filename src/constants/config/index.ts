@@ -106,7 +106,7 @@ export const Menu: {
 		],
 	},
 	{
-		title: 'Đối tác',
+		title: 'Công ty',
 		group: [
 			{title: 'Nhà cung cấp', icon: icons.xuong, path: PATH.NhaCungCap},
 			{title: 'Khách hàng xuất', icon: icons.khachhangxuat, path: PATH.KhachHangXuat},

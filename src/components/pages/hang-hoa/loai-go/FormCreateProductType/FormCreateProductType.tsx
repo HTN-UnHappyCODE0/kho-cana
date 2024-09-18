@@ -84,7 +84,7 @@ function FormCreateProductType({onClose}: PropsFormCreateProductType) {
 										}))
 									}
 								/>
-								<label htmlFor='cong_ty'>Công ty</label>
+								<label htmlFor='cong_ty'>KV cảng xuất khẩu</label>
 							</div>
 							<div className={styles.item_radio}>
 								<input
