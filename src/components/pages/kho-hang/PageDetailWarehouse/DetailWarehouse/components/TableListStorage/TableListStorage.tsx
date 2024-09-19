@@ -65,12 +65,16 @@ function TableListStorage({}: PropsTableListStorage) {
 							render: (data: IDataListStorage) => <span>{data?.name || '---'}</span>,
 						},
 						{
+							title: 'Quốc gia',
+							render: (data: IDataListStorage) => <span>{data?.qualityUu?.name || '---'}</span>,
+						},
+						{
 							title: 'Loại hàng',
 							render: (data: IDataListStorage) => <span>{data?.productUu?.name || '---'}</span>,
 						},
 						{
-							title: 'Quốc gia',
-							render: (data: IDataListStorage) => <span>{data?.qualityUu?.name || '---'}</span>,
+							title: 'quy cách',
+							render: (data: IDataListStorage) => <span>{data?.specificationsUu?.name || '---'}</span>,
 						},
 						// {
 						// 	title: 'Khách hàng',
