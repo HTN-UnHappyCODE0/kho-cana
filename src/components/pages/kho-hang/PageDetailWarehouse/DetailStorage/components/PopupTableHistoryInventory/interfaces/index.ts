@@ -18,7 +18,7 @@ export interface IInventory {
 	description: string;
 	totalAmountBefore: number;
 	totalAmountAfter: number;
-	path: string;
+	path: string[];
 	status: number;
 	created: string;
 	uuid: string;
