@@ -192,7 +192,6 @@ function MainPageCreateTruck({}: PropsMainPageCreateTruck) {
 							name='trucktype'
 							value={form.trucktype || ''}
 							isRequired
-							min={3}
 							max={255}
 							type='text'
 							blur={true}
@@ -208,7 +207,6 @@ function MainPageCreateTruck({}: PropsMainPageCreateTruck) {
 								name='licensePalate'
 								value={form.licensePalate || ''}
 								isRequired
-								min={5}
 								max={255}
 								type='text'
 								blur={true}

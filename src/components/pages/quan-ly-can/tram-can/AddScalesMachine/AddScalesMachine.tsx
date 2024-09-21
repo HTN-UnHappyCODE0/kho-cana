@@ -92,7 +92,6 @@ function AddScalesMachine({onClose, nameScalesStation, uuidScalesStation, listSc
 							name='nameScalesStation'
 							value={form.nameScalesStation || ''}
 							isRequired
-							min={5}
 							max={50}
 							type='text'
 							blur={true}

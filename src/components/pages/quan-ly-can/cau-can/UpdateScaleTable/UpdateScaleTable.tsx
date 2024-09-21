@@ -97,7 +97,6 @@ function UpdateScaleTable({dataUpdate, onClose}: PropsUpdateScaleTable) {
 						name='name'
 						value={form.name || ''}
 						isRequired
-						min={5}
 						max={255}
 						type='text'
 						blur={true}

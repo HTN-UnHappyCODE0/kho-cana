@@ -190,7 +190,6 @@ function UpdateWeighingStation({}: PropsUpdateWeighingStation) {
 							name='name'
 							value={form.name || ''}
 							isRequired
-							min={5}
 							max={255}
 							type='text'
 							blur={true}
@@ -330,7 +329,6 @@ function UpdateWeighingStation({}: PropsUpdateWeighingStation) {
 						<Input
 							name='address'
 							value={form.address || ''}
-							min={5}
 							max={255}
 							type='text'
 							label={<span>Địa chỉ chi tiết</span>}

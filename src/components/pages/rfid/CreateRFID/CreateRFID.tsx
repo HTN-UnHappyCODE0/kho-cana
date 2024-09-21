@@ -82,7 +82,6 @@ function CreateRFID({onClose}: PropsCreateRFID) {
 						name='code'
 						value={form.code || ''}
 						isRequired
-						min={5}
 						max={255}
 						type='text'
 						blur={true}

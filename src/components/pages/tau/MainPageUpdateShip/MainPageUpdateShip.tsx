@@ -121,7 +121,6 @@ function MainPageUpdateShip({}: PropsMainPageUpdateShip) {
 								value={form.licensePalate || ''}
 								isRequired
 								isShipCode={true}
-								min={5}
 								max={255}
 								type='text'
 								blur={true}
@@ -130,7 +129,7 @@ function MainPageUpdateShip({}: PropsMainPageUpdateShip) {
 										Mã tàu <span style={{color: 'red'}}>*</span>
 									</span>
 								}
-								placeholder='VD: QN-1234'
+								placeholder='VD: QN1234'
 							/>
 						</div>
 					</div>

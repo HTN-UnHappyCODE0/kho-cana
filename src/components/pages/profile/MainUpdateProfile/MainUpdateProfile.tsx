@@ -297,7 +297,6 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 						name='fullName'
 						value={form.fullName || ''}
 						isRequired={true}
-						min={5}
 						max={255}
 						blur={true}
 						label={
@@ -363,7 +362,6 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 						name='provinceOwnerId'
 						value={form.provinceOwnerId || ''}
 						readOnly={true}
-						min={5}
 						max={255}
 						blur={true}
 						label={
