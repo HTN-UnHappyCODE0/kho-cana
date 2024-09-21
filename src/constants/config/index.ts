@@ -139,6 +139,10 @@ export const ListOptionTimePicker: {
 		value: TYPE_DATE.TODAY,
 	},
 	{
+		name: 'Hôm qua',
+		value: TYPE_DATE.YESTERDAY,
+	},
+	{
 		name: 'Tuần này',
 		value: TYPE_DATE.THIS_WEEK,
 	},

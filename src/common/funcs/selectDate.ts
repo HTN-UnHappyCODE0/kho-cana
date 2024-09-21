@@ -7,10 +7,12 @@ export function getDateRange(range: number) {
 	switch (range) {
 		case TYPE_DATE.ALL:
 			return {from: null, to: null};
+
 		// Tuần này
 		case TYPE_DATE.TODAY:
 			return {from: new Date(), to: new Date()};
 
+		// Hôm qua
 		case TYPE_DATE.YESTERDAY:
 			const firstYesterday = new Date();
 			firstYesterday.setDate(today.getDate() - 1);
@@ -24,6 +26,7 @@ export function getDateRange(range: number) {
 				to: lastYesterday,
 			};
 
+		// Tuần này
 		case TYPE_DATE.THIS_WEEK:
 			const firstDayOfWeek = new Date(today);
 			firstDayOfWeek.setDate(today.getDate() - today.getDay());
@@ -33,6 +36,7 @@ export function getDateRange(range: number) {
 
 			return {from: firstDayOfWeek, to: lastDayOfWeek};
 
+		// Tuần trước
 		case TYPE_DATE.LAST_WEEK:
 			const firstDayLastWeek = new Date(today);
 			firstDayLastWeek.setDate(today.getDate() - today.getDay() - 7);
