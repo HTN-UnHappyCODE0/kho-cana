@@ -69,11 +69,11 @@ function TableListStorage({}: PropsTableListStorage) {
 							render: (data: IDataListStorage) => <span>{data?.qualityUu?.name || '---'}</span>,
 						},
 						{
-							title: 'Loại hàng',
+							title: 'Loại gỗ',
 							render: (data: IDataListStorage) => <span>{data?.productUu?.name || '---'}</span>,
 						},
 						{
-							title: 'quy cách',
+							title: 'Quy cách',
 							render: (data: IDataListStorage) => <span>{data?.specificationsUu?.name || '---'}</span>,
 						},
 						// {
