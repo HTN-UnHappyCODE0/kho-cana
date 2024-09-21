@@ -14,7 +14,7 @@ export function isPhoneNumber(phoneNumber: string) {
 }
 
 export function isShipCode(shipCode: string) {
-	const shipCodeRegex = /^[A-Z]{2}-\d{4}$/;
+	const shipCodeRegex = /^[A-Z]{2}\d{4}$/;
 
 	return shipCodeRegex.test(shipCode);
 }

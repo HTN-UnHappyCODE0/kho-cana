@@ -216,7 +216,6 @@ function MainWeightSessionService({}: PropsMainWeightSessionService) {
 						<div className={clsx(styles.filter_to)}>
 							<input
 								type='number'
-								min={0}
 								id='tu'
 								className={styles.input}
 								value={formCode.codeStart}
@@ -230,7 +229,6 @@ function MainWeightSessionService({}: PropsMainWeightSessionService) {
 							<p>Đến</p>
 							<input
 								type='number'
-								min={0}
 								id='den'
 								className={styles.input}
 								value={formCode.codeEnd}

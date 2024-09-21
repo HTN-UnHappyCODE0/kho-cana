@@ -89,7 +89,7 @@ function ItemRuler({data, idx, showBtnDelete, handleDeleteRow, handleChangeValue
 						name='value'
 						value={data.value}
 						type='number'
-						min={0}
+						 
 						max={100}
 						step={0.01}
 						placeholder='Nhập thông số'

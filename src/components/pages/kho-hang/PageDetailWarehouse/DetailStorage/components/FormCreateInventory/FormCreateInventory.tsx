@@ -115,7 +115,6 @@ function FormCreateInventory({onClose, nameStorage}: PropsFormCreateInventory) {
 							isRequired
 							value={form.nameStorage || ''}
 							readOnly={true}
-							min={5}
 							max={255}
 							type='text'
 							blur={true}

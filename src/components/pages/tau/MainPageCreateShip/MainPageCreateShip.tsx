@@ -100,7 +100,6 @@ function MainPageCreateShip({}: PropsMainPageCreateShip) {
 								name='licensePalate'
 								value={form.licensePalate || ''}
 								isRequired
-								min={5}
 								isShipCode={true}
 								max={255}
 								type='text'
@@ -110,7 +109,7 @@ function MainPageCreateShip({}: PropsMainPageCreateShip) {
 										Mã tàu <span style={{color: 'red'}}>*</span>
 									</span>
 								}
-								placeholder='VD: QN-1234'
+								placeholder='VD: QN1234'
 							/>
 						</div>
 					</div>

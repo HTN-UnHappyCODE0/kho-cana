@@ -87,7 +87,6 @@ function FormUpdateDryness({dataUpdateDryness, onClose}: PropsFormUpdateDryness)
 							className={styles.input}
 							type='number'
 							step='0.01'
-							min={0}
 							max={100}
 							placeholder='Nhập độ khô'
 							onChange={(e) =>
