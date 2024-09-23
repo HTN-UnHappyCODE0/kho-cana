@@ -93,7 +93,7 @@ function TableListTruck({}: PropsTableListTruck) {
 								render: (data: any) => <>{data?.count || 0}</>,
 							},
 							{
-								title: 'Tổng khối lượng hàng (kg)',
+								title: 'Tổng khối lượng hàng (tấn)',
 								render: (data: any) => <>{convertCoin(data?.weightReal)}</>,
 							},
 							{

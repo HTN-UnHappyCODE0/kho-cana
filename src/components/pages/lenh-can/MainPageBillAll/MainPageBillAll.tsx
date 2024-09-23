@@ -224,7 +224,7 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 					/>
 
 					<div className={styles.filter}>
-						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.LAST_7_DAYS} />
+						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
 					</div>
 				</div>
 
@@ -356,7 +356,7 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 								),
 							},
 							{
-								title: 'KL dự kiến (kg)',
+								title: 'KL dự kiến (tấn)',
 								render: (data: IDataBill) => <>{convertCoin(data?.batchsUu?.weightIntent) || '---'}</>,
 							},
 							{
