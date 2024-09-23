@@ -721,7 +721,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 							value={form.weightIntent || ''}
 							type='text'
 							isMoney
-							unit='Tấn'
+							unit='TẤN'
 							label={<span>Khối lượng dự kiến</span>}
 							placeholder='Nhập khối lượng dự kiến'
 						/>
