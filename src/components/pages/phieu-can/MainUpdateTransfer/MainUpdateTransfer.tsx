@@ -406,7 +406,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 							value={form.weightTotal || ''}
 							type='text'
 							isMoney
-							unit='Tấn'
+							unit='TẤN'
 							label={<span>Tổng khối lượng hàng</span>}
 							placeholder='Nhập tổng khối lượng hàng'
 						/>
@@ -776,7 +776,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 							value={form.weightIntent || ''}
 							type='text'
 							isMoney
-							unit='Tấn'
+							unit='TẤN'
 							label={<span>Khối lượng dự kiến</span>}
 							placeholder='Nhập khối lượng dự kiến'
 						/>

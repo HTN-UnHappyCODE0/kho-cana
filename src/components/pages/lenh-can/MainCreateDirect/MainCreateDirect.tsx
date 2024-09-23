@@ -603,7 +603,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 							value={form.weightIntent || ''}
 							type='text'
 							isMoney
-							unit='Tấn'
+							unit='TẤN'
 							placeholder='Nhập khối lượng dự kiến'
 							label={<span>Khối lượng dự kiến</span>}
 						/>

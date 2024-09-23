@@ -304,7 +304,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 							value={form.weightTotal || ''}
 							type='text'
 							isMoney
-							unit='Tấn'
+							unit='TẤN'
 							label={<span>Tổng khối lượng hàng</span>}
 							placeholder='Nhập tổng khối lượng hàng'
 						/>
