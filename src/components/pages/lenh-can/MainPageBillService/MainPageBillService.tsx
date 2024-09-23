@@ -199,7 +199,7 @@ function MainPageBillService({}: PropsMainPageBillService) {
 					/>
 
 					<div className={styles.filter}>
-						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.LAST_7_DAYS} />
+						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
 					</div>
 				</div>
 
@@ -281,7 +281,7 @@ function MainPageBillService({}: PropsMainPageBillService) {
 								render: (data: IDataBill) => <>{data?.productTypeUu?.name || '---'}</>,
 							},
 							{
-								title: 'KL dự kiến (kg)',
+								title: 'KL dự kiến (Tấn)',
 								render: (data: IDataBill) => <>{convertCoin(data?.batchsUu?.weightIntent) || '---'}</>,
 							},
 							{

@@ -13,6 +13,7 @@ import {
 	CONFIG_TYPE_FIND,
 	QUERY_KEY,
 	STATUS_WEIGHT_SESSION,
+	TYPE_DATE,
 	TYPE_SCALES,
 } from '~/constants/config/enum';
 
@@ -234,7 +235,7 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 							/>
 						</div>
 						<div className={styles.filter}>
-							<DateRangerCustom />
+							<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
 						</div>
 						{/* <div className={clsx(styles.checkbox_right)}>
 							<input
@@ -347,15 +348,15 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 								),
 							},
 							{
-								title: 'KL 1 (kg)',
+								title: 'KL 1 (tấn)',
 								render: (data: IWeightSession) => <>{convertCoin(data?.weight1?.weight)}</>,
 							},
 							{
-								title: 'KL 2 (kg)',
+								title: 'KL 2 (tấn)',
 								render: (data: IWeightSession) => <>{convertCoin(data?.weight2?.weight)}</>,
 							},
 							{
-								title: 'KL hàng (kg)',
+								title: 'KL hàng (tấn)',
 								render: (data: IWeightSession) => <>{convertCoin(data?.weightReal)}</>,
 							},
 							{

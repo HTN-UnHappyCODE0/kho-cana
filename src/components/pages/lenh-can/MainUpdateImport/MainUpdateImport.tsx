@@ -716,7 +716,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 							value={form.weightIntent || ''}
 							type='text'
 							isMoney
-							unit='KG'
+							unit='Tấn'
 							label={<span>Khối lượng dự kiến</span>}
 							placeholder='Nhập khối lượng dự kiến'
 						/>

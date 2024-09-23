@@ -319,7 +319,7 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 						]}
 					/>
 					<div className={styles.filter}>
-						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.LAST_7_DAYS} />
+						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
 					</div>
 				</div>
 			</div>
@@ -403,7 +403,7 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 								),
 							},
 							{
-								title: 'KL hàng (kg)',
+								title: 'KL hàng (tấn)',
 								render: (data: ITableBillScale) => <>{convertCoin(data?.weightTotal) || 0}</>,
 							},
 							{

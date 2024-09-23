@@ -3,7 +3,7 @@ import React from 'react';
 import {IWeightSessionByTruck, PropsMainWeightSessionCollection} from './interfaces';
 import styles from './MainWeightSessionCollection.module.scss';
 import Search from '~/components/common/Search';
-import {CONFIG_DESCENDING, CONFIG_PAGING, CONFIG_TYPE_FIND, QUERY_KEY, TYPE_SCALES} from '~/constants/config/enum';
+import {CONFIG_DESCENDING, CONFIG_PAGING, CONFIG_TYPE_FIND, QUERY_KEY, TYPE_DATE, TYPE_SCALES} from '~/constants/config/enum';
 import {useQuery} from '@tanstack/react-query';
 import {httpRequest} from '~/services';
 import batchBillServices from '~/services/batchBillServices';
@@ -108,7 +108,7 @@ function MainWeightSessionCollection({}: PropsMainWeightSessionCollection) {
 						/>
 					</div>
 					<div className={styles.filter}>
-						<DateRangerCustom />
+						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
 					</div>
 				</div>
 			</div>
@@ -141,15 +141,15 @@ function MainWeightSessionCollection({}: PropsMainWeightSessionCollection) {
 								render: (data: IWeightSessionByTruck) => <p style={{fontWeight: 600}}>{data?.count}</p>,
 							},
 							{
-								title: 'Tổng khối lượng 1 (kg)',
+								title: 'Tổng khối lượng 1 (tấn)',
 								render: (data: IWeightSessionByTruck) => <>{convertCoin(data?.weight1?.weight)}</>,
 							},
 							{
-								title: 'Tổng khối lượng 2 (kg)',
+								title: 'Tổng khối lượng 2 (tấn)',
 								render: (data: IWeightSessionByTruck) => <>{convertCoin(data?.weight2?.weight)}</>,
 							},
 							{
-								title: 'Tổng khối lượng hàng (kg)',
+								title: 'Tổng khối lượng hàng (tấn)',
 								render: (data: IWeightSessionByTruck) => <>{convertCoin(data?.weightReal)}</>,
 							},
 							{
