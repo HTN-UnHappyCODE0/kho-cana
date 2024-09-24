@@ -23,6 +23,7 @@ const batchBillServices = {
 			productTypeUuid: string;
 			qualityUuid: string;
 			transportType: number | null;
+			shipUuid?: string;
 		},
 		tokenAxios?: any
 	) => {
