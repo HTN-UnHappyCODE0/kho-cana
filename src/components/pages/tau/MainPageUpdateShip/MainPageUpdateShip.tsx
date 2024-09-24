@@ -120,7 +120,6 @@ function MainPageUpdateShip({}: PropsMainPageUpdateShip) {
 								name='licensePalate'
 								value={form.licensePalate || ''}
 								isRequired
-								isShipCode={true}
 								max={255}
 								type='text'
 								blur={true}
