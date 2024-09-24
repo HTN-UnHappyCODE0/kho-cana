@@ -36,12 +36,14 @@ import Dialog from '~/components/common/Dialog';
 import Loading from '~/components/common/Loading';
 import Link from 'next/link';
 import {LuPencil} from 'react-icons/lu';
+import shipServices from '~/services/shipServices';
 
 function MainPageScalesAll({}: PropsMainPageScalesAll) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 
-	const {_page, _pageSize, _keyword, _isBatch, _customerUuid, _productTypeUuid, _status, _dateFrom, _dateTo, _state} = router.query;
+	const {_page, _pageSize, _keyword, _isBatch, _customerUuid, _productTypeUuid, _shipUuid, _status, _dateFrom, _dateTo, _state} =
+		router.query;
 
 	const [uuidPlay, setUuidPlay] = useState<string>('');
 	const [uuidStop, setUuidStop] = useState<string>('');
@@ -91,6 +93,26 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 		},
 	});
 
+	const listShip = useQuery([QUERY_KEY.dropdown_ma_tau], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: shipServices.listShip({
+					page: 1,
+					pageSize: 20,
+					keyword: '',
+					status: CONFIG_STATUS.HOAT_DONG,
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+				}),
+			}),
+
+		select(data) {
+			return data;
+		},
+	});
+
 	const listBatch = useQuery(
 		[
 			QUERY_KEY.table_phieu_can_tat_ca,
@@ -100,6 +122,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 			_isBatch,
 			_customerUuid,
 			_productTypeUuid,
+			_shipUuid,
 			_status,
 			_dateFrom,
 			_dateTo,
@@ -146,6 +169,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 						warehouseUuid: '',
 						qualityUuid: '',
 						transportType: null,
+						shipUuid: (_shipUuid as string) || '',
 					}),
 				}),
 			select(data) {
@@ -261,6 +285,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 							]}
 						/>
 					</div>
+
 					<FilterCustom
 						isSearch
 						name='Khách hàng'
@@ -279,6 +304,17 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 							name: v?.name,
 						}))}
 					/>
+
+					<FilterCustom
+						isSearch
+						name='Mã tàu'
+						query='_shipUuid'
+						listFilter={listShip?.data?.map((v: any) => ({
+							id: v?.uuid,
+							name: v?.licensePalate,
+						}))}
+					/>
+
 					<FilterCustom
 						isSearch
 						name='Xác nhận SL'
@@ -337,6 +373,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 							},
 						]}
 					/>
+					{/* <Filler></Filler> */}
 					<div className={styles.filter}>
 						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
 					</div>
@@ -521,7 +558,18 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 					currentPage={Number(_page) || 1}
 					pageSize={Number(_pageSize) || 20}
 					total={listBatch?.data?.pagination?.totalCount}
-					dependencies={[_pageSize, _keyword, _isBatch, _customerUuid, _productTypeUuid, _status, _dateFrom, _dateTo, _state]}
+					dependencies={[
+						_pageSize,
+						_keyword,
+						_isBatch,
+						_customerUuid,
+						_productTypeUuid,
+						_shipUuid,
+						_status,
+						_dateFrom,
+						_dateTo,
+						_state,
+					]}
 				/>
 			</div>
 

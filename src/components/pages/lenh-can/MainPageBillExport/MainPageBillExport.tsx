@@ -42,12 +42,13 @@ import Dialog from '~/components/common/Dialog';
 import customerServices from '~/services/customerServices';
 import wareServices from '~/services/wareServices';
 import batchBillServices from '~/services/batchBillServices';
+import shipServices from '~/services/shipServices';
 
 function MainPageBillExport({}: PropsMainPageBillExport) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 	const [uuidPlay, setUuidPlay] = useState<string>('');
-	const {_page, _pageSize, _keyword, _customerUuid, _productTypeUuid, _status, _dateFrom, _dateTo} = router.query;
+	const {_page, _pageSize, _keyword, _customerUuid, _productTypeUuid, _shipUuid, _status, _dateFrom, _dateTo} = router.query;
 
 	const [billUuid, setBilldUuid] = useState<string | null>(null);
 
@@ -95,8 +96,38 @@ function MainPageBillExport({}: PropsMainPageBillExport) {
 		},
 	});
 
+	const listShip = useQuery([QUERY_KEY.dropdown_ma_tau], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: shipServices.listShip({
+					page: 1,
+					pageSize: 20,
+					keyword: '',
+					status: CONFIG_STATUS.HOAT_DONG,
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
 	const listBatch = useQuery(
-		[QUERY_KEY.table_lenh_can_xuat, _page, _pageSize, _keyword, _customerUuid, _productTypeUuid, _status, _dateFrom, _dateTo],
+		[
+			QUERY_KEY.table_lenh_can_xuat,
+			_page,
+			_pageSize,
+			_keyword,
+			_customerUuid,
+			_productTypeUuid,
+			_shipUuid,
+			_status,
+			_dateFrom,
+			_dateTo,
+		],
 		{
 			queryFn: () =>
 				httpRequest({
@@ -120,6 +151,7 @@ function MainPageBillExport({}: PropsMainPageBillExport) {
 						warehouseUuid: '',
 						qualityUuid: '',
 						transportType: null,
+						shipUuid: (_shipUuid as string) || '',
 					}),
 				}),
 			select(data) {
@@ -173,6 +205,16 @@ function MainPageBillExport({}: PropsMainPageBillExport) {
 						listFilter={listProductType?.data?.map((v: any) => ({
 							id: v?.uuid,
 							name: v?.name,
+						}))}
+					/>
+
+					<FilterCustom
+						isSearch
+						name='Mã tàu'
+						query='_shipUuid'
+						listFilter={listShip?.data?.map((v: any) => ({
+							id: v?.uuid,
+							name: v?.licensePalate,
 						}))}
 					/>
 
@@ -375,7 +417,7 @@ function MainPageBillExport({}: PropsMainPageBillExport) {
 					currentPage={Number(_page) || 1}
 					pageSize={Number(_pageSize) || 20}
 					total={listBatch?.data?.pagination?.totalCount}
-					dependencies={[_pageSize, _keyword, _customerUuid, _productTypeUuid, _status, _dateFrom, _dateTo]}
+					dependencies={[_pageSize, _keyword, _customerUuid, _productTypeUuid, _shipUuid, _status, _dateFrom, _dateTo]}
 				/>
 			</div>
 			<Dialog

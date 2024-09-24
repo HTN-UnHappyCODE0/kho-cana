@@ -96,22 +96,7 @@ export const Menu: {
 }[] = [
 	{
 		title: 'Kho hàng',
-		group: [
-			{title: 'Kho hàng', icon: icons.danhsachkho, path: PATH.Home, pathActive: '/kho-hang'},
-			{title: 'Hàng hóa', icon: icons.hanghoa, path: PATH.HangHoaLoaiGo, pathActive: PATH.HangHoa},
-			{title: 'RFID', icon: icons.icon_rfid, path: PATH.RFID, pathActive: PATH.RFID},
-			{title: 'Quản lý xe', icon: icons.xehang, path: PATH.QuanLyXe},
-			{title: 'Quản lý tàu', icon: icons.icon_ship, path: PATH.QuanLyTau},
-			{title: 'Trạm cân', icon: icons.tramcan, path: PATH.TramCan, pathActive: PATH.QuanLyCan},
-		],
-	},
-	{
-		title: 'Công ty',
-		group: [
-			{title: 'Nhà cung cấp', icon: icons.xuong, path: PATH.NhaCungCap},
-			{title: 'Khách hàng xuất', icon: icons.khachhangxuat, path: PATH.KhachHangXuat},
-			{title: 'Khách hàng dịch vụ ', icon: icons.khachhangdichvu, path: PATH.KhachHangDichVu},
-		],
+		group: [{title: 'Kho hàng', icon: icons.danhsachkho, path: PATH.Home, pathActive: '/kho-hang'}],
 	},
 	{
 		title: 'Quản lý cân',
@@ -125,6 +110,24 @@ export const Menu: {
 	{
 		title: 'Kế toán kho',
 		group: [{title: 'Duyệt sản lượng', icon: icons.duyetsanluong, path: PATH.DuyetSanLuong, pathActive: PATH.DuyetSanLuong}],
+	},
+	{
+		title: 'Đối tác',
+		group: [
+			{title: 'Nhà cung cấp', icon: icons.xuong, path: PATH.NhaCungCap},
+			{title: 'Khách hàng xuất', icon: icons.khachhangxuat, path: PATH.KhachHangXuat},
+			{title: 'Khách hàng dịch vụ ', icon: icons.khachhangdichvu, path: PATH.KhachHangDichVu},
+		],
+	},
+	{
+		title: 'Vật tư',
+		group: [
+			{title: 'Hàng hóa', icon: icons.hanghoa, path: PATH.HangHoaLoaiGo, pathActive: PATH.HangHoa},
+			{title: 'RFID', icon: icons.icon_rfid, path: PATH.RFID, pathActive: PATH.RFID},
+			{title: 'Quản lý xe', icon: icons.xehang, path: PATH.QuanLyXe},
+			{title: 'Quản lý tàu', icon: icons.icon_ship, path: PATH.QuanLyTau},
+			{title: 'Trạm cân', icon: icons.tramcan, path: PATH.TramCan, pathActive: PATH.QuanLyCan},
+		],
 	},
 ];
 
