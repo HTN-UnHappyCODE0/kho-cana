@@ -1,12 +1,6 @@
 export interface PropsMainDetailBill {}
 
 export interface IDetailBatchBill {
-	scalesStationUu: {
-		code: string;
-		name: string;
-		status: number;
-		uuid: string;
-	};
 	lstTruck: {
 		code: string;
 		licensePalate: string;
@@ -101,4 +95,10 @@ export interface IDetailBatchBill {
 	state: number;
 	code: string;
 	uuid: string;
+	scalesStationUu: {
+		code: string;
+		name: string;
+		status: number;
+		uuid: string;
+	};
 }

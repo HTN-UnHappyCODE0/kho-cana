@@ -33,6 +33,7 @@ import ButtonSelectMany from '~/components/common/ButtonSelectMany';
 import TextArea from '~/components/common/Form/components/TextArea';
 import {timeSubmit} from '~/common/funcs/optionConvert';
 import batchBillServices from '~/services/batchBillServices';
+import scalesStationServices from '~/services/scalesStationServices';
 
 function MainCreateTransfer({}: PropsMainCreateTransfer) {
 	const router = useRouter();
@@ -52,6 +53,7 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 		toUuid: '',
 		isPrint: 0,
 		transportType: TYPE_TRANSPORT.DUONG_BO,
+		scaleStationUuid: '',
 	});
 
 	const listProductType = useQuery([QUERY_KEY.dropdown_loai_go], {
@@ -88,6 +90,26 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 					status: CONFIG_STATUS.HOAT_DONG,
 					qualityUuid: '',
 					productTypeUuid: form?.productTypeUuid,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
+	const listScaleStation = useQuery([QUERY_KEY.dropdown_tram_can], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: scalesStationServices.listScalesStation({
+					page: 1,
+					pageSize: 20,
+					keyword: '',
+					companyUuid: '',
+					status: CONFIG_STATUS.HOAT_DONG,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
 				}),
 			}),
 		select(data) {
@@ -147,7 +169,7 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					typeFind: CONFIG_TYPE_FIND.TABLE,
 					customerUuid: '',
 					timeEnd: null,
 					timeStart: null,
@@ -252,6 +274,7 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 					isPrint: form.isPrint,
 					lstTruckAddUuid: listTruckChecked?.map((v) => v.uuid),
 					lstTruckRemoveUuid: [],
+					scaleStationUuid: form.scaleStationUuid,
 				}),
 			}),
 		onSuccess(data) {
@@ -280,6 +303,9 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 		}
 		if (!form.specificationsUuid) {
 			return toastWarn({msg: 'Vui lòng chọn quy cách!'});
+		}
+		if (!form.scaleStationUuid) {
+			return toastWarn({msg: 'Vui lòng chọn trạm cân!'});
 		}
 		if (form?.fromUuid == form.toUuid) {
 			return toastWarn({msg: 'Trùng kho đích!'});
@@ -557,6 +583,7 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 											...prev,
 											warehouseToUuid: v?.uuid,
 											toUuid: '',
+											scaleStationUuid: v?.scaleStationUu?.uuid || '',
 										}))
 									}
 								/>
@@ -649,6 +676,33 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 								))}
 							</Select>
 						</div>
+					</div>
+					<div className={clsx('mt')}>
+						<Select
+							isSearch
+							name='scaleStationUuid'
+							placeholder='Chọn trạm cân'
+							value={form?.scaleStationUuid}
+							label={
+								<span>
+									Trạm cân <span style={{color: 'red'}}>*</span>
+								</span>
+							}
+						>
+							{listScaleStation?.data?.map((v: any) => (
+								<Option
+									key={v?.uuid}
+									value={v?.uuid}
+									title={v?.name}
+									onClick={() =>
+										setForm((prev: any) => ({
+											...prev,
+											scaleStationUuid: v?.uuid,
+										}))
+									}
+								/>
+							))}
+						</Select>
 					</div>
 					<div className={clsx('mt', 'col_2')}>
 						<Input

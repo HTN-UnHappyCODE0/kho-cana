@@ -34,6 +34,7 @@ import {timeSubmit} from '~/common/funcs/optionConvert';
 import batchBillServices from '~/services/batchBillServices';
 import {IDetailBatchBill} from '../MainDetailBill/interfaces';
 import {convertCoin, price} from '~/common/funcs/convertCoin';
+import scalesStationServices from '~/services/scalesStationServices';
 
 function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 	const router = useRouter();
@@ -60,6 +61,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 		transportType: TYPE_TRANSPORT.DUONG_BO,
 		code: '',
 		reason: '',
+		scaleStationUuid: '',
 	});
 
 	useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -88,6 +90,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 					warehouseToUuid: data?.toUu?.parentUu?.uuid || '',
 					code: data?.code,
 					reason: '',
+					scaleStationUuid: data?.scalesStationUu?.uuid || '',
 				});
 
 				setListTruckChecked(
@@ -202,7 +205,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					typeFind: CONFIG_TYPE_FIND.TABLE,
 					customerUuid: '',
 					timeEnd: null,
 					timeStart: null,
@@ -279,6 +282,26 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 		enabled: !!form.warehouseToUuid,
 	});
 
+	const listScaleStation = useQuery([QUERY_KEY.dropdown_tram_can], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: scalesStationServices.listScalesStation({
+					page: 1,
+					pageSize: 20,
+					keyword: '',
+					companyUuid: '',
+					status: CONFIG_STATUS.HOAT_DONG,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
 	const fucnUpdateBatchBill = useMutation({
 		mutationFn: () =>
 			httpRequest({
@@ -311,6 +334,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 					lstTruckRemoveUuid: listTruckBatchBill
 						.filter((v) => !listTruckChecked.some((x) => v.uuid === x.uuid))
 						?.map((item) => item.uuid),
+					scaleStationUuid: form.scaleStationUuid,
 				}),
 			}),
 		onSuccess(data) {
@@ -336,6 +360,9 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 		}
 		if (!form.specificationsUuid) {
 			return toastWarn({msg: 'Vui lòng chọn quy cách!'});
+		}
+		if (!form.scaleStationUuid) {
+			return toastWarn({msg: 'Vui lòng chọn trạm cân!'});
 		}
 		if (form?.fromUuid == form.toUuid) {
 			return toastWarn({msg: 'Trùng kho đích!'});
@@ -622,6 +649,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 											toUuid: '',
 											specificationsUuid: '',
 											productTypeUuid: '',
+											scaleStationUuid: v?.scaleStationUu?.uuid || '',
 										}))
 									}
 								/>
@@ -714,6 +742,33 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 								))}
 							</Select>
 						</div>
+					</div>
+					<div className={clsx('mt')}>
+						<Select
+							isSearch
+							name='scaleStationUuid'
+							placeholder='Chọn trạm cân'
+							value={form?.scaleStationUuid}
+							label={
+								<span>
+									Trạm cân <span style={{color: 'red'}}>*</span>
+								</span>
+							}
+						>
+							{listScaleStation?.data?.map((v: any) => (
+								<Option
+									key={v?.uuid}
+									value={v?.uuid}
+									title={v?.name}
+									onClick={() =>
+										setForm((prev: any) => ({
+											...prev,
+											scaleStationUuid: v?.uuid,
+										}))
+									}
+								/>
+							))}
+						</Select>
 					</div>
 					<div className={clsx('mt', 'col_2')}>
 						<Input

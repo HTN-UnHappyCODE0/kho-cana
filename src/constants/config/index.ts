@@ -82,6 +82,8 @@ export enum PATH {
 	LuotCanXuatThang = '/luot-can/xuat-thang',
 	LuotCanGomTheoXe = '/luot-can/gom-theo-xe',
 
+	DuyetPhieu = '/duyet-phieu',
+	CangBocDo = '/cang-boc-do',
 	DuyetSanLuong = '/duyet-san-luong',
 }
 
@@ -108,8 +110,15 @@ export const Menu: {
 		],
 	},
 	{
+		title: 'Quản lý kho',
+		group: [{title: 'Duyệt phiếu', icon: icons.duyetphieu, path: PATH.DuyetPhieu, pathActive: PATH.DuyetPhieu}],
+	},
+	{
 		title: 'Kế toán kho',
-		group: [{title: 'Duyệt sản lượng', icon: icons.duyetsanluong, path: PATH.DuyetSanLuong, pathActive: PATH.DuyetSanLuong}],
+		group: [
+			{title: 'Duyệt sản lượng', icon: icons.duyetsanluong, path: PATH.DuyetSanLuong, pathActive: PATH.DuyetSanLuong},
+			{title: 'Cảng bốc dỡ', icon: icons.cang, path: PATH.CangBocDo, pathActive: PATH.CangBocDo},
+		],
 	},
 	{
 		title: 'Đối tác',

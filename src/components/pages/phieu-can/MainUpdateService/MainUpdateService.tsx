@@ -33,12 +33,13 @@ import Select, {Option} from '~/components/common/Select';
 import DatePicker from '~/components/common/DatePicker';
 import ButtonSelectMany from '~/components/common/ButtonSelectMany';
 import TextArea from '~/components/common/Form/components/TextArea';
-import SelectSearch from '~/components/common/SelectSearch';
+
 import batchBillServices from '~/services/batchBillServices';
 import shipServices from '~/services/shipServices';
 import {IDetailBatchBill} from '../../lenh-can/MainDetailBill/interfaces';
 import Popup from '~/components/common/Popup';
 import FormReasonUpdateBill from '../FormReasonUpdateBill';
+import scalesStationServices from '~/services/scalesStationServices';
 
 function MainUpdateService({}: PropsMainUpdateService) {
 	const router = useRouter();
@@ -67,6 +68,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 		code: '',
 		isBatch: TYPE_BATCH.CAN_LO,
 		reason: '',
+		scaleStationUuid: '',
 	});
 
 	const {data: detailBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -96,6 +98,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 					isBatch: data?.isBatch,
 					customerUuid: data?.fromUu?.uuid,
 					reason: '',
+					scaleStationUuid: data?.scalesStationUu?.uuid || '',
 				});
 
 				setListTruckChecked(
@@ -199,6 +202,26 @@ function MainUpdateService({}: PropsMainUpdateService) {
 		},
 	});
 
+	const listScaleStation = useQuery([QUERY_KEY.dropdown_tram_can], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: scalesStationServices.listScalesStation({
+					page: 1,
+					pageSize: 20,
+					keyword: '',
+					companyUuid: '',
+					status: CONFIG_STATUS.HOAT_DONG,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
 	const fucnUpdateBatchBill = useMutation({
 		mutationFn: () =>
 			httpRequest({
@@ -224,6 +247,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 					customerName: '',
 					fromUuid: form.customerUuid,
 					toUuid: form.customerUuid,
+					scaleStationUuid: form?.scaleStationUuid,
 					isPrint: form.isPrint,
 					lstTruckAddUuid: listTruckChecked
 						.filter((v) => !listTruckBatchBill.some((x) => v.uuid === x.uuid))
@@ -259,7 +283,9 @@ function MainUpdateService({}: PropsMainUpdateService) {
 		if (listTruckChecked.length == 0) {
 			return toastWarn({msg: 'Vui lòng chọn xe hàng!'});
 		}
-
+		if (!form.scaleStationUuid) {
+			return toastWarn({msg: 'Vui lòng chọn trạm cân!'});
+		}
 		if (form.customerUuid != detailBill?.fromUu?.uuid || form.productTypeUuid != detailBill?.productTypeUu?.uuid) {
 			return setOpenWarning(true);
 		} else {
@@ -539,6 +565,33 @@ function MainUpdateService({}: PropsMainUpdateService) {
 								))}
 							</Select>
 						</div>
+					</div>
+					<div className={clsx('mt')}>
+						<Select
+							isSearch
+							name='scaleStationUuid'
+							placeholder='Chọn trạm cân'
+							value={form?.scaleStationUuid}
+							label={
+								<span>
+									Trạm cân <span style={{color: 'red'}}>*</span>
+								</span>
+							}
+						>
+							{listScaleStation?.data?.map((v: any) => (
+								<Option
+									key={v?.uuid}
+									value={v?.uuid}
+									title={v?.name}
+									onClick={() =>
+										setForm((prev: any) => ({
+											...prev,
+											scaleStationUuid: v?.uuid,
+										}))
+									}
+								/>
+							))}
+						</Select>
 					</div>
 					<div className={clsx('mt')}>
 						<ButtonSelectMany

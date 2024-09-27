@@ -157,6 +157,10 @@ function MainWeighingStation({}: PropsMainWeighingStation) {
 								render: (data: IScalesStation, index: number) => <>{index + 1}</>,
 							},
 							{
+								title: 'Mã trạm cân',
+								render: (data: IScalesStation) => <p style={{fontWeight: 600}}>{data?.code}</p>,
+							},
+							{
 								title: 'Tên trạm cân',
 								fixedLeft: true,
 								render: (data: IScalesStation) => (

@@ -12,7 +12,7 @@ import Loading from '~/components/common/Loading';
 import {IoHelpCircleOutline} from 'react-icons/io5';
 import batchBillServices from '~/services/batchBillServices';
 
-function PopupRejectBatchBill({uuid, onClose}: PropsPopupRejectBatchBill) {
+function PopupRejectBatchBill({uuids, onClose}: PropsPopupRejectBatchBill) {
 	const queryClient = useQueryClient();
 
 	const [form, setForm] = useState<{description: string}>({
@@ -26,7 +26,7 @@ function PopupRejectBatchBill({uuid, onClose}: PropsPopupRejectBatchBill) {
 				showMessageSuccess: true,
 				msgSuccess: 'QLK hủy duyệt sản lượng thành công!',
 				http: batchBillServices.QLKRejectBatchbill({
-					uuid: uuid!,
+					uuid: uuids,
 					description: form.description,
 				}),
 			});

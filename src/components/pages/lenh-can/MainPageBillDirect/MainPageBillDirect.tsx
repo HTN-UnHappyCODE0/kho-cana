@@ -15,7 +15,6 @@ import {
 	QUERY_KEY,
 	STATUS_BILL,
 	STATUS_CUSTOMER,
-	TYPE_BATCH,
 	TYPE_DATE,
 	TYPE_PRODUCT,
 	TYPE_SCALES,
@@ -301,15 +300,6 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 									</p>
 								),
 							},
-							// {
-							// 	title: 'Kiểu cân',
-							// 	render: (data: IDataBill) => (
-							// 		<>
-							// 			{data?.isBatch == TYPE_BATCH.CAN_LO && 'Cân lô'}
-							// 			{data?.isBatch == TYPE_BATCH.CAN_LE && 'Cân lẻ'}
-							// 		</>
-							// 	),
-							// },
 							{
 								title: 'Mã tàu',
 								render: (data: IDataBill) => (
@@ -332,14 +322,6 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 								),
 							},
 							{
-								title: 'Loại gỗ',
-								render: (data: IDataBill) => <>{data?.productTypeUu?.name || '---'}</>,
-							},
-							{
-								title: 'Quy cách',
-								render: (data: IDataBill) => <>{data?.specificationsUu?.name || '---'}</>,
-							},
-							{
 								title: 'Đến',
 								render: (data: IDataBill) => (
 									<>
@@ -351,6 +333,18 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 							{
 								title: 'KL dự kiến (tấn)',
 								render: (data: IDataBill) => <>{convertCoin(data?.batchsUu?.weightIntent) || '---'}</>,
+							},
+							{
+								title: 'Loại gỗ',
+								render: (data: IDataBill) => <>{data?.productTypeUu?.name || '---'}</>,
+							},
+							{
+								title: 'Quy cách',
+								render: (data: IDataBill) => <>{data?.specificationsUu?.name || '---'}</>,
+							},
+							{
+								title: 'Trạm cân',
+								render: (data: IDataBill) => <>{data?.scalesStationUu?.name || '---'}</>,
 							},
 							{
 								title: 'Ngày dự kiến',

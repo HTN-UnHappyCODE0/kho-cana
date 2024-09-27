@@ -17,5 +17,6 @@ export interface IFormUpdateImport {
 	documentId: string;
 	description: string;
 	code: string;
+	scaleStationUuid: string;
 	reason: string;
 }

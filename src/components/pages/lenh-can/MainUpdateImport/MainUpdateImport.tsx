@@ -38,6 +38,7 @@ import batchBillServices from '~/services/batchBillServices';
 import {IDetailBatchBill} from '../MainDetailBill/interfaces';
 import priceTagServices from '~/services/priceTagServices';
 import shipServices from '~/services/shipServices';
+import scalesStationServices from '~/services/scalesStationServices';
 
 function MainUpdateImport({}: PropsMainUpdateImport) {
 	const router = useRouter();
@@ -65,6 +66,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 		isPrint: 0,
 		code: '',
 		reason: '',
+		scaleStationUuid: '',
 	});
 
 	useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -94,6 +96,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					isPrint: data?.isPrint,
 					code: data?.code,
 					reason: '',
+					scaleStationUuid: data?.scalesStationUu?.uuid || '',
 				});
 
 				// SET LIST TRUCK
@@ -237,7 +240,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 				}),
 			}),
 		onSuccess(data) {
-			if (data) {
+			if (data && !form.toUuid) {
 				setForm((prev) => ({
 					...prev,
 					toUuid: data?.[0]?.uuid || '',
@@ -248,6 +251,26 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 			return data;
 		},
 		enabled: !!form.warehouseUuid && !!form.productTypeUuid && !!form.warehouseUuid,
+	});
+
+	const listScaleStation = useQuery([QUERY_KEY.dropdown_tram_can], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: scalesStationServices.listScalesStation({
+					page: 1,
+					pageSize: 20,
+					keyword: '',
+					companyUuid: '',
+					status: CONFIG_STATUS.HOAT_DONG,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
 	});
 
 	const listTruck = useQuery([QUERY_KEY.dropdown_xe_hang], {
@@ -295,6 +318,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					toUuid: form?.toUuid,
 					isPrint: form.isPrint,
 					transportType: form?.transportType,
+					scaleStationUuid: form?.scaleStationUuid,
 					lstTruckAddUuid: listTruckChecked
 						.filter((v) => !listTruckBatchBill.some((x) => v.uuid === x.uuid))
 						?.map((item) => item.uuid),
@@ -333,6 +357,9 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 		}
 		if (!form.toUuid) {
 			return toastWarn({msg: 'Vui lòng chọn bãi!'});
+		}
+		if (!form.scaleStationUuid) {
+			return toastWarn({msg: 'Vui lòng chọn trạm cân!'});
 		}
 		if (listTruckChecked.length == 0) {
 			return toastWarn({msg: 'Vui lòng chọn xe hàng!'});
@@ -676,6 +703,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 											...prev,
 											warehouseUuid: v?.uuid,
 											toUuid: '',
+											scaleStationUuid: v?.scaleStationUu?.uuid || '',
 										}))
 									}
 								/>
@@ -711,6 +739,31 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 						</div>
 					</div>
 					<div className={clsx('mt', 'col_2')}>
+						<Select
+							isSearch
+							name='scaleStationUuid'
+							placeholder='Chọn trạm cân'
+							value={form?.scaleStationUuid}
+							label={
+								<span>
+									Trạm cân <span style={{color: 'red'}}>*</span>
+								</span>
+							}
+						>
+							{listScaleStation?.data?.map((v: any) => (
+								<Option
+									key={v?.uuid}
+									value={v?.uuid}
+									title={v?.name}
+									onClick={() =>
+										setForm((prev: any) => ({
+											...prev,
+											scaleStationUuid: v?.uuid,
+										}))
+									}
+								/>
+							))}
+						</Select>
 						<Input
 							name='weightIntent'
 							value={form.weightIntent || ''}
@@ -720,6 +773,8 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 							label={<span>Khối lượng dự kiến</span>}
 							placeholder='Nhập khối lượng dự kiến'
 						/>
+					</div>
+					<div className={clsx('mt', 'col_2')}>
 						<DatePicker
 							label={
 								<span>
@@ -735,8 +790,6 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 							}
 							placeholder='Chọn ngày dự kiến'
 						/>
-					</div>
-					<div className={clsx('mt')}>
 						<Input
 							name='documentId'
 							value={form.documentId || ''}

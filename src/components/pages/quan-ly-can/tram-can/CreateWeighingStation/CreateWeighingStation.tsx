@@ -22,6 +22,7 @@ function CreateWeighingStation({}: PropsCreateWeighingStation) {
 
 	const [form, setForm] = useState<IFormCreate>({
 		name: '',
+		code: '',
 		address: '',
 		description: '',
 		phoneNumber: '',
@@ -111,6 +112,7 @@ function CreateWeighingStation({}: PropsCreateWeighingStation) {
 			if (data) {
 				setForm({
 					name: '',
+					code: '',
 					address: '',
 					description: '',
 					phoneNumber: '',
@@ -172,21 +174,37 @@ function CreateWeighingStation({}: PropsCreateWeighingStation) {
 				</div>
 
 				<div className={styles.form}>
-					<div className={clsx('mt')}>
+					<div className={clsx('mt', 'col_2')}>
 						<Input
-							name='name'
-							value={form.name || ''}
+							name='code'
+							value={form.code || ''}
 							isRequired
 							max={255}
 							type='text'
 							blur={true}
 							label={
 								<span>
-									Tên trạm cân <span style={{color: 'red'}}>*</span>
+									Mã trạm cân <span style={{color: 'red'}}>*</span>
 								</span>
 							}
-							placeholder='Nhập tên trạm cân'
+							placeholder='Nhập mã trạm cân'
 						/>
+						<div>
+							<Input
+								name='name'
+								value={form.name || ''}
+								isRequired
+								max={255}
+								type='text'
+								blur={true}
+								label={
+									<span>
+										Tên trạm cân <span style={{color: 'red'}}>*</span>
+									</span>
+								}
+								placeholder='Nhập tên trạm cân'
+							/>
+						</div>
 					</div>
 
 					<div className={clsx('mt', 'col_2')}>

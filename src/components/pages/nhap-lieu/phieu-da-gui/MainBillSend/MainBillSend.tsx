@@ -265,7 +265,7 @@ function MainBillSend({}: PropsMainBillSend) {
 			<div className={styles.table}>
 				<DataWrapper
 					data={queryWeightsession?.data?.items || []}
-					loading={queryWeightsession.isLoading}
+					loading={queryWeightsession.isFetching}
 					noti={<Noti des='Hiện tại chưa có danh sách nhập liệu nào!' disableButton />}
 				>
 					<Table
@@ -343,23 +343,26 @@ function MainBillSend({}: PropsMainBillSend) {
 						]}
 					/>
 				</DataWrapper>
-				<Pagination
-					currentPage={Number(_page) || 1}
-					pageSize={Number(_pageSize) || 20}
-					total={queryWeightsession?.data?.pagination?.totalCount}
-					dependencies={[
-						_pageSize,
-						_keyword,
-						_isBatch,
-						_customerUuid,
-						_productTypeUuid,
-						_specUuid,
-						_billUuid,
-						_dateFrom,
-						_dateTo,
-						_isShift,
-					]}
-				/>
+
+				{!queryWeightsession.isFetching && (
+					<Pagination
+						currentPage={Number(_page) || 1}
+						pageSize={Number(_pageSize) || 20}
+						total={queryWeightsession?.data?.pagination?.totalCount}
+						dependencies={[
+							_pageSize,
+							_keyword,
+							_isBatch,
+							_customerUuid,
+							_productTypeUuid,
+							_specUuid,
+							_billUuid,
+							_dateFrom,
+							_dateTo,
+							_isShift,
+						]}
+					/>
+				)}
 			</div>
 		</div>
 	);

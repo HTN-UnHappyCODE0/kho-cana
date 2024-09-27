@@ -319,12 +319,16 @@ function MainPageBillService({}: PropsMainPageBillService) {
 								),
 							},
 							{
+								title: 'KL dự kiến (TẤN)',
+								render: (data: IDataBill) => <>{convertCoin(data?.batchsUu?.weightIntent) || '---'}</>,
+							},
+							{
 								title: 'Loại gỗ',
 								render: (data: IDataBill) => <>{data?.productTypeUu?.name || '---'}</>,
 							},
 							{
-								title: 'KL dự kiến (TẤN)',
-								render: (data: IDataBill) => <>{convertCoin(data?.batchsUu?.weightIntent) || '---'}</>,
+								title: 'Trạm cân',
+								render: (data: IDataBill) => <>{data?.scalesStationUu?.name || '---'}</>,
 							},
 							{
 								title: 'Ngày dự kiến',

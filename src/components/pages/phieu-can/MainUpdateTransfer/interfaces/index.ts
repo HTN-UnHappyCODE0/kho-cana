@@ -21,4 +21,5 @@ export interface IFormUpdateTransfer {
 	code: string;
 	isBatch: number;
 	reason: string;
+	scaleStationUuid: string;
 }

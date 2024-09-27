@@ -18,4 +18,5 @@ export interface IFormUpdateExport {
 	description: string;
 	code: string;
 	reason: string;
+	scaleStationUuid: string;
 }

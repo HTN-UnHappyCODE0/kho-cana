@@ -35,6 +35,7 @@ import {convertCoin, price} from '~/common/funcs/convertCoin';
 import {IDetailBatchBill} from '../../lenh-can/MainDetailBill/interfaces';
 import Popup from '~/components/common/Popup';
 import FormReasonUpdateBill from '../FormReasonUpdateBill';
+import scalesStationServices from '~/services/scalesStationServices';
 
 function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 	const router = useRouter();
@@ -66,6 +67,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 		code: '',
 		isBatch: TYPE_BATCH.CAN_LO,
 		reason: '',
+		scaleStationUuid: '',
 	});
 
 	const {data: detailBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -98,6 +100,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 					code: data?.code,
 					isBatch: data?.isBatch,
 					reason: '',
+					scaleStationUuid: data?.scalesStationUu?.uuid || '',
 				});
 
 				setListTruckChecked(
@@ -212,7 +215,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					typeFind: CONFIG_TYPE_FIND.TABLE,
 					customerUuid: '',
 					timeEnd: null,
 					timeStart: null,
@@ -289,6 +292,26 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 		enabled: !!form.warehouseToUuid,
 	});
 
+	const listScaleStation = useQuery([QUERY_KEY.dropdown_tram_can], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: scalesStationServices.listScalesStation({
+					page: 1,
+					pageSize: 20,
+					keyword: '',
+					companyUuid: '',
+					status: CONFIG_STATUS.HOAT_DONG,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
 	const fucnUpdateBatchBill = useMutation({
 		mutationFn: () =>
 			httpRequest({
@@ -322,6 +345,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 						.filter((v) => !listTruckChecked.some((x) => v.uuid === x.uuid))
 						?.map((item) => item.uuid),
 					reason: form.reason,
+					scaleStationUuid: form.scaleStationUuid,
 				}),
 			}),
 		onSuccess(data) {
@@ -348,6 +372,9 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 		}
 		if (!form.specificationsUuid) {
 			return toastWarn({msg: 'Vui lòng chọn quy cách!'});
+		}
+		if (!form.scaleStationUuid) {
+			return toastWarn({msg: 'Vui lòng chọn trạm cân!'});
 		}
 		if (form?.fromUuid == form.toUuid) {
 			return toastWarn({msg: 'Trùng kho đích!'});
@@ -677,6 +704,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 											toUuid: '',
 											specificationsUuid: '',
 											productTypeUuid: '',
+											scaleStationUuid: v?.scaleStationUu?.uuid || '',
 										}))
 									}
 								/>
@@ -770,27 +798,32 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 							</Select>
 						</div>
 					</div>
-					<div className={clsx('mt', 'col_2')}>
-						<Input
-							name='weightIntent'
-							value={form.weightIntent || ''}
-							type='text'
-							isMoney
-							unit='TẤN'
-							label={<span>Khối lượng dự kiến</span>}
-							placeholder='Nhập khối lượng dự kiến'
-						/>
-						<DatePicker
-							label={<span>Ngày dự kiến </span>}
-							value={form.timeIntend}
-							onSetValue={(date) =>
-								setForm((prev: any) => ({
-									...prev,
-									timeIntend: date,
-								}))
+					<div className={clsx('mt')}>
+						<Select
+							isSearch
+							name='scaleStationUuid'
+							placeholder='Chọn trạm cân'
+							value={form?.scaleStationUuid}
+							label={
+								<span>
+									Trạm cân <span style={{color: 'red'}}>*</span>
+								</span>
 							}
-							placeholder='Chọn ngày dự kiến'
-						/>
+						>
+							{listScaleStation?.data?.map((v: any) => (
+								<Option
+									key={v?.uuid}
+									value={v?.uuid}
+									title={v?.name}
+									onClick={() =>
+										setForm((prev: any) => ({
+											...prev,
+											scaleStationUuid: v?.uuid,
+										}))
+									}
+								/>
+							))}
+						</Select>
 					</div>
 					<div className={clsx('mt')}>
 						<ButtonSelectMany

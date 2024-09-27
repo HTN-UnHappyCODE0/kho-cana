@@ -37,6 +37,7 @@ import {timeSubmit} from '~/common/funcs/optionConvert';
 import batchBillServices from '~/services/batchBillServices';
 import {IDetailBatchBill} from '../MainDetailBill/interfaces';
 import shipServices from '~/services/shipServices';
+import scalesStationServices from '~/services/scalesStationServices';
 
 function MainUpdateService({}: PropsMainUpdateService) {
 	const router = useRouter();
@@ -60,6 +61,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 		customerUuid: '',
 		code: '',
 		reason: '',
+		scaleStationUuid: '',
 	});
 
 	useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -85,6 +87,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 					customerUuid: data?.fromUu?.uuid,
 					code: data?.code,
 					reason: '',
+					scaleStationUuid: data?.scalesStationUu?.uuid || '',
 				});
 
 				setListTruckChecked(
@@ -169,6 +172,26 @@ function MainUpdateService({}: PropsMainUpdateService) {
 		},
 	});
 
+	const listScaleStation = useQuery([QUERY_KEY.dropdown_tram_can], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: scalesStationServices.listScalesStation({
+					page: 1,
+					pageSize: 20,
+					keyword: '',
+					companyUuid: '',
+					status: CONFIG_STATUS.HOAT_DONG,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
 	const listTruck = useQuery([QUERY_KEY.dropdown_xe_hang], {
 		queryFn: () =>
 			httpRequest({
@@ -214,6 +237,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 					fromUuid: form.customerUuid,
 					toUuid: form.customerUuid,
 					isPrint: form.isPrint,
+					scaleStationUuid: form?.scaleStationUuid,
 					lstTruckAddUuid: listTruckChecked
 						.filter((v) => !listTruckBatchBill.some((x) => v.uuid === x.uuid))
 						?.map((item) => item.uuid),
@@ -242,6 +266,9 @@ function MainUpdateService({}: PropsMainUpdateService) {
 		}
 		if (!form.productTypeUuid) {
 			return toastWarn({msg: 'Vui lòng chọn loại gỗ!'});
+		}
+		if (!form.scaleStationUuid) {
+			return toastWarn({msg: 'Vui lòng chọn trạm cân!'});
 		}
 		if (listTruckChecked.length == 0) {
 			return toastWarn({msg: 'Vui lòng chọn xe hàng!'});
@@ -492,7 +519,32 @@ function MainUpdateService({}: PropsMainUpdateService) {
 							</Select>
 						</div>
 					</div>
-					<div className={clsx('mt')}>
+					<div className={clsx('mt', 'col_2')}>
+						<Select
+							isSearch
+							name='scaleStationUuid'
+							placeholder='Chọn trạm cân'
+							value={form?.scaleStationUuid}
+							label={
+								<span>
+									Trạm cân <span style={{color: 'red'}}>*</span>
+								</span>
+							}
+						>
+							{listScaleStation?.data?.map((v: any) => (
+								<Option
+									key={v?.uuid}
+									value={v?.uuid}
+									title={v?.name}
+									onClick={() =>
+										setForm((prev: any) => ({
+											...prev,
+											scaleStationUuid: v?.uuid,
+										}))
+									}
+								/>
+							))}
+						</Select>
 						<Input
 							name='weightIntent'
 							value={form.weightIntent || ''}

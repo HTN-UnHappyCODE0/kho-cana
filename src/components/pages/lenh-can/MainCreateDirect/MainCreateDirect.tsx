@@ -35,6 +35,7 @@ import {timeSubmit} from '~/common/funcs/optionConvert';
 import batchBillServices from '~/services/batchBillServices';
 import priceTagServices from '~/services/priceTagServices';
 import shipServices from '~/services/shipServices';
+import scalesStationServices from '~/services/scalesStationServices';
 
 function MainCreateDirect({}: PropsMainCreateDirect) {
 	const router = useRouter();
@@ -55,6 +56,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 		fromUuid: '',
 		toUuid: '',
 		isPrint: 0,
+		scaleStationUuid: '',
 	});
 
 	const listCustomerFrom = useQuery([QUERY_KEY.dropdown_khach_hang_nhap], {
@@ -161,6 +163,26 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 		},
 	});
 
+	const listScaleStation = useQuery([QUERY_KEY.dropdown_tram_can], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: scalesStationServices.listScalesStation({
+					page: 1,
+					pageSize: 20,
+					keyword: '',
+					companyUuid: '',
+					status: CONFIG_STATUS.HOAT_DONG,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
 	const listTruck = useQuery([QUERY_KEY.dropdown_xe_hang], {
 		queryFn: () =>
 			httpRequest({
@@ -208,6 +230,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 					shipOutUuid: form.shipOutUuid,
 					lstTruckAddUuid: listTruckChecked?.map((v) => v.uuid),
 					lstTruckRemoveUuid: [],
+					scaleStationUuid: form.scaleStationUuid,
 				}),
 			}),
 		onSuccess(data) {
@@ -239,6 +262,9 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 		}
 		if (!form.specificationsUuid) {
 			return toastWarn({msg: 'Vui lòng chọn quy cách!'});
+		}
+		if (!form.scaleStationUuid) {
+			return toastWarn({msg: 'Vui lòng chọn trạm cân!'});
 		}
 		if (!form.fromUuid) {
 			return toastWarn({msg: 'Vui lòng chọn nhà cung cấp!'});
@@ -598,6 +624,31 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 						</div>
 					</div>
 					<div className={clsx('mt', 'col_2')}>
+						<Select
+							isSearch
+							name='scaleStationUuid'
+							placeholder='Chọn trạm cân'
+							value={form?.scaleStationUuid}
+							label={
+								<span>
+									Trạm cân <span style={{color: 'red'}}>*</span>
+								</span>
+							}
+						>
+							{listScaleStation?.data?.map((v: any) => (
+								<Option
+									key={v?.uuid}
+									value={v?.uuid}
+									title={v?.name}
+									onClick={() =>
+										setForm((prev: any) => ({
+											...prev,
+											scaleStationUuid: v?.uuid,
+										}))
+									}
+								/>
+							))}
+						</Select>
 						<Input
 							name='weightIntent'
 							value={form.weightIntent || ''}
@@ -607,6 +658,8 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 							placeholder='Nhập khối lượng dự kiến'
 							label={<span>Khối lượng dự kiến</span>}
 						/>
+					</div>
+					<div className={clsx('mt', 'col_2')}>
 						<DatePicker
 							label={
 								<span>
@@ -622,8 +675,6 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 							}
 							placeholder='Chọn ngày dự kiến'
 						/>
-					</div>
-					<div className={clsx('mt')}>
 						<Input
 							name='documentId'
 							value={form.documentId || ''}

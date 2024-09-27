@@ -34,7 +34,7 @@ import weightSessionServices from '~/services/weightSessionServices';
 
 function MainWeightSessionImport({}: PropsMainWeightSessionImport) {
 	const router = useRouter();
-	const {_page, _pageSize, _keyword, _billUuid, _truckUuid, _specUuid, _dateFrom, _dateTo} = router.query;
+	const {_page, _pageSize, _keyword, _truckUuid, _specUuid, _dateFrom, _dateTo} = router.query;
 
 	const [byFilter, setByFilter] = useState<boolean>(false);
 	const [formCode, setFormCode] = useState<{codeStart: string; codeEnd: string}>({
@@ -120,7 +120,6 @@ function MainWeightSessionImport({}: PropsMainWeightSessionImport) {
 			_page,
 			_pageSize,
 			_keyword,
-			_billUuid,
 			_truckUuid,
 			_specUuid,
 			_dateFrom,
@@ -147,7 +146,7 @@ function MainWeightSessionImport({}: PropsMainWeightSessionImport) {
 						timeEnd: _dateTo ? (_dateTo as string) : null,
 						customerUuid: '',
 						productTypeUuid: '',
-						billUuid: _billUuid ? (_billUuid as string) : '',
+						billUuid: '',
 						codeEnd: byFilter && !!debounceCodeEnd ? Number(debounceCodeEnd) : null,
 						codeStart: byFilter && !!debounceCodeStart ? Number(debounceCodeStart) : null,
 						specUuid: !!_specUuid ? (_specUuid as string) : null,
@@ -169,15 +168,7 @@ function MainWeightSessionImport({}: PropsMainWeightSessionImport) {
 						<div className={styles.search}>
 							<Search keyName='_keyword' placeholder='Tìm kiếm theo mã lô' />
 						</div>
-						<FilterCustom
-							isSearch
-							name='Lô'
-							query='_billUuid'
-							listFilter={listBills?.data?.map((v: any) => ({
-								id: v.uuid,
-								name: v?.code,
-							}))}
-						/>
+
 						<FilterCustom
 							isSearch
 							name='Biển số xe'
@@ -363,7 +354,6 @@ function MainWeightSessionImport({}: PropsMainWeightSessionImport) {
 					dependencies={[
 						_pageSize,
 						_keyword,
-						_billUuid,
 						_truckUuid,
 						_specUuid,
 						byFilter,

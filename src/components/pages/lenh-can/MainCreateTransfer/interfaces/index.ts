@@ -13,4 +13,5 @@ export interface IFormCreateTransfer {
 	timeIntend: string | Date;
 	weightIntent: number;
 	description: string;
+	scaleStationUuid: string;
 }

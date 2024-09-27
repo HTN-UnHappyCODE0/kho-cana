@@ -415,23 +415,25 @@ function MainSpecification({}: PropsMainSpecification) {
 						]}
 					/>
 				</DataWrapper>
-				<Pagination
-					currentPage={Number(_page) || 1}
-					pageSize={Number(_pageSize) || 20}
-					total={total}
-					dependencies={[
-						_pageSize,
-						_keyword,
-						_isBatch,
-						_customerUuid,
-						_productTypeUuid,
-						_specUuid,
-						_billUuid,
-						_dateFrom,
-						_dateTo,
-						_isShift,
-					]}
-				/>
+				{!loading && (
+					<Pagination
+						currentPage={Number(_page) || 1}
+						pageSize={Number(_pageSize) || 20}
+						total={total}
+						dependencies={[
+							_pageSize,
+							_keyword,
+							_isBatch,
+							_customerUuid,
+							_productTypeUuid,
+							_specUuid,
+							_billUuid,
+							_dateFrom,
+							_dateTo,
+							_isShift,
+						]}
+					/>
+				)}
 			</div>
 
 			<Popup open={weightSessionSubmits.length > 0} onClose={() => setWeightSessionSubmits([])}>

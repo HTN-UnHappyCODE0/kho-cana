@@ -55,6 +55,7 @@ const batchBillServices = {
 			lstTruckAddUuid: string[];
 			lstTruckRemoveUuid: string[];
 			reason?: string;
+			scaleStationUuid: string;
 		},
 		tokenAxios?: any
 	) => {
@@ -97,7 +98,7 @@ const batchBillServices = {
 	},
 	QLKConfirmBatchbill: (
 		data: {
-			uuid: string;
+			uuid: string[];
 		},
 		tokenAxios?: any
 	) => {
@@ -107,7 +108,7 @@ const batchBillServices = {
 	},
 	KTKConfirmBatchbill: (
 		data: {
-			uuid: string;
+			uuid: string[];
 		},
 		tokenAxios?: any
 	) => {
@@ -117,12 +118,23 @@ const batchBillServices = {
 	},
 	QLKRejectBatchbill: (
 		data: {
-			uuid: string;
+			uuid: string[];
 			description: string;
 		},
 		tokenAxios?: any
 	) => {
 		return axiosClient.post(`/BatchBill/reject-bill-to-qlk`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	updatePort: (
+		data: {
+			uuid: string[];
+			portname: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/BatchBill/update-port`, data, {
 			cancelToken: tokenAxios,
 		});
 	},

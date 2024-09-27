@@ -16,5 +16,6 @@ export interface IFormUpdateTransfer {
 	weightIntent: number | string;
 	description: string;
 	code: string;
+	scaleStationUuid: string;
 	reason: string;
 }

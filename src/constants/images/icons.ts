@@ -28,6 +28,8 @@ import emptyFile from '../../../public/static/images/emptyFile.svg';
 import avatarDefault from '../../../public/static/images/avatar_default.png';
 import icon_ship from '../../../public/static/images/ship.svg';
 import duyetsanluong from '../../../public/static/images/duyetsanluong.svg';
+import duyetphieu from '../../../public/static/images/duyetphieu.svg';
+import cang from '../../../public/static/images/cang.svg';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -61,4 +63,6 @@ export default {
 	avatarDefault,
 	icon_ship,
 	duyetsanluong,
+	cang,
+	duyetphieu,
 };

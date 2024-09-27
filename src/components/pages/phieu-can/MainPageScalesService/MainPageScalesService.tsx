@@ -33,7 +33,7 @@ import {ITableBillScale} from '../MainPageScalesAll/interfaces';
 import {convertCoin} from '~/common/funcs/convertCoin';
 import Dialog from '~/components/common/Dialog';
 import IconCustom from '~/components/common/IconCustom';
-import {Eye, Play, StopCircle, TickCircle} from 'iconsax-react';
+import {Eye, Play, StopCircle} from 'iconsax-react';
 import Loading from '~/components/common/Loading';
 import Link from 'next/link';
 import {LuPencil} from 'react-icons/lu';
@@ -48,7 +48,9 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 
 	const [uuidPlay, setUuidPlay] = useState<string>('');
 	const [uuidStop, setUuidStop] = useState<string>('');
-	const [uuidQLKConfirm, setUuidQLKConfirm] = useState<string>('');
+
+	const [listBatchBill, setListBatchBill] = useState<any[]>([]);
+	const [total, setTotal] = useState<number>(0);
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
@@ -113,7 +115,7 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 		},
 	});
 
-	const listBatch = useQuery(
+	const getListBatch = useQuery(
 		[
 			QUERY_KEY.table_phieu_can_dich_vu,
 			_page,
@@ -172,31 +174,23 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 						shipUuid: (_shipUuid as string) || '',
 					}),
 				}),
+			onSuccess(data) {
+				if (data) {
+					setListBatchBill(
+						data?.items?.map((v: any, index: number) => ({
+							...v,
+							index: index,
+							isChecked: false,
+						}))
+					);
+					setTotal(data?.pagination?.totalCount);
+				}
+			},
 			select(data) {
 				return data;
 			},
 		}
 	);
-	const fucnQLKConfirmBatchBill = useMutation({
-		mutationFn: () =>
-			httpRequest({
-				showMessageFailed: true,
-				showMessageSuccess: true,
-				msgSuccess: 'QLK duyệt sản lượng thành công!',
-				http: batchBillServices.QLKConfirmBatchbill({
-					uuid: uuidQLKConfirm,
-				}),
-			}),
-		onSuccess(data) {
-			if (data) {
-				setUuidQLKConfirm('');
-				queryClient.invalidateQueries([QUERY_KEY.table_phieu_can_dich_vu]);
-			}
-		},
-		onError(error) {
-			console.log({error});
-		},
-	});
 
 	const fucnStartBatchBill = useMutation({
 		mutationFn: () =>
@@ -242,7 +236,7 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnStartBatchBill.isLoading || fucnStopBatchBill.isLoading || fucnQLKConfirmBatchBill.isLoading} />{' '}
+			<Loading loading={fucnStartBatchBill.isLoading || fucnStopBatchBill.isLoading} />
 			<div className={styles.header}>
 				<div className={styles.main_search}>
 					<div className={styles.search}>
@@ -357,15 +351,17 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 			</div>
 			<div className={styles.table}>
 				<DataWrapper
-					data={listBatch?.data?.items || []}
-					loading={listBatch?.isLoading}
+					data={listBatchBill || []}
+					loading={getListBatch?.isFetching}
 					noti={<Noti des='Hiện tại chưa có phiếu cân nào, thêm ngay?' disableButton />}
 				>
 					<Table
-						data={listBatch?.data?.items || []}
+						data={listBatchBill || []}
+						onSetData={setListBatchBill}
 						column={[
 							{
 								title: 'STT',
+								checkBox: true,
 								render: (data: ITableBillScale, index: number) => <>{index + 1}</>,
 							},
 							{
@@ -422,6 +418,10 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 								),
 							},
 							{
+								title: 'KL hàng (tấn)',
+								render: (data: ITableBillScale) => <>{convertCoin(data?.weightTotal) || 0}</>,
+							},
+							{
 								title: 'Loại gỗ',
 								render: (data: ITableBillScale) => <>{data?.productTypeUu?.name || '---'}</>,
 							},
@@ -433,10 +433,6 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 										{data?.isSift == TYPE_SIFT.KHONG_CAN_SANG && 'Không cần sàng'}
 									</>
 								),
-							},
-							{
-								title: 'KL hàng (tấn)',
-								render: (data: ITableBillScale) => <>{convertCoin(data?.weightTotal) || 0}</>,
 							},
 							{
 								title: 'Xác nhận SL',
@@ -492,17 +488,6 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 											/>
 										) : null}
 
-										{/* Duyệt sản lượng */}
-										{data?.status >= STATUS_BILL.DA_CAN_CHUA_KCS && data.state <= STATE_BILL.QLK_REJECTED ? (
-											<IconCustom
-												edit
-												icon={<TickCircle size={22} fontWeight={600} />}
-												tooltip='QLK duyệt'
-												color='#2CAE39'
-												onClick={() => setUuidQLKConfirm(data?.uuid)}
-											/>
-										) : null}
-
 										{/* Chỉnh sửa phiếu */}
 										<IconCustom
 											edit
@@ -526,23 +511,25 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 						]}
 					/>
 				</DataWrapper>
-				<Pagination
-					currentPage={Number(_page) || 1}
-					pageSize={Number(_pageSize) || 20}
-					total={listBatch?.data?.pagination?.totalCount}
-					dependencies={[
-						_pageSize,
-						_keyword,
-						_isBatch,
-						_customerUuid,
-						_productTypeUuid,
-						_shipUuid,
-						_status,
-						_dateFrom,
-						_dateTo,
-						_state,
-					]}
-				/>
+				{!getListBatch.isFetching && (
+					<Pagination
+						currentPage={Number(_page) || 1}
+						pageSize={Number(_pageSize) || 20}
+						total={total}
+						dependencies={[
+							_pageSize,
+							_keyword,
+							_isBatch,
+							_customerUuid,
+							_productTypeUuid,
+							_shipUuid,
+							_status,
+							_dateFrom,
+							_dateTo,
+							_state,
+						]}
+					/>
+				)}
 			</div>
 			<Dialog
 				open={!!uuidPlay}
@@ -558,15 +545,6 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 				note='Bạn có muốn thực hiện thao tác kết thúc cho phiếu cân này không?'
 				onClose={() => setUuidStop('')}
 				onSubmit={fucnStopBatchBill.mutate}
-			/>
-			{/* Quản lý kho duyệt */}
-			<Dialog
-				danger
-				open={!!uuidQLKConfirm}
-				title='QLK duyệt sản lượng'
-				note='Bạn có muốn thực hiện thao tác duyệt sản lượng cho phiếu cân này không?'
-				onClose={() => setUuidQLKConfirm('')}
-				onSubmit={fucnQLKConfirmBatchBill.mutate}
 			/>
 		</div>
 	);

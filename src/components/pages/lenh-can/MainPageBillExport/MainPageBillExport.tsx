@@ -319,14 +319,7 @@ function MainPageBillExport({}: PropsMainPageBillExport) {
 									</>
 								),
 							},
-							{
-								title: 'Loại gỗ',
-								render: (data: IDataBill) => <>{data?.productTypeUu?.name || '---'}</>,
-							},
-							{
-								title: 'Quy cách',
-								render: (data: IDataBill) => <>{data?.specificationsUu?.name || '---'}</>,
-							},
+
 							{
 								title: 'Đến',
 								render: (data: IDataBill) => (
@@ -339,6 +332,18 @@ function MainPageBillExport({}: PropsMainPageBillExport) {
 							{
 								title: 'KL dự kiến (tấn)',
 								render: (data: IDataBill) => <>{convertCoin(data?.batchsUu?.weightIntent) || '---'}</>,
+							},
+							{
+								title: 'Loại gỗ',
+								render: (data: IDataBill) => <>{data?.productTypeUu?.name || '---'}</>,
+							},
+							{
+								title: 'Quy cách',
+								render: (data: IDataBill) => <>{data?.specificationsUu?.name || '---'}</>,
+							},
+							{
+								title: 'Trạm cân',
+								render: (data: IDataBill) => <>{data?.scalesStationUu?.name || '---'}</>,
 							},
 							{
 								title: 'Ngày dự kiến',

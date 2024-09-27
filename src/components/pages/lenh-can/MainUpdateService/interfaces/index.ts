@@ -14,4 +14,5 @@ export interface IFormUpdateService {
 	customerUuid: string;
 	code: string;
 	reason: string;
+	scaleStationUuid: string;
 }

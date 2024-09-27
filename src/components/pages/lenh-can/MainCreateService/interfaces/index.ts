@@ -10,4 +10,5 @@ export interface IFormCreateService {
 	documentId: string;
 	description: string;
 	customerUuid: string;
+	scaleStationUuid: string;
 }

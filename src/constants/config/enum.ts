@@ -73,6 +73,8 @@ export enum QUERY_KEY {
 	table_hang_hoa_cua_nha_cung_cap,
 	table_khach_hang_xuat,
 	table_ktk_duyet_san_luong,
+	table_qlk_duyet_phieu,
+	table_cang_boc_do,
 	table_tau,
 	table_nhap_lieu_quy_cach,
 	table_nhap_lieu_do_kho,

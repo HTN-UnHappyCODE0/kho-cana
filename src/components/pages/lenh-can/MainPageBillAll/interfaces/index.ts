@@ -1,12 +1,6 @@
 export interface PropsMainPageBillAll {}
 
 export interface IDataBill {
-	scalesStationUu: {
-		code: string;
-		name: string;
-		status: number;
-		uuid: string;
-	};
 	lstTruck: {
 		code: string;
 		licensePalate: string;
@@ -95,6 +89,12 @@ export interface IDataBill {
 		uuid: string;
 		code: string;
 		name: string;
+	};
+	scalesStationUu: {
+		code: string;
+		name: string;
+		status: number;
+		uuid: string;
 	};
 	moneyTotal: number;
 	status: number;

@@ -1,5 +1,6 @@
 import {CONFIG_DESCENDING, CONFIG_PAGING, CONFIG_TYPE_FIND, CONFIG_STATUS} from '~/constants/config/enum';
 import axiosClient from '.';
+
 const scalesStationServices = {
 	listScalesStation: (
 		data: {
@@ -33,6 +34,7 @@ const scalesStationServices = {
 		data: {
 			uuid: string;
 			name: string;
+			code: string;
 			address: string;
 			description: string;
 			phoneNumber: string;

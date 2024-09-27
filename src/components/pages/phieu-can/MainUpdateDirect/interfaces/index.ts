@@ -22,4 +22,5 @@ export interface IFormUpdateDirect {
 	code: string;
 	isBatch: number;
 	reason: string;
+	scaleStationUuid: string;
 }

@@ -14,4 +14,5 @@ export interface IFormCreateDirect {
 	timeIntend: string | Date;
 	documentId: string;
 	description: string;
+	scaleStationUuid: string;
 }

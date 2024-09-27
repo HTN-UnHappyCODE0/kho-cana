@@ -168,17 +168,16 @@ function MainDetailWeighingStation({}: PropsMainDetailWeighingStation) {
 							<span style={{fontWeight: 600, marginLeft: '6px'}}>{scalesStation?.name}</span>
 						</td>
 						<td>
-							<span>Thuộc KV cảng xuất khẩu:</span>
-							<span style={{fontWeight: 600, marginLeft: '6px'}}>{scalesStation?.companyUu?.name}</span>
+							<span>Mã cầu cân:</span>
+							<span style={{fontWeight: 600, marginLeft: '6px'}}>{scalesStation?.code}</span>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<span>Số lượng cầu cân:</span>
-							<span style={{fontWeight: 600, marginLeft: '6px', color: '#3772FF'}}>
-								{scalesStation?.scalesMachine?.length}
-							</span>
+							<span>Thuộc KV cảng xuất khẩu:</span>
+							<span style={{fontWeight: 600, marginLeft: '6px'}}>{scalesStation?.companyUu?.name}</span>
 						</td>
+
 						<td>
 							<span>Địa chỉ chi tiết:</span>
 							<span style={{fontWeight: 600, marginLeft: '6px'}}>
@@ -191,7 +190,7 @@ function MainDetailWeighingStation({}: PropsMainDetailWeighingStation) {
 							<span>Số điện thoại: </span>
 							<span style={{fontWeight: 600, marginLeft: '6px'}}>{scalesStation?.phoneNumber}</span>
 						</td>
-						<td rowSpan={2} className={styles.description}>
+						<td rowSpan={3} className={styles.description}>
 							<span>Ghi chú: </span>
 							<span style={{fontWeight: 600, marginLeft: '6px'}}>{scalesStation?.description}</span>
 						</td>
@@ -201,6 +200,14 @@ function MainDetailWeighingStation({}: PropsMainDetailWeighingStation) {
 							<span>Trạng thái: </span>
 							<span style={{fontWeight: 600, marginLeft: '6px'}}>
 								<TagStatus status={scalesStation?.status} />
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span>Số lượng cầu cân:</span>
+							<span style={{fontWeight: 600, marginLeft: '6px', color: '#3772FF'}}>
+								{scalesStation?.scalesMachine?.length}
 							</span>
 						</td>
 					</tr>

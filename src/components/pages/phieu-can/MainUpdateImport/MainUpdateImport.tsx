@@ -39,6 +39,7 @@ import shipServices from '~/services/shipServices';
 import {IDetailBatchBill} from '../../lenh-can/MainDetailBill/interfaces';
 import Popup from '~/components/common/Popup';
 import FormReasonUpdateBill from '../FormReasonUpdateBill';
+import scalesStationServices from '~/services/scalesStationServices';
 
 function MainUpdateImport({}: PropsMainUpdateImport) {
 	const router = useRouter();
@@ -71,6 +72,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 		code: '',
 		isBatch: TYPE_BATCH.CAN_LO,
 		reason: '',
+		scaleStationUuid: '',
 	});
 
 	const {data: detailBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -104,6 +106,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					code: data?.code,
 					isBatch: data?.isBatch,
 					reason: '',
+					scaleStationUuid: data?.scalesStationUu?.uuid || '',
 				});
 
 				// SET LIST TRUCK
@@ -228,6 +231,26 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 		},
 	});
 
+	const listScaleStation = useQuery([QUERY_KEY.dropdown_tram_can], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: scalesStationServices.listScalesStation({
+					page: 1,
+					pageSize: 20,
+					keyword: '',
+					companyUuid: '',
+					status: CONFIG_STATUS.HOAT_DONG,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
 	const listStorage = useQuery([QUERY_KEY.dropdown_bai, form.warehouseUuid, form.specificationsUuid], {
 		queryFn: () =>
 			httpRequest({
@@ -247,7 +270,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 				}),
 			}),
 		onSuccess(data) {
-			if (data) {
+			if (data && !form.toUuid) {
 				const listStorage: any[] = [...new Map(data?.map((v: any) => [v?.specUu?.uuid, v])).values()];
 
 				setForm((prev) => ({
@@ -315,6 +338,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 						.filter((v) => !listTruckChecked.some((x) => v.uuid === x.uuid))
 						?.map((item) => item.uuid),
 					reason: form.reason,
+					scaleStationUuid: form?.scaleStationUuid,
 				}),
 			}),
 		onSuccess(data) {
@@ -344,6 +368,9 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 		}
 		if (!form.warehouseUuid) {
 			return toastWarn({msg: 'Vui lòng chọn kho chính!'});
+		}
+		if (!form.scaleStationUuid) {
+			return toastWarn({msg: 'Vui lòng chọn trạm cân!'});
 		}
 		if (!form.toUuid) {
 			return toastWarn({msg: 'Vui lòng chọn bãi!'});
@@ -731,6 +758,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 											...prev,
 											warehouseUuid: v?.uuid,
 											toUuid: '',
+											scaleStationUuid: v?.scaleStationUu?.uuid || '',
 										}))
 									}
 								/>
@@ -764,6 +792,33 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 								))}
 							</Select>
 						</div>
+					</div>
+					<div className={clsx('mt')}>
+						<Select
+							isSearch
+							name='scaleStationUuid'
+							placeholder='Chọn trạm cân'
+							value={form?.scaleStationUuid}
+							label={
+								<span>
+									Trạm cân <span style={{color: 'red'}}>*</span>
+								</span>
+							}
+						>
+							{listScaleStation?.data?.map((v: any) => (
+								<Option
+									key={v?.uuid}
+									value={v?.uuid}
+									title={v?.name}
+									onClick={() =>
+										setForm((prev: any) => ({
+											...prev,
+											scaleStationUuid: v?.uuid,
+										}))
+									}
+								/>
+							))}
+						</Select>
 					</div>
 					<div className={clsx('mt')}>
 						<Input
