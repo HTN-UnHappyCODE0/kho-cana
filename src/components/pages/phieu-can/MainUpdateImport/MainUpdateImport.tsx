@@ -40,6 +40,7 @@ import {IDetailBatchBill} from '../../lenh-can/MainDetailBill/interfaces';
 import Popup from '~/components/common/Popup';
 import FormReasonUpdateBill from '../FormReasonUpdateBill';
 import scalesStationServices from '~/services/scalesStationServices';
+import {convertWeight} from '~/common/funcs/optionConvert';
 
 function MainUpdateImport({}: PropsMainUpdateImport) {
 	const router = useRouter();
@@ -100,7 +101,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					isPrint: data?.isPrint,
 					timeIntend: data?.batchsUu?.timeIntend,
 					weightIntent: convertCoin(data?.batchsUu?.weightIntent),
-					weightTotal: convertCoin(data?.weightTotal!),
+					weightTotal: convertWeight(data?.weightTotal!),
 					timeStart: data?.timeStart,
 					timeEnd: data?.timeEnd,
 					code: data?.code,

@@ -31,6 +31,7 @@ import FilterCustom from '~/components/common/FilterCustom';
 import Search from '~/components/common/Search';
 import DateRangerCustom from '~/components/common/DateRangerCustom';
 import weightSessionServices from '~/services/weightSessionServices';
+import {convertWeight} from '~/common/funcs/optionConvert';
 
 function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 	const router = useRouter();
@@ -282,15 +283,15 @@ function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 							},
 							{
 								title: 'KL 1 (tấn)',
-								render: (data: IWeightSession) => <>{convertCoin(data?.weight1?.weight)}</>,
+								render: (data: IWeightSession) => <>{convertWeight(data?.weight1?.weight)}</>,
 							},
 							{
 								title: 'KL 2 (tấn)',
-								render: (data: IWeightSession) => <>{convertCoin(data?.weight2?.weight)}</>,
+								render: (data: IWeightSession) => <>{convertWeight(data?.weight2?.weight)}</>,
 							},
 							{
 								title: 'KL hàng (tấn)',
-								render: (data: IWeightSession) => <>{convertCoin(data?.weightReal)}</>,
+								render: (data: IWeightSession) => <>{convertWeight(data?.weightReal)}</>,
 							},
 							{
 								title: 'Đến',

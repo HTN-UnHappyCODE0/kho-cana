@@ -41,6 +41,7 @@ import {IDetailBatchBill} from '../../lenh-can/MainDetailBill/interfaces';
 import Popup from '~/components/common/Popup';
 import FormReasonUpdateBill from '../FormReasonUpdateBill';
 import scalesStationServices from '~/services/scalesStationServices';
+import {convertWeight} from '~/common/funcs/optionConvert';
 
 function MainUpdateExport({}: PropsMainUpdateExport) {
 	const router = useRouter();
@@ -101,7 +102,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 					fromUuid: data?.fromUu?.uuid,
 					toUuid: data?.toUu?.uuid,
 					isPrint: data?.isPrint,
-					weightTotal: convertCoin(data?.weightTotal!),
+					weightTotal: convertWeight(data?.weightTotal!),
 					timeStart: data?.timeStart,
 					timeEnd: data?.timeEnd,
 					code: data?.code,

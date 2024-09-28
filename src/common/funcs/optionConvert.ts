@@ -115,3 +115,13 @@ export function convertWeight(weight: number | null) {
 
 	return (weight / 1000).toLocaleString('vi-VN', {minimumFractionDigits: 3, maximumFractionDigits: 3});
 }
+
+export function formatDrynessAvg(drynessAvg: number | null) {
+	if (!drynessAvg) {
+		return 0;
+	}
+
+	const roundedNum = Math.floor(drynessAvg * 100) / 100;
+
+	return roundedNum.toFixed(2).replace('.', ',');
+}

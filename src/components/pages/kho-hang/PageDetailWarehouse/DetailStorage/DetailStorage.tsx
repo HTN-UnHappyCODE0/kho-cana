@@ -22,7 +22,7 @@ import storageServices from '~/services/storageServices';
 import TableHistoryInventory from './components/TableHistoryInventory';
 import FormCreateInventory from './components/FormCreateInventory';
 import {PiSealWarningFill} from 'react-icons/pi';
-import {convertWeight} from '~/common/funcs/optionConvert';
+import {convertWeight, formatDrynessAvg} from '~/common/funcs/optionConvert';
 import Button from '~/components/common/Button';
 import {ShieldTick} from 'iconsax-react';
 import {LuPencil} from 'react-icons/lu';
@@ -199,7 +199,7 @@ function DetailStorage({}: PropsDetailStorage) {
 							</div>
 						}
 					/>
-					<DetailBox name={'Độ khô trung bình'} value={detailStorage?.drynessAvg!?.toFixed(3)} />
+					<DetailBox name={'Độ khô trung bình'} value={formatDrynessAvg(detailStorage?.drynessAvg!)} />
 				</GridColumn>
 			</div>
 			<div className={'mt'}>

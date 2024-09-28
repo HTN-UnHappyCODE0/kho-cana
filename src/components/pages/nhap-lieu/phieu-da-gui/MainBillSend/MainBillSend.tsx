@@ -38,6 +38,7 @@ import BoxViewSpec from '../BoxViewSpec';
 import Moment from 'react-moment';
 import {convertCoin} from '~/common/funcs/convertCoin';
 import Link from 'next/link';
+import {convertWeight, formatDrynessAvg} from '~/common/funcs/optionConvert';
 
 function MainBillSend({}: PropsMainBillSend) {
 	const router = useRouter();
@@ -306,7 +307,7 @@ function MainBillSend({}: PropsMainBillSend) {
 							},
 							{
 								title: 'KL hàng (tấn)',
-								render: (data: IWeightSession) => <>{convertCoin(data?.weightReal)}</>,
+								render: (data: IWeightSession) => <>{convertWeight(data?.weightReal)}</>,
 							},
 							{
 								title: 'Quy cách',
@@ -334,7 +335,7 @@ function MainBillSend({}: PropsMainBillSend) {
 							},
 							{
 								title: 'Độ khô',
-								render: (data: IWeightSession) => <p className={styles.dryness}>{data?.dryness} %</p>,
+								render: (data: IWeightSession) => <p className={styles.dryness}>{formatDrynessAvg(data?.dryness)} %</p>,
 							},
 							{
 								title: 'Thời gian gửi',

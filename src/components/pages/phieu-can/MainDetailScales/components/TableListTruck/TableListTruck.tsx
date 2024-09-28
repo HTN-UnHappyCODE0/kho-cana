@@ -15,6 +15,7 @@ import {httpRequest} from '~/services';
 import weightSessionServices from '~/services/weightSessionServices';
 import {convertCoin} from '~/common/funcs/convertCoin';
 import Moment from 'react-moment';
+import {convertWeight} from '~/common/funcs/optionConvert';
 
 function TableListTruck({}: PropsTableListTruck) {
 	const router = useRouter();
@@ -94,7 +95,7 @@ function TableListTruck({}: PropsTableListTruck) {
 							},
 							{
 								title: 'Tổng khối lượng hàng (tấn)',
-								render: (data: any) => <>{convertCoin(data?.weightReal)}</>,
+								render: (data: any) => <>{convertWeight(data?.weightReal)}</>,
 							},
 							{
 								title: 'Thời gian bắt đầu',

@@ -37,11 +37,12 @@ import Popup from '~/components/common/Popup';
 import PopupDeleteBill from '../PopupDeleteBill';
 import Loading from '~/components/common/Loading';
 import Dialog from '~/components/common/Dialog';
-import {convertCoin} from '~/common/funcs/convertCoin';
 import customerServices from '~/services/customerServices';
 import wareServices from '~/services/wareServices';
 import batchBillServices from '~/services/batchBillServices';
 import shipServices from '~/services/shipServices';
+import {convertWeight} from '~/common/funcs/optionConvert';
+import {convertCoin} from '~/common/funcs/convertCoin';
 
 function MainPageBillDirect({}: PropsMainPageBillDirect) {
 	const router = useRouter();
@@ -332,7 +333,7 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 							},
 							{
 								title: 'KL dự kiến (tấn)',
-								render: (data: IDataBill) => <>{convertCoin(data?.batchsUu?.weightIntent) || '---'}</>,
+								render: (data: IDataBill) => <>{convertCoin(data?.batchsUu?.weightIntent)}</>,
 							},
 							{
 								title: 'Loại gỗ',

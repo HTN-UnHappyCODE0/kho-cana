@@ -32,6 +32,7 @@ import Moment from 'react-moment';
 import useDebounce from '~/common/hooks/useDebounce';
 import DateRangerCustom from '~/components/common/DateRangerCustom';
 import weightSessionServices from '~/services/weightSessionServices';
+import {convertWeight} from '~/common/funcs/optionConvert';
 
 function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 	const router = useRouter();
@@ -340,15 +341,15 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 							},
 							{
 								title: 'KL 1 (tấn)',
-								render: (data: IWeightSession) => <>{convertCoin(data?.weight1?.weight)}</>,
+								render: (data: IWeightSession) => <>{convertWeight(data?.weight1?.weight)}</>,
 							},
 							{
 								title: 'KL 2 (tấn)',
-								render: (data: IWeightSession) => <>{convertCoin(data?.weight2?.weight)}</>,
+								render: (data: IWeightSession) => <>{convertWeight(data?.weight2?.weight)}</>,
 							},
 							{
 								title: 'KL hàng (tấn)',
-								render: (data: IWeightSession) => <>{convertCoin(data?.weightReal)}</>,
+								render: (data: IWeightSession) => <>{convertWeight(data?.weightReal)}</>,
 							},
 							{
 								title: 'Đến',

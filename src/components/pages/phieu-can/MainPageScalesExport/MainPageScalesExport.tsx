@@ -38,6 +38,7 @@ import Loading from '~/components/common/Loading';
 import Link from 'next/link';
 import {LuPencil} from 'react-icons/lu';
 import shipServices from '~/services/shipServices';
+import {convertWeight} from '~/common/funcs/optionConvert';
 
 function MainPageScalesExport({}: PropsMainPageScalesExport) {
 	const router = useRouter();
@@ -429,7 +430,7 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 							},
 							{
 								title: 'KL hàng (tấn)',
-								render: (data: ITableBillScale) => <>{convertCoin(data?.weightTotal) || 0}</>,
+								render: (data: ITableBillScale) => <>{convertWeight(data?.weightTotal) || 0}</>,
 							},
 							{
 								title: 'Loại gỗ',

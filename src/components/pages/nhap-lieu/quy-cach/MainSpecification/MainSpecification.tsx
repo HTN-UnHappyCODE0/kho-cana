@@ -37,6 +37,7 @@ import FormUpdateSpecWS from '../FormUpdateSpecWS';
 import {toastWarn} from '~/common/funcs/toast';
 import {convertCoin} from '~/common/funcs/convertCoin';
 import Link from 'next/link';
+import {convertWeight} from '~/common/funcs/optionConvert';
 
 function MainSpecification({}: PropsMainSpecification) {
 	const router = useRouter();
@@ -344,7 +345,7 @@ function MainSpecification({}: PropsMainSpecification) {
 							},
 							{
 								title: 'KL hàng (tấn)',
-								render: (data: IWeightSession) => <>{convertCoin(data?.weightReal)}</>,
+								render: (data: IWeightSession) => <>{convertWeight(data?.weightReal)}</>,
 							},
 							{
 								title: 'Quy cách',

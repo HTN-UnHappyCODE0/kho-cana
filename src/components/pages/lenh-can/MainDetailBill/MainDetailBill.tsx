@@ -434,11 +434,11 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 								),
 							},
 							{
-								title: 'Khối lượng nhỏ nhất (tấn)',
+								title: 'Khối lượng nhỏ nhất (kg)',
 								render: (data: any) => <>{convertCoin(data?.minWeight) || '---'}</>,
 							},
 							{
-								title: 'Khối lượng lớn nhất (tấn)',
+								title: 'Khối lượng lớn nhất (kg)',
 								render: (data: any) => <>{convertCoin(data?.maxWeight) || '---'}</>,
 							},
 							{

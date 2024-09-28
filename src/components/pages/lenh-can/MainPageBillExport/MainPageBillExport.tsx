@@ -36,13 +36,14 @@ import {IDataBill} from '../MainPageBillAll/interfaces';
 import Link from 'next/link';
 import Popup from '~/components/common/Popup';
 import PopupDeleteBill from '../PopupDeleteBill';
-import {convertCoin} from '~/common/funcs/convertCoin';
 import Loading from '~/components/common/Loading';
 import Dialog from '~/components/common/Dialog';
 import customerServices from '~/services/customerServices';
 import wareServices from '~/services/wareServices';
 import batchBillServices from '~/services/batchBillServices';
 import shipServices from '~/services/shipServices';
+import {convertWeight} from '~/common/funcs/optionConvert';
+import {convertCoin} from '~/common/funcs/convertCoin';
 
 function MainPageBillExport({}: PropsMainPageBillExport) {
 	const router = useRouter();

@@ -37,6 +37,7 @@ import clsx from 'clsx';
 import Button from '~/components/common/Button';
 import Loading from '~/components/common/Loading';
 import Dialog from '~/components/common/Dialog';
+import {convertWeight, formatDrynessAvg} from '~/common/funcs/optionConvert';
 
 function PageConfirmBill({}: PropsPageConfirmBill) {
 	const router = useRouter();
@@ -337,15 +338,15 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 							},
 							{
 								title: 'KL tươi (tấn)',
-								render: (data: ITableBillScale) => <>{convertCoin(data?.weightTotal) || 0}</>,
+								render: (data: ITableBillScale) => <>{convertWeight(data?.weightTotal) || 0}</>,
 							},
 							{
 								title: 'KL độ khô (tấn)',
-								render: (data: ITableBillScale) => <>{convertCoin(data?.weightBdmt) || 0}</>,
+								render: (data: ITableBillScale) => <>{convertWeight(data?.weightBdmt) || 0}</>,
 							},
 							{
 								title: 'Độ khô (%)',
-								render: (data: ITableBillScale) => <>{convertCoin(data?.drynessAvg) || 0}</>,
+								render: (data: ITableBillScale) => <>{formatDrynessAvg(data?.drynessAvg) || 0}</>,
 							},
 							{
 								title: 'Xác nhận SL',

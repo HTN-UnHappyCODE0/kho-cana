@@ -17,6 +17,7 @@ import Table from '~/components/common/Table';
 import Moment from 'react-moment';
 import {convertCoin} from '~/common/funcs/convertCoin';
 import weightSessionServices from '~/services/weightSessionServices';
+import {convertWeight} from '~/common/funcs/optionConvert';
 
 function MainWeightSessionCollection({}: PropsMainWeightSessionCollection) {
 	const router = useRouter();
@@ -129,15 +130,15 @@ function MainWeightSessionCollection({}: PropsMainWeightSessionCollection) {
 							},
 							{
 								title: 'Tổng khối lượng 1 (tấn)',
-								render: (data: IWeightSessionByTruck) => <>{convertCoin(data?.weight1?.weight)}</>,
+								render: (data: IWeightSessionByTruck) => <>{convertWeight(data?.weight1?.weight)}</>,
 							},
 							{
 								title: 'Tổng khối lượng 2 (tấn)',
-								render: (data: IWeightSessionByTruck) => <>{convertCoin(data?.weight2?.weight)}</>,
+								render: (data: IWeightSessionByTruck) => <>{convertWeight(data?.weight2?.weight)}</>,
 							},
 							{
 								title: 'Tổng khối lượng hàng (tấn)',
-								render: (data: IWeightSessionByTruck) => <>{convertCoin(data?.weightReal)}</>,
+								render: (data: IWeightSessionByTruck) => <>{convertWeight(data?.weightReal)}</>,
 							},
 							{
 								title: 'Cân lần đầu',

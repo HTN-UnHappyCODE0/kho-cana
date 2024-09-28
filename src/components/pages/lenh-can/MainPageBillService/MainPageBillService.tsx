@@ -35,13 +35,13 @@ import {IDataBill} from '../MainPageBillAll/interfaces';
 import Link from 'next/link';
 import PopupDeleteBill from '../PopupDeleteBill';
 import Popup from '~/components/common/Popup';
-import {convertCoin} from '~/common/funcs/convertCoin';
 import Loading from '~/components/common/Loading';
 import Dialog from '~/components/common/Dialog';
 import customerServices from '~/services/customerServices';
 import wareServices from '~/services/wareServices';
 import batchBillServices from '~/services/batchBillServices';
 import shipServices from '~/services/shipServices';
+import {convertCoin} from '~/common/funcs/convertCoin';
 
 function MainPageBillService({}: PropsMainPageBillService) {
 	const router = useRouter();
@@ -319,7 +319,7 @@ function MainPageBillService({}: PropsMainPageBillService) {
 								),
 							},
 							{
-								title: 'KL dự kiến (TẤN)',
+								title: 'KL dự kiến (tấn)',
 								render: (data: IDataBill) => <>{convertCoin(data?.batchsUu?.weightIntent) || '---'}</>,
 							},
 							{

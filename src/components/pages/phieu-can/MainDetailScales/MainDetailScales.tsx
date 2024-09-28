@@ -16,6 +16,7 @@ import Button from '~/components/common/Button';
 import {LuPencil} from 'react-icons/lu';
 import {convertCoin} from '~/common/funcs/convertCoin';
 import {IDetailBatchBill} from '../../lenh-can/MainDetailBill/interfaces';
+import {convertWeight} from '~/common/funcs/optionConvert';
 
 function MainDetailScales({}: PropsMainDetailScales) {
 	const router = useRouter();
@@ -145,7 +146,7 @@ function MainDetailScales({}: PropsMainDetailScales) {
 						<td>
 							<span>Tổng khối lượng:</span>
 							<span style={{marginLeft: '6px', fontWeight: 600}}>
-								{convertCoin(detailBatchBill?.weightTotal!) || 0} (tấn)
+								{convertWeight(detailBatchBill?.weightTotal!) || 0} (tấn)
 							</span>
 						</td>
 					</tr>

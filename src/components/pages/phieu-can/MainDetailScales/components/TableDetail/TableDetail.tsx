@@ -12,10 +12,10 @@ import {useQuery} from '@tanstack/react-query';
 import {httpRequest} from '~/services';
 import Noti from '~/components/common/DataWrapper/components/Noti';
 import Moment from 'react-moment';
-import {convertCoin} from '~/common/funcs/convertCoin';
 import Tippy from '@tippyjs/react';
 import TippyHeadless from '@tippyjs/react/headless';
 import weightSessionServices from '~/services/weightSessionServices';
+import {convertWeight} from '~/common/funcs/optionConvert';
 
 function TableDetail({}: PropsTableDetail) {
 	const router = useRouter();
@@ -150,15 +150,15 @@ function TableDetail({}: PropsTableDetail) {
 							},
 							{
 								title: 'TL lần 1 (tấn)',
-								render: (data: IWeightSession) => <>{convertCoin(data?.weight1?.weight)}</>,
+								render: (data: IWeightSession) => <>{convertWeight(data?.weight1?.weight)}</>,
 							},
 							{
 								title: 'TL lần 2 (tấn)',
-								render: (data: IWeightSession) => <>{convertCoin(data?.weight2?.weight || 0)}</>,
+								render: (data: IWeightSession) => <>{convertWeight(data?.weight2?.weight || 0)}</>,
 							},
 							{
 								title: 'TL hàng (tấn)',
-								render: (data: IWeightSession) => <>{convertCoin(data?.weightReal || 0)}</>,
+								render: (data: IWeightSession) => <>{convertWeight(data?.weightReal || 0)}</>,
 							},
 							{
 								title: 'Cân lần 1',

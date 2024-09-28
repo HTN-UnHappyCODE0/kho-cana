@@ -47,6 +47,7 @@ import Popup from '~/components/common/Popup';
 import FormUpdateDryness from '../FormUpdateDryness';
 import {convertCoin} from '~/common/funcs/convertCoin';
 import Link from 'next/link';
+import {convertWeight} from '~/common/funcs/optionConvert';
 
 function MainDryness({}: PropsMainDryness) {
 	const router = useRouter();
@@ -463,7 +464,7 @@ function MainDryness({}: PropsMainDryness) {
 							},
 							{
 								title: 'KL hàng (tấn)',
-								render: (data: IWeightSession) => <>{convertCoin(data?.weightReal)}</>,
+								render: (data: IWeightSession) => <>{convertWeight(data?.weightReal)}</>,
 							},
 							{
 								title: 'Quy cách',
