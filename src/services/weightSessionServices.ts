@@ -96,6 +96,36 @@ const weightSessionServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	dashbroadWeightsession: (
+		data: {
+			pageSize: number;
+			page: number;
+			keyword: string;
+			status: number[];
+			isDescending: CONFIG_DESCENDING;
+			typeFind: CONFIG_TYPE_FIND;
+			isPaging: CONFIG_PAGING;
+			scalesType: number[];
+			billUuid: string;
+			truckUuid: string;
+			storageUuid: string;
+			customerUuid: string;
+			productTypeUuid: string;
+			shipUuid: string;
+			isBatch: number | null;
+			timeStart: string | null;
+			timeEnd: string | null;
+			specUuid: string;
+			codeStart: number | null;
+			codeEnd: number | null;
+			shift: number | null;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/WeightSession/dashbroad-weightsession`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 };
 
 export default weightSessionServices;

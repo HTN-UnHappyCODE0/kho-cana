@@ -33,6 +33,9 @@ import useDebounce from '~/common/hooks/useDebounce';
 import DateRangerCustom from '~/components/common/DateRangerCustom';
 import weightSessionServices from '~/services/weightSessionServices';
 import {convertWeight} from '~/common/funcs/optionConvert';
+import GridColumn from '~/components/layouts/GridColumn';
+import icons from '~/constants/images/icons';
+import DashbroadWeightsession from '~/components/common/DashbroadWeightsession';
 
 function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 	const router = useRouter();
@@ -116,39 +119,6 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 		},
 	});
 
-	const handleChangeCheckBox = (e: any, key: string, value: any) => {
-		const {checked} = e.target;
-
-		const {[key]: str, ...rest} = router.query;
-
-		if (checked) {
-			return router.replace(
-				{
-					query: {
-						...router.query,
-						[key]: value,
-					},
-				},
-				undefined,
-				{
-					scroll: false,
-				}
-			);
-		} else {
-			return router.replace(
-				{
-					query: {
-						...rest,
-					},
-				},
-				undefined,
-				{
-					scroll: false,
-				}
-			);
-		}
-	};
-
 	const listWeightsession = useQuery(
 		[
 			QUERY_KEY.table_luot_can_tat_ca,
@@ -189,6 +159,55 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 						// status: !!_status ? [Number(_status)] : [],
 						status: [],
 						truckUuid: !!_truckUuid ? (_truckUuid as string) : '',
+					}),
+				}),
+			select(data) {
+				return data;
+			},
+		}
+	);
+
+	const {data: dashbroadWeightsession, isLoading} = useQuery(
+		[
+			QUERY_KEY.thong_ke_tong_hop_phieu_can_tat_ca,
+			_page,
+			_pageSize,
+			_keyword,
+			_truckUuid,
+			_specUuid,
+			_status,
+			_dateFrom,
+			_dateTo,
+			byFilter,
+			debounceCodeStart,
+			debounceCodeEnd,
+		],
+		{
+			queryFn: () =>
+				httpRequest({
+					isList: true,
+					http: weightSessionServices.dashbroadWeightsession({
+						page: Number(_page) || 1,
+						pageSize: Number(_pageSize) || 20,
+						keyword: (_keyword as string) || '',
+						isPaging: CONFIG_PAGING.IS_PAGING,
+						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+						typeFind: CONFIG_TYPE_FIND.TABLE,
+						isBatch: null,
+						scalesType: [],
+						storageUuid: '',
+						timeStart: _dateFrom ? (_dateFrom as string) : null,
+						timeEnd: _dateTo ? (_dateTo as string) : null,
+						customerUuid: '',
+						productTypeUuid: '',
+						billUuid: '',
+						codeEnd: byFilter && !!debounceCodeEnd ? Number(debounceCodeEnd) : null,
+						codeStart: byFilter && !!debounceCodeStart ? Number(debounceCodeStart) : null,
+						specUuid: !!_specUuid ? (_specUuid as string) : '',
+						status: [],
+						truckUuid: !!_truckUuid ? (_truckUuid as string) : '',
+						shift: null,
+						shipUuid: '',
 					}),
 				}),
 			select(data) {
@@ -287,6 +306,52 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 						</div>
 					</div>
 				</div>
+			</div>
+			<div className={clsx('mt')}>
+				<GridColumn col_5>
+					<DashbroadWeightsession
+						text='Tổng khối lượng cân'
+						value={convertWeight(dashbroadWeightsession?.totalWeight)}
+						icons={icons.tongkhoiluongcan}
+						loading={isLoading}
+					/>
+					<DashbroadWeightsession
+						text='Số chuyến xe'
+						value={dashbroadWeightsession?.totalSession || 0}
+						icons={icons.sochuyenxe}
+						loading={isLoading}
+					/>
+					<DashbroadWeightsession
+						text='Khối lượng hàng nhập'
+						value={convertWeight(dashbroadWeightsession?.totalWeightIn)}
+						icons={icons.khoiluonghangnhap}
+						loading={isLoading}
+					/>
+					<DashbroadWeightsession
+						text='Khối lượng hàng xuất'
+						value={convertWeight(dashbroadWeightsession?.totalWeightOut)}
+						icons={icons.khoiluonghangxuat}
+						loading={isLoading}
+					/>
+					<DashbroadWeightsession
+						text='Khối lượng cân dịch vụ'
+						value={convertWeight(dashbroadWeightsession?.totalWeightService)}
+						icons={icons.khoiluonghangdichvu}
+						loading={isLoading}
+					/>
+					<DashbroadWeightsession
+						text='Khối lượng chuyển kho'
+						value={convertWeight(dashbroadWeightsession?.totalWeightChange)}
+						icons={icons.khoiluonghangchuyenkho}
+						loading={isLoading}
+					/>
+					<DashbroadWeightsession
+						text='Khối lượng xuất thẳng'
+						value={convertWeight(dashbroadWeightsession?.totalWeightOutDirectly)}
+						icons={icons.khoiluonghangxuatthang}
+						loading={isLoading}
+					/>
+				</GridColumn>
 			</div>
 			<div className={styles.table}>
 				<DataWrapper

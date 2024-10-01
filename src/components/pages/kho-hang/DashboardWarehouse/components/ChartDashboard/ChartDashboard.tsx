@@ -3,14 +3,13 @@ import {PieChart, Pie, Cell, Tooltip} from 'recharts';
 
 import {PropsChartDashboard} from './interfaces';
 import styles from './ChartDashboard.module.scss';
-import {convertCoin} from '~/common/funcs/convertCoin';
 import {convertWeight} from '~/common/funcs/optionConvert';
 
 function ChartDashboard({totalValueChart, dataChart, arrayTypeAction}: PropsChartDashboard) {
 	return (
 		<div className={styles.main_chart}>
 			<PieChart width={260} height={260}>
-				<Tooltip />
+				<Tooltip formatter={(value): any => convertWeight(Number(value))} />
 				{arrayTypeAction?.some((v) => v == 'product') && (
 					<Pie data={dataChart?.productWeight} dataKey={'value'} outerRadius={130} innerRadius={110}>
 						{dataChart?.productWeight?.map((entry, index) => (

@@ -3,11 +3,9 @@ import React from 'react';
 import {IWeightSessionByTruck, PropsMainWeightSessionCollection} from './interfaces';
 import styles from './MainWeightSessionCollection.module.scss';
 import Search from '~/components/common/Search';
-import {CONFIG_DESCENDING, CONFIG_PAGING, CONFIG_TYPE_FIND, QUERY_KEY, TYPE_DATE, TYPE_SCALES} from '~/constants/config/enum';
+import {CONFIG_DESCENDING, CONFIG_PAGING, CONFIG_TYPE_FIND, QUERY_KEY, TYPE_DATE} from '~/constants/config/enum';
 import {useQuery} from '@tanstack/react-query';
 import {httpRequest} from '~/services';
-import batchBillServices from '~/services/batchBillServices';
-import FilterCustom from '~/components/common/FilterCustom';
 import DateRangerCustom from '~/components/common/DateRangerCustom';
 import {useRouter} from 'next/router';
 import Pagination from '~/components/common/Pagination';
@@ -15,44 +13,17 @@ import DataWrapper from '~/components/common/DataWrapper';
 import Noti from '~/components/common/DataWrapper/components/Noti';
 import Table from '~/components/common/Table';
 import Moment from 'react-moment';
-import {convertCoin} from '~/common/funcs/convertCoin';
 import weightSessionServices from '~/services/weightSessionServices';
 import {convertWeight} from '~/common/funcs/optionConvert';
+import DashbroadWeightsession from '~/components/common/DashbroadWeightsession';
+import icons from '~/constants/images/icons';
+import GridColumn from '~/components/layouts/GridColumn';
+import clsx from 'clsx';
 
 function MainWeightSessionCollection({}: PropsMainWeightSessionCollection) {
 	const router = useRouter();
 
 	const {_page, _pageSize, _keyword, _dateFrom, _dateTo} = router.query;
-
-	const listBills = useQuery([QUERY_KEY.dropdown_lo_hang], {
-		queryFn: () =>
-			httpRequest({
-				isDropdown: true,
-				http: batchBillServices.getListBill({
-					page: 1,
-					pageSize: 20,
-					keyword: '',
-					isPaging: CONFIG_PAGING.NO_PAGING,
-					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
-					scalesType: [],
-					customerUuid: '',
-					isBatch: null,
-					isCreateBatch: 1,
-					productTypeUuid: '',
-					specificationsUuid: '',
-					status: [],
-					timeStart: null,
-					timeEnd: null,
-					warehouseUuid: '',
-					qualityUuid: '',
-					transportType: null,
-				}),
-			}),
-		select(data) {
-			return data;
-		},
-	});
 
 	const listWeightSessionGroupTruck = useQuery([QUERY_KEY.table_luot_can_nhom_theo_xe, _page, _pageSize, _keyword, _dateFrom, _dateTo], {
 		queryFn: () =>
@@ -87,6 +58,43 @@ function MainWeightSessionCollection({}: PropsMainWeightSessionCollection) {
 		},
 	});
 
+	const {data: dashbroadWeightsession, isLoading} = useQuery(
+		[QUERY_KEY.thong_ke_tong_hop_phieu_nhom_theo_xe, _page, _pageSize, _keyword, _dateFrom, _dateTo],
+		{
+			queryFn: () =>
+				httpRequest({
+					isList: true,
+					http: weightSessionServices.dashbroadWeightsession({
+						page: Number(_page) || 1,
+						pageSize: Number(_pageSize) || 20,
+						keyword: (_keyword as string) || '',
+						isPaging: CONFIG_PAGING.IS_PAGING,
+						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+						typeFind: CONFIG_TYPE_FIND.TABLE,
+						isBatch: null,
+						scalesType: [],
+						storageUuid: '',
+						timeStart: _dateFrom ? (_dateFrom as string) : null,
+						timeEnd: _dateTo ? (_dateTo as string) : null,
+						customerUuid: '',
+						productTypeUuid: '',
+						billUuid: '',
+						codeEnd: null,
+						codeStart: null,
+						specUuid: '',
+						status: [],
+						truckUuid: '',
+						shift: null,
+						shipUuid: '',
+					}),
+				}),
+
+			select(data) {
+				return data;
+			},
+		}
+	);
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.header}>
@@ -99,6 +107,52 @@ function MainWeightSessionCollection({}: PropsMainWeightSessionCollection) {
 						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
 					</div>
 				</div>
+			</div>
+			<div className={clsx('mt')}>
+				<GridColumn col_5>
+					<DashbroadWeightsession
+						text='Tổng khối lượng cân'
+						value={convertWeight(dashbroadWeightsession?.totalWeight)}
+						icons={icons.tongkhoiluongcan}
+						loading={isLoading}
+					/>
+					<DashbroadWeightsession
+						text='Số chuyến xe'
+						value={dashbroadWeightsession?.totalSession || 0}
+						icons={icons.sochuyenxe}
+						loading={isLoading}
+					/>
+					<DashbroadWeightsession
+						text='Khối lượng hàng nhập'
+						value={convertWeight(dashbroadWeightsession?.totalWeightIn)}
+						icons={icons.khoiluonghangnhap}
+						loading={isLoading}
+					/>
+					<DashbroadWeightsession
+						text='Khối lượng hàng xuất'
+						value={convertWeight(dashbroadWeightsession?.totalWeightOut)}
+						icons={icons.khoiluonghangxuat}
+						loading={isLoading}
+					/>
+					<DashbroadWeightsession
+						text='Khối lượng cân dịch vụ'
+						value={convertWeight(dashbroadWeightsession?.totalWeightService)}
+						icons={icons.khoiluonghangdichvu}
+						loading={isLoading}
+					/>
+					<DashbroadWeightsession
+						text='Khối lượng chuyển kho'
+						value={convertWeight(dashbroadWeightsession?.totalWeightChange)}
+						icons={icons.khoiluonghangchuyenkho}
+						loading={isLoading}
+					/>
+					<DashbroadWeightsession
+						text='Khối lượng xuất thẳng'
+						value={convertWeight(dashbroadWeightsession?.totalWeightOutDirectly)}
+						icons={icons.khoiluonghangxuatthang}
+						loading={isLoading}
+					/>
+				</GridColumn>
 			</div>
 			<div className={styles.table}>
 				<DataWrapper

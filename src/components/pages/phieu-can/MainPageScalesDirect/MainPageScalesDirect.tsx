@@ -37,6 +37,8 @@ import Loading from '~/components/common/Loading';
 import Link from 'next/link';
 import {LuPencil} from 'react-icons/lu';
 import shipServices from '~/services/shipServices';
+import clsx from 'clsx';
+import {convertWeight} from '~/common/funcs/optionConvert';
 
 function MainPageScalesDirect({}: PropsMainPageScalesDirect) {
 	const router = useRouter();
@@ -211,6 +213,7 @@ function MainPageScalesDirect({}: PropsMainPageScalesDirect) {
 			console.log({error});
 		},
 	});
+
 	const fucnStopBatchBill = useMutation({
 		mutationFn: () =>
 			httpRequest({
@@ -347,6 +350,14 @@ function MainPageScalesDirect({}: PropsMainPageScalesDirect) {
 					</div>
 				</div>
 			</div>
+			<div className={clsx('mt')}>
+				<div className={styles.parameter}>
+					<div>
+						TỔNG LƯỢNG HÀNG TƯƠI:
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getListBatch?.data?.amountMt) || 0} </span>(Tấn)
+					</div>
+				</div>
+			</div>
 			<div className={styles.table}>
 				<DataWrapper
 					data={listBatchBill || []}
@@ -359,7 +370,6 @@ function MainPageScalesDirect({}: PropsMainPageScalesDirect) {
 						column={[
 							{
 								title: 'STT',
-								checkBox: true,
 								render: (data: ITableBillScale, index: number) => <>{index + 1}</>,
 							},
 							{

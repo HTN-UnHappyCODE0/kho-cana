@@ -38,23 +38,3 @@
 		}
 	}
 }
-
-// CSS
-.wrapper {
-	max-height: 90vh;
-	display: flex;
-	flex-direction: column;
-}
-
-.main_form {
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	overflow: auto;
-}
-
-.form {
-	flex: 1;
-	overflow: auto;
-	padding-bottom: 8px;
-}

@@ -19,6 +19,8 @@ export enum PATH {
 	QuanLyXe = '/xe-hang',
 	QuanLyTau = '/tau',
 
+	KhoHang = '/kho-hang',
+
 	RFID = '/rfid',
 
 	QuanLyCan = '/quan-ly-can',
@@ -97,8 +99,12 @@ export const Menu: {
 	}[];
 }[] = [
 	{
+		title: 'overview',
+		group: [{title: 'Tổng quan', icon: icons.tongQuan, path: PATH.Home}],
+	},
+	{
 		title: 'Kho hàng',
-		group: [{title: 'Kho hàng', icon: icons.danhsachkho, path: PATH.Home, pathActive: '/kho-hang'}],
+		group: [{title: 'Kho hàng', icon: icons.danhsachkho, path: PATH.KhoHang, pathActive: '/kho-hang'}],
 	},
 	{
 		title: 'Quản lý cân',
@@ -170,14 +176,14 @@ export const ListOptionTimePicker: {
 		name: 'Tháng này',
 		value: TYPE_DATE.THIS_MONTH,
 	},
-	// {
-	// 	name: 'Tháng trước',
-	// 	value: TYPE_DATE.LAST_MONTH,
-	// },
-	// {
-	// 	name: 'Năm này',
-	// 	value: TYPE_DATE.THIS_YEAR,
-	// },
+	{
+		name: 'Tháng trước',
+		value: TYPE_DATE.LAST_MONTH,
+	},
+	{
+		name: 'Năm này',
+		value: TYPE_DATE.THIS_YEAR,
+	},
 	{
 		name: 'Lựa chọn',
 		value: TYPE_DATE.LUA_CHON,

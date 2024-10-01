@@ -10,4 +10,11 @@ export interface IFormUpdateStorage {
 	specificationsUuid: string;
 	locationMap: string;
 	description: string;
+	amountKcs: number | string;
+	drynessAvg: number;
+	specWsValues: {
+		uuid: string;
+		title: string;
+		value: number;
+	}[];
 }

@@ -10,7 +10,6 @@ import {
 	CONFIG_STATUS,
 	CONFIG_TYPE_FIND,
 	QUERY_KEY,
-	STATUS_BILL,
 	STATUS_WEIGHT_SESSION,
 	TYPE_BATCH,
 	TYPE_CUSTOMER,
@@ -23,7 +22,6 @@ import {httpRequest} from '~/services';
 import customerServices from '~/services/customerServices';
 import wareServices from '~/services/wareServices';
 import DateRangerCustom from '~/components/common/DateRangerCustom';
-import batchBillServices from '~/services/batchBillServices';
 import {useRouter} from 'next/router';
 import weightSessionServices from '~/services/weightSessionServices';
 import DataWrapper from '~/components/common/DataWrapper';
@@ -35,15 +33,13 @@ import {AiOutlineFileAdd} from 'react-icons/ai';
 import Popup from '~/components/common/Popup';
 import FormUpdateSpecWS from '../FormUpdateSpecWS';
 import {toastWarn} from '~/common/funcs/toast';
-import {convertCoin} from '~/common/funcs/convertCoin';
 import Link from 'next/link';
 import {convertWeight} from '~/common/funcs/optionConvert';
 
 function MainSpecification({}: PropsMainSpecification) {
 	const router = useRouter();
 
-	const {_page, _pageSize, _keyword, _isBatch, _customerUuid, _productTypeUuid, _specUuid, _billUuid, _dateFrom, _dateTo, _isShift} =
-		router.query;
+	const {_page, _pageSize, _keyword, _isBatch, _customerUuid, _productTypeUuid, _specUuid, _dateFrom, _dateTo, _isShift} = router.query;
 
 	const [weightSessionSubmits, setWeightSessionSubmits] = useState<any[]>([]);
 	const [weightSessions, setWeightSessions] = useState<any[]>([]);
@@ -114,42 +110,6 @@ function MainSpecification({}: PropsMainSpecification) {
 		},
 	});
 
-	const listWeightSessionBill = useQuery([QUERY_KEY.dropdown_ma_lo_hang], {
-		queryFn: () =>
-			httpRequest({
-				isDropdown: true,
-				http: batchBillServices.getListBill({
-					page: 1,
-					pageSize: 20,
-					keyword: '',
-					isPaging: CONFIG_PAGING.NO_PAGING,
-					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
-					scalesType: [],
-					customerUuid: '',
-					isBatch: null,
-					isCreateBatch: null,
-					productTypeUuid: '',
-					specificationsUuid: '',
-					status: [
-						STATUS_BILL.DANG_CAN,
-						STATUS_BILL.TAM_DUNG,
-						STATUS_BILL.DA_CAN_CHUA_KCS,
-						STATUS_BILL.DA_KCS,
-						STATUS_BILL.CHOT_KE_TOAN,
-					],
-					timeStart: null,
-					timeEnd: null,
-					warehouseUuid: '',
-					qualityUuid: '',
-					transportType: null,
-				}),
-			}),
-		select(data) {
-			return data;
-		},
-	});
-
 	useQuery(
 		[
 			QUERY_KEY.table_nhap_lieu_quy_cach,
@@ -160,7 +120,6 @@ function MainSpecification({}: PropsMainSpecification) {
 			_customerUuid,
 			_productTypeUuid,
 			_specUuid,
-			_billUuid,
 			_dateFrom,
 			_dateTo,
 			_isShift,
@@ -177,7 +136,7 @@ function MainSpecification({}: PropsMainSpecification) {
 						isPaging: CONFIG_PAGING.IS_PAGING,
 						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
-						billUuid: _billUuid ? (_billUuid as string) : '',
+						billUuid: '',
 						codeEnd: null,
 						codeStart: null,
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
@@ -238,7 +197,7 @@ function MainSpecification({}: PropsMainSpecification) {
 						</div>
 					)}
 					<div className={styles.search}>
-						<Search keyName='_keyword' placeholder='Tìm kiếm theo số phiếu' />
+						<Search keyName='_keyword' placeholder='Tìm kiếm theo số phiếu và mã lô hàng' />
 					</div>
 					<div className={styles.filter}>
 						<FilterCustom
@@ -284,15 +243,7 @@ function MainSpecification({}: PropsMainSpecification) {
 							name: v?.name,
 						}))}
 					/>
-					<FilterCustom
-						isSearch
-						name='Mã lô hàng'
-						query='_billUuid'
-						listFilter={listWeightSessionBill?.data?.map((v: any) => ({
-							id: v?.uuid,
-							name: v?.code,
-						}))}
-					/>
+
 					<div className={styles.filter}>
 						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
 					</div>
@@ -428,7 +379,6 @@ function MainSpecification({}: PropsMainSpecification) {
 							_customerUuid,
 							_productTypeUuid,
 							_specUuid,
-							_billUuid,
 							_dateFrom,
 							_dateTo,
 							_isShift,

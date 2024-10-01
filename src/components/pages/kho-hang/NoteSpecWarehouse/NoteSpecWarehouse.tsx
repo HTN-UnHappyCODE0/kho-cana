@@ -40,12 +40,12 @@ function NoteSpecWarehouse({isUpdate, numberElement}: PropsNoteSpecWarehouse) {
 				</div>
 			))}
 
-			{isUpdate && (
+			{/* {isUpdate && (
 				<div className={styles.des}>
 					<p>1 đơn vị ô = {convertCoin(WEIGHT_WAREHOUSE)} KG</p>
 					<p>KL kho tạm tính: {convertCoin(WEIGHT_WAREHOUSE * numberElement!)} KG</p>
 				</div>
-			)}
+			)} */}
 		</div>
 	);
 }

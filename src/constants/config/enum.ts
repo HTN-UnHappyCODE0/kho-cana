@@ -35,6 +35,8 @@ export enum QUERY_KEY {
 	dropdown_nguoi_quan_ly_nhan_vien,
 	dropdown_nhan_vien_thi_truong,
 	dropdown_ma_tau,
+	dropdown_nha_cung_cap_nhap,
+	dropdown_nha_cung_cap_dich_vu,
 
 	table_xe_hang,
 	table_lenh_can_tat_ca,
@@ -98,7 +100,20 @@ export enum QUERY_KEY {
 	chi_tiet_nhan_vien,
 
 	thong_ke_kho_hang,
-	danh_sach_tieu_chi_nha_lieu,
+	thong_ke_tong_hang_dich_vu,
+	thong_ke_trang_chu_admin,
+	thong_ke_tong_hang_xuat,
+	thong_ke_tong_hang_nhap,
+	danh_sach_tieu_chi_nhap_lieu,
+	thong_ke_tong_hop_phieu_can_tat_ca,
+	thong_ke_tong_hop_phieu_can_nhap,
+	thong_ke_tong_hop_phieu_can_xuat,
+	thong_ke_tong_hop_phieu_can_dich_vu,
+	thong_ke_tong_hop_phieu_can_chuyen_kho,
+	thong_ke_tong_hop_phieu_can_xuat_thang,
+	thong_ke_tong_hop_phieu_nhom_theo_xe,
+
+	danh_sach_tieu_chi_quy_cach,
 }
 
 export enum TYPE_DATE {
@@ -112,6 +127,13 @@ export enum TYPE_DATE {
 	THIS_YEAR = 7,
 	LAST_7_DAYS = 8,
 	LUA_CHON = 9,
+}
+
+export enum TYPE_DATE_SHOW {
+	HOUR,
+	DAY,
+	MONTH,
+	YEAR,
 }
 
 export enum GENDER {

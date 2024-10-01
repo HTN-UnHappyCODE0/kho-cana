@@ -138,6 +138,48 @@ const batchBillServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	dashbroadBillIn: (
+		data: {
+			partnerUuid: string;
+			companyUuid: string;
+			typeFindDay: number;
+			timeStart: string;
+			timeEnd: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/BatchBill/dashbroad-bill-in`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	dashbroadBillOut: (
+		data: {
+			partnerUuid: string;
+			companyUuid: string;
+			typeFindDay: number;
+			timeStart: string;
+			timeEnd: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/BatchBill/dashbroad-bill-out`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	dashbroadBillService: (
+		data: {
+			partnerUuid: string;
+			companyUuid: string;
+			typeFindDay: number;
+			timeStart: string;
+			timeEnd: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/BatchBill/dashbroad-bill-service`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 };
 
 export default batchBillServices;

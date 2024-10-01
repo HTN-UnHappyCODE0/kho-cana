@@ -15,6 +15,7 @@ import wareServices from '~/services/wareServices';
 import Select, {Option} from '~/components/common/Select';
 import storageServices from '~/services/storageServices';
 import Loading from '~/components/common/Loading';
+import {convertCoin, price} from '~/common/funcs/convertCoin';
 
 function FormUpdatePostionStorage({draggedElements, onClose}: PropsFormUpdatePostionStorage) {
 	const router = useRouter();
@@ -25,13 +26,17 @@ function FormUpdatePostionStorage({draggedElements, onClose}: PropsFormUpdatePos
 	const [form, setForm] = useState<IFormUpdatePostionStorage>({
 		storageUuid: '',
 		name: '',
+		warehouseUuid: '',
 		productUuid: '',
 		qualityUuid: '',
 		specificationsUuid: '',
 		description: '',
+		amountKcs: 0,
+		drynessAvg: 48,
+		specWsValues: [],
 	});
 
-	const listStorage = useQuery([QUERY_KEY.dropdown_kho_hang, _id], {
+	const listStorage = useQuery([QUERY_KEY.dropdown_bai, _id], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -55,7 +60,7 @@ function FormUpdatePostionStorage({draggedElements, onClose}: PropsFormUpdatePos
 		enabled: !!_id,
 	});
 
-	useQuery([QUERY_KEY.chi_tiet_kho_hang, form.storageUuid], {
+	useQuery([QUERY_KEY.chi_tiet_bai, form.storageUuid], {
 		queryFn: () =>
 			httpRequest({
 				http: storageServices.detailStorage({
@@ -67,17 +72,26 @@ function FormUpdatePostionStorage({draggedElements, onClose}: PropsFormUpdatePos
 				setForm((prev) => ({
 					...prev,
 					name: data?.name,
+					warehouseUuid: data?.warehouseUu?.uuid,
 					productUuid: data?.productUu?.uuid,
 					qualityUuid: data?.qualityUu?.uuid,
 					specificationsUuid: data?.specificationsUu?.uuid,
+					locationMap: data?.locationMap,
 					description: data?.description,
+					amountKcs: convertCoin(data?.amountKcs),
+					drynessAvg: data?.drynessAvg,
+					specWsValues: data?.listSpecValue?.map((v: any) => ({
+						uuid: v?.criteriaUu?.uuid,
+						title: v?.criteriaUu?.title,
+						value: v?.value,
+					})),
 				}));
 			}
 		},
 		enabled: !!form.storageUuid,
 	});
 
-	const listProduct = useQuery([QUERY_KEY.dropdown_loai_hang], {
+	const listProduct = useQuery([QUERY_KEY.dropdown_loai_go], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -97,7 +111,7 @@ function FormUpdatePostionStorage({draggedElements, onClose}: PropsFormUpdatePos
 		},
 	});
 
-	const listQuality = useQuery([QUERY_KEY.dropdown_chat_luong], {
+	const listQuality = useQuery([QUERY_KEY.dropdown_quoc_gia], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -136,7 +150,7 @@ function FormUpdatePostionStorage({draggedElements, onClose}: PropsFormUpdatePos
 		},
 	});
 
-	const fucnCreateStorage = useMutation({
+	const funcCreateStorage = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -151,17 +165,27 @@ function FormUpdatePostionStorage({draggedElements, onClose}: PropsFormUpdatePos
 					specificationsUuid: form.specificationsUuid,
 					locationMap: JSON.stringify(draggedElements),
 					description: form.description,
+					amountKcs: price(form.amountKcs),
+					drynessAvg: form.drynessAvg,
+					specWsValues: form?.specWsValues?.map((v) => ({
+						uuid: v?.uuid,
+						value: v?.value,
+					})),
 				}),
 			}),
 		onSuccess(data) {
 			if (data) {
 				setForm({
-					name: '',
 					storageUuid: '',
+					name: '',
+					warehouseUuid: '',
 					productUuid: '',
 					qualityUuid: '',
 					specificationsUuid: '',
 					description: '',
+					amountKcs: 0,
+					drynessAvg: 48,
+					specWsValues: [],
 				});
 				onClose();
 				queryClient.invalidateQueries([QUERY_KEY.chi_tiet_kho_hang, _id]);
@@ -174,136 +198,133 @@ function FormUpdatePostionStorage({draggedElements, onClose}: PropsFormUpdatePos
 	});
 
 	const handleSubmit = async () => {
-		return fucnCreateStorage.mutate();
+		return funcCreateStorage.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnCreateStorage.isLoading} />
+			<Loading loading={funcCreateStorage.isLoading} />
+			<h4>Cập nhật vị trí kho hàng</h4>
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
-				<div className={styles.wrapper}>
-					<h4>Cập nhật vị trí kho hàng</h4>
-					<div className={clsx('mt', styles.main_form)}>
-						<div className={clsx('mt')}>
-							<Select
-								isSearch
-								name='storageUuid'
-								placeholder='Chọn kho hàng'
-								value={form?.storageUuid}
-								onChange={(e: any) =>
-									setForm((prev: any) => ({
-										...prev,
-										storageUuid: e.target.value,
-									}))
-								}
-								label={
-									<span>
-										Chọn kho hàng <span style={{color: 'red'}}>*</span>
-									</span>
-								}
-							>
-								{listStorage?.data?.map((v: any) => (
-									<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
-								))}
-							</Select>
-							<Select
-								isSearch
-								name='productUuid'
-								placeholder='Chọn loại gỗ'
-								value={form?.productUuid}
-								readOnly={true}
-								onChange={(e: any) =>
-									setForm((prev: any) => ({
-										...prev,
-										productUuid: e.target.value,
-									}))
-								}
-								label={
-									<span>
-										Thuộc loại gỗ <span style={{color: 'red'}}>*</span>
-									</span>
-								}
-							>
-								{listProduct?.data?.map((v: any) => (
-									<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
-								))}
-							</Select>
-							<Select
-								isSearch
-								name='qualityUuid'
-								placeholder='Chọn quốc gia'
-								value={form?.qualityUuid}
-								readOnly={true}
-								onChange={(e: any) =>
-									setForm((prev: any) => ({
-										...prev,
-										qualityUuid: e.target.value,
-									}))
-								}
-								label={
-									<span>
-										Thuộc quốc gia <span style={{color: 'red'}}>*</span>
-									</span>
-								}
-							>
-								{listQuality?.data?.map((v: any) => (
-									<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
-								))}
-							</Select>
-							<Select
-								isSearch
-								name='specificationsUuid'
-								placeholder='Chọn quy cách'
-								value={form?.specificationsUuid}
-								readOnly={true}
-								onChange={(e: any) =>
-									setForm((prev: any) => ({
-										...prev,
-										specificationsUuid: e.target.value,
-									}))
-								}
-								label={
-									<span>
-										Thuộc quy cách <span style={{color: 'red'}}>*</span>
-									</span>
-								}
-							>
-								{listSpecification?.data?.map((v: any) => (
-									<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
-								))}
-							</Select>
-						</div>
-						<div className={clsx('mt')}>
-							<TextArea max={5000} placeholder='Thêm mô tả' name='description' label={<span>Mô tả</span>} blur={true} />
-						</div>
-					</div>
+				<div className={clsx('mt')}>
+					<Select
+						isSearch
+						name='storageUuid'
+						placeholder='Chọn kho hàng'
+						value={form?.storageUuid}
+						onChange={(e: any) =>
+							setForm((prev: any) => ({
+								...prev,
+								storageUuid: e.target.value,
+							}))
+						}
+						label={
+							<span>
+								Chọn kho hàng <span style={{color: 'red'}}>*</span>
+							</span>
+						}
+					>
+						{listStorage?.data?.map((v: any) => (
+							<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
+						))}
+					</Select>
+					<Select
+						isSearch
+						name='productUuid'
+						placeholder='Chọn loại gỗ'
+						value={form?.productUuid}
+						readOnly={true}
+						onChange={(e: any) =>
+							setForm((prev: any) => ({
+								...prev,
+								productUuid: e.target.value,
+							}))
+						}
+						label={
+							<span>
+								Thuộc loại gỗ <span style={{color: 'red'}}>*</span>
+							</span>
+						}
+					>
+						{listProduct?.data?.map((v: any) => (
+							<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
+						))}
+					</Select>
+					<Select
+						isSearch
+						name='qualityUuid'
+						placeholder='Chọn quốc gia'
+						value={form?.qualityUuid}
+						readOnly={true}
+						onChange={(e: any) =>
+							setForm((prev: any) => ({
+								...prev,
+								qualityUuid: e.target.value,
+							}))
+						}
+						label={
+							<span>
+								Thuộc quốc gia <span style={{color: 'red'}}>*</span>
+							</span>
+						}
+					>
+						{listQuality?.data?.map((v: any) => (
+							<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
+						))}
+					</Select>
+					<Select
+						isSearch
+						name='specificationsUuid'
+						placeholder='Chọn quy cách'
+						value={form?.specificationsUuid}
+						readOnly={true}
+						onChange={(e: any) =>
+							setForm((prev: any) => ({
+								...prev,
+								specificationsUuid: e.target.value,
+							}))
+						}
+						label={
+							<span>
+								Thuộc quy cách <span style={{color: 'red'}}>*</span>
+							</span>
+						}
+					>
+						{listSpecification?.data?.map((v: any) => (
+							<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
+						))}
+					</Select>
+				</div>
+				<div className={clsx('mt')}>
+					<TextArea max={5000} placeholder='Thêm mô tả' name='description' label={<span>Mô tả</span>} blur={true} />
+				</div>
 
-					<div className={styles.btn}>
-						<div>
-							<Button p_10_24 rounded_2 grey_outline onClick={onClose}>
-								Hủy bỏ
-							</Button>
-						</div>
-						<div>
-							<FormContext.Consumer>
-								{({isDone}) => (
-									<Button
-										disable={!isDone || !form.productUuid || !form.qualityUuid || !form.specificationsUuid}
-										p_10_24
-										rounded_2
-										primary
-									>
-										Cập nhật
-									</Button>
-								)}
-							</FormContext.Consumer>
-						</div>
+				<div className={styles.btn}>
+					<div>
+						<Button p_10_24 rounded_2 grey_outline onClick={onClose}>
+							Hủy bỏ
+						</Button>
+					</div>
+					<div>
+						<FormContext.Consumer>
+							{({isDone}) => (
+								<Button
+									disable={!isDone || !form.productUuid || !form.qualityUuid || !form.specificationsUuid}
+									p_10_24
+									rounded_2
+									primary
+								>
+									Cập nhật
+								</Button>
+							)}
+						</FormContext.Consumer>
 					</div>
 				</div>
+
+				<div className={styles.close} onClick={onClose}>
+					<IoClose />
+				</div>
 			</Form>
-			<div className={styles.close} onClick={onClose}>
-				<IoClose />
-			</div>
 		</div>
 	);
 }

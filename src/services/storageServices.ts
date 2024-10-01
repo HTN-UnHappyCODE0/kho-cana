@@ -134,6 +134,12 @@ const storageServices = {
 			specificationsUuid: string;
 			locationMap: string;
 			description: string;
+			amountKcs: number;
+			drynessAvg: number;
+			specWsValues: {
+				uuid: string;
+				value: number;
+			}[];
 		},
 		tokenAxios?: any
 	) => {

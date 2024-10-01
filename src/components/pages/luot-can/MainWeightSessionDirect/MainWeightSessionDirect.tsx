@@ -22,7 +22,6 @@ import Pagination from '~/components/common/Pagination';
 import DataWrapper from '~/components/common/DataWrapper';
 import Moment from 'react-moment';
 import {IWeightSession} from '../MainWeightSessionAll/interfaces';
-import {convertCoin} from '~/common/funcs/convertCoin';
 import Link from 'next/link';
 import Table from '~/components/common/Table';
 import Noti from '~/components/common/DataWrapper/components/Noti';
@@ -32,6 +31,9 @@ import Search from '~/components/common/Search';
 import DateRangerCustom from '~/components/common/DateRangerCustom';
 import weightSessionServices from '~/services/weightSessionServices';
 import {convertWeight} from '~/common/funcs/optionConvert';
+import GridColumn from '~/components/layouts/GridColumn';
+import DashbroadWeightsession from '~/components/common/DashbroadWeightsession';
+import icons from '~/constants/images/icons';
 
 function MainWeightSessionDirect({}: PropsMainWeightSessionDirect) {
 	const router = useRouter();
@@ -161,6 +163,55 @@ function MainWeightSessionDirect({}: PropsMainWeightSessionDirect) {
 		}
 	);
 
+	const {data: dashbroadWeightsession, isLoading} = useQuery(
+		[
+			QUERY_KEY.thong_ke_tong_hop_phieu_can_xuat_thang,
+			_page,
+			_pageSize,
+			_keyword,
+			_truckUuid,
+			_specUuid,
+			_dateFrom,
+			_dateTo,
+			byFilter,
+			debounceCodeStart,
+			debounceCodeEnd,
+		],
+		{
+			queryFn: () =>
+				httpRequest({
+					isList: true,
+					http: weightSessionServices.dashbroadWeightsession({
+						page: Number(_page) || 1,
+						pageSize: Number(_pageSize) || 20,
+						keyword: (_keyword as string) || '',
+						isPaging: CONFIG_PAGING.IS_PAGING,
+						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+						typeFind: CONFIG_TYPE_FIND.TABLE,
+						isBatch: null,
+						scalesType: [TYPE_SCALES.CAN_TRUC_TIEP],
+						storageUuid: '',
+						timeStart: _dateFrom ? (_dateFrom as string) : null,
+						timeEnd: _dateTo ? (_dateTo as string) : null,
+						customerUuid: '',
+						productTypeUuid: '',
+						billUuid: '',
+						codeEnd: byFilter && !!debounceCodeEnd ? Number(debounceCodeEnd) : null,
+						codeStart: byFilter && !!debounceCodeStart ? Number(debounceCodeStart) : null,
+						specUuid: !!_specUuid ? (_specUuid as string) : '',
+						status: [],
+						truckUuid: !!_truckUuid ? (_truckUuid as string) : '',
+						shift: null,
+						shipUuid: '',
+					}),
+				}),
+
+			select(data) {
+				return data;
+			},
+		}
+	);
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.header}>
@@ -242,6 +293,28 @@ function MainWeightSessionDirect({}: PropsMainWeightSessionDirect) {
 						</div>
 					</div>
 				</div>
+			</div>
+			<div className={clsx('mt')}>
+				<GridColumn col_5>
+					<DashbroadWeightsession
+						text='Tổng khối lượng cân'
+						value={convertWeight(dashbroadWeightsession?.totalWeight)}
+						icons={icons.tongkhoiluongcan}
+						loading={isLoading}
+					/>
+					<DashbroadWeightsession
+						text='Số chuyến xe'
+						value={dashbroadWeightsession?.totalSession || 0}
+						icons={icons.sochuyenxe}
+						loading={isLoading}
+					/>
+					<DashbroadWeightsession
+						text='Khối lượng xuất thẳng'
+						value={convertWeight(dashbroadWeightsession?.totalWeightOutDirectly)}
+						icons={icons.khoiluonghangxuatthang}
+						loading={isLoading}
+					/>
+				</GridColumn>
 			</div>
 			<div className={styles.table}>
 				<DataWrapper

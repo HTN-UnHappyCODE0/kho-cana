@@ -29,7 +29,6 @@ import Table from '~/components/common/Table';
 import Pagination from '~/components/common/Pagination';
 import {useRouter} from 'next/router';
 import batchBillServices from '~/services/batchBillServices';
-import {convertCoin} from '~/common/funcs/convertCoin';
 import IconCustom from '~/components/common/IconCustom';
 import {Eye, Play, StopCircle} from 'iconsax-react';
 import Dialog from '~/components/common/Dialog';
@@ -38,6 +37,7 @@ import Link from 'next/link';
 import {LuPencil} from 'react-icons/lu';
 import shipServices from '~/services/shipServices';
 import {convertWeight} from '~/common/funcs/optionConvert';
+import clsx from 'clsx';
 
 function MainPageScalesAll({}: PropsMainPageScalesAll) {
 	const router = useRouter();
@@ -372,6 +372,14 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 					</div>
 				</div>
 			</div>
+			<div className={clsx('mt')}>
+				<div className={styles.parameter}>
+					<div>
+						TỔNG LƯỢNG HÀNG TƯƠI:
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getListBatch?.data?.amountMt) || 0} </span>(Tấn)
+					</div>
+				</div>
+			</div>
 			<div className={styles.table}>
 				<DataWrapper
 					data={listBatchBill || []}
@@ -384,7 +392,6 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 						column={[
 							{
 								title: 'STT',
-								checkBox: true,
 								render: (data: ITableBillScale, index: number) => <>{index + 1}</>,
 							},
 							{

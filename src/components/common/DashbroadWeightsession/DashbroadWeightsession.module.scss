@@ -1,0 +1,40 @@
+.container {
+	border-radius: 2px;
+	border: 1px solid var(--border-color);
+	background: #fff;
+	padding: 12px 16px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+}
+
+.box_value {
+	& > h4 {
+		color: #2f3643;
+		font-size: 28px;
+		font-weight: 600;
+	}
+
+	& > p {
+		color: #777e90;
+		font-size: 15px;
+		font-weight: 500;
+	}
+}
+
+.loading {
+	width: fit-content;
+	height: fit-content;
+	animation: spinner 0.8s linear infinite;
+	font-size: 28px;
+	font-weight: 600;
+	margin-bottom: 8px;
+	color: rgb(76, 120, 255);
+}
+
+@keyframes spinner {
+	to {
+		transform: rotate(360deg);
+	}
+}

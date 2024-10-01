@@ -58,7 +58,7 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 		},
 	});
 
-	useQuery([QUERY_KEY.danh_sach_tieu_chi_nha_lieu, dataUpdateSpecWS?.[0]?.specificationsUu?.uuid], {
+	useQuery([QUERY_KEY.danh_sach_tieu_chi_nhap_lieu, dataUpdateSpecWS?.[0]?.specificationsUu?.uuid], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,

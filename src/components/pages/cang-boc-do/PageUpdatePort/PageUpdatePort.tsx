@@ -27,7 +27,6 @@ import DataWrapper from '~/components/common/DataWrapper';
 import Noti from '~/components/common/DataWrapper/components/Noti';
 import Table from '~/components/common/Table';
 import Link from 'next/link';
-import {convertCoin} from '~/common/funcs/convertCoin';
 import Pagination from '~/components/common/Pagination';
 import batchBillServices from '~/services/batchBillServices';
 import IconCustom from '~/components/common/IconCustom';
@@ -40,7 +39,7 @@ import {convertWeight, formatDrynessAvg} from '~/common/funcs/optionConvert';
 function PageUpdatePort({}: PropsPageUpdatePort) {
 	const router = useRouter();
 
-	const {_page, _pageSize, _keyword, _customerUuid, _isBatch, _productTypeUuid, _dateFrom, _dateTo} = router.query;
+	const {_page, _pageSize, _keyword, _customerUuid, _productTypeUuid, _dateFrom, _dateTo} = router.query;
 
 	const [listBatchBillSubmit, setListBatchBillSubmit] = useState<ITableBillScale[]>([]);
 
@@ -92,7 +91,7 @@ function PageUpdatePort({}: PropsPageUpdatePort) {
 	});
 
 	const getListBatch = useQuery(
-		[QUERY_KEY.table_cang_boc_do, _page, _pageSize, _keyword, _customerUuid, _isBatch, _productTypeUuid, _dateFrom, _dateTo],
+		[QUERY_KEY.table_cang_boc_do, _page, _pageSize, _keyword, _customerUuid, _productTypeUuid, _dateFrom, _dateTo],
 		{
 			queryFn: () =>
 				httpRequest({
@@ -106,7 +105,7 @@ function PageUpdatePort({}: PropsPageUpdatePort) {
 						typeFind: CONFIG_TYPE_FIND.TABLE,
 						scalesType: [],
 						customerUuid: (_customerUuid as string) || '',
-						isBatch: !!_isBatch ? Number(_isBatch) : null,
+						isBatch: TYPE_BATCH.CAN_LO,
 						isCreateBatch: null,
 						productTypeUuid: (_productTypeUuid as string) || '',
 						specificationsUuid: '',
@@ -164,23 +163,7 @@ function PageUpdatePort({}: PropsPageUpdatePort) {
 					<div className={styles.search}>
 						<Search keyName='_keyword' placeholder='Tìm kiếm theo mã lô hàng' />
 					</div>
-					<div className={styles.filter}>
-						<FilterCustom
-							isSearch
-							name='Kiểu cân'
-							query='_isBatch'
-							listFilter={[
-								{
-									id: TYPE_BATCH.CAN_LO,
-									name: 'Cân lô',
-								},
-								{
-									id: TYPE_BATCH.CAN_LE,
-									name: 'Cân lẻ',
-								},
-							]}
-						/>
-					</div>
+
 					<FilterCustom
 						isSearch
 						name='Khách hàng'
@@ -332,7 +315,7 @@ function PageUpdatePort({}: PropsPageUpdatePort) {
 						currentPage={Number(_page) || 1}
 						pageSize={Number(_pageSize) || 20}
 						total={total}
-						dependencies={[_pageSize, _keyword, _customerUuid, _isBatch, _productTypeUuid, _dateFrom, _dateTo]}
+						dependencies={[_pageSize, _keyword, _customerUuid, _productTypeUuid, _dateFrom, _dateTo]}
 					/>
 				)}
 			</div>

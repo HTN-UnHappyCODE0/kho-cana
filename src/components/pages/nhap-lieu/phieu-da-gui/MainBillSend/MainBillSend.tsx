@@ -11,7 +11,6 @@ import {
 	CONFIG_STATUS,
 	CONFIG_TYPE_FIND,
 	QUERY_KEY,
-	STATUS_BILL,
 	STATUS_WEIGHT_SESSION,
 	TYPE_BATCH,
 	TYPE_CUSTOMER,
@@ -22,7 +21,6 @@ import {
 import {httpRequest} from '~/services';
 import customerServices from '~/services/customerServices';
 import wareServices from '~/services/wareServices';
-import batchBillServices from '~/services/batchBillServices';
 import weightSessionServices from '~/services/weightSessionServices';
 import Search from '~/components/common/Search';
 import FilterCustom from '~/components/common/FilterCustom';
@@ -36,15 +34,13 @@ import Tippy from '@tippyjs/react';
 import clsx from 'clsx';
 import BoxViewSpec from '../BoxViewSpec';
 import Moment from 'react-moment';
-import {convertCoin} from '~/common/funcs/convertCoin';
 import Link from 'next/link';
 import {convertWeight, formatDrynessAvg} from '~/common/funcs/optionConvert';
 
 function MainBillSend({}: PropsMainBillSend) {
 	const router = useRouter();
 
-	const {_page, _pageSize, _keyword, _isBatch, _isShift, _customerUuid, _productTypeUuid, _specUuid, _billUuid, _dateFrom, _dateTo} =
-		router.query;
+	const {_page, _pageSize, _keyword, _isBatch, _isShift, _customerUuid, _productTypeUuid, _specUuid, _dateFrom, _dateTo} = router.query;
 
 	const [dataSpec, setDataSpec] = useState<IWeightSession | null>(null);
 
@@ -112,42 +108,6 @@ function MainBillSend({}: PropsMainBillSend) {
 		},
 	});
 
-	const listWeightSessionBill = useQuery([QUERY_KEY.dropdown_ma_lo_hang], {
-		queryFn: () =>
-			httpRequest({
-				isDropdown: true,
-				http: batchBillServices.getListBill({
-					page: 1,
-					pageSize: 20,
-					keyword: '',
-					isPaging: CONFIG_PAGING.NO_PAGING,
-					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
-					scalesType: [],
-					customerUuid: '',
-					isBatch: null,
-					isCreateBatch: null,
-					productTypeUuid: '',
-					specificationsUuid: '',
-					status: [
-						STATUS_BILL.DANG_CAN,
-						STATUS_BILL.TAM_DUNG,
-						STATUS_BILL.DA_CAN_CHUA_KCS,
-						STATUS_BILL.DA_KCS,
-						STATUS_BILL.CHOT_KE_TOAN,
-					],
-					timeStart: null,
-					timeEnd: null,
-					warehouseUuid: '',
-					qualityUuid: '',
-					transportType: null,
-				}),
-			}),
-		select(data) {
-			return data;
-		},
-	});
-
 	const queryWeightsession = useQuery(
 		[
 			QUERY_KEY.table_phieu_da_gui_KT,
@@ -158,7 +118,6 @@ function MainBillSend({}: PropsMainBillSend) {
 			_customerUuid,
 			_productTypeUuid,
 			_specUuid,
-			_billUuid,
 			_dateFrom,
 			_dateTo,
 			_isShift,
@@ -174,7 +133,7 @@ function MainBillSend({}: PropsMainBillSend) {
 						isPaging: CONFIG_PAGING.IS_PAGING,
 						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
-						billUuid: _billUuid ? (_billUuid as string) : '',
+						billUuid: '',
 						codeEnd: null,
 						codeStart: null,
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
@@ -203,7 +162,7 @@ function MainBillSend({}: PropsMainBillSend) {
 			<div className={styles.header}>
 				<div className={styles.main_search}>
 					<div className={styles.search}>
-						<Search keyName='_keyword' placeholder='Tìm kiếm theo mã lô hàng, số phiếu, biển số, lô gô xe' />
+						<Search keyName='_keyword' placeholder='Tìm kiếm theo số phiếu và mã lô hàng' />
 					</div>
 					<div className={styles.filter}>
 						<FilterCustom
@@ -249,15 +208,7 @@ function MainBillSend({}: PropsMainBillSend) {
 							name: v?.name,
 						}))}
 					/>
-					<FilterCustom
-						isSearch
-						name='Mã lô hàng'
-						query='_billUuid'
-						listFilter={listWeightSessionBill?.data?.map((v: any) => ({
-							id: v?.uuid,
-							name: v?.code,
-						}))}
-					/>
+
 					<div className={styles.filter}>
 						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
 					</div>
@@ -357,7 +308,6 @@ function MainBillSend({}: PropsMainBillSend) {
 							_customerUuid,
 							_productTypeUuid,
 							_specUuid,
-							_billUuid,
 							_dateFrom,
 							_dateTo,
 							_isShift,

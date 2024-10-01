@@ -2,7 +2,7 @@ import Head from 'next/head';
 import {Fragment, ReactElement} from 'react';
 import BaseLayout from '~/components/layouts/BaseLayout';
 import WrapperContainer from '~/components/layouts/WrapperContainer';
-import MainDashboard from '~/components/pages/kho-hang/MainDashboard';
+import MainDashboard from '~/components/pages/trang-chu/MainDashboard';
 
 export default function Home() {
 	return (
@@ -21,5 +21,5 @@ export default function Home() {
 }
 
 Home.getLayout = function (Page: ReactElement) {
-	return <BaseLayout title='Quản lý kho hàng'>{Page}</BaseLayout>;
+	return <BaseLayout title='Báo cáo tổng quan'>{Page}</BaseLayout>;
 };

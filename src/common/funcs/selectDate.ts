@@ -102,7 +102,6 @@ export function getTextDateRange(range: number | null) {
 		case TYPE_DATE.LAST_7_DAYS:
 			return '7 ngày trước';
 
-		// Năm nay
 		case TYPE_DATE.THIS_YEAR:
 			return 'Năm này';
 
