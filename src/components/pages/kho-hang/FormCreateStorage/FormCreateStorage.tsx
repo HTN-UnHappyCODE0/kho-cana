@@ -215,7 +215,7 @@ function FormCreateStorage({draggedElements, onClose}: PropsFormCreateStorage) {
 									value={form.amountKcs || ''}
 									isMoney
 									type='text'
-									unit='TẤN'
+									unit='KG'
 									blur={true}
 									placeholder='Nhập tồn đầu kỳ'
 									label={

@@ -253,7 +253,7 @@ function FormUpdateStorage({onClose}: PropsFormUpdateStorage) {
 									value={form.amountKcs || ''}
 									isMoney
 									type='text'
-									unit='TẤN'
+									unit='KG'
 									blur={true}
 									placeholder='Nhập tồn đầu kỳ'
 									readOnly={true}
