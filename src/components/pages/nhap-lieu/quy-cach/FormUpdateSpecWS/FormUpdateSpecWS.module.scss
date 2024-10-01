@@ -57,7 +57,7 @@ $font-size: 16px;
 	justify-content: space-between;
 
 	.input {
-		width: 90px;
+		width: 100px;
 		font-weight: 500;
 		font-size: 12px;
 		color: var(--dark);
@@ -106,5 +106,23 @@ $font-size: 16px;
 		color: #23262f;
 		font-size: 16px;
 		font-weight: 500;
+	}
+
+	.box_input {
+		position: relative;
+
+		.unit {
+			position: absolute;
+			top: 50%;
+			right: 0;
+			background-color: #fff;
+			transform: translate(-50%, -50%);
+			color: #171832;
+			font-size: 14px;
+			font-weight: 500;
+			z-index: 10;
+			padding-left: 8px;
+			border-left: 1px solid #e1e5ed;
+		}
 	}
 }

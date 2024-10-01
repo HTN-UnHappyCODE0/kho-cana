@@ -145,6 +145,10 @@ const batchBillServices = {
 			typeFindDay: number;
 			timeStart: string;
 			timeEnd: string;
+			isShowBDMT: number;
+			storageUuid: string;
+			customerUuid: string;
+			warehouseUuid: string;
 		},
 		tokenAxios?: any
 	) => {
@@ -159,6 +163,10 @@ const batchBillServices = {
 			typeFindDay: number;
 			timeStart: string;
 			timeEnd: string;
+			isShowBDMT: number;
+			storageUuid: string;
+			customerUuid: string;
+			warehouseUuid: string;
 		},
 		tokenAxios?: any
 	) => {
@@ -173,6 +181,10 @@ const batchBillServices = {
 			typeFindDay: number;
 			timeStart: string;
 			timeEnd: string;
+			isShowBDMT: number;
+			storageUuid: string;
+			customerUuid: string;
+			warehouseUuid: string;
 		},
 		tokenAxios?: any
 	) => {

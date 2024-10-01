@@ -274,6 +274,7 @@ function FormUpdateStorage({onClose}: PropsFormUpdateStorage) {
 								type='number'
 								blur={true}
 								readOnly={true}
+								unit='%'
 								placeholder='Nhập độ khô trung bình'
 								label={
 									<span>
@@ -378,15 +379,18 @@ function FormUpdateStorage({onClose}: PropsFormUpdateStorage) {
 										{form?.specWsValues?.map((v, i) => (
 											<div key={i} className={styles.item}>
 												<p>{v?.title}</p>
-												<input
-													className={styles.input}
-													type='number'
-													step='0.01'
-													value={v?.value}
-													readOnly={true}
-													disabled={true}
-													onChange={(e) => handleChange(v, e.target.value)}
-												/>
+												<div className={styles.box_input}>
+													<input
+														className={styles.input}
+														type='number'
+														step='0.01'
+														value={v?.value}
+														readOnly={true}
+														disabled={true}
+														onChange={(e) => handleChange(v, e.target.value)}
+													/>
+													<div className={clsx(styles.unit, {[styles.disabled]: !form.amountKcs})}>%</div>
+												</div>
 											</div>
 										))}
 									</div>

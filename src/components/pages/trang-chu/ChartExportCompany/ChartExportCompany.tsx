@@ -13,19 +13,24 @@ import {
 	CONFIG_STATUS,
 	CONFIG_TYPE_FIND,
 	QUERY_KEY,
+	STATUS_CUSTOMER,
+	TYPE_CUSTOMER,
 	TYPE_DATE,
 	TYPE_DATE_SHOW,
-	TYPE_PARTNER,
+	TYPE_SHOW_BDMT,
 } from '~/constants/config/enum';
 import {httpRequest} from '~/services';
-import partnerServices from '~/services/partnerServices';
 import batchBillServices from '~/services/batchBillServices';
 import {convertWeight, timeSubmit} from '~/common/funcs/optionConvert';
 import moment from 'moment';
+import storageServices from '~/services/storageServices';
+import customerServices from '~/services/customerServices';
 
 function ChartExportCompany({}: PropsChartExportCompany) {
-	const [partnerUuid, setPartnerUuid] = useState<string>('');
-	const [typeDate, setTypeDate] = useState<number | null>(TYPE_DATE.THIS_MONTH);
+	const [isShowBDMT, setIsShowBDMT] = useState<string>(String(TYPE_SHOW_BDMT.MT));
+	const [customerUuid, setCustomerUuid] = useState<string>('');
+	const [storageUuid, setStorageUuid] = useState<string>('');
+	const [typeDate, setTypeDate] = useState<number | null>(TYPE_DATE.LAST_7_DAYS);
 	const [date, setDate] = useState<{
 		from: Date | null;
 		to: Date | null;
@@ -45,21 +50,22 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 		lstProductTotal: [],
 	});
 
-	const listPartner = useQuery([QUERY_KEY.dropdown_nha_cung_cap_xuat], {
+	const listStorage = useQuery([QUERY_KEY.dropdown_bai], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
-				http: partnerServices.listPartner({
+				http: storageServices.listStorage({
 					page: 1,
 					pageSize: 20,
 					keyword: '',
+					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
-					userUuid: '',
-					status: CONFIG_STATUS.HOAT_DONG,
-					provinceId: '',
-					type: TYPE_PARTNER.KH_XUAT,
+					productUuid: '',
+					qualityUuid: '',
+					specificationsUuid: '',
+					warehouseUuid: '',
 				}),
 			}),
 		select(data) {
@@ -67,12 +73,40 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 		},
 	});
 
-	useQuery([QUERY_KEY.thong_ke_tong_hang_xuat, partnerUuid, , date], {
+	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang_xuat], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: customerServices.listCustomer({
+					page: 1,
+					pageSize: 20,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.TABLE,
+					partnerUUid: '',
+					userUuid: '',
+					status: STATUS_CUSTOMER.HOP_TAC,
+					typeCus: TYPE_CUSTOMER.KH_XUAT,
+					provinceId: '',
+					specUuid: '',
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
+	useQuery([QUERY_KEY.thong_ke_tong_hang_xuat, customerUuid, storageUuid, isShowBDMT, date], {
 		queryFn: () =>
 			httpRequest({
 				isData: true,
 				http: batchBillServices.dashbroadBillOut({
-					partnerUuid: partnerUuid,
+					partnerUuid: '',
+					customerUuid: customerUuid,
+					isShowBDMT: Number(isShowBDMT),
+					storageUuid: storageUuid,
+					warehouseUuid: '',
 					companyUuid: '',
 					typeFindDay: 0,
 					timeStart: timeSubmit(date?.from)!,
@@ -142,13 +176,38 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 				<h3>Biểu đồ thống kê hàng xuất</h3>
 				<div className={styles.filter}>
 					<SelectFilterOption
-						uuid={partnerUuid}
-						setUuid={setPartnerUuid}
-						listData={listPartner?.data?.map((v: any) => ({
+						isShowAll={false}
+						uuid={isShowBDMT}
+						setUuid={setIsShowBDMT}
+						listData={[
+							{
+								uuid: String(TYPE_SHOW_BDMT.MT),
+								name: 'Tấn tươi',
+							},
+							{
+								uuid: String(TYPE_SHOW_BDMT.BDMT),
+								name: 'Tấn khô',
+							},
+						]}
+						placeholder='Tấn hàng'
+					/>
+					<SelectFilterOption
+						uuid={customerUuid}
+						setUuid={setCustomerUuid}
+						listData={listCustomer?.data?.map((v: any) => ({
 							uuid: v?.uuid,
 							name: v?.name,
 						}))}
 						placeholder='Tất cả KH xuất'
+					/>
+					<SelectFilterOption
+						uuid={storageUuid}
+						setUuid={setStorageUuid}
+						listData={listStorage?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						placeholder='Tất cả bãi'
 					/>
 					<SelectFilterDate isOptionDateAll={true} date={date} setDate={setDate} typeDate={typeDate} setTypeDate={setTypeDate} />
 				</div>

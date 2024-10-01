@@ -8,7 +8,7 @@ import {BiCheck} from 'react-icons/bi';
 import {removeVietnameseTones} from '~/common/funcs/optionConvert';
 import {ArrowDown2} from 'iconsax-react';
 
-function SelectFilterOption({uuid, setUuid, listData, placeholder}: PropsSelectFilterOption) {
+function SelectFilterOption({uuid, setUuid, listData, placeholder, isShowAll = true}: PropsSelectFilterOption) {
 	const [keyword, setKeyword] = useState<string>('');
 	const [openPartner, setOpenPartner] = useState<boolean>(false);
 
@@ -28,22 +28,24 @@ function SelectFilterOption({uuid, setUuid, listData, placeholder}: PropsSelectF
 						onChange={(e) => setKeyword(e.target.value)}
 					/>
 					<div className={styles.overflow}>
-						<div
-							className={clsx(styles.option, {
-								[styles.option_active]: uuid == '',
-							})}
-							onClick={() => {
-								setOpenPartner(false);
-								setUuid('');
-							}}
-						>
-							<p>{'Tất cả'}</p>
-							{uuid == '' && (
-								<div className={styles.icon_check}>
-									<BiCheck fontSize={18} color='#5755FF' fontWeight={600} />
-								</div>
-							)}
-						</div>
+						{isShowAll && (
+							<div
+								className={clsx(styles.option, {
+									[styles.option_active]: uuid == '',
+								})}
+								onClick={() => {
+									setOpenPartner(false);
+									setUuid('');
+								}}
+							>
+								<p>{'Tất cả'}</p>
+								{uuid == '' && (
+									<div className={styles.icon_check}>
+										<BiCheck fontSize={18} color='#5755FF' fontWeight={600} />
+									</div>
+								)}
+							</div>
+						)}
 						{listData
 							?.filter((v: any) => removeVietnameseTones(v.name)?.includes(keyword ? removeVietnameseTones(keyword) : ''))
 							?.map((v: any) => (

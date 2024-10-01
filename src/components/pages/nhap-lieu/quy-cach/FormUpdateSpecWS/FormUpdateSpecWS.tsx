@@ -179,13 +179,16 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 					{dataRules?.map((v, i) => (
 						<div key={i} className={styles.item}>
 							<p>{v?.title}</p>
-							<input
-								className={styles.input}
-								type='number'
-								step='0.01'
-								value={v?.value}
-								onChange={(e) => handleChange(v, e.target.value)}
-							/>
+							<div className={styles.box_input}>
+								<input
+									className={styles.input}
+									type='number'
+									step='0.01'
+									value={v?.value}
+									onChange={(e) => handleChange(v, e.target.value)}
+								/>
+								<div className={styles.unit}>%</div>
+							</div>
 						</div>
 					))}
 				</div>

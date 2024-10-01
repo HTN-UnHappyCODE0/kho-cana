@@ -11,6 +11,7 @@ export enum QUERY_KEY {
 	dropdown_quy_cach,
 	dropdown_loai_go_quy_cach,
 	dropdown_khach_hang_nhap,
+	dropdown_khach_hang_dich_vu,
 	dropdown_nha_cung_cap_xuat,
 	dropdown_lo_hang,
 	dropdown_RFID,
@@ -272,6 +273,11 @@ export enum TYPE_PARTNER {
 	NCC = 1,
 	KH_XUAT,
 	KH_DICH_VU,
+}
+
+export enum TYPE_SHOW_BDMT {
+	MT,
+	BDMT,
 }
 
 export enum REGENCY_NAME {

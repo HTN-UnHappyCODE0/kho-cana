@@ -93,14 +93,16 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 							<span style={{margin: '0 6px'}}>{v?.ruler == TYPE_RULER.NHO_HON ? '<' : '>'}</span>
 							{v?.valuecriteria}
 						</p>
-
-						<input
-							className={styles.input}
-							type='number'
-							step='0.01'
-							value={v?.value}
-							onChange={(e) => handleChange(v, e.target.value)}
-						/>
+						<div className={styles.box_input}>
+							<input
+								className={styles.input}
+								type='number'
+								step='0.01'
+								value={v?.value}
+								onChange={(e) => handleChange(v, e.target.value)}
+							/>
+							<div className={styles.unit}>%</div>
+						</div>
 					</div>
 				))}
 			</div>
