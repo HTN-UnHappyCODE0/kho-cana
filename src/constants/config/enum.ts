@@ -99,6 +99,7 @@ export enum QUERY_KEY {
 	chi_tiet_nha_cung_cap,
 	chi_tiet_tau,
 	chi_tiet_nhan_vien,
+	chi_tiet_gia_tien_hang,
 
 	thong_ke_kho_hang,
 	thong_ke_tong_hang_dich_vu,

@@ -29,9 +29,11 @@ import Popup from '~/components/common/Popup';
 import Noti from '~/components/common/DataWrapper/components/Noti';
 import PopupAddPrice from '../PopupAddPrice/PopupAddPrice';
 import Button from '~/components/common/Button';
-import {convertCoin} from '~/common/funcs/convertCoin';
 import Image from 'next/image';
 import icons from '~/constants/images/icons';
+import IconCustom from '~/components/common/IconCustom';
+import {LuPencil} from 'react-icons/lu';
+import PopupUpdatePrice from '../PopupUpdatePrice';
 
 function PageDetailPartner({}: PropsPageDetailPartner) {
 	const router = useRouter();
@@ -39,6 +41,7 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 	const {_id, _page, _pageSize} = router.query;
 
 	const [openCreate, setOpenCreate] = useState<boolean>(false);
+	const [uuidUpdate, setUuidUpdate] = useState<string>('');
 
 	const {data: detailCustomer} = useQuery<IDetailCustomer>([QUERY_KEY.chi_tiet_nha_cung_cap, _id], {
 		queryFn: () =>
@@ -217,6 +220,10 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 									render: (data: any) => <>{data?.specUu?.name}</>,
 								},
 								{
+									title: 'Bãi',
+									render: (data: any) => <>{data?.storageUu?.name || '---'}</>,
+								},
+								{
 									title: 'Vận chuyển',
 									render: (data: any) => (
 										<>
@@ -225,20 +232,25 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 										</>
 									),
 								},
-								// {
-								// 	title: 'Giá tiền (VND)',
-								// 	render: (data: any) => (
-								// 		<p style={{fontWeight: '600', color: '#3772FF'}}>{convertCoin(data?.pricetagUu?.amount)}</p>
-								// 	),
-								// },
 								{
 									title: 'Cung cấp',
 									render: (data: any) => <TagStatusSpecCustomer status={data.state} />,
 								},
-								// {
-								// 	title: 'Trạng thái',
-								// 	render: (data: any) => <TagStatus status={data.status} />,
-								// },
+								{
+									title: 'Tác vụ',
+									fixedRight: true,
+									render: (data: any) => (
+										<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
+											<IconCustom
+												edit
+												icon={<LuPencil fontSize={20} fontWeight={600} />}
+												tooltip='Cập nhật bãi'
+												color='#777E90'
+												onClick={() => setUuidUpdate(data?.uuid)}
+											/>
+										</div>
+									),
+								},
 							]}
 						/>
 					</DataWrapper>
@@ -257,6 +269,9 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 					customerName={detailCustomer?.name!}
 					onClose={() => setOpenCreate(false)}
 				/>
+			</Popup>
+			<Popup open={!!uuidUpdate} onClose={() => setUuidUpdate('')}>
+				<PopupUpdatePrice customerSpecUuid={uuidUpdate} onClose={() => setUuidUpdate('')} />
 			</Popup>
 		</div>
 	);

@@ -1,6 +1,5 @@
 import {CONFIG_DESCENDING, CONFIG_PAGING, CONFIG_STATUS, CONFIG_TYPE_FIND} from '~/constants/config/enum';
 import axiosClient from '.';
-import axios from 'axios';
 
 const priceTagServices = {
 	listPriceTag: (
@@ -62,6 +61,16 @@ const priceTagServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	detailCustomerSpec: (
+		data: {
+			uuid: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/PriceTag/detail-customer-spec`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 	addPricetagToCustomer: (
 		data: {
 			infoSpec: {
@@ -71,6 +80,7 @@ const priceTagServices = {
 				priceTagUuid: string | number | null;
 				state: 0 | 1;
 				transportType: number;
+				storageUuid?: string;
 			}[];
 			customerUuid: string[];
 		},

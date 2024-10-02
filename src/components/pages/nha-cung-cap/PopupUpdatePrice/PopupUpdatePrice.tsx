@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
-import {PropsPopupAddPrice} from './interfaces';
-import styles from './PopupAddPrice.module.scss';
+import {PropsPopupUpdatePrice} from './interfaces';
+import styles from './PopupUpdatePrice.module.scss';
 import clsx from 'clsx';
 import Button from '~/components/common/Button';
 import {IoClose} from 'react-icons/io5';
@@ -11,7 +11,6 @@ import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {
 	CONFIG_DESCENDING,
 	CONFIG_PAGING,
-	CONFIG_STATE_SPEC_CUSTOMER,
 	CONFIG_STATUS,
 	CONFIG_TYPE_FIND,
 	QUERY_KEY,
@@ -21,32 +20,26 @@ import {
 import {httpRequest} from '~/services';
 import wareServices from '~/services/wareServices';
 import {toastWarn} from '~/common/funcs/toast';
-import {useRouter} from 'next/router';
 import Loading from '~/components/common/Loading';
 import priceTagServices from '~/services/priceTagServices';
 import storageServices from '~/services/storageServices';
+import customerServices from '~/services/customerServices';
 
-function PopupAddPrice({typeCustomer, customerName, onClose}: PropsPopupAddPrice) {
-	const router = useRouter();
-
-	const {_id} = router.query;
-
+function PopupUpdatePrice({customerSpecUuid, onClose}: PropsPopupUpdatePrice) {
 	const queryClient = useQueryClient();
 
 	const [form, setForm] = useState<{
 		specUuid: string;
-		transportType: string;
-		state: CONFIG_STATE_SPEC_CUSTOMER;
 		productTypeUuid: string;
 		customerName: string;
 		storageUuid: string;
+		typeCustomer: number;
 	}>({
 		specUuid: '',
 		productTypeUuid: '',
-		state: CONFIG_STATE_SPEC_CUSTOMER.DANG_CUNG_CAP,
-		customerName: customerName,
-		transportType: '',
+		customerName: '',
 		storageUuid: '',
+		typeCustomer: TYPE_CUSTOMER.NHA_CUNG_CAP,
 	});
 
 	const resetForm = () => {
@@ -54,11 +47,32 @@ function PopupAddPrice({typeCustomer, customerName, onClose}: PropsPopupAddPrice
 			specUuid: '',
 			productTypeUuid: '',
 			customerName: '',
-			transportType: '',
-			state: CONFIG_STATE_SPEC_CUSTOMER.CHUA_CUNG_CAP,
 			storageUuid: '',
+			typeCustomer: TYPE_CUSTOMER.NHA_CUNG_CAP,
 		});
 	};
+
+	const {isSuccess} = useQuery([QUERY_KEY.chi_tiet_gia_tien_hang], {
+		queryFn: () =>
+			httpRequest({
+				http: priceTagServices.detailCustomerSpec({
+					uuid: customerSpecUuid,
+				}),
+			}),
+
+		onSuccess(data) {
+			if (data) {
+				setForm({
+					specUuid: data?.specUu?.uuid || '',
+					productTypeUuid: data?.productTypeUu?.uuid || '',
+					customerName: data?.customerUu?.name || '',
+					storageUuid: data?.storageUu?.uuid || '',
+					typeCustomer: data?.customerUu?.typeCus || '',
+				});
+			}
+		},
+		enabled: !!customerSpecUuid,
+	});
 
 	const listSpecifications = useQuery([QUERY_KEY.dropdown_quy_cach, form.productTypeUuid], {
 		queryFn: () =>
@@ -82,7 +96,7 @@ function PopupAddPrice({typeCustomer, customerName, onClose}: PropsPopupAddPrice
 		enabled: !!form.productTypeUuid,
 	});
 
-	const listProductType = useQuery([QUERY_KEY.dropdown_loai_hang], {
+	const listProductType = useQuery([QUERY_KEY.dropdown_loai_hang, form.typeCustomer], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -95,7 +109,7 @@ function PopupAddPrice({typeCustomer, customerName, onClose}: PropsPopupAddPrice
 					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
 					status: CONFIG_STATUS.HOAT_DONG,
 					type:
-						typeCustomer == TYPE_CUSTOMER.DICH_VU
+						form.typeCustomer == TYPE_CUSTOMER.DICH_VU
 							? [TYPE_PRODUCT.DICH_VU, TYPE_PRODUCT.DUNG_CHUNG]
 							: [TYPE_PRODUCT.CONG_TY, TYPE_PRODUCT.DUNG_CHUNG],
 				}),
@@ -103,6 +117,7 @@ function PopupAddPrice({typeCustomer, customerName, onClose}: PropsPopupAddPrice
 		select(data) {
 			return data;
 		},
+		enabled: !!form.typeCustomer && isSuccess,
 	});
 
 	const listStorage = useQuery([QUERY_KEY.dropdown_bai, form.specUuid, form.productTypeUuid], {
@@ -129,25 +144,15 @@ function PopupAddPrice({typeCustomer, customerName, onClose}: PropsPopupAddPrice
 		enabled: !!form.specUuid && !!form.productTypeUuid,
 	});
 
-	const fucnAddSpecCustomer = useMutation({
+	const fucnUpdateStorage = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
 				msgSuccess: 'Thêm mới thành công!',
-				http: priceTagServices.addPricetagToCustomer({
-					infoSpec: [
-						{
-							specUuid: form.specUuid,
-							status: CONFIG_STATUS.HOAT_DONG,
-							state: form?.state,
-							productTypeUuid: form.productTypeUuid,
-							transportType: Number(form.transportType),
-							priceTagUuid: '0',
-							storageUuid: form?.storageUuid,
-						},
-					],
-					customerUuid: [_id as string],
+				http: customerServices.updateStorage({
+					customerSpecUuid: customerSpecUuid,
+					storageUuid: form.storageUuid,
 				}),
 			}),
 		onSuccess(data) {
@@ -165,9 +170,6 @@ function PopupAddPrice({typeCustomer, customerName, onClose}: PropsPopupAddPrice
 	});
 
 	const handleSubmit = async () => {
-		if (!form.transportType) {
-			return toastWarn({msg: 'Vui lòng chọn hình thức vận chuyển!'});
-		}
 		if (!form.specUuid) {
 			return toastWarn({msg: 'Vui lòng chọn loại quy cách!'});
 		}
@@ -175,13 +177,13 @@ function PopupAddPrice({typeCustomer, customerName, onClose}: PropsPopupAddPrice
 			return toastWarn({msg: 'Vui lòng chọn loại gỗ!'});
 		}
 
-		return fucnAddSpecCustomer.mutate();
+		return fucnUpdateStorage.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnAddSpecCustomer.isLoading} />
-			<h4 className={styles.title}>Thêm loại gỗ</h4>
+			<Loading loading={fucnUpdateStorage.isLoading} />
+			<h4 className={styles.title}>Cập nhật bãi</h4>
 			<Form form={form} setForm={setForm}>
 				<div className='mt'>
 					<Input
@@ -202,6 +204,7 @@ function PopupAddPrice({typeCustomer, customerName, onClose}: PropsPopupAddPrice
 						name='productTypeUuid'
 						value={form.productTypeUuid}
 						placeholder='Lựa chọn loại gỗ'
+						readOnly={true}
 						label={
 							<span>
 								Loại gỗ<span style={{color: 'red'}}>*</span>
@@ -228,7 +231,7 @@ function PopupAddPrice({typeCustomer, customerName, onClose}: PropsPopupAddPrice
 						name='specUuid'
 						placeholder='Lựa chọn quy cách'
 						value={form.specUuid}
-						readOnly={!form.productTypeUuid}
+						readOnly={true}
 						label={
 							<span>
 								Quy cách <span style={{color: 'red'}}>*</span>
@@ -275,80 +278,6 @@ function PopupAddPrice({typeCustomer, customerName, onClose}: PropsPopupAddPrice
 							/>
 						))}
 					</Select>
-					<Select
-						isSearch
-						name='transportType'
-						placeholder='Hình thức vận chuyển'
-						value={form.transportType}
-						label={
-							<span>
-								Hình thức vận chuyển <span style={{color: 'red'}}>*</span>
-							</span>
-						}
-					>
-						<Option
-							title='Đường bộ'
-							value={'0'}
-							onClick={() =>
-								setForm((prev: any) => ({
-									...prev,
-									transportType: '0',
-								}))
-							}
-						/>
-						<Option
-							title='Đường thủy'
-							value={'1'}
-							onClick={() =>
-								setForm((prev: any) => ({
-									...prev,
-									transportType: '1',
-								}))
-							}
-						/>
-					</Select>
-
-					{/* <div className={'mt'}>
-						<SelectSearch
-							isConvertNumber={true}
-							options={listPriceTag?.data?.map((v: any) => ({
-								id: v?.uuid,
-								name: String(v?.amount),
-							}))}
-							data={priceTag}
-							setData={setPriceTag}
-							label={
-								<span>
-									Giá tiền áp dụng <span style={{color: 'red'}}>*</span>
-								</span>
-							}
-							placeholder='Nhập giá tiền'
-						/>
-					</div> */}
-					<div className='mt'>
-						<div className={styles.input_price}>
-							<input
-								id={`state_spec_customer`}
-								name='state'
-								value={form.state}
-								type='checkbox'
-								className={styles.input}
-								checked={form?.state == CONFIG_STATE_SPEC_CUSTOMER.DANG_CUNG_CAP}
-								onChange={() =>
-									setForm((prev) => ({
-										...prev,
-										state:
-											prev.state == CONFIG_STATE_SPEC_CUSTOMER.DANG_CUNG_CAP
-												? CONFIG_STATE_SPEC_CUSTOMER.CHUA_CUNG_CAP
-												: CONFIG_STATE_SPEC_CUSTOMER.DANG_CUNG_CAP,
-									}))
-								}
-							/>
-							<label className={styles.label_check_box} htmlFor={`state_spec_customer`}>
-								Đang cung cấp
-							</label>
-						</div>
-					</div>
 				</div>
 				<div className={styles.control}>
 					<div>
@@ -357,14 +286,7 @@ function PopupAddPrice({typeCustomer, customerName, onClose}: PropsPopupAddPrice
 						</Button>
 					</div>
 					<div>
-						<Button
-							disable={!form.specUuid || !form.productTypeUuid}
-							// disable={!form.specUuid || !form.productTypeUuid || !priceTag.name}
-							p_8_24
-							rounded_2
-							primary
-							onClick={handleSubmit}
-						>
+						<Button disable={!form.specUuid || !form.productTypeUuid} p_8_24 rounded_2 primary onClick={handleSubmit}>
 							Xác nhận
 						</Button>
 					</div>
@@ -377,4 +299,4 @@ function PopupAddPrice({typeCustomer, customerName, onClose}: PropsPopupAddPrice
 	);
 }
 
-export default PopupAddPrice;
+export default PopupUpdatePrice;

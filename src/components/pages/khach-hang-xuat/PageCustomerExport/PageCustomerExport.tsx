@@ -147,8 +147,8 @@ function PageCustomerExport({}: PropsPageCustomerExport) {
 								),
 							},
 							{
-								title: 'Kho hàng',
-								render: (data: ICustomer) => <>{data?.customerUu?.warehouseUu?.name || '---'}</>,
+								title: 'Bãi',
+								render: (data: ICustomer) => <>{data?.storageUu?.name || '---'}</>,
 							},
 							{
 								title: 'Tác vụ',
