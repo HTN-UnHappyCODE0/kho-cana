@@ -23,7 +23,7 @@ function FormCreateQualities({onClose}: PropsFormCreateQualities) {
 		colorShow: string;
 	}>({name: '', colorShow: '#16DBCC', description: ''});
 
-	const fucnCreateQualities = useMutation({
+	const funcCreateQualities = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -54,12 +54,12 @@ function FormCreateQualities({onClose}: PropsFormCreateQualities) {
 	});
 
 	const handleSubmit = () => {
-		return fucnCreateQualities.mutate();
+		return funcCreateQualities.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnCreateQualities.isLoading} />
+			<Loading loading={funcCreateQualities.isLoading} />
 			<h4>Thêm quốc gia</h4>
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<Input

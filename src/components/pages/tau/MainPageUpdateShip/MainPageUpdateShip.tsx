@@ -41,7 +41,7 @@ function MainPageUpdateShip({}: PropsMainPageUpdateShip) {
 		enabled: !!_id,
 	});
 
-	const fucnUpdateShip = useMutation({
+	const funcUpdateShip = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -74,12 +74,12 @@ function MainPageUpdateShip({}: PropsMainPageUpdateShip) {
 	});
 
 	const handleSubmit = () => {
-		fucnUpdateShip.mutate();
+		funcUpdateShip.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnUpdateShip.isLoading} />
+			<Loading loading={funcUpdateShip.isLoading} />
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>

@@ -56,7 +56,7 @@ function MainPageRFID({}: PropsMainPageRFID) {
 		},
 	});
 
-	const fucnChangeStatus = useMutation({
+	const funcChangeStatus = useMutation({
 		mutationFn: () => {
 			return httpRequest({
 				showMessageFailed: true,
@@ -78,7 +78,7 @@ function MainPageRFID({}: PropsMainPageRFID) {
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnChangeStatus.isLoading} />
+			<Loading loading={funcChangeStatus.isLoading} />
 			<div className={styles.filter}>
 				<div className={styles.main_search}>
 					<div className={styles.search}>
@@ -217,7 +217,7 @@ function MainPageRFID({}: PropsMainPageRFID) {
 						? 'Bạn có chắc chắn muốn khóa RFID này?'
 						: 'Bạn có chắc chắn muốn mở khóa RFID này?'
 				}
-				onSubmit={fucnChangeStatus.mutate}
+				onSubmit={funcChangeStatus.mutate}
 			/>
 
 			<Popup open={openCreate} onClose={() => setOpenCreate(false)}>

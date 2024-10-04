@@ -120,7 +120,7 @@ function MainUpdateWarehouse({}: PropsMainUpdateWarehouse) {
 		enabled: !!form?.dictrictId,
 	});
 
-	const fucnUpdateWarehouse = useMutation({
+	const funcUpdateWarehouse = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -159,12 +159,12 @@ function MainUpdateWarehouse({}: PropsMainUpdateWarehouse) {
 			return toastWarn({msg: 'Vui lòng chọn xã/phường!'});
 		}
 
-		return fucnUpdateWarehouse.mutate();
+		return funcUpdateWarehouse.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnUpdateWarehouse.isLoading} />
+			<Loading loading={funcUpdateWarehouse.isLoading} />
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>

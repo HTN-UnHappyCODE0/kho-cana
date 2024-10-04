@@ -48,7 +48,7 @@ function UpdateScaleTable({dataUpdate, onClose}: PropsUpdateScaleTable) {
 		},
 	});
 
-	const fucnUpdateScalesMachine = useMutation({
+	const funcUpdateScalesMachine = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -84,12 +84,12 @@ function UpdateScaleTable({dataUpdate, onClose}: PropsUpdateScaleTable) {
 			return toastWarn({msg: 'Vui lòng chọn trạm cân!'});
 		}
 
-		return fucnUpdateScalesMachine.mutate();
+		return funcUpdateScalesMachine.mutate();
 	};
 
 	return (
 		<Fragment>
-			<Loading loading={fucnUpdateScalesMachine.isLoading} />
+			<Loading loading={funcUpdateScalesMachine.isLoading} />
 			<div className={styles.container}>
 				<h4>Chỉnh sửa cầu cân</h4>
 				<Form form={form} setForm={setForm} onSubmit={handleSubmit}>

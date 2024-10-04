@@ -144,7 +144,7 @@ function PopupUpdatePrice({customerSpecUuid, onClose}: PropsPopupUpdatePrice) {
 		enabled: !!form.specUuid && !!form.productTypeUuid,
 	});
 
-	const fucnUpdateStorage = useMutation({
+	const funcUpdateStorage = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -174,15 +174,15 @@ function PopupUpdatePrice({customerSpecUuid, onClose}: PropsPopupUpdatePrice) {
 			return toastWarn({msg: 'Vui lòng chọn loại quy cách!'});
 		}
 		if (!form.productTypeUuid) {
-			return toastWarn({msg: 'Vui lòng chọn loại gỗ!'});
+			return toastWarn({msg: 'Vui lòng chọn loại hàng!'});
 		}
 
-		return fucnUpdateStorage.mutate();
+		return funcUpdateStorage.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnUpdateStorage.isLoading} />
+			<Loading loading={funcUpdateStorage.isLoading} />
 			<h4 className={styles.title}>Cập nhật bãi</h4>
 			<Form form={form} setForm={setForm}>
 				<div className='mt'>
@@ -203,11 +203,11 @@ function PopupUpdatePrice({customerSpecUuid, onClose}: PropsPopupUpdatePrice) {
 						isSearch
 						name='productTypeUuid'
 						value={form.productTypeUuid}
-						placeholder='Lựa chọn loại gỗ'
+						placeholder='Lựa chọn loại hàng'
 						readOnly={true}
 						label={
 							<span>
-								Loại gỗ<span style={{color: 'red'}}>*</span>
+								Loại hàng<span style={{color: 'red'}}>*</span>
 							</span>
 						}
 					>

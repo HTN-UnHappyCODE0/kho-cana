@@ -105,7 +105,7 @@ function MainDetailScales({}: PropsMainDetailScales) {
 					</tr>
 					<tr>
 						<td>
-							<span>Loại gỗ:</span>
+							<span>Loại hàng:</span>
 							<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.productTypeUu?.name || '---'}</span>
 						</td>
 						<td>

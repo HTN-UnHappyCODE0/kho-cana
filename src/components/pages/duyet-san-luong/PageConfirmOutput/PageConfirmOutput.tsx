@@ -162,7 +162,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 		}
 	);
 
-	const fucnKTKConfirmBatchBill = useMutation({
+	const funcKTKConfirmBatchBill = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -185,7 +185,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnKTKConfirmBatchBill.isLoading} />
+			<Loading loading={funcKTKConfirmBatchBill.isLoading} />
 			<div className={styles.header}>
 				<div className={styles.main_search}>
 					{listBatchBill?.some((x) => x.isChecked !== false) && (
@@ -253,7 +253,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 					/>
 					<FilterCustom
 						isSearch
-						name='Loại gỗ'
+						name='Loại hàng'
 						query='_productTypeUuid'
 						listFilter={listProductType?.data?.map((v: any) => ({
 							id: v?.uuid,
@@ -286,6 +286,14 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 					<div>
 						TỔNG LƯỢNG HÀNG TƯƠI:
 						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertCoin(getListBatch?.data?.amountMt) || 0} </span>(Tấn)
+					</div>
+					<div>
+						TỔNG LƯỢNG HÀNG QUY KHÔ TẠM TÍNH:
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{0} </span>(Tấn)
+					</div>
+					<div>
+						TỔNG LƯỢNG HÀNG QUY KHÔ CHUẨN:
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{0} </span>(Tấn)
 					</div>
 					<div>
 						TỔNG LƯỢNG HÀNG QUY KHÔ:
@@ -350,7 +358,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 								),
 							},
 							{
-								title: 'Loại gỗ',
+								title: 'Loại hàng',
 								render: (data: ITableBillScale) => <>{data?.productTypeUu?.name || '---'}</>,
 							},
 							{
@@ -473,7 +481,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 				title='KTK duyệt sản lượng'
 				note='Bạn có muốn thực hiện thao tác duyệt sản lượng cho phiếu cân này không?'
 				onClose={() => setUuidKTKConfirm([])}
-				onSubmit={fucnKTKConfirmBatchBill.mutate}
+				onSubmit={funcKTKConfirmBatchBill.mutate}
 			/>
 
 			{/* Quản lý kho từ chối */}

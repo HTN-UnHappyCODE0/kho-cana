@@ -219,7 +219,7 @@ function PageUpdatePartner({}: PropsPageUpdatePartner) {
 		},
 	});
 
-	const fucnUpdateCustomer = useMutation({
+	const funcUpdateCustomer = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -272,12 +272,12 @@ function PageUpdatePartner({}: PropsPageUpdatePartner) {
 			return toastWarn({msg: 'Vui lòng chọn xã/phường!'});
 		}
 
-		return fucnUpdateCustomer.mutate();
+		return funcUpdateCustomer.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnUpdateCustomer.isLoading} />
+			<Loading loading={funcUpdateCustomer.isLoading} />
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>

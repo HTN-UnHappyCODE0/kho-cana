@@ -182,7 +182,7 @@ function MainDryness({}: PropsMainDryness) {
 		}
 	);
 
-	const fucnUpdateDrynessWeightSession = useMutation({
+	const funcUpdateDrynessWeightSession = useMutation({
 		mutationFn: (body: {uuid: string; dryness: number}) =>
 			httpRequest({
 				showMessageFailed: true,
@@ -204,7 +204,7 @@ function MainDryness({}: PropsMainDryness) {
 		},
 	});
 
-	const fucnUpdateKCSWeightSession = useMutation({
+	const funcUpdateKCSWeightSession = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -257,7 +257,7 @@ function MainDryness({}: PropsMainDryness) {
 				return toastWarn({msg: 'Giá trị độ khô không hợp lệ!'});
 			}
 
-			return fucnUpdateDrynessWeightSession.mutate({
+			return funcUpdateDrynessWeightSession.mutate({
 				uuid: uuid,
 				dryness: value,
 			});
@@ -269,12 +269,12 @@ function MainDryness({}: PropsMainDryness) {
 			return toastWarn({msg: 'Nhập độ khô trước khi gửi kể toán!'});
 		}
 
-		return fucnUpdateKCSWeightSession.mutate();
+		return funcUpdateKCSWeightSession.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnUpdateDrynessWeightSession.isLoading || fucnUpdateKCSWeightSession.isLoading} />
+			<Loading loading={funcUpdateDrynessWeightSession.isLoading || funcUpdateKCSWeightSession.isLoading} />
 			<div className={styles.header}>
 				<div className={styles.main_search}>
 					{weightSessions?.some((x) => x.isChecked !== false) && (
@@ -346,7 +346,7 @@ function MainDryness({}: PropsMainDryness) {
 					/>
 					<FilterCustom
 						isSearch
-						name='Loại gỗ'
+						name='Loại hàng'
 						query='_productTypeUuid'
 						listFilter={listProductType?.data?.map((v: any) => ({
 							id: v?.uuid,
@@ -410,7 +410,7 @@ function MainDryness({}: PropsMainDryness) {
 								render: (data: IWeightSession) => <>{data?.toUu?.name || '---'}</>,
 							},
 							{
-								title: 'Loại gỗ',
+								title: 'Loại hàng',
 								render: (data: IWeightSession) => <>{data?.producTypeUu?.name || '---'}</>,
 							},
 							{

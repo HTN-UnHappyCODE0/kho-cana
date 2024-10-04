@@ -193,7 +193,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 		}
 	);
 
-	const fucnStartBatchBill = useMutation({
+	const funcStartBatchBill = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -214,7 +214,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 		},
 	});
 
-	const fucnStopBatchBill = useMutation({
+	const funcStopBatchBill = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -256,7 +256,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnStartBatchBill.isLoading || fucnStopBatchBill.isLoading} />
+			<Loading loading={funcStartBatchBill.isLoading || funcStopBatchBill.isLoading} />
 			<div className={styles.header}>
 				<div className={styles.main_search}>
 					<div className={styles.search}>
@@ -291,7 +291,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 					/>
 					<FilterCustom
 						isSearch
-						name='Loại gỗ'
+						name='Loại hàng'
 						query='_productTypeUuid'
 						listFilter={listProductType?.data?.map((v: any) => ({
 							id: v?.uuid,
@@ -452,7 +452,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 								render: (data: ITableBillScale) => <>{convertWeight(data?.weightTotal) || 0}</>,
 							},
 							{
-								title: 'Loại gỗ',
+								title: 'Loại hàng',
 								render: (data: ITableBillScale) => <>{data?.productTypeUu?.name || '---'}</>,
 							},
 							{
@@ -572,7 +572,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 				title='Bắt đầu cân'
 				note='Bạn có muốn thực hiện thao tác cân cho phiếu cân này không?'
 				onClose={() => setUuidPlay('')}
-				onSubmit={fucnStartBatchBill.mutate}
+				onSubmit={funcStartBatchBill.mutate}
 			/>
 
 			{/* Kết thúc cân */}
@@ -582,7 +582,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 				title='Kết thúc cân'
 				note='Bạn có muốn thực hiện thao tác kết thúc cho phiếu cân này không?'
 				onClose={() => setUuidStop('')}
-				onSubmit={fucnStopBatchBill.mutate}
+				onSubmit={funcStopBatchBill.mutate}
 			/>
 		</div>
 	);

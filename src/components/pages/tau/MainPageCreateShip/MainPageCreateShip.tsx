@@ -21,7 +21,7 @@ function MainPageCreateShip({}: PropsMainPageCreateShip) {
 		description: '',
 	});
 
-	const fucnCreateShip = useMutation({
+	const funcCreateShip = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -54,12 +54,12 @@ function MainPageCreateShip({}: PropsMainPageCreateShip) {
 	});
 
 	const handleSubmit = () => {
-		fucnCreateShip.mutate();
+		funcCreateShip.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnCreateShip.isLoading} />
+			<Loading loading={funcCreateShip.isLoading} />
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>

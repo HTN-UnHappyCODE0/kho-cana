@@ -193,7 +193,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 		}
 	);
 
-	const fucnStartBatchBill = useMutation({
+	const funcStartBatchBill = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -214,7 +214,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 		},
 	});
 
-	const fucnStopBatchBill = useMutation({
+	const funcStopBatchBill = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -237,7 +237,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnStartBatchBill.isLoading || fucnStopBatchBill.isLoading} />
+			<Loading loading={funcStartBatchBill.isLoading || funcStopBatchBill.isLoading} />
 			<div className={styles.header}>
 				<div className={styles.main_search}>
 					<div className={styles.search}>
@@ -271,7 +271,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 					/>
 					<FilterCustom
 						isSearch
-						name='Loại gỗ'
+						name='Loại hàng'
 						query='_productTypeUuid'
 						listFilter={listProductType?.data?.map((v: any) => ({
 							id: v?.uuid,
@@ -439,7 +439,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 								render: (data: ITableBillScale) => <>{convertWeight(data?.weightTotal) || 0}</>,
 							},
 							{
-								title: 'Loại gỗ',
+								title: 'Loại hàng',
 								render: (data: ITableBillScale) => <>{data?.productTypeUu?.name || '---'}</>,
 							},
 							{
@@ -557,7 +557,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 				title='Bắt đầu cân'
 				note='Bạn có muốn thực hiện thao tác cân cho phiếu cân này không?'
 				onClose={() => setUuidPlay('')}
-				onSubmit={fucnStartBatchBill.mutate}
+				onSubmit={funcStartBatchBill.mutate}
 			/>
 			<Dialog
 				danger
@@ -565,7 +565,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 				title='Kết thúc cân'
 				note='Bạn có muốn thực hiện thao tác kết thúc cho phiếu cân này không?'
 				onClose={() => setUuidStop('')}
-				onSubmit={fucnStopBatchBill.mutate}
+				onSubmit={funcStopBatchBill.mutate}
 			/>
 		</div>
 	);

@@ -56,7 +56,7 @@ function MainScaleTable({}: PropsMainScaleTable) {
 		},
 	});
 
-	const fucnChangeStatus = useMutation({
+	const funcChangeStatus = useMutation({
 		mutationFn: () => {
 			return httpRequest({
 				showMessageFailed: true,
@@ -78,7 +78,7 @@ function MainScaleTable({}: PropsMainScaleTable) {
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnChangeStatus.isLoading} />
+			<Loading loading={funcChangeStatus.isLoading} />
 			<div className={styles.filter}>
 				<div className={styles.main_search}>
 					<div className={styles.search}>
@@ -231,7 +231,7 @@ function MainScaleTable({}: PropsMainScaleTable) {
 						? 'Bạn có chắc chắn muốn khóa cầu cân này?'
 						: 'Bạn có chắc chắn muốn mở khóa cầu cân này?'
 				}
-				onSubmit={fucnChangeStatus.mutate}
+				onSubmit={funcChangeStatus.mutate}
 			/>
 		</div>
 	);

@@ -29,7 +29,7 @@ function FormUpdateDryness({dataUpdateDryness, onClose}: PropsFormUpdateDryness)
 		}
 	}, [dataUpdateDryness]);
 
-	const fucnUpdateDrynessWeightSession = useMutation({
+	const funcUpdateDrynessWeightSession = useMutation({
 		mutationFn: (body: {uuids: string[]; dryness: number}) =>
 			httpRequest({
 				showMessageFailed: true,
@@ -57,7 +57,7 @@ function FormUpdateDryness({dataUpdateDryness, onClose}: PropsFormUpdateDryness)
 			return toastWarn({msg: 'Giá trị độ khô không hợp lệ!'});
 		}
 
-		return fucnUpdateDrynessWeightSession.mutate({
+		return funcUpdateDrynessWeightSession.mutate({
 			uuids: dataUpdateDryness?.map((v: any) => v?.uuid),
 			dryness: Number(form.dryness),
 		});
@@ -65,7 +65,7 @@ function FormUpdateDryness({dataUpdateDryness, onClose}: PropsFormUpdateDryness)
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnUpdateDrynessWeightSession.isLoading} />
+			<Loading loading={funcUpdateDrynessWeightSession.isLoading} />
 			<h4>Cập nhật độ khô</h4>
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<Input

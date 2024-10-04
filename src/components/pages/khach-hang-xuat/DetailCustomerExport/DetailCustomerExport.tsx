@@ -112,7 +112,7 @@ function DetailCustomerExport({}: PropsDetailCustomerExport) {
 					</tr>
 					<tr>
 						<td>
-							<span>Phân loại gỗ:</span>
+							<span>Phân loại hàng:</span>
 							<span style={{marginLeft: '6px', color: '#2A85FF'}}>
 								{detailCustomer?.isSift == TYPE_SIFT.CAN_SANG
 									? 'Cần sàng'
@@ -185,7 +185,7 @@ function DetailCustomerExport({}: PropsDetailCustomerExport) {
 								rounded_2
 								onClick={() => setOpenCreate(true)}
 							>
-								Thêm loại gỗ
+								Thêm loại hàng
 							</Button>
 						</div>
 					)}
@@ -206,7 +206,7 @@ function DetailCustomerExport({}: PropsDetailCustomerExport) {
 									render: (data: any, index: number) => <>{index + 1}</>,
 								},
 								{
-									title: 'Loại gỗ',
+									title: 'Loại hàng',
 									render: (data: any) => <>{data?.productTypeUu?.name}</>,
 								},
 								{

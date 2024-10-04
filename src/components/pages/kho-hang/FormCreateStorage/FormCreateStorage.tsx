@@ -138,7 +138,7 @@ function FormCreateStorage({draggedElements, onClose}: PropsFormCreateStorage) {
 		}));
 	};
 
-	const fucnCreateStorage = useMutation({
+	const funcCreateStorage = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -184,12 +184,12 @@ function FormCreateStorage({draggedElements, onClose}: PropsFormCreateStorage) {
 	});
 
 	const handleSubmit = async () => {
-		return fucnCreateStorage.mutate();
+		return funcCreateStorage.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnCreateStorage.isLoading} />
+			<Loading loading={funcCreateStorage.isLoading} />
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.wrapper}>
 					<h4>Thêm kho hàng</h4>
@@ -245,11 +245,11 @@ function FormCreateStorage({draggedElements, onClose}: PropsFormCreateStorage) {
 							<Select
 								isSearch
 								name='productUuid'
-								placeholder='Chọn loại gỗ'
+								placeholder='Chọn loại hàng'
 								value={form?.productUuid}
 								label={
 									<span>
-										Thuộc loại gỗ <span style={{color: 'red'}}>*</span>
+										Thuộc loại hàng <span style={{color: 'red'}}>*</span>
 									</span>
 								}
 							>

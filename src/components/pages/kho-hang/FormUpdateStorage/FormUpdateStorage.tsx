@@ -172,7 +172,7 @@ function FormUpdateStorage({onClose}: PropsFormUpdateStorage) {
 		enabled: !!form.qualityUuid && !!form?.productUuid,
 	});
 
-	const fucnCreateStorage = useMutation({
+	const funcCreateStorage = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -222,12 +222,12 @@ function FormUpdateStorage({onClose}: PropsFormUpdateStorage) {
 	});
 
 	const handleSubmit = async () => {
-		return fucnCreateStorage.mutate();
+		return funcCreateStorage.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnCreateStorage.isLoading} />
+			<Loading loading={funcCreateStorage.isLoading} />
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.wrapper}>
 					<h4>Chỉnh sửa kho hàng</h4>
@@ -285,12 +285,12 @@ function FormUpdateStorage({onClose}: PropsFormUpdateStorage) {
 							<Select
 								isSearch
 								name='productUuid'
-								placeholder='Chọn loại gỗ'
+								placeholder='Chọn loại hàng'
 								value={form?.productUuid}
 								readOnly={true}
 								label={
 									<span>
-										Thuộc loại gỗ <span style={{color: 'red'}}>*</span>
+										Thuộc loại hàng <span style={{color: 'red'}}>*</span>
 									</span>
 								}
 							>

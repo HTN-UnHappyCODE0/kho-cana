@@ -109,7 +109,7 @@ function MainPageCreateTruck({}: PropsMainPageCreateTruck) {
 		enabled: listRegency.isSuccess,
 	});
 
-	const fucnCreateTruck = useMutation({
+	const funcCreateTruck = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -161,12 +161,12 @@ function MainPageCreateTruck({}: PropsMainPageCreateTruck) {
 			});
 		}
 
-		return fucnCreateTruck.mutate();
+		return funcCreateTruck.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnCreateTruck.isLoading} />
+			<Loading loading={funcCreateTruck.isLoading} />
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>

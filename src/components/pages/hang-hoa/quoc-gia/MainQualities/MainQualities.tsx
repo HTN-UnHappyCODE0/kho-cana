@@ -58,7 +58,7 @@ function MainQualities({}: PropsMainQualities) {
 		},
 	});
 
-	const fucnChangeStatus = useMutation({
+	const funcChangeStatus = useMutation({
 		mutationFn: () => {
 			return httpRequest({
 				showMessageFailed: true,
@@ -80,7 +80,7 @@ function MainQualities({}: PropsMainQualities) {
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnChangeStatus.isLoading} />
+			<Loading loading={funcChangeStatus.isLoading} />
 			<div className={styles.filter}>
 				<div className={styles.main_search}>
 					<div className={styles.search}>
@@ -231,7 +231,7 @@ function MainQualities({}: PropsMainQualities) {
 						? 'Bạn có chắc chắn muốn khóa quốc gia này?'
 						: 'Bạn có chắc chắn muốn mở khóa quốc gia này?'
 				}
-				onSubmit={fucnChangeStatus.mutate}
+				onSubmit={funcChangeStatus.mutate}
 			/>
 		</div>
 	);

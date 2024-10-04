@@ -191,7 +191,7 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 						) : null}
 
 						<div className={styles.item_table}>
-							<p>Loại gỗ:</p>
+							<p>Loại hàng:</p>
 							<span>{detailBatchBill?.productTypeUu?.name || '---'}</span>
 						</div>
 

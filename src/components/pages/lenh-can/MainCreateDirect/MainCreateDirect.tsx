@@ -202,7 +202,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 		},
 	});
 
-	const fucnCreateBatchBill = useMutation({
+	const funcCreateBatchBill = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -258,7 +258,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 			return toastWarn({msg: 'Vui lòng chọn khách hàng xuất!'});
 		}
 		if (!form.productTypeUuid) {
-			return toastWarn({msg: 'Vui lòng chọn loại gỗ!'});
+			return toastWarn({msg: 'Vui lòng chọn loại hàng!'});
 		}
 		if (!form.specificationsUuid) {
 			return toastWarn({msg: 'Vui lòng chọn quy cách!'});
@@ -277,12 +277,12 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 			return toastWarn({msg: 'Ngày dự kiến không hợp lệ!'});
 		}
 
-		return fucnCreateBatchBill.mutate();
+		return funcCreateBatchBill.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnCreateBatchBill.isLoading} />
+			<Loading loading={funcCreateBatchBill.isLoading} />
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>
@@ -514,11 +514,11 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 						<Select
 							isSearch
 							name='productTypeUuid'
-							placeholder='Chọn loại gỗ'
+							placeholder='Chọn loại hàng'
 							value={form?.productTypeUuid}
 							label={
 								<span>
-									Loại gỗ<span style={{color: 'red'}}>*</span>
+									Loại hàng<span style={{color: 'red'}}>*</span>
 								</span>
 							}
 						>

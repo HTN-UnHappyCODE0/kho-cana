@@ -313,7 +313,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 		},
 	});
 
-	const fucnUpdateBatchBill = useMutation({
+	const funcUpdateBatchBill = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -369,7 +369,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 			return toastWarn({msg: 'Vui lòng chọn bãi đích!'});
 		}
 		if (!form.productTypeUuid) {
-			return toastWarn({msg: 'Vui lòng chọn loại gỗ!'});
+			return toastWarn({msg: 'Vui lòng chọn loại hàng!'});
 		}
 		if (!form.specificationsUuid) {
 			return toastWarn({msg: 'Vui lòng chọn quy cách!'});
@@ -392,7 +392,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 		) {
 			return setOpenWarning(true);
 		} else {
-			return fucnUpdateBatchBill.mutate();
+			return funcUpdateBatchBill.mutate();
 		}
 	};
 
@@ -401,12 +401,12 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 			return toastWarn({msg: 'Vui lòng nhập lý do thay đổi!'});
 		}
 
-		return fucnUpdateBatchBill.mutate();
+		return funcUpdateBatchBill.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnUpdateBatchBill.isLoading} />
+			<Loading loading={funcUpdateBatchBill.isLoading} />
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>
@@ -748,11 +748,11 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 						<Select
 							isSearch
 							name='productTypeUuid'
-							placeholder='Chọn loại gỗ'
+							placeholder='Chọn loại hàng'
 							value={form?.productTypeUuid}
 							label={
 								<span>
-									Loại gỗ<span style={{color: 'red'}}>*</span>
+									Loại hàng<span style={{color: 'red'}}>*</span>
 								</span>
 							}
 						>
