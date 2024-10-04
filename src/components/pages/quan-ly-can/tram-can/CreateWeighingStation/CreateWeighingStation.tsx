@@ -97,7 +97,7 @@ function CreateWeighingStation({}: PropsCreateWeighingStation) {
 		enabled: !!form?.dictrictId,
 	});
 
-	const fucnAddScalesstation = useMutation({
+	const funcAddScalesstation = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -147,12 +147,12 @@ function CreateWeighingStation({}: PropsCreateWeighingStation) {
 			return toastWarn({msg: 'Vui lòng chọn xã/phường!'});
 		}
 
-		return fucnAddScalesstation.mutate();
+		return funcAddScalesstation.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnAddScalesstation.isLoading} />
+			<Loading loading={funcAddScalesstation.isLoading} />
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>

@@ -108,7 +108,7 @@ function DashboardWarehouse({isTotal, total, productTotal, qualityTotal, specTot
 					</div>
 					<div className={styles.main_item_info}>
 						<ItemInfoChart
-							text='Loại gỗ'
+							text='Loại hàng'
 							arrayData={
 								isTotal
 									? productTotal?.map((v) => ({

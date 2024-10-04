@@ -34,7 +34,7 @@ function FormUpdateQualities({dataUpdateQualities, onClose}: PropsFormUpdateQual
 		});
 	}, [dataUpdateQualities]);
 
-	const fucnUpdateQualities = useMutation({
+	const funcUpdateQualities = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -72,12 +72,12 @@ function FormUpdateQualities({dataUpdateQualities, onClose}: PropsFormUpdateQual
 			});
 		}
 
-		return fucnUpdateQualities.mutate();
+		return funcUpdateQualities.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnUpdateQualities.isLoading} />
+			<Loading loading={funcUpdateQualities.isLoading} />
 			<h4>Chỉnh sửa quốc gia</h4>
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<Input

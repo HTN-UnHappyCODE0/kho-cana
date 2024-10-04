@@ -40,7 +40,7 @@ function CreateScaleTable({onClose}: PropsCreateScaleTable) {
 		},
 	});
 
-	const fucnAddScalesMachine = useMutation({
+	const funcAddScalesMachine = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -73,12 +73,12 @@ function CreateScaleTable({onClose}: PropsCreateScaleTable) {
 			return toastWarn({msg: 'Vui lòng chọn trạm cân!'});
 		}
 
-		return fucnAddScalesMachine.mutate();
+		return funcAddScalesMachine.mutate();
 	};
 
 	return (
 		<Fragment>
-			<Loading loading={fucnAddScalesMachine.isLoading} />
+			<Loading loading={funcAddScalesMachine.isLoading} />
 			<div className={styles.container}>
 				<h4>Thêm cầu cân</h4>
 				<Form form={form} setForm={setForm} onSubmit={handleSubmit}>

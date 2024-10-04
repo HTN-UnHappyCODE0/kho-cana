@@ -74,7 +74,7 @@ function MainWeighingStation({}: PropsMainWeighingStation) {
 		},
 	});
 
-	const fucnChangeStatus = useMutation({
+	const funcChangeStatus = useMutation({
 		mutationFn: () => {
 			return httpRequest({
 				showMessageFailed: true,
@@ -95,7 +95,7 @@ function MainWeighingStation({}: PropsMainWeighingStation) {
 	});
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnChangeStatus.isLoading} />
+			<Loading loading={funcChangeStatus.isLoading} />
 			<div className={styles.filter}>
 				<div className={styles.main_search}>
 					<div className={styles.search}>
@@ -269,7 +269,7 @@ function MainWeighingStation({}: PropsMainWeighingStation) {
 						? 'Bạn có chắc chắn muốn khóa trạm cân này?'
 						: 'Bạn có chắc chắn muốn mở khóa trạm cân này?'
 				}
-				onSubmit={fucnChangeStatus.mutate}
+				onSubmit={funcChangeStatus.mutate}
 			/>
 		</div>
 	);

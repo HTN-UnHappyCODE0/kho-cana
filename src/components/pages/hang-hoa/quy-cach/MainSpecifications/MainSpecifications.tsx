@@ -56,7 +56,7 @@ function MainSpecifications({}: PropsMainSpecifications) {
 		},
 	});
 
-	const fucnChangeStatus = useMutation({
+	const funcChangeStatus = useMutation({
 		mutationFn: () => {
 			return httpRequest({
 				showMessageFailed: true,
@@ -78,7 +78,7 @@ function MainSpecifications({}: PropsMainSpecifications) {
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnChangeStatus.isLoading} />
+			<Loading loading={funcChangeStatus.isLoading} />
 			<div className={styles.filter}>
 				<div className={styles.main_search}>
 					<div className={styles.search}>
@@ -138,7 +138,7 @@ function MainSpecifications({}: PropsMainSpecifications) {
 								render: (data: ISpecifications) => <>{data?.qualityUu?.name || '---'}</>,
 							},
 							{
-								title: 'Loại gỗ',
+								title: 'Loại hàng',
 								render: (data: ISpecifications) => <>{data?.productTypeUu?.name || '---'}</>,
 							},
 							{
@@ -263,7 +263,7 @@ function MainSpecifications({}: PropsMainSpecifications) {
 						? 'Bạn có chắc chắn muốn khóa quy cách này?'
 						: 'Bạn có chắc chắn muốn mở khóa quy cách này?'
 				}
-				onSubmit={fucnChangeStatus.mutate}
+				onSubmit={funcChangeStatus.mutate}
 			/>
 		</div>
 	);

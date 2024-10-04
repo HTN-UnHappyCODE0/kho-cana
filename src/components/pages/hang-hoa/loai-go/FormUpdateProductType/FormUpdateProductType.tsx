@@ -36,12 +36,12 @@ function FormUpdateProductType({dataUpdateProductType, onClose}: PropsFormUpdate
 		});
 	}, [dataUpdateProductType]);
 
-	const fucnUpdateProductType = useMutation({
+	const funcUpdateProductType = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
-				msgSuccess: 'Chỉnh sửa loại gỗ thành công!',
+				msgSuccess: 'Chỉnh sửa loại hàng thành công!',
 				http: wareServices.upsertProductType({
 					uuid: form.uuid,
 					name: form.name,
@@ -72,22 +72,22 @@ function FormUpdateProductType({dataUpdateProductType, onClose}: PropsFormUpdate
 	const handleSubmit = () => {
 		if (!form.uuid) {
 			return toastWarn({
-				msg: 'Không tìm thấy loại gỗ!',
+				msg: 'Không tìm thấy loại hàng!',
 			});
 		}
 
-		return fucnUpdateProductType.mutate();
+		return funcUpdateProductType.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnUpdateProductType.isLoading} />
-			<h4>Chỉnh sửa loại gỗ</h4>
+			<Loading loading={funcUpdateProductType.isLoading} />
+			<h4>Chỉnh sửa loại hàng</h4>
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={clsx('mb')}>
 					<div className={styles.item}>
 						<label className={styles.label}>
-							Loại gỗ <span style={{color: 'red'}}>*</span>
+							Loại hàng hóa <span style={{color: 'red'}}>*</span>
 						</label>
 						<div className={styles.group_radio}>
 							<div className={styles.item_radio}>
@@ -145,10 +145,10 @@ function FormUpdateProductType({dataUpdateProductType, onClose}: PropsFormUpdate
 					max={255}
 					type='text'
 					blur={true}
-					placeholder='Nhập tên loại gỗ'
+					placeholder='Nhập tên loại hàng'
 					label={
 						<span>
-							Tên loại gỗ<span style={{color: 'red'}}> *</span>
+							Tên loại hàng<span style={{color: 'red'}}> *</span>
 						</span>
 					}
 				/>

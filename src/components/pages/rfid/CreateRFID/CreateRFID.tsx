@@ -39,7 +39,7 @@ function CreateRFID({onClose}: PropsCreateRFID) {
 		},
 	});
 
-	const fucnCreateRFID = useMutation({
+	const funcCreateRFID = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -70,11 +70,11 @@ function CreateRFID({onClose}: PropsCreateRFID) {
 	});
 
 	const handleSubmit = () => {
-		return fucnCreateRFID.mutate();
+		return funcCreateRFID.mutate();
 	};
 	return (
 		<Fragment>
-			<Loading loading={fucnCreateRFID.isLoading} />
+			<Loading loading={funcCreateRFID.isLoading} />
 			<div className={styles.container}>
 				<h4>Thêm RFID</h4>
 				<Form form={form} setForm={setForm} onSubmit={handleSubmit}>

@@ -111,7 +111,7 @@ function DetailCustomerService({}: PropsDetailCustomerService) {
 					</tr>
 					<tr>
 						<td>
-							<span>Phân loại gỗ:</span>
+							<span>Phân loại hàng:</span>
 							<span style={{marginLeft: '6px', color: '#2A85FF'}}>
 								{detailCustomer?.isSift == TYPE_SIFT.CAN_SANG
 									? 'Cần sàng'
@@ -175,7 +175,7 @@ function DetailCustomerService({}: PropsDetailCustomerService) {
 
 			<div className={clsx('mt')}>
 				<div className={styles.main_table}>
-					<h1 className={styles.list_title}>Danh sách loại gỗ</h1>
+					<h1 className={styles.list_title}>Danh sách loại hàng</h1>
 					{detailCustomer?.status != STATUS_CUSTOMER.DA_XOA && (
 						<div>
 							<Button
@@ -184,7 +184,7 @@ function DetailCustomerService({}: PropsDetailCustomerService) {
 								rounded_2
 								onClick={() => setOpenCreate(true)}
 							>
-								Thêm loại gỗ
+								Thêm loại hàng
 							</Button>
 						</div>
 					)}
@@ -195,7 +195,7 @@ function DetailCustomerService({}: PropsDetailCustomerService) {
 					<DataWrapper
 						data={listPriceTagCustomer?.data?.items || []}
 						loading={listPriceTagCustomer?.isLoading}
-						noti={<Noti disableButton des='Hiện tại chưa có loại gỗ nào!' />}
+						noti={<Noti disableButton des='Hiện tại chưa có loại hàng nào!' />}
 					>
 						<Table
 							data={listPriceTagCustomer?.data?.items || []}
@@ -205,7 +205,7 @@ function DetailCustomerService({}: PropsDetailCustomerService) {
 									render: (data: any, index: number) => <>{index + 1}</>,
 								},
 								{
-									title: 'Loại gỗ',
+									title: 'Loại hàng',
 									render: (data: any) => <>{data?.productTypeUu?.name}</>,
 								},
 								{

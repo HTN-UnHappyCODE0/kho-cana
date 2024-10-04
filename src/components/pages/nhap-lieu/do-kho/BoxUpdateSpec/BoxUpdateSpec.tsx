@@ -48,7 +48,7 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 		);
 	};
 
-	const fucnUpdateSpecWeightSession = useMutation({
+	const funcUpdateSpecWeightSession = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -79,12 +79,12 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 			return toastWarn({msg: 'Nhập giá trị cho tiêu chí quy cách!'});
 		}
 
-		return fucnUpdateSpecWeightSession.mutate();
+		return funcUpdateSpecWeightSession.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnUpdateSpecWeightSession.isLoading} />
+			<Loading loading={funcUpdateSpecWeightSession.isLoading} />
 			<div className={styles.main}>
 				{dataRules?.map((v, i) => (
 					<div key={i} className={styles.item}>

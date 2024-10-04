@@ -95,7 +95,7 @@ function MainDetailWeighingStation({}: PropsMainDetailWeighingStation) {
 		},
 	});
 
-	const fucnChangeStatus = useMutation({
+	const funcChangeStatus = useMutation({
 		mutationFn: () => {
 			return httpRequest({
 				showMessageFailed: true,
@@ -117,7 +117,7 @@ function MainDetailWeighingStation({}: PropsMainDetailWeighingStation) {
 
 	return (
 		<Fragment>
-			<Loading loading={funcDeleteScalesStation.isLoading || fucnChangeStatus.isLoading} />
+			<Loading loading={funcDeleteScalesStation.isLoading || funcChangeStatus.isLoading} />
 			<div className={styles.header}>
 				<Link href={PATH.TramCan} className={styles.header_title}>
 					<IoArrowBackOutline fontSize={20} fontWeight={600} />
@@ -300,7 +300,7 @@ function MainDetailWeighingStation({}: PropsMainDetailWeighingStation) {
 						? 'Bạn có chắc chắn muốn khóa trạm cân này?'
 						: 'Bạn có chắc chắn muốn mở khóa trạm cân này?'
 				}
-				onSubmit={fucnChangeStatus.mutate}
+				onSubmit={funcChangeStatus.mutate}
 			/>
 
 			<Popup open={openAddScalesMachine} onClose={() => setOpenAddScalesMachine(false)}>

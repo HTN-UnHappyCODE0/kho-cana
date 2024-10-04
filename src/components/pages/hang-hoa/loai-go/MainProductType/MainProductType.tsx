@@ -60,12 +60,12 @@ function MainProductType({}: PropsMainProductType) {
 		},
 	});
 
-	const fucnChangeStatus = useMutation({
+	const funcChangeStatus = useMutation({
 		mutationFn: () => {
 			return httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
-				msgSuccess: dataStatus?.status == CONFIG_STATUS.HOAT_DONG ? 'Khóa loại gỗ thành công!' : 'Mở khóa loại gỗ thành công!',
+				msgSuccess: dataStatus?.status == CONFIG_STATUS.HOAT_DONG ? 'Khóa loại hàng thành công!' : 'Mở khóa loại hàng thành công!',
 				http: wareServices.changeStatusProductType({
 					uuid: dataStatus?.uuid!,
 					status: dataStatus?.status! == CONFIG_STATUS.HOAT_DONG ? CONFIG_STATUS.BI_KHOA : CONFIG_STATUS.HOAT_DONG,
@@ -82,16 +82,16 @@ function MainProductType({}: PropsMainProductType) {
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnChangeStatus.isLoading} />
+			<Loading loading={funcChangeStatus.isLoading} />
 			<div className={styles.filter}>
 				<div className={styles.main_search}>
 					<div className={styles.search}>
-						<Search keyName='_keyword' placeholder='Tìm kiếm theo mã loại gỗ và tên loại gỗ ' />
+						<Search keyName='_keyword' placeholder='Tìm kiếm theo mã và tên loại hàng' />
 					</div>
 					<div className={styles.filter}>
 						<FilterCustom
 							isSearch
-							name='Loại hàng'
+							name='Loại hàng hóa'
 							query='_type'
 							listFilter={[
 								{
@@ -135,7 +135,7 @@ function MainProductType({}: PropsMainProductType) {
 						icon={<Image alt='icon add' src={icons.add} width={20} height={20} />}
 						onClick={() => setOpenCreate(true)}
 					>
-						Thêm loại gỗ
+						Thêm loại hàng
 					</Button>
 				</div>
 			</div>
@@ -145,9 +145,9 @@ function MainProductType({}: PropsMainProductType) {
 					loading={listProductType?.isLoading}
 					noti={
 						<Noti
-							titleButton='Thêm loại gỗ'
+							titleButton='Thêm loại hàng'
 							onClick={() => setOpenCreate(true)}
-							des='Hiện tại chưa có loại gỗ nào, thêm ngay?'
+							des='Hiện tại chưa có loại hàng nào, thêm ngay?'
 						/>
 					}
 				>
@@ -159,16 +159,16 @@ function MainProductType({}: PropsMainProductType) {
 								render: (data: IProductType, index: number) => <>{index + 1}</>,
 							},
 							{
-								title: 'Mã loại gỗ',
+								title: 'Mã loại hàng',
 								fixedLeft: true,
 								render: (data: IProductType) => <>{data?.code || '---'}</>,
 							},
 							{
-								title: 'Loại gỗ',
+								title: 'Loại hàng',
 								render: (data: IProductType) => <>{data?.name || '---'}</>,
 							},
 							{
-								title: 'Loại hàng',
+								title: 'Loại hàng hóa',
 								render: (data: IProductType) => (
 									<>
 										{data?.type == TYPE_PRODUCT.CONG_TY && 'KV cảng xuất khẩu'}
@@ -233,7 +233,7 @@ function MainProductType({}: PropsMainProductType) {
 										<IconCustom
 											lock
 											icon={<HiOutlineLockClosed size='22' />}
-											tooltip={data.status == CONFIG_STATUS.HOAT_DONG ? 'Khóa loại gỗ' : 'Dùng loại gỗ'}
+											tooltip={data.status == CONFIG_STATUS.HOAT_DONG ? 'Khóa loại hàng' : 'Dùng loại hàng'}
 											color='#777E90'
 											onClick={() => {
 												setDataStatus(data);
@@ -265,13 +265,13 @@ function MainProductType({}: PropsMainProductType) {
 				danger
 				open={!!dataStatus}
 				onClose={() => setDataStatus(null)}
-				title={dataStatus?.status == CONFIG_STATUS.HOAT_DONG ? 'Khóa loại gỗ' : 'Mở khóa loại gỗ'}
+				title={dataStatus?.status == CONFIG_STATUS.HOAT_DONG ? 'Khóa loại hàng' : 'Mở khóa loại hàng'}
 				note={
 					dataStatus?.status == CONFIG_STATUS.HOAT_DONG
-						? 'Bạn có chắc chắn muốn khóa loại gỗ này?'
-						: 'Bạn có chắc chắn muốn mở khóa loại gỗ này?'
+						? 'Bạn có chắc chắn muốn khóa loại hàng này?'
+						: 'Bạn có chắc chắn muốn mở khóa loại hàng này?'
 				}
-				onSubmit={fucnChangeStatus.mutate}
+				onSubmit={funcChangeStatus.mutate}
 			/>
 		</div>
 	);

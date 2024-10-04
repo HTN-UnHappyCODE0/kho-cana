@@ -24,12 +24,12 @@ function FormCreateProductType({onClose}: PropsFormCreateProductType) {
 		colorShow: string;
 	}>({name: '', description: '', colorShow: '#16DBCC', productType: TYPE_PRODUCT.CONG_TY});
 
-	const fucnCreateProductType = useMutation({
+	const funcCreateProductType = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
-				msgSuccess: 'Thêm mới loại gỗ thành công!',
+				msgSuccess: 'Thêm mới loại hàng thành công!',
 				http: wareServices.upsertProductType({
 					uuid: '',
 					name: form.name,
@@ -57,18 +57,18 @@ function FormCreateProductType({onClose}: PropsFormCreateProductType) {
 	});
 
 	const handleSubmit = () => {
-		return fucnCreateProductType.mutate();
+		return funcCreateProductType.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnCreateProductType.isLoading} />
-			<h4>Thêm loại gỗ</h4>
+			<Loading loading={funcCreateProductType.isLoading} />
+			<h4>Thêm loại hàng</h4>
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={clsx('mb')}>
 					<div className={styles.item}>
 						<label className={styles.label}>
-							Loại gỗ <span style={{color: 'red'}}>*</span>
+							Loại hàng hóa <span style={{color: 'red'}}>*</span>
 						</label>
 						<div className={styles.group_radio}>
 							<div className={styles.item_radio}>
@@ -126,10 +126,10 @@ function FormCreateProductType({onClose}: PropsFormCreateProductType) {
 					max={255}
 					type='text'
 					blur={true}
-					placeholder='Nhập tên loại gỗ'
+					placeholder='Nhập tên loại hàng'
 					label={
 						<span>
-							Tên loại gỗ<span style={{color: 'red'}}> *</span>
+							Tên loại hàng<span style={{color: 'red'}}> *</span>
 						</span>
 					}
 				/>

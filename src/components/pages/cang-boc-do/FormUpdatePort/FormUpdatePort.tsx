@@ -19,7 +19,7 @@ function FormUpdatePort({listBatchBillSubmit, onClose}: PropsFormUpdatePort) {
 		port: '',
 	});
 
-	const fucnUpdatePort = useMutation({
+	const funcUpdatePort = useMutation({
 		mutationFn: (body: {uuids: string[]; port: string}) =>
 			httpRequest({
 				showMessageFailed: true,
@@ -43,7 +43,7 @@ function FormUpdatePort({listBatchBillSubmit, onClose}: PropsFormUpdatePort) {
 	});
 
 	const handleSubmit = () => {
-		return fucnUpdatePort.mutate({
+		return funcUpdatePort.mutate({
 			uuids: listBatchBillSubmit?.map((v: any) => v?.uuid),
 			port: form.port,
 		});
@@ -51,7 +51,7 @@ function FormUpdatePort({listBatchBillSubmit, onClose}: PropsFormUpdatePort) {
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnUpdatePort.isLoading} />
+			<Loading loading={funcUpdatePort.isLoading} />
 			<h4>Cập nhật cảng bốc dỡ</h4>
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<Input

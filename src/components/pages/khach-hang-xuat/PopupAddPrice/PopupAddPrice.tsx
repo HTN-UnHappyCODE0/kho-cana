@@ -133,7 +133,7 @@ function PopupAddPrice({customerName, onClose, typePartner}: PropsPopupAddPrice)
 		},
 	});
 
-	const fucnAddSpecCustomer = useMutation({
+	const funcAddSpecCustomer = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -176,19 +176,19 @@ function PopupAddPrice({customerName, onClose, typePartner}: PropsPopupAddPrice)
 			return toastWarn({msg: 'Vui lòng chọn loại quy cách!'});
 		}
 		if (!form.productTypeUuid) {
-			return toastWarn({msg: 'Vui lòng chọn loại gỗ!'});
+			return toastWarn({msg: 'Vui lòng chọn loại hàng!'});
 		}
 		// if (priceTag.name === undefined || priceTag.name === '') {
 		// 	return toastWarn({msg: 'Vui lòng chọn giá tiền áp dụng!'});
 		// }
 
-		return fucnAddSpecCustomer.mutate();
+		return funcAddSpecCustomer.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnAddSpecCustomer.isLoading} />
-			<h4 className={styles.title}>Thêm loại gỗ</h4>
+			<Loading loading={funcAddSpecCustomer.isLoading} />
+			<h4 className={styles.title}>Thêm loại hàng</h4>
 			<Form form={form} setForm={setForm}>
 				<div className='mt'>
 					<Input
@@ -208,10 +208,10 @@ function PopupAddPrice({customerName, onClose, typePartner}: PropsPopupAddPrice)
 						isSearch
 						name='productTypeUuid'
 						value={form.productTypeUuid}
-						placeholder='Lựa chọn loại gỗ'
+						placeholder='Lựa chọn loại hàng'
 						label={
 							<span>
-								Loại gỗ<span style={{color: 'red'}}>*</span>
+								Loại hàng<span style={{color: 'red'}}>*</span>
 							</span>
 						}
 					>

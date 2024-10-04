@@ -141,7 +141,7 @@ function TableDetail({}: PropsTableDetail) {
 								),
 							},
 							{
-								title: 'Loại gỗ',
+								title: 'Loại hàng',
 								render: (data: IWeightSession) => <>{data?.producTypeUu?.name || '---'}</>,
 							},
 							{

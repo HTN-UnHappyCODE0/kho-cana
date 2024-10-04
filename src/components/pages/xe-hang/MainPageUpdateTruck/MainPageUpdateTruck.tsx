@@ -141,7 +141,7 @@ function MainPageUpdateTruck({}: PropsMainPageUpdateTruck) {
 		enabled: listRegency.isSuccess,
 	});
 
-	const fucnUpdateTruck = useMutation({
+	const funcUpdateTruck = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -182,12 +182,12 @@ function MainPageUpdateTruck({}: PropsMainPageUpdateTruck) {
 			});
 		}
 
-		return fucnUpdateTruck.mutate();
+		return funcUpdateTruck.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnUpdateTruck.isLoading} />
+			<Loading loading={funcUpdateTruck.isLoading} />
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>

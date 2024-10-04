@@ -158,7 +158,7 @@ function MainPageBillService({}: PropsMainPageBillService) {
 			},
 		}
 	);
-	const fucnStartBatchBill = useMutation({
+	const funcStartBatchBill = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -180,7 +180,7 @@ function MainPageBillService({}: PropsMainPageBillService) {
 	});
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnStartBatchBill.isLoading} />
+			<Loading loading={funcStartBatchBill.isLoading} />
 			<div className={styles.header}>
 				<div className={styles.main_search}>
 					<div className={styles.search}>
@@ -199,7 +199,7 @@ function MainPageBillService({}: PropsMainPageBillService) {
 
 					<FilterCustom
 						isSearch
-						name='Loại gỗ'
+						name='Loại hàng'
 						query='_productTypeUuid'
 						listFilter={listProductType?.data?.map((v: any) => ({
 							id: v?.uuid,
@@ -323,7 +323,7 @@ function MainPageBillService({}: PropsMainPageBillService) {
 								render: (data: IDataBill) => <>{convertCoin(data?.batchsUu?.weightIntent) || '---'}</>,
 							},
 							{
-								title: 'Loại gỗ',
+								title: 'Loại hàng',
 								render: (data: IDataBill) => <>{data?.productTypeUu?.name || '---'}</>,
 							},
 							{
@@ -415,7 +415,7 @@ function MainPageBillService({}: PropsMainPageBillService) {
 				title='Bắt đầu cân'
 				note='Bạn có muốn thực hiện thao tác cân cho phiếu cân này không?'
 				onClose={() => setUuidPlay('')}
-				onSubmit={fucnStartBatchBill.mutate}
+				onSubmit={funcStartBatchBill.mutate}
 			/>
 			<Popup open={!!billUuid} onClose={() => setBilldUuid(null)}>
 				<PopupDeleteBill uuid={billUuid} onClose={() => setBilldUuid(null)} />

@@ -17,7 +17,7 @@ export default function Page() {
 			<LayoutPages
 				listPages={[
 					{
-						title: 'Loại gỗ',
+						title: 'Loại hàng',
 						url: PATH.HangHoaLoaiGo,
 					},
 					{

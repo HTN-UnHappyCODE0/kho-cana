@@ -159,7 +159,7 @@ function MainCreateService({}: PropsMainCreateService) {
 		},
 	});
 
-	const fucnCreateBatchBill = useMutation({
+	const funcCreateBatchBill = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -218,18 +218,18 @@ function MainCreateService({}: PropsMainCreateService) {
 			return toastWarn({msg: 'Vui lòng chọn trạm cân!'});
 		}
 		if (!form.productTypeUuid) {
-			return toastWarn({msg: 'Vui lòng chọn loại gỗ!'});
+			return toastWarn({msg: 'Vui lòng chọn loại hàng!'});
 		}
 		if (listTruckChecked.length == 0) {
 			return toastWarn({msg: 'Vui lòng chọn xe hàng!'});
 		}
 
-		return fucnCreateBatchBill.mutate();
+		return funcCreateBatchBill.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnCreateBatchBill.isLoading} />
+			<Loading loading={funcCreateBatchBill.isLoading} />
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>
@@ -434,11 +434,11 @@ function MainCreateService({}: PropsMainCreateService) {
 							<Select
 								isSearch
 								name='productTypeUuid'
-								placeholder='Chọn loại gỗ'
+								placeholder='Chọn loại hàng'
 								value={form?.productTypeUuid}
 								label={
 									<span>
-										Loại gỗ <span style={{color: 'red'}}>*</span>
+										Loại hàng <span style={{color: 'red'}}>*</span>
 									</span>
 								}
 							>

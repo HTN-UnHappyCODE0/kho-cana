@@ -123,7 +123,7 @@ export const Menu: {
 		title: 'Kế toán kho',
 		group: [
 			{title: 'Duyệt sản lượng', icon: icons.duyetsanluong, path: PATH.DuyetSanLuong, pathActive: PATH.DuyetSanLuong},
-			{title: 'Cảng bốc dỡ', icon: icons.cang, path: PATH.CangBocDo, pathActive: PATH.CangBocDo},
+			// {title: 'Cảng bốc dỡ', icon: icons.cang, path: PATH.CangBocDo, pathActive: PATH.CangBocDo},
 		],
 	},
 	{

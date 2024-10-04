@@ -42,7 +42,7 @@ function AddScalesMachine({onClose, nameScalesStation, uuidScalesStation, listSc
 		},
 	});
 
-	const fucnAddScalesMachine = useMutation({
+	const funcAddScalesMachine = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -78,12 +78,12 @@ function AddScalesMachine({onClose, nameScalesStation, uuidScalesStation, listSc
 			return toastWarn({msg: 'Vui lòng chọn cầu cân!'});
 		}
 
-		return fucnAddScalesMachine.mutate();
+		return funcAddScalesMachine.mutate();
 	};
 
 	return (
 		<Fragment>
-			<Loading loading={fucnAddScalesMachine.isLoading} />
+			<Loading loading={funcAddScalesMachine.isLoading} />
 			<div className={styles.container}>
 				<h4>Thêm cầu cân vào trạm cân</h4>
 				<Form form={form} setForm={setForm}>

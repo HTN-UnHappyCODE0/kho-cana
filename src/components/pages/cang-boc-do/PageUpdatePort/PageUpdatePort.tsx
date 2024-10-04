@@ -175,7 +175,7 @@ function PageUpdatePort({}: PropsPageUpdatePort) {
 					/>
 					<FilterCustom
 						isSearch
-						name='Loại gỗ'
+						name='Loại hàng'
 						query='_productTypeUuid'
 						listFilter={listProductType?.data?.map((v: any) => ({
 							id: v?.uuid,
@@ -249,7 +249,7 @@ function PageUpdatePort({}: PropsPageUpdatePort) {
 								),
 							},
 							{
-								title: 'Loại gỗ',
+								title: 'Loại hàng',
 								render: (data: ITableBillScale) => <>{data?.productTypeUu?.name || '---'}</>,
 							},
 							{

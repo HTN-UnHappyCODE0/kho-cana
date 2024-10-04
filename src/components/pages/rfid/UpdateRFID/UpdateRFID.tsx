@@ -55,7 +55,7 @@ function UpdateRFID({dataUpdateRFID, onClose}: PropsUpdateRFID) {
 		},
 	});
 
-	const fucnUpdateRFID = useMutation({
+	const funcUpdateRFID = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -87,12 +87,12 @@ function UpdateRFID({dataUpdateRFID, onClose}: PropsUpdateRFID) {
 	});
 
 	const handleSubmit = () => {
-		return fucnUpdateRFID.mutate();
+		return funcUpdateRFID.mutate();
 	};
 
 	return (
 		<Fragment>
-			<Loading loading={fucnUpdateRFID.isLoading} />
+			<Loading loading={funcUpdateRFID.isLoading} />
 			<div className={styles.container}>
 				<h4>Chỉnh sửa RFID</h4>
 				<Form form={form} setForm={setForm} onSubmit={handleSubmit}>

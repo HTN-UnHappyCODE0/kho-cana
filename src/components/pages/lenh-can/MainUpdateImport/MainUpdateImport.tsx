@@ -292,7 +292,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 		},
 	});
 
-	const fucnUpdateBatchBill = useMutation({
+	const funcUpdateBatchBill = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -347,7 +347,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 			return toastWarn({msg: 'Vui lòng chọn khách hàng!'});
 		}
 		if (!form.productTypeUuid) {
-			return toastWarn({msg: 'Vui lòng chọn loại gỗ!'});
+			return toastWarn({msg: 'Vui lòng chọn loại hàng!'});
 		}
 		if (!form.specificationsUuid) {
 			return toastWarn({msg: 'Vui lòng chọn quy cách!'});
@@ -376,12 +376,12 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 			}
 		}
 
-		return fucnUpdateBatchBill.mutate();
+		return funcUpdateBatchBill.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnUpdateBatchBill.isLoading} />
+			<Loading loading={funcUpdateBatchBill.isLoading} />
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>
@@ -629,11 +629,11 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 						<Select
 							isSearch
 							name='productTypeUuid'
-							placeholder='Chọn loại gỗ'
+							placeholder='Chọn loại hàng'
 							value={form?.productTypeUuid}
 							label={
 								<span>
-									Loại gỗ<span style={{color: 'red'}}>*</span>
+									Loại hàng<span style={{color: 'red'}}>*</span>
 								</span>
 							}
 						>

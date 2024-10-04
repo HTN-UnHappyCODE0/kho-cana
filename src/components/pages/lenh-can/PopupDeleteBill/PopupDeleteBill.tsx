@@ -19,7 +19,7 @@ function PopupDeleteBill({uuid, onClose}: PropsPopupDeleteBill) {
 		description: '',
 	});
 
-	const fucnDeleteBatchBill = useMutation({
+	const funcDeleteBatchBill = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -48,12 +48,12 @@ function PopupDeleteBill({uuid, onClose}: PropsPopupDeleteBill) {
 	});
 
 	const handleSubmit = () => {
-		return fucnDeleteBatchBill.mutate();
+		return funcDeleteBatchBill.mutate();
 	};
 
 	return (
 		<div className={clsx('effectZoom', styles.popup)}>
-			<Loading loading={fucnDeleteBatchBill.isLoading} />
+			<Loading loading={funcDeleteBatchBill.isLoading} />
 			<div className={styles.iconWarn}>
 				<IoHelpCircleOutline />
 			</div>

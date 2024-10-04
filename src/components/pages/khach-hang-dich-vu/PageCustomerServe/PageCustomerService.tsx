@@ -126,7 +126,7 @@ function PageCustomerService({}: PropsPageCustomerService) {
 								render: (data: ICustomer) => <>{data?.customerUu?.name || '---'}</>,
 							},
 							{
-								title: 'Loại gỗ',
+								title: 'Loại hàng',
 								render: (data: ICustomer) => <>{data?.productTypeUu?.name || '---'}</>,
 							},
 							{

@@ -9,15 +9,15 @@ export default function Page() {
 	return (
 		<Fragment>
 			<Head>
-				<title>Quản lý loại gỗ</title>
-				<meta name='description' content='Quản lý loại gỗ' />
+				<title>Quản lý loại hàng</title>
+				<meta name='description' content='Quản lý loại hàng' />
 				<meta name='viewport' content='width=device-width, initial-scale=1' />
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<LayoutPages
 				listPages={[
 					{
-						title: 'Loại gỗ',
+						title: 'Loại hàng',
 						url: PATH.HangHoaLoaiGo,
 					},
 					{
@@ -38,7 +38,7 @@ export default function Page() {
 
 Page.getLayout = function (Page: ReactElement) {
 	return (
-		<BaseLayout bgLight title='Quản lý loại gỗ'>
+		<BaseLayout bgLight title='Quản lý loại hàng'>
 			{Page}
 		</BaseLayout>
 	);

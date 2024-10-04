@@ -132,7 +132,7 @@ function CreateSpecifications({}: PropsCreateSpecifications) {
 		setDataRuler(newData);
 	};
 
-	const fucnCreateSpecifications = useMutation({
+	const funcCreateSpecifications = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -187,12 +187,12 @@ function CreateSpecifications({}: PropsCreateSpecifications) {
 			return toastWarn({msg: 'Vui lòng chọn màu!'});
 		}
 
-		return fucnCreateSpecifications.mutate();
+		return funcCreateSpecifications.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnCreateSpecifications.isLoading} />
+			<Loading loading={funcCreateSpecifications.isLoading} />
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>
@@ -266,7 +266,7 @@ function CreateSpecifications({}: PropsCreateSpecifications) {
 							}
 							label={
 								<span>
-									Loại gỗ <span style={{color: 'red'}}>*</span>
+									Loại hàng <span style={{color: 'red'}}>*</span>
 								</span>
 							}
 						>

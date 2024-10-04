@@ -165,7 +165,7 @@ function UpdateSpecifications({}: PropsUpdateSpecifications) {
 		setDataRuler(newData);
 	};
 
-	const fucnUpdateSpecifications = useMutation({
+	const funcUpdateSpecifications = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
@@ -220,12 +220,12 @@ function UpdateSpecifications({}: PropsUpdateSpecifications) {
 			return toastWarn({msg: 'Vui lòng chọn màu!'});
 		}
 
-		return fucnUpdateSpecifications.mutate();
+		return funcUpdateSpecifications.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={fucnUpdateSpecifications.isLoading} />
+			<Loading loading={funcUpdateSpecifications.isLoading} />
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>
@@ -302,7 +302,7 @@ function UpdateSpecifications({}: PropsUpdateSpecifications) {
 							}
 							label={
 								<span>
-									Loại gỗ <span style={{color: 'red'}}>*</span>
+									Loại hàng <span style={{color: 'red'}}>*</span>
 								</span>
 							}
 						>
