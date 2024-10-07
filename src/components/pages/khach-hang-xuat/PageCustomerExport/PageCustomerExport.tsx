@@ -82,12 +82,12 @@ function PageCustomerExport({}: PropsPageCustomerExport) {
 			<div className={styles.header}>
 				<div className={styles.main_search}>
 					<div className={styles.search}>
-						<Search keyName='_keyword' placeholder='Tìm kiếm theo tên khách hàng dịch vụ' />
+						<Search keyName='_keyword' placeholder='Tìm kiếm theo tên khách hàng xuất' />
 					</div>
 					<div className={styles.filter}>
 						<FilterCustom
 							isSearch
-							name='KV cảng xuất khẩu'
+							name='Khách hàng'
 							query='_partnerUuid'
 							listFilter={listPartner?.data?.map((v: any) => ({
 								id: v?.uuid,
@@ -169,7 +169,7 @@ function PageCustomerExport({}: PropsPageCustomerExport) {
 				<Pagination
 					currentPage={Number(_page) || 1}
 					total={listCustomerStorage?.data?.pagination?.totalCount}
-					pageSize={Number(_pageSize) || 20}
+					pageSize={Number(_pageSize) || 50}
 					dependencies={[_pageSize, _keyword, _partnerUuid]}
 				/>
 			</div>

@@ -422,7 +422,7 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 				</DataWrapper>
 				<Pagination
 					currentPage={Number(_page) || 1}
-					pageSize={Number(_pageSize) || 20}
+					pageSize={Number(_pageSize) || 50}
 					total={listBatch?.data?.pagination?.totalCount}
 					dependencies={[_pageSize, _keyword, _isBatch, _customerUuid, _productTypeUuid, _shipUuid, _status, _dateFrom, _dateTo]}
 				/>
