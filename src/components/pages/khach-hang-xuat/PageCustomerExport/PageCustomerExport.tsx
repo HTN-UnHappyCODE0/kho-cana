@@ -37,7 +37,7 @@ function PageCustomerExport({}: PropsPageCustomerExport) {
 				isDropdown: true,
 				http: partnerServices.listPartner({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -59,7 +59,7 @@ function PageCustomerExport({}: PropsPageCustomerExport) {
 				isList: true,
 				http: customerServices.listCustomerStorage({
 					page: Number(_page) || 1,
-					pageSize: Number(_pageSize) || 20,
+					pageSize: Number(_pageSize) || 50,
 					keyword: (_keyword as string) || '',
 					specUuid: '',
 					userUuid: '',

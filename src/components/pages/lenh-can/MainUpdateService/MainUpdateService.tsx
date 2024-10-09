@@ -38,6 +38,8 @@ import batchBillServices from '~/services/batchBillServices';
 import {IDetailBatchBill} from '../MainDetailBill/interfaces';
 import shipServices from '~/services/shipServices';
 import scalesStationServices from '~/services/scalesStationServices';
+import FormReasonUpdateBill from '../FormReasonUpdateBill';
+import Popup from '~/components/common/Popup';
 
 function MainUpdateService({}: PropsMainUpdateService) {
 	const router = useRouter();
@@ -46,6 +48,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 
 	const [listTruckChecked, setListTruckChecked] = useState<any[]>([]);
 	const [listTruckBatchBill, setListTruckBatchBill] = useState<any[]>([]);
+	const [openWarning, setOpenWarning] = useState<boolean>(false);
 
 	const [form, setForm] = useState<IFormUpdateService>({
 		batchUuid: '',
@@ -62,9 +65,10 @@ function MainUpdateService({}: PropsMainUpdateService) {
 		code: '',
 		reason: '',
 		scaleStationUuid: '',
+		portname: '',
 	});
 
-	useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
+	const {data: detailBatchBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
 		queryFn: () =>
 			httpRequest({
 				http: batchBillServices.detailBatchbill({
@@ -88,6 +92,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 					code: data?.code,
 					reason: '',
 					scaleStationUuid: data?.scalesStationUu?.uuid || '',
+					portname: data?.port || '',
 				});
 
 				setListTruckChecked(
@@ -115,7 +120,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 				isDropdown: true,
 				http: customerServices.listCustomer({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -139,7 +144,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 				isDropdown: true,
 				http: shipServices.listShip({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -158,7 +163,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 				isDropdown: true,
 				http: wareServices.listProductType({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -178,7 +183,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 				isDropdown: true,
 				http: scalesStationServices.listScalesStation({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					companyUuid: '',
 					status: CONFIG_STATUS.HOAT_DONG,
@@ -198,7 +203,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 				isDropdown: true,
 				http: truckServices.listTruck({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -244,6 +249,8 @@ function MainUpdateService({}: PropsMainUpdateService) {
 					lstTruckRemoveUuid: listTruckBatchBill
 						.filter((v) => !listTruckChecked.some((x) => v.uuid === x.uuid))
 						?.map((item) => item.uuid),
+					reason: form.reason,
+					portname: form.portname,
 				}),
 			}),
 		onSuccess(data) {
@@ -283,6 +290,18 @@ function MainUpdateService({}: PropsMainUpdateService) {
 			if (today > timeIntend) {
 				return toastWarn({msg: 'Ngày dự kiến không hợp lệ!'});
 			}
+		}
+
+		if (form.customerUuid != detailBatchBill?.fromUu?.uuid || form.productTypeUuid != detailBatchBill?.productTypeUu?.uuid) {
+			return setOpenWarning(true);
+		} else {
+			return funcUpdateBatchBill.mutate();
+		}
+	};
+
+	const handleSubmitReason = async () => {
+		if (!form.reason) {
+			return toastWarn({msg: 'Vui lòng nhập lý do thay đổi!'});
 		}
 
 		return funcUpdateBatchBill.mutate();
@@ -435,7 +454,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 						</div>
 					</div>
 
-					<div className={clsx('mt')}>
+					<div className={clsx('mt', 'col_2')}>
 						<Select
 							isSearch
 							name='shipUuid'
@@ -462,6 +481,13 @@ function MainUpdateService({}: PropsMainUpdateService) {
 								/>
 							))}
 						</Select>
+						<Input
+							name='portname'
+							value={form.portname}
+							type='text'
+							label={<span>Cảng bốc dỡ</span>}
+							placeholder='Nhập cảng bốc dỡ'
+						/>
 					</div>
 
 					<div className={clsx('mt', 'col_2')}>
@@ -605,6 +631,27 @@ function MainUpdateService({}: PropsMainUpdateService) {
 						<TextArea name='description' placeholder='Nhập ghi chú' max={5000} blur label={<span>Ghi chú</span>} />
 					</div>
 				</div>
+				<Popup
+					open={openWarning}
+					onClose={() => {
+						setOpenWarning(false);
+						setForm((prev) => ({
+							...prev,
+							reason: '',
+						}));
+					}}
+				>
+					<FormReasonUpdateBill
+						onSubmit={handleSubmitReason}
+						onClose={() => {
+							setOpenWarning(false);
+							setForm((prev) => ({
+								...prev,
+								reason: '',
+							}));
+						}}
+					/>
+				</Popup>
 			</Form>
 		</div>
 	);

@@ -35,6 +35,8 @@ import batchBillServices from '~/services/batchBillServices';
 import {IDetailBatchBill} from '../MainDetailBill/interfaces';
 import {convertCoin, price} from '~/common/funcs/convertCoin';
 import scalesStationServices from '~/services/scalesStationServices';
+import Popup from '~/components/common/Popup';
+import FormReasonUpdateBill from '../FormReasonUpdateBill';
 
 function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 	const router = useRouter();
@@ -43,6 +45,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 
 	const [listTruckChecked, setListTruckChecked] = useState<any[]>([]);
 	const [listTruckBatchBill, setListTruckBatchBill] = useState<any[]>([]);
+	const [openWarning, setOpenWarning] = useState<boolean>(false);
 
 	const [form, setForm] = useState<IFormUpdateTransfer>({
 		batchUuid: '',
@@ -62,9 +65,10 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 		code: '',
 		reason: '',
 		scaleStationUuid: '',
+		portname: '',
 	});
 
-	useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
+	const {data: detailBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
 		queryFn: () =>
 			httpRequest({
 				http: batchBillServices.detailBatchbill({
@@ -91,6 +95,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 					code: data?.code,
 					reason: '',
 					scaleStationUuid: data?.scalesStationUu?.uuid || '',
+					portname: data?.port || '',
 				});
 
 				setListTruckChecked(
@@ -118,7 +123,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 				isDropdown: true,
 				http: wareServices.listProductType({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -138,7 +143,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 				isDropdown: true,
 				http: wareServices.listSpecification({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -159,7 +164,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 				isDropdown: true,
 				http: truckServices.listTruck({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -178,7 +183,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 				isDropdown: true,
 				http: warehouseServices.listWarehouse({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -200,7 +205,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 				isDropdown: true,
 				http: warehouseServices.listWarehouse({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -222,7 +227,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 				isDropdown: true,
 				http: storageServices.listStorage({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -254,7 +259,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 				isDropdown: true,
 				http: storageServices.listStorage({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -288,7 +293,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 				isDropdown: true,
 				http: scalesStationServices.listScalesStation({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					companyUuid: '',
 					status: CONFIG_STATUS.HOAT_DONG,
@@ -335,6 +340,8 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 						.filter((v) => !listTruckChecked.some((x) => v.uuid === x.uuid))
 						?.map((item) => item.uuid),
 					scaleStationUuid: form.scaleStationUuid,
+					reason: form.reason,
+					portname: form.portname,
 				}),
 			}),
 		onSuccess(data) {
@@ -381,6 +388,23 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 				return toastWarn({msg: 'Ngày dự kiến không hợp lệ!'});
 			}
 		}
+		if (
+			form.toUuid != detailBill?.toUu?.uuid ||
+			form.fromUuid != detailBill?.fromUu?.uuid ||
+			form.productTypeUuid != detailBill?.productTypeUu?.uuid ||
+			form.specificationsUuid != detailBill?.specificationsUu?.uuid
+		) {
+			return setOpenWarning(true);
+		} else {
+			return funcUpdateBatchBill.mutate();
+		}
+	};
+
+	const handleSubmitReason = async () => {
+		if (!form.reason) {
+			return toastWarn({msg: 'Vui lòng nhập lý do thay đổi!'});
+		}
+
 		return funcUpdateBatchBill.mutate();
 	};
 
@@ -743,7 +767,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 							</Select>
 						</div>
 					</div>
-					<div className={clsx('mt')}>
+					<div className={clsx('mt', 'col_2')}>
 						<Select
 							isSearch
 							name='scaleStationUuid'
@@ -769,6 +793,13 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 								/>
 							))}
 						</Select>
+						<Input
+							name='portname'
+							value={form.portname}
+							type='text'
+							label={<span>Cảng bốc dỡ</span>}
+							placeholder='Nhập cảng bốc dỡ'
+						/>
 					</div>
 					<div className={clsx('mt', 'col_2')}>
 						<Input
@@ -821,6 +852,27 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 						<TextArea name='description' placeholder='Nhập ghi chú' max={5000} blur label={<span>Ghi chú</span>} />
 					</div>
 				</div>
+				<Popup
+					open={openWarning}
+					onClose={() => {
+						setOpenWarning(false);
+						setForm((prev) => ({
+							...prev,
+							reason: '',
+						}));
+					}}
+				>
+					<FormReasonUpdateBill
+						onSubmit={handleSubmitReason}
+						onClose={() => {
+							setOpenWarning(false);
+							setForm((prev) => ({
+								...prev,
+								reason: '',
+							}));
+						}}
+					/>
+				</Popup>
 			</Form>
 		</div>
 	);

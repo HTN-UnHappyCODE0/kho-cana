@@ -40,7 +40,7 @@ function FormCreateStorage({draggedElements, onClose}: PropsFormCreateStorage) {
 				isDropdown: true,
 				http: wareServices.listProductType({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -60,7 +60,7 @@ function FormCreateStorage({draggedElements, onClose}: PropsFormCreateStorage) {
 				isDropdown: true,
 				http: wareServices.listQuality({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -79,7 +79,7 @@ function FormCreateStorage({draggedElements, onClose}: PropsFormCreateStorage) {
 				isDropdown: true,
 				http: wareServices.listSpecification({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -100,7 +100,7 @@ function FormCreateStorage({draggedElements, onClose}: PropsFormCreateStorage) {
 				isDropdown: true,
 				http: criteriaServices.listCriteriaSpec({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,

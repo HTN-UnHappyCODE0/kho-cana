@@ -41,7 +41,7 @@ function MainPageShip({}: PropsMainPageShip) {
 				isList: true,
 				http: shipServices.listShip({
 					page: Number(_page) || 1,
-					pageSize: Number(_pageSize) || 20,
+					pageSize: Number(_pageSize) || 50,
 					keyword: (_keyword as string) || '',
 					status: !!_status ? Number(_status) : null,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,

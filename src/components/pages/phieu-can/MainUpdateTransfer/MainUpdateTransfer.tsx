@@ -69,6 +69,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 		isBatch: TYPE_BATCH.CAN_LO,
 		reason: '',
 		scaleStationUuid: '',
+		portname: '',
 	});
 
 	const {data: detailBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -102,6 +103,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 					isBatch: data?.isBatch,
 					reason: '',
 					scaleStationUuid: data?.scalesStationUu?.uuid || '',
+					portname: data?.port,
 				});
 
 				setListTruckChecked(
@@ -129,7 +131,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 				isDropdown: true,
 				http: wareServices.listProductType({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -149,7 +151,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 				isDropdown: true,
 				http: wareServices.listSpecification({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -170,7 +172,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 				isDropdown: true,
 				http: truckServices.listTruck({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -189,7 +191,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 				isDropdown: true,
 				http: warehouseServices.listWarehouse({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -211,7 +213,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 				isDropdown: true,
 				http: warehouseServices.listWarehouse({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -233,7 +235,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 				isDropdown: true,
 				http: storageServices.listStorage({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -265,7 +267,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 				isDropdown: true,
 				http: storageServices.listStorage({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -299,7 +301,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 				isDropdown: true,
 				http: scalesStationServices.listScalesStation({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					companyUuid: '',
 					status: CONFIG_STATUS.HOAT_DONG,
@@ -347,6 +349,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 						?.map((item) => item.uuid),
 					reason: form.reason,
 					scaleStationUuid: form.scaleStationUuid,
+					portname: form.portname,
 				}),
 			}),
 		onSuccess(data) {
@@ -826,7 +829,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 							))}
 						</Select>
 					</div>
-					<div className={clsx('mt')}>
+					<div className={clsx('mt', 'col_2')}>
 						<ButtonSelectMany
 							label={
 								<span>
@@ -845,6 +848,13 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 							}
 							dataChecked={listTruckChecked}
 							setDataChecked={setListTruckChecked}
+						/>
+						<Input
+							name='portname'
+							value={form.portname}
+							type='text'
+							label={<span>Cảng bốc dỡ</span>}
+							placeholder='Nhập cảng bốc dỡ'
 						/>
 					</div>
 					<div className={clsx('mt')}>

@@ -57,7 +57,7 @@ function MainPageBillService({}: PropsMainPageBillService) {
 				isDropdown: true,
 				http: customerServices.listCustomer({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -81,7 +81,7 @@ function MainPageBillService({}: PropsMainPageBillService) {
 				isDropdown: true,
 				http: wareServices.listProductType({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -101,7 +101,7 @@ function MainPageBillService({}: PropsMainPageBillService) {
 				isDropdown: true,
 				http: shipServices.listShip({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -133,7 +133,7 @@ function MainPageBillService({}: PropsMainPageBillService) {
 					isList: true,
 					http: batchBillServices.getListBill({
 						page: Number(_page) || 1,
-						pageSize: Number(_pageSize) || 20,
+						pageSize: Number(_pageSize) || 50,
 						keyword: (_keyword as string) || '',
 						isPaging: CONFIG_PAGING.IS_PAGING,
 						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -151,6 +151,8 @@ function MainPageBillService({}: PropsMainPageBillService) {
 						qualityUuid: '',
 						transportType: null,
 						shipUuid: (_shipUuid as string) || '',
+						typeCheckDay: 0,
+						ScalesStationUuid: '',
 					}),
 				}),
 			select(data) {
@@ -284,40 +286,42 @@ function MainPageBillService({}: PropsMainPageBillService) {
 									</Link>
 								),
 							},
-
-							{
-								title: 'Loại cân',
-								render: (data: IDataBill) => (
-									<p style={{fontWeight: 600}}>
-										{data?.scalesType == TYPE_SCALES.CAN_NHAP && 'Cân nhập'}
-										{data?.scalesType == TYPE_SCALES.CAN_XUAT && 'Cân xuất'}
-										{data?.scalesType == TYPE_SCALES.CAN_DICH_VU && 'Cân dịch vụ'}
-										{data?.scalesType == TYPE_SCALES.CAN_CHUYEN_KHO && 'Cân chuyển kho'}
-										{data?.scalesType == TYPE_SCALES.CAN_TRUC_TIEP && 'Cân xuất thẳng'}
-									</p>
-								),
-							},
-							{
-								title: 'Mã tàu',
-								render: (data: IDataBill) => (
-									<p style={{fontWeight: 600}}>{data?.batchsUu?.shipUu?.licensePalate || '---'}</p>
-								),
-							},
-							{
-								title: 'Mã tàu xuất',
-								render: (data: IDataBill) => (
-									<p style={{fontWeight: 600}}>{data?.batchsUu?.shipOutUu?.licensePalate || '---'}</p>
-								),
-							},
 							{
 								title: 'Từ',
 								render: (data: IDataBill) => (
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>
 										{/* <p>({data?.fromUu?.parentUu?.name || '---'})</p> */}
+										<p style={{fontWeight: 400, color: '#3772FF'}}>{data?.batchsUu?.shipUu?.licensePalate || '---'}</p>
 									</>
 								),
 							},
+							{
+								title: 'Đến',
+								render: (data: IDataBill) => (
+									<>
+										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.toUu?.name || '---'}</p>
+										<p style={{fontWeight: 400, color: '#3772FF'}}>
+											{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+										</p>
+										{/* <p>({data?.toUu?.parentUu?.name || '---'})</p> */}
+									</>
+								),
+							},
+
+							// {
+							// 	title: 'Mã tàu',
+							// 	render: (data: IDataBill) => (
+							// 		<p style={{fontWeight: 600}}>{data?.batchsUu?.shipUu?.licensePalate || '---'}</p>
+							// 	),
+							// },
+							// {
+							// 	title: 'Mã tàu xuất',
+							// 	render: (data: IDataBill) => (
+							// 		<p style={{fontWeight: 600}}>{data?.batchsUu?.shipOutUu?.licensePalate || '---'}</p>
+							// 	),
+							// },
+
 							{
 								title: 'KL dự kiến (tấn)',
 								render: (data: IDataBill) => <>{convertCoin(data?.batchsUu?.weightIntent) || '---'}</>,
@@ -329,6 +333,18 @@ function MainPageBillService({}: PropsMainPageBillService) {
 							{
 								title: 'Trạm cân',
 								render: (data: IDataBill) => <>{data?.scalesStationUu?.name || '---'}</>,
+							},
+							{
+								title: 'Loại cân',
+								render: (data: IDataBill) => (
+									<p style={{fontWeight: 600}}>
+										{data?.scalesType == TYPE_SCALES.CAN_NHAP && 'Cân nhập'}
+										{data?.scalesType == TYPE_SCALES.CAN_XUAT && 'Cân xuất'}
+										{data?.scalesType == TYPE_SCALES.CAN_DICH_VU && 'Cân dịch vụ'}
+										{data?.scalesType == TYPE_SCALES.CAN_CHUYEN_KHO && 'Cân chuyển kho'}
+										{data?.scalesType == TYPE_SCALES.CAN_TRUC_TIEP && 'Cân xuất thẳng'}
+									</p>
+								),
 							},
 							{
 								title: 'Ngày dự kiến',

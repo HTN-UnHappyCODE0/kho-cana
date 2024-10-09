@@ -100,4 +100,5 @@ export interface IDataBill {
 	status: number;
 	code: string;
 	uuid: string;
+	port: string;
 }

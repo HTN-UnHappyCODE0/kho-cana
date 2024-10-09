@@ -38,12 +38,14 @@ import Button from '~/components/common/Button';
 import Loading from '~/components/common/Loading';
 import Dialog from '~/components/common/Dialog';
 import {convertWeight, formatDrynessAvg} from '~/common/funcs/optionConvert';
+import scalesStationServices from '~/services/scalesStationServices';
 
 function PageConfirmBill({}: PropsPageConfirmBill) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 
-	const {_page, _pageSize, _keyword, _customerUuid, _isBatch, _productTypeUuid, _state, _dateFrom, _dateTo} = router.query;
+	const {_page, _pageSize, _keyword, _customerUuid, _isBatch, _productTypeUuid, _state, _dateFrom, _dateTo, _scalesStationUuid} =
+		router.query;
 
 	const [uuidQLKConfirm, setUuidQLKConfirm] = useState<string[]>([]);
 
@@ -56,7 +58,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 				isDropdown: true,
 				http: customerServices.listCustomer({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -74,13 +76,33 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 		},
 	});
 
+	const listScalesStation = useQuery([QUERY_KEY.table_tram_can], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: scalesStationServices.listScalesStation({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					companyUuid: '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.TABLE,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
 	const listProductType = useQuery([QUERY_KEY.dropdown_loai_go], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
 				http: wareServices.listProductType({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -106,6 +128,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 			_state,
 			_dateFrom,
 			_dateTo,
+			_scalesStationUuid,
 		],
 		{
 			queryFn: () =>
@@ -113,24 +136,26 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 					isList: true,
 					http: batchBillServices.getListBill({
 						page: Number(_page) || 1,
-						pageSize: Number(_pageSize) || 20,
+						pageSize: Number(_pageSize) || 50,
 						keyword: (_keyword as string) || '',
 						isPaging: CONFIG_PAGING.IS_PAGING,
 						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
-						scalesType: [],
+						scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_XUAT],
 						customerUuid: (_customerUuid as string) || '',
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
 						isCreateBatch: null,
 						productTypeUuid: (_productTypeUuid as string) || '',
 						specificationsUuid: '',
 						status: [STATUS_BILL.DA_CAN_CHUA_KCS, STATUS_BILL.DA_KCS, STATUS_BILL.CHOT_KE_TOAN],
-						state: !!_state ? [Number(_state)] : [STATE_BILL.NOT_CHECK, STATE_BILL.QLK_REJECTED],
+						state: !!_state ? [Number(_state)] : [STATE_BILL.KTK_CHECKED, STATE_BILL.END],
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
 						warehouseUuid: '',
 						qualityUuid: '',
 						transportType: null,
+						typeCheckDay: 0,
+						ScalesStationUuid: (_scalesStationUuid as string) || '',
 					}),
 				}),
 			onSuccess(data) {
@@ -249,6 +274,15 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 							},
 						]}
 					/>
+					<FilterCustom
+						isSearch
+						name='Trạm cân'
+						query='_scalesStationUuid'
+						listFilter={listScalesStation?.data?.map((v: any) => ({
+							id: v?.uuid,
+							name: v?.name,
+						}))}
+					/>
 
 					<div className={styles.filter}>
 						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
@@ -266,12 +300,12 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getListBatch?.data?.amountBdmt) || 0} </span>(Tấn)
 					</div>
 					<div>
-						TỔNG LƯỢNG HÀNG QUY KHÔ TẠM TÍNH:
-						<span style={{color: '#2D74FF', marginLeft: 4}}>{0} </span>(Tấn)
+						TỔNG LƯỢNG QUY KHÔ TẠM TÍNH:
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getListBatch?.data?.amountDemo) || 0} </span>(Tấn)
 					</div>
 					<div>
-						TỔNG LƯỢNG HÀNG QUY KHÔ CHUẨN:
-						<span style={{color: '#2D74FF', marginLeft: 4}}>{0} </span>(Tấn)
+						TỔNG LƯỢNG QUY KHÔ CHUẨN:
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getListBatch?.data?.amountKCS) || 0} </span>(Tấn)
 					</div>
 				</div>
 			</div>
@@ -294,9 +328,12 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 								title: 'Mã lô',
 								fixedLeft: true,
 								render: (data: ITableBillScale) => (
-									<Link href={`/phieu-can/${data.uuid}`} className={styles.link}>
-										{data?.code}
-									</Link>
+									<>
+										<Link href={`/phieu-can/${data.uuid}`} className={styles.link}>
+											{data?.code}
+										</Link>
+										<p style={{fontWeight: 600, color: '#3772FF'}}>{data?.weightSessionUu?.code || '---'}</p>
+									</>
 								),
 							},
 							{
@@ -311,31 +348,33 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 									</p>
 								),
 							},
-							{
-								title: 'Mã tàu',
-								render: (data: ITableBillScale) => (
-									<p style={{fontWeight: 600}}>{data?.batchsUu?.shipUu?.licensePalate || '---'}</p>
-								),
-							},
-							{
-								title: 'Mã tàu xuất',
-								render: (data: ITableBillScale) => (
-									<p style={{fontWeight: 600}}>{data?.batchsUu?.shipOutUu?.licensePalate || '---'}</p>
-								),
-							},
+							// {
+							// 	title: 'Mã tàu',
+							// 	render: (data: ITableBillScale) => (
+							// 		<p style={{fontWeight: 600}}>{data?.batchsUu?.shipUu?.licensePalate || '---'}</p>
+							// 	),
+							// },
+							// {
+							// 	title: 'Mã tàu xuất',
+							// 	render: (data: ITableBillScale) => (
+							// 		<p style={{fontWeight: 600}}>{data?.batchsUu?.shipOutUu?.licensePalate || '---'}</p>
+							// 	),
+							// },
 							{
 								title: 'Từ',
 								render: (data: ITableBillScale) => (
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>
-									</>
-								),
-							},
-							{
-								title: 'Đến',
-								render: (data: ITableBillScale) => (
-									<>
-										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.toUu?.name || '---'}</p>
+										{data?.isBatch == TYPE_BATCH.CAN_LO && (
+											<p style={{fontWeight: 600, color: '#3772FF'}}>
+												{data?.batchsUu?.shipUu?.licensePalate || '---'}
+											</p>
+										)}
+										{data?.isBatch == TYPE_BATCH.CAN_LE && (
+											<p style={{fontWeight: 600, color: '#3772FF'}}>
+												{data?.weightSessionUu?.truckUu?.licensePalate || '---'}
+											</p>
+										)}
 									</>
 								),
 							},
@@ -348,40 +387,56 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 								render: (data: ITableBillScale) => <>{convertWeight(data?.weightTotal) || 0}</>,
 							},
 							{
-								title: 'KL độ khô (tấn)',
-								render: (data: ITableBillScale) => <>{convertWeight(data?.weightBdmt) || 0}</>,
-							},
-							{
 								title: 'Độ khô (%)',
 								render: (data: ITableBillScale) => <>{formatDrynessAvg(data?.drynessAvg) || 0}</>,
 							},
-							// {
-							// 	title: 'Phân loại',
-							// 	render: (data: ITableBillScale) => (
-							// 		<>
-							// 			{data?.isSift == TYPE_SIFT.CAN_SANG && 'Cần sàng'}
-							// 			{data?.isSift == TYPE_SIFT.KHONG_CAN_SANG && 'Không cần sàng'}
-							// 		</>
-							// 	),
-							// },
+							{
+								title: 'KL quy khô (tấn)',
+								render: (data: ITableBillScale) => <>{convertWeight(data?.weightBdmt) || 0}</>,
+							},
 							{
 								title: 'Quy cách',
 								render: (data: ITableBillScale) => <>{data?.specificationsUu?.name || '---'}</>,
 							},
 
 							{
-								title: 'Xác nhận SL',
+								title: 'Đến',
 								render: (data: ITableBillScale) => (
-									<p style={{fontWeight: 600, color: ''}}>
-										{data?.state == STATE_BILL.NOT_CHECK && <span style={{color: '#FF6838'}}>Chưa duyệt</span>}
-										{data?.state == STATE_BILL.QLK_REJECTED && <span style={{color: '#6170E3'}}>QLK duyệt lại</span>}
-										{data?.state == STATE_BILL.QLK_CHECKED && <span style={{color: '#6FD195'}}>QLK đã duyệt</span>}
-										{data?.state == STATE_BILL.KTK_REJECTED && <span style={{color: '#FFAE4C'}}>KTK duyệt lại</span>}
-										{data?.state == STATE_BILL.KTK_CHECKED && <span style={{color: '#3CC3DF'}}>KTK đã duyệt</span>}
-										{data?.state == STATE_BILL.END && <span style={{color: '#D95656'}}>Kết thúc</span>}
-									</p>
+									<>
+										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.toUu?.name || '---'}</p>
+										<p style={{fontWeight: 600, color: '#3772FF'}}>
+											{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+										</p>
+									</>
 								),
 							},
+							{
+								title: 'Phân loại',
+								render: (data: ITableBillScale) => (
+									<>
+										{data?.isSift == TYPE_SIFT.CAN_SANG && 'Cần sàng'}
+										{data?.isSift == TYPE_SIFT.KHONG_CAN_SANG && 'Không cần sàng'}
+									</>
+								),
+							},
+							{
+								title: 'Số chứng từ',
+								render: (data: ITableBillScale) => <>{data?.documentId || '---'}</>,
+							},
+
+							// {
+							// 	title: 'Xác nhận SL',
+							// 	render: (data: ITableBillScale) => (
+							// 		<p style={{fontWeight: 600, color: ''}}>
+							// 			{data?.state == STATE_BILL.NOT_CHECK && <span style={{color: '#FF6838'}}>Chưa duyệt</span>}
+							// 			{data?.state == STATE_BILL.QLK_REJECTED && <span style={{color: '#6170E3'}}>QLK duyệt lại</span>}
+							// 			{data?.state == STATE_BILL.QLK_CHECKED && <span style={{color: '#6FD195'}}>QLK đã duyệt</span>}
+							// 			{data?.state == STATE_BILL.KTK_REJECTED && <span style={{color: '#FFAE4C'}}>KTK duyệt lại</span>}
+							// 			{data?.state == STATE_BILL.KTK_CHECKED && <span style={{color: '#3CC3DF'}}>KTK đã duyệt</span>}
+							// 			{data?.state == STATE_BILL.END && <span style={{color: '#D95656'}}>Kết thúc</span>}
+							// 		</p>
+							// 	),
+							// },
 							{
 								title: 'Trạng thái',
 								render: (data: ITableBillScale) => (
@@ -432,7 +487,17 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 						currentPage={Number(_page) || 1}
 						pageSize={Number(_pageSize) || 50}
 						total={total}
-						dependencies={[_pageSize, _keyword, _customerUuid, _isBatch, _productTypeUuid, _state, _dateFrom, _dateTo]}
+						dependencies={[
+							_pageSize,
+							_keyword,
+							_customerUuid,
+							_isBatch,
+							_productTypeUuid,
+							_state,
+							_dateFrom,
+							_dateTo,
+							_scalesStationUuid,
+						]}
 					/>
 				)}
 			</div>

@@ -54,6 +54,7 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 		isPrint: 0,
 		transportType: TYPE_TRANSPORT.DUONG_BO,
 		scaleStationUuid: '',
+		portname: '',
 	});
 
 	const listProductType = useQuery([QUERY_KEY.dropdown_loai_go], {
@@ -62,7 +63,7 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 				isDropdown: true,
 				http: wareServices.listProductType({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -82,7 +83,7 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 				isDropdown: true,
 				http: wareServices.listSpecification({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -103,7 +104,7 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 				isDropdown: true,
 				http: scalesStationServices.listScalesStation({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					companyUuid: '',
 					status: CONFIG_STATUS.HOAT_DONG,
@@ -123,7 +124,7 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 				isDropdown: true,
 				http: truckServices.listTruck({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -142,7 +143,7 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 				isDropdown: true,
 				http: warehouseServices.listWarehouse({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -164,7 +165,7 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 				isDropdown: true,
 				http: warehouseServices.listWarehouse({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -186,7 +187,7 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 				isDropdown: true,
 				http: storageServices.listStorage({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -218,7 +219,7 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 				isDropdown: true,
 				http: storageServices.listStorage({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -275,6 +276,7 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 					lstTruckAddUuid: listTruckChecked?.map((v) => v.uuid),
 					lstTruckRemoveUuid: [],
 					scaleStationUuid: form.scaleStationUuid,
+					portname: form.portname,
 				}),
 			}),
 		onSuccess(data) {

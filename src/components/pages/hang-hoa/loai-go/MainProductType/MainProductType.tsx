@@ -46,7 +46,7 @@ function MainProductType({}: PropsMainProductType) {
 				isList: true,
 				http: wareServices.listProductType({
 					page: Number(_page) || 1,
-					pageSize: Number(_pageSize) || 20,
+					pageSize: Number(_pageSize) || 50,
 					keyword: (_keyword as string) || '',
 					isPaging: CONFIG_PAGING.IS_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,

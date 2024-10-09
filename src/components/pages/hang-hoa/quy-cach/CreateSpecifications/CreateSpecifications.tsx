@@ -50,7 +50,7 @@ function CreateSpecifications({}: PropsCreateSpecifications) {
 				isDropdown: true,
 				http: wareServices.listQuality({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -69,7 +69,7 @@ function CreateSpecifications({}: PropsCreateSpecifications) {
 				isDropdown: true,
 				http: wareServices.listProductType({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,

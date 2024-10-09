@@ -112,4 +112,15 @@ export interface ITableBillScale {
 	countWs: number;
 	weightBdmt: number;
 	drynessAvg: number;
+	weightSessionUu: {
+		truckUu: {
+			code: string;
+			licensePalate: string;
+			status: number;
+			uuid: string;
+		};
+		status: number;
+		code: string;
+		uuid: string;
+	};
 }

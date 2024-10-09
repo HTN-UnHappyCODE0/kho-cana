@@ -101,4 +101,5 @@ export interface IDetailBatchBill {
 		status: number;
 		uuid: string;
 	};
+	port: string;
 }

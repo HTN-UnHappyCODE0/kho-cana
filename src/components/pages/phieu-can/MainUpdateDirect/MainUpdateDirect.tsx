@@ -71,6 +71,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 		isBatch: TYPE_BATCH.CAN_LO,
 		reason: '',
 		scaleStationUuid: '',
+		portname: '',
 	});
 
 	const {data: detailBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -105,6 +106,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 					isBatch: data?.isBatch,
 					reason: '',
 					scaleStationUuid: data?.scalesStationUu?.uuid || '',
+					portname: data?.port || '',
 				});
 
 				setListTruckChecked(
@@ -132,7 +134,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 				isDropdown: true,
 				http: customerServices.listCustomer({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -156,7 +158,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 				isDropdown: true,
 				http: customerServices.listCustomer({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -217,7 +219,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 				isDropdown: true,
 				http: shipServices.listShip({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -236,7 +238,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 				isDropdown: true,
 				http: truckServices.listTruck({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -255,7 +257,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 				isDropdown: true,
 				http: scalesStationServices.listScalesStation({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					companyUuid: '',
 					status: CONFIG_STATUS.HOAT_DONG,
@@ -303,6 +305,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 						?.map((item) => item.uuid),
 					reason: form.reason,
 					scaleStationUuid: form.scaleStationUuid,
+					portname: form.portname,
 				}),
 			}),
 		onSuccess(data) {
@@ -778,7 +781,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 							placeholder='Nhập số chứng từ'
 						/>
 					</div>
-					<div className={clsx('mt')}>
+					<div className={clsx('mt', 'col_2')}>
 						<ButtonSelectMany
 							label={
 								<span>
@@ -797,6 +800,13 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 							}
 							dataChecked={listTruckChecked}
 							setDataChecked={setListTruckChecked}
+						/>
+						<Input
+							name='portname'
+							value={form.portname}
+							type='text'
+							label={<span>Cảng bốc dỡ</span>}
+							placeholder='Nhập cảng bốc dỡ'
 						/>
 					</div>
 					<div className={clsx('mt')}>

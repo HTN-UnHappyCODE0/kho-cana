@@ -1,8 +1,10 @@
 import Head from 'next/head';
 import {Fragment, ReactElement} from 'react';
 import BaseLayout from '~/components/layouts/BaseLayout';
+import LayoutPages from '~/components/layouts/LayoutPages';
 import WrapperContainer from '~/components/layouts/WrapperContainer';
 import PageConfirmBill from '~/components/pages/duyet-phieu/PageConfirmBill';
+import {PATH} from '~/constants/config';
 
 export default function Page() {
 	return (
@@ -13,13 +15,24 @@ export default function Page() {
 				<meta name='viewport' content='width=device-width, initial-scale=1' />
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<WrapperContainer bg={true}>
+			<LayoutPages
+				listPages={[
+					{
+						title: 'Phiếu chưa duyệt',
+						url: PATH.PhieuChuaDuyet,
+					},
+					{
+						title: 'Phiếu đã duyệt',
+						url: PATH.PhieuDaDuyet,
+					},
+				]}
+			>
 				<PageConfirmBill />
-			</WrapperContainer>
+			</LayoutPages>
 		</Fragment>
 	);
 }
 
 Page.getLayout = function (Page: ReactElement) {
-	return <BaseLayout title='Quản lý kho'>{Page}</BaseLayout>;
+	return <BaseLayout title='Duyệt phiếu'>{Page}</BaseLayout>;
 };
