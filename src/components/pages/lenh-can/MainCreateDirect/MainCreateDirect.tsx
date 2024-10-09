@@ -57,6 +57,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 		toUuid: '',
 		isPrint: 0,
 		scaleStationUuid: '',
+		portname: '',
 	});
 
 	const listCustomerFrom = useQuery([QUERY_KEY.dropdown_khach_hang_nhap], {
@@ -65,7 +66,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 				isDropdown: true,
 				http: customerServices.listCustomer({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -89,7 +90,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 				isDropdown: true,
 				http: customerServices.listCustomer({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -150,7 +151,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 				isDropdown: true,
 				http: shipServices.listShip({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -169,7 +170,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 				isDropdown: true,
 				http: scalesStationServices.listScalesStation({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					companyUuid: '',
 					status: CONFIG_STATUS.HOAT_DONG,
@@ -189,7 +190,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 				isDropdown: true,
 				http: truckServices.listTruck({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -231,6 +232,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 					lstTruckAddUuid: listTruckChecked?.map((v) => v.uuid),
 					lstTruckRemoveUuid: [],
 					scaleStationUuid: form.scaleStationUuid,
+					portname: form.portname,
 				}),
 			}),
 		onSuccess(data) {
@@ -684,7 +686,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 							placeholder='Nhập số chứng từ'
 						/>
 					</div>
-					<div className={clsx('mt')}>
+					<div className={clsx('mt', 'col_2')}>
 						<ButtonSelectMany
 							label={
 								<span>
@@ -703,6 +705,13 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 							}
 							dataChecked={listTruckChecked}
 							setDataChecked={setListTruckChecked}
+						/>
+						<Input
+							name='portname'
+							value={form.portname}
+							type='text'
+							label={<span>Cảng bốc dỡ</span>}
+							placeholder='Nhập cảng bốc dỡ'
 						/>
 					</div>
 					<div className={clsx('mt')}>

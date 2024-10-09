@@ -55,6 +55,7 @@ function MainCreateService({}: PropsMainCreateService) {
 		description: '',
 		scaleStationUuid: '',
 		isPrint: 0,
+		portname: '',
 	});
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
@@ -63,7 +64,7 @@ function MainCreateService({}: PropsMainCreateService) {
 				isDropdown: true,
 				http: customerServices.listCustomer({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -87,7 +88,7 @@ function MainCreateService({}: PropsMainCreateService) {
 				isDropdown: true,
 				http: wareServices.listProductType({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -107,7 +108,7 @@ function MainCreateService({}: PropsMainCreateService) {
 				isDropdown: true,
 				http: shipServices.listShip({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -126,7 +127,7 @@ function MainCreateService({}: PropsMainCreateService) {
 				isDropdown: true,
 				http: scalesStationServices.listScalesStation({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					companyUuid: '',
 					status: CONFIG_STATUS.HOAT_DONG,
@@ -146,7 +147,7 @@ function MainCreateService({}: PropsMainCreateService) {
 				isDropdown: true,
 				http: truckServices.listTruck({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -188,6 +189,7 @@ function MainCreateService({}: PropsMainCreateService) {
 					lstTruckAddUuid: listTruckChecked?.map((v) => v.uuid),
 					lstTruckRemoveUuid: [],
 					scaleStationUuid: form?.scaleStationUuid,
+					portname: form.portname,
 				}),
 			}),
 		onSuccess(data) {
@@ -374,7 +376,7 @@ function MainCreateService({}: PropsMainCreateService) {
 						</div>
 					</div>
 
-					<div className={clsx('mt')}>
+					<div className={clsx('mt', 'col_2')}>
 						<Select
 							isSearch
 							name='shipUuid'
@@ -401,6 +403,13 @@ function MainCreateService({}: PropsMainCreateService) {
 								/>
 							))}
 						</Select>
+						<Input
+							name='portname'
+							value={form.portname}
+							type='text'
+							label={<span>Cảng bốc dỡ</span>}
+							placeholder='Nhập cảng bốc dỡ'
+						/>
 					</div>
 
 					<div className={clsx('mt', 'col_2')}>

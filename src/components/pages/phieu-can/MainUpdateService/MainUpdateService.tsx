@@ -70,6 +70,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 		isBatch: TYPE_BATCH.CAN_LO,
 		reason: '',
 		scaleStationUuid: '',
+		portname: '',
 	});
 
 	const {data: detailBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -100,6 +101,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 					customerUuid: data?.fromUu?.uuid,
 					reason: '',
 					scaleStationUuid: data?.scalesStationUu?.uuid || '',
+					portname: data?.port || '',
 				});
 
 				setListTruckChecked(
@@ -127,7 +129,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 				isDropdown: true,
 				http: customerServices.listCustomer({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -151,7 +153,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 				isDropdown: true,
 				http: shipServices.listShip({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -170,7 +172,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 				isDropdown: true,
 				http: wareServices.listProductType({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -190,7 +192,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 				isDropdown: true,
 				http: truckServices.listTruck({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -209,7 +211,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 				isDropdown: true,
 				http: scalesStationServices.listScalesStation({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					companyUuid: '',
 					status: CONFIG_STATUS.HOAT_DONG,
@@ -257,6 +259,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 						.filter((v) => !listTruckChecked.some((x) => v.uuid === x.uuid))
 						?.map((item) => item.uuid),
 					reason: form.reason,
+					portname: form.portname,
 				}),
 			}),
 		onSuccess(data) {
@@ -484,7 +487,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 						</div>
 					</div>
 
-					<div className={clsx('mt')}>
+					<div className={clsx('mt', 'col_2')}>
 						<Select
 							isSearch
 							name='shipUuid'
@@ -511,6 +514,13 @@ function MainUpdateService({}: PropsMainUpdateService) {
 								/>
 							))}
 						</Select>
+						<Input
+							name='portname'
+							value={form.portname}
+							type='text'
+							label={<span>Cảng bốc dỡ</span>}
+							placeholder='Nhập cảng bốc dỡ'
+						/>
 					</div>
 
 					<div className={clsx('mt', 'col_2')}>

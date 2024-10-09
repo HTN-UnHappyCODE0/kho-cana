@@ -34,7 +34,7 @@ function UpdateScaleTable({dataUpdate, onClose}: PropsUpdateScaleTable) {
 				isDropdown: true,
 				http: scalesStationServices.listScalesStation({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					companyUuid: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,

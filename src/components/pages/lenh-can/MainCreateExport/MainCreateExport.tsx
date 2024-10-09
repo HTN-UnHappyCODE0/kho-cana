@@ -60,6 +60,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 		toUuid: '',
 		isPrint: 0,
 		scaleStationUuid: '',
+		portname: '',
 	});
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
@@ -68,7 +69,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 				isDropdown: true,
 				http: customerServices.listCustomer({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -92,7 +93,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 				isDropdown: true,
 				http: shipServices.listShip({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -111,7 +112,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 				isDropdown: true,
 				http: wareServices.listProductType({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -131,7 +132,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 				isDropdown: true,
 				http: wareServices.listSpecification({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -151,7 +152,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 				isDropdown: true,
 				http: warehouseServices.listWarehouse({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -173,7 +174,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 				isDropdown: true,
 				http: storageServices.listStorage({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -208,7 +209,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 				isDropdown: true,
 				http: scalesStationServices.listScalesStation({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					companyUuid: '',
 					status: CONFIG_STATUS.HOAT_DONG,
@@ -228,7 +229,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 				isDropdown: true,
 				http: truckServices.listTruck({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -270,6 +271,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 					lstTruckAddUuid: listTruckChecked?.map((v) => v.uuid),
 					lstTruckRemoveUuid: [],
 					scaleStationUuid: form?.scaleStationUuid,
+					portname: form.portname,
 				}),
 			}),
 		onSuccess(data) {
@@ -533,7 +535,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 							</div>
 						</div>
 					</div>
-					<div className={clsx('mt')}>
+					<div className={clsx('mt', 'col_2')}>
 						<Select
 							isSearch
 							name='shipUuid'
@@ -560,6 +562,13 @@ function MainCreateExport({}: PropsMainCreateExport) {
 								/>
 							))}
 						</Select>
+						<Input
+							name='portname'
+							value={form.portname}
+							type='text'
+							label={<span>Cảng bốc dỡ</span>}
+							placeholder='Nhập cảng bốc dỡ'
+						/>
 					</div>
 					<div className={clsx('mt', 'col_2')}>
 						<Select

@@ -59,6 +59,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 		toUuid: '',
 		isPrint: 0,
 		scaleStationUuid: '',
+		portname: '',
 	});
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
@@ -67,7 +68,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 				isDropdown: true,
 				http: customerServices.listCustomer({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -91,7 +92,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 				isDropdown: true,
 				http: shipServices.listShip({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -147,7 +148,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 				isDropdown: true,
 				http: warehouseServices.listWarehouse({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -169,7 +170,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 				isDropdown: true,
 				http: storageServices.listStorage({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -201,7 +202,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 				isDropdown: true,
 				http: scalesStationServices.listScalesStation({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					companyUuid: '',
 					status: CONFIG_STATUS.HOAT_DONG,
@@ -221,7 +222,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 				isDropdown: true,
 				http: truckServices.listTruck({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -263,6 +264,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 					lstTruckAddUuid: listTruckChecked?.map((v) => v.uuid),
 					lstTruckRemoveUuid: [],
 					scaleStationUuid: form?.scaleStationUuid,
+					portname: form.portname,
 				}),
 			}),
 		onSuccess(data) {
@@ -529,7 +531,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 							</div>
 						</div>
 					</div>
-					<div className={clsx('mt')}>
+					<div className={clsx('mt', 'col_2')}>
 						<Select
 							isSearch
 							name='shipUuid'
@@ -556,7 +558,13 @@ function MainCreateImport({}: PropsMainCreateImport) {
 								/>
 							))}
 						</Select>
-						{/* <Input name='' value={''} type='text' isMoney label={<span>Cảng bốc dỡ</span>} placeholder='Nhập cảng bốc dỡ' /> */}
+						<Input
+							name='portname'
+							value={form.portname}
+							type='text'
+							label={<span>Cảng bốc dỡ</span>}
+							placeholder='Nhập cảng bốc dỡ'
+						/>
 					</div>
 
 					<div className={clsx('mt', 'col_2')}>

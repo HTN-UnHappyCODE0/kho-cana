@@ -39,6 +39,8 @@ import {IDetailBatchBill} from '../MainDetailBill/interfaces';
 import priceTagServices from '~/services/priceTagServices';
 import shipServices from '~/services/shipServices';
 import scalesStationServices from '~/services/scalesStationServices';
+import Popup from '~/components/common/Popup';
+import FormReasonUpdateBill from '../FormReasonUpdateBill';
 
 function MainUpdateImport({}: PropsMainUpdateImport) {
 	const router = useRouter();
@@ -47,6 +49,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 
 	const [listTruckChecked, setListTruckChecked] = useState<any[]>([]);
 	const [listTruckBatchBill, setListTruckBatchBill] = useState<any[]>([]);
+	const [openWarning, setOpenWarning] = useState<boolean>(false);
 
 	const [form, setForm] = useState<IFormUpdateImport>({
 		batchUuid: '',
@@ -67,9 +70,10 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 		code: '',
 		reason: '',
 		scaleStationUuid: '',
+		portname: '',
 	});
 
-	useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
+	const {data: detailBatchBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
 		queryFn: () =>
 			httpRequest({
 				http: batchBillServices.detailBatchbill({
@@ -97,6 +101,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					code: data?.code,
 					reason: '',
 					scaleStationUuid: data?.scalesStationUu?.uuid || '',
+					portname: data?.port || '',
 				});
 
 				// SET LIST TRUCK
@@ -125,7 +130,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 				isDropdown: true,
 				http: customerServices.listCustomer({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -186,7 +191,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 				isDropdown: true,
 				http: shipServices.listShip({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -205,7 +210,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 				isDropdown: true,
 				http: warehouseServices.listWarehouse({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -227,7 +232,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 				isDropdown: true,
 				http: storageServices.listStorage({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -259,7 +264,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 				isDropdown: true,
 				http: scalesStationServices.listScalesStation({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					companyUuid: '',
 					status: CONFIG_STATUS.HOAT_DONG,
@@ -279,7 +284,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 				isDropdown: true,
 				http: truckServices.listTruck({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -326,6 +331,8 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					lstTruckRemoveUuid: listTruckBatchBill
 						.filter((v) => !listTruckChecked.some((x) => v.uuid === x.uuid))
 						?.map((item) => item.uuid),
+					reason: form.reason,
+					portname: form.portname,
 				}),
 			}),
 		onSuccess(data) {
@@ -376,9 +383,25 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 			}
 		}
 
-		return funcUpdateBatchBill.mutate();
+		if (
+			form.toUuid != detailBatchBill?.toUu?.uuid ||
+			form.fromUuid != detailBatchBill?.fromUu?.uuid ||
+			form.productTypeUuid != detailBatchBill?.productTypeUu?.uuid ||
+			form.specificationsUuid != detailBatchBill?.specificationsUu?.uuid
+		) {
+			return setOpenWarning(true);
+		} else {
+			return funcUpdateBatchBill.mutate();
+		}
 	};
 
+	const handleSubmitReason = async () => {
+		if (!form.reason) {
+			return toastWarn({msg: 'Vui lòng nhập lý do thay đổi!'});
+		}
+
+		return funcUpdateBatchBill.mutate();
+	};
 	return (
 		<div className={styles.container}>
 			<Loading loading={funcUpdateBatchBill.isLoading} />
@@ -596,7 +619,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 							</div>
 						</div>
 					</div>
-					<div className={clsx('mt')}>
+					<div className={clsx('mt', 'col_2')}>
 						<Select
 							isSearch
 							name='shipUuid'
@@ -623,6 +646,13 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 								/>
 							))}
 						</Select>
+						<Input
+							name='portname'
+							value={form.portname}
+							type='text'
+							label={<span>Cảng bốc dỡ</span>}
+							placeholder='Nhập cảng bốc dỡ'
+						/>
 					</div>
 
 					<div className={clsx('mt', 'col_2')}>
@@ -824,6 +854,27 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 						<TextArea name='description' placeholder='Nhập ghi chú' max={5000} blur label={<span>Ghi chú</span>} />
 					</div>
 				</div>
+				<Popup
+					open={openWarning}
+					onClose={() => {
+						setOpenWarning(false);
+						setForm((prev) => ({
+							...prev,
+							reason: '',
+						}));
+					}}
+				>
+					<FormReasonUpdateBill
+						onSubmit={handleSubmitReason}
+						onClose={() => {
+							setOpenWarning(false);
+							setForm((prev) => ({
+								...prev,
+								reason: '',
+							}));
+						}}
+					/>
+				</Popup>
 			</Form>
 		</div>
 	);

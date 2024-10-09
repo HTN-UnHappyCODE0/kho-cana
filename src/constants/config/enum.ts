@@ -101,6 +101,7 @@ export enum QUERY_KEY {
 	chi_tiet_tau,
 	chi_tiet_nhan_vien,
 	chi_tiet_gia_tien_hang,
+	chi_tiet_lich_su_thay_doi_phieu,
 
 	thong_ke_kho_hang,
 	thong_ke_tong_hang_dich_vu,
@@ -292,4 +293,15 @@ export enum REGENCY_NAME {
 	'Quản lý kho KCS' = '3',
 	'Phó Giám Đốc' = '2',
 	'Giám Đốc' = '1',
+}
+
+export enum TYPE_UPDATE_BILL {
+	CHINH_SUA = 2,
+	DOI_TRANG_THAI = 3,
+	DUYET_PHIEU = 5,
+	TU_CHOI_DUYET = 6,
+}
+
+export enum TYPE_CHECK_DAY_BILL {
+	DUYET_SAN_LUONG = 1,
 }

@@ -60,7 +60,7 @@ function MainDetailWeighingStation({}: PropsMainDetailWeighingStation) {
 				isList: true,
 				http: scalesMachineServices.listScalesMachine({
 					page: Number(_page) || 1,
-					pageSize: Number(_pageSize) || 20,
+					pageSize: Number(_pageSize) || 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.IS_PAGING,
 					isDescending: CONFIG_DESCENDING.IS_DESCENDING,

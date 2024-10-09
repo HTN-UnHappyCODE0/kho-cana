@@ -24,6 +24,8 @@ const batchBillServices = {
 			qualityUuid: string;
 			transportType: number | null;
 			shipUuid?: string;
+			typeCheckDay: number | 0;
+			ScalesStationUuid: string | null;
 		},
 		tokenAxios?: any
 	) => {
@@ -56,6 +58,7 @@ const batchBillServices = {
 			lstTruckRemoveUuid: string[];
 			reason?: string;
 			scaleStationUuid: string;
+			portname: string;
 		},
 		tokenAxios?: any
 	) => {
@@ -189,6 +192,16 @@ const batchBillServices = {
 		tokenAxios?: any
 	) => {
 		return axiosClient.post(`/BatchBill/dashbroad-bill-service`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	ViewActionAudit: (
+		data: {
+			uuid: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/BatchBill/view-action-audit`, data, {
 			cancelToken: tokenAxios,
 		});
 	},

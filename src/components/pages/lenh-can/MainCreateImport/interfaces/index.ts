@@ -15,4 +15,5 @@ export interface IFormCreateImport {
 	documentId: string;
 	description: string;
 	scaleStationUuid: string;
+	portname: string;
 }

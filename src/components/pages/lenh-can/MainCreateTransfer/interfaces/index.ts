@@ -14,4 +14,5 @@ export interface IFormCreateTransfer {
 	weightIntent: number;
 	description: string;
 	scaleStationUuid: string;
+	portname: string;
 }

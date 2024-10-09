@@ -22,7 +22,7 @@ function ItemRuler({data, idx, showBtnDelete, handleDeleteRow, handleChangeValue
 				isDropdown: true,
 				http: criteriaServices.listCriteria({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -89,7 +89,6 @@ function ItemRuler({data, idx, showBtnDelete, handleDeleteRow, handleChangeValue
 						name='value'
 						value={data.value}
 						type='number'
-						 
 						max={100}
 						step={0.01}
 						placeholder='Nhập thông số'

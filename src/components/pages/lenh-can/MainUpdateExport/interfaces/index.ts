@@ -19,4 +19,5 @@ export interface IFormUpdateExport {
 	code: string;
 	reason: string;
 	scaleStationUuid: string;
+	portname: string;
 }

@@ -41,7 +41,7 @@ function MainWeighingStation({}: PropsMainWeighingStation) {
 				isDropdown: true,
 				http: companyServices.listCompany({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -60,7 +60,7 @@ function MainWeighingStation({}: PropsMainWeighingStation) {
 				isList: true,
 				http: scalesStationServices.listScalesStation({
 					page: Number(_page) || 1,
-					pageSize: Number(_pageSize) || 20,
+					pageSize: Number(_pageSize) || 50,
 					keyword: (_keyword as string) || '',
 					companyUuid: (_companyUuid as string) || '',
 					isPaging: CONFIG_PAGING.IS_PAGING,

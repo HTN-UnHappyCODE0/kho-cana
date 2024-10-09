@@ -23,4 +23,5 @@ export interface IFormUpdateExport {
 	reason: string;
 	isBatch: number;
 	scaleStationUuid: string;
+	portname: string;
 }

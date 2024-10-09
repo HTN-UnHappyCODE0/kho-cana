@@ -50,7 +50,7 @@ function MainBillSend({}: PropsMainBillSend) {
 				isDropdown: true,
 				http: customerServices.listCustomer({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -74,7 +74,7 @@ function MainBillSend({}: PropsMainBillSend) {
 				isDropdown: true,
 				http: wareServices.listProductType({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
@@ -94,7 +94,7 @@ function MainBillSend({}: PropsMainBillSend) {
 				isDropdown: true,
 				http: wareServices.listSpecification({
 					page: 1,
-					pageSize: 20,
+					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -128,7 +128,7 @@ function MainBillSend({}: PropsMainBillSend) {
 					isList: true,
 					http: weightSessionServices.listWeightsession({
 						page: Number(_page) || 1,
-						pageSize: Number(_pageSize) || 20,
+						pageSize: Number(_pageSize) || 50,
 						keyword: (_keyword as string) || '',
 						isPaging: CONFIG_PAGING.IS_PAGING,
 						isDescending: CONFIG_DESCENDING.NO_DESCENDING,

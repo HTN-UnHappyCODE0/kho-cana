@@ -17,6 +17,7 @@ import {LuPencil} from 'react-icons/lu';
 import {convertCoin} from '~/common/funcs/convertCoin';
 import {IDetailBatchBill} from '../../lenh-can/MainDetailBill/interfaces';
 import {convertWeight} from '~/common/funcs/optionConvert';
+import TableUpdateBillHistory from './components/TableUpdateBillHistory';
 
 function MainDetailScales({}: PropsMainDetailScales) {
 	const router = useRouter();
@@ -208,6 +209,11 @@ function MainDetailScales({}: PropsMainDetailScales) {
 							query: 'xe-hang',
 							title: 'Nhóm theo xe',
 						},
+						{
+							pathname: router.pathname,
+							query: 'lich-su',
+							title: 'Lịch sử thay đổi phiếu',
+						},
 					]}
 				/>
 			</div>
@@ -215,6 +221,7 @@ function MainDetailScales({}: PropsMainDetailScales) {
 			<div className='mt'>
 				{!_type && <TableDetail />}
 				{_type == 'xe-hang' && <TableListTruck />}
+				{_type == 'lich-su' && <TableUpdateBillHistory />}
 			</div>
 		</div>
 	);
