@@ -32,6 +32,7 @@ const userServices = {
 			isPaging: CONFIG_PAGING;
 			regencyUuid: string[];
 			provinceIDOwer: string;
+			parentUuid?: string;
 		},
 		tokenAxios?: any
 	) => {

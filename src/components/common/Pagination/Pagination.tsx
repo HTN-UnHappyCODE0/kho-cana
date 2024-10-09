@@ -135,7 +135,7 @@ function Pagination({total, pageSize, currentPage, onSetPage, onSetpageSize, dep
 
 	useEffect(() => {
 		if (!!onSetpageSize) {
-			onSetpageSize(() => 20);
+			onSetpageSize(() => 50);
 		} else {
 			if (!firstLoad) {
 				if (Object.keys(router.query).length > 0) {
@@ -144,7 +144,7 @@ function Pagination({total, pageSize, currentPage, onSetPage, onSetpageSize, dep
 							...router,
 							query: {
 								...router.query,
-								_pageSize: 20,
+								_pageSize: 50,
 							},
 						},
 						undefined,

@@ -332,29 +332,16 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 								),
 							},
 							{
-								title: 'Loại hàng',
-								render: (data: ITableBillScale) => <>{data?.productTypeUu?.name || '---'}</>,
-							},
-							{
-								title: 'Phân loại',
-								render: (data: ITableBillScale) => (
-									<>
-										{data?.isSift == TYPE_SIFT.CAN_SANG && 'Cần sàng'}
-										{data?.isSift == TYPE_SIFT.KHONG_CAN_SANG && 'Không cần sàng'}
-									</>
-								),
-							},
-							{
-								title: 'Quy cách',
-								render: (data: ITableBillScale) => <>{data?.specificationsUu?.name || '---'}</>,
-							},
-							{
 								title: 'Đến',
 								render: (data: ITableBillScale) => (
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.toUu?.name || '---'}</p>
 									</>
 								),
+							},
+							{
+								title: 'Loại hàng',
+								render: (data: ITableBillScale) => <>{data?.productTypeUu?.name || '---'}</>,
 							},
 							{
 								title: 'KL tươi (tấn)',
@@ -368,6 +355,20 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 								title: 'Độ khô (%)',
 								render: (data: ITableBillScale) => <>{formatDrynessAvg(data?.drynessAvg) || 0}</>,
 							},
+							// {
+							// 	title: 'Phân loại',
+							// 	render: (data: ITableBillScale) => (
+							// 		<>
+							// 			{data?.isSift == TYPE_SIFT.CAN_SANG && 'Cần sàng'}
+							// 			{data?.isSift == TYPE_SIFT.KHONG_CAN_SANG && 'Không cần sàng'}
+							// 		</>
+							// 	),
+							// },
+							{
+								title: 'Quy cách',
+								render: (data: ITableBillScale) => <>{data?.specificationsUu?.name || '---'}</>,
+							},
+
 							{
 								title: 'Xác nhận SL',
 								render: (data: ITableBillScale) => (

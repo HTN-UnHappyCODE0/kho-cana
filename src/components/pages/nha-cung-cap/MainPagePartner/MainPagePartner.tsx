@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {ICustomer, PropsMainPagePartner} from './interfaces';
 import styles from './MainPagePartner.module.scss';
 import {useQuery} from '@tanstack/react-query';
@@ -9,6 +9,7 @@ import {
 	CONFIG_STATUS,
 	CONFIG_TYPE_FIND,
 	QUERY_KEY,
+	REGENCY_NAME,
 	STATUS_CUSTOMER,
 	TYPE_CUSTOMER,
 	TYPE_PARTNER,
@@ -27,11 +28,13 @@ import Link from 'next/link';
 import IconCustom from '~/components/common/IconCustom';
 import {Eye} from 'iconsax-react';
 import {LuPencil} from 'react-icons/lu';
+import userServices from '~/services/userServices';
+import regencyServices from '~/services/regencyServices';
 
 function MainPagePartner({}: PropsMainPagePartner) {
 	const router = useRouter();
 
-	const {_page, _pageSize, _keyword, _partnerUuid} = router.query;
+	const {_page, _pageSize, _keyword, _partnerUuid, _parentUserUuid, _userUuid} = router.query;
 
 	const listPartner = useQuery([QUERY_KEY.dropdown_nha_cung_cap], {
 		queryFn: () =>
@@ -55,23 +58,18 @@ function MainPagePartner({}: PropsMainPagePartner) {
 		},
 	});
 
-	const listCustomerStorage = useQuery([QUERY_KEY.table_nha_cung_cap, _keyword, _page, _pageSize, _partnerUuid], {
+	const listRegency = useQuery([QUERY_KEY.dropdown_chuc_vu], {
 		queryFn: () =>
 			httpRequest({
-				isList: true,
-				http: customerServices.listCustomerStorage({
-					page: Number(_page) || 1,
-					pageSize: Number(_pageSize) || 20,
-					keyword: (_keyword as string) || '',
-					specUuid: '',
-					userUuid: '',
-					provinceId: '',
-					status: STATUS_CUSTOMER.HOP_TAC,
-					typeCus: TYPE_CUSTOMER.NHA_CUNG_CAP,
-					partnerUUid: (_partnerUuid as string) || null,
+				isDropdown: true,
+				http: regencyServices.listRegency({
+					page: 1,
+					pageSize: 20,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-					typeFind: CONFIG_TYPE_FIND.TABLE,
-					isPaging: CONFIG_PAGING.IS_PAGING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
 				}),
 			}),
 		select(data) {
@@ -79,12 +77,123 @@ function MainPagePartner({}: PropsMainPagePartner) {
 		},
 	});
 
+	const listUserPurchasing = useQuery([QUERY_KEY.dropdown_quan_ly_nhap_hang], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: userServices.listUser2({
+					page: 1,
+					pageSize: 20,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+					provinceIDOwer: '',
+					regencyUuid: [listRegency?.data?.find((v: any) => v?.code == REGENCY_NAME['Quản lý nhập hàng'])?.uuid],
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+		enabled: listRegency.isSuccess,
+	});
+
+	const listUserMarket = useQuery([QUERY_KEY.dropdown_nhan_vien_thi_truong, _parentUserUuid], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: userServices.listUser2({
+					page: 1,
+					pageSize: 20,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+					provinceIDOwer: '',
+					regencyUuid: [listRegency?.data?.find((v: any) => v?.code == REGENCY_NAME['Nhân viên thị trường'])?.uuid],
+					parentUuid: (_parentUserUuid as string) || '',
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+		enabled: listRegency.isSuccess,
+	});
+
+	const listCustomerStorage = useQuery(
+		[QUERY_KEY.table_nha_cung_cap, _keyword, _page, _parentUserUuid, _userUuid, _pageSize, _partnerUuid],
+		{
+			queryFn: () =>
+				httpRequest({
+					isList: true,
+					http: customerServices.listCustomerStorage({
+						page: Number(_page) || 1,
+						pageSize: Number(_pageSize) || 20,
+						keyword: (_keyword as string) || '',
+						specUuid: '',
+						provinceId: '',
+						status: STATUS_CUSTOMER.HOP_TAC,
+						typeCus: TYPE_CUSTOMER.NHA_CUNG_CAP,
+						partnerUUid: (_partnerUuid as string) || null,
+						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+						typeFind: CONFIG_TYPE_FIND.TABLE,
+						isPaging: CONFIG_PAGING.IS_PAGING,
+						userUuid: (_userUuid as string) || '',
+						parentUserUuid: (_parentUserUuid as string) || '',
+					}),
+				}),
+			select(data) {
+				return data;
+			},
+		}
+	);
+
+	useEffect(() => {
+		if (_parentUserUuid) {
+			router.replace(
+				{
+					pathname: router.pathname,
+					query: {
+						...router.query,
+						_userUuid: null,
+					},
+				},
+				undefined,
+				{shallow: true, scroll: false}
+			);
+		}
+	}, [_parentUserUuid]);
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.header}>
 				<div className={styles.main_search}>
 					<div className={styles.search}>
 						<Search keyName='_keyword' placeholder='Tìm kiếm theo tên nhà cung cấp' />
+					</div>
+					<div className={styles.filter}>
+						<FilterCustom
+							isSearch
+							name='Quản lý nhập hàng'
+							query='_parentUserUuid'
+							listFilter={listUserPurchasing?.data?.map((v: any) => ({
+								id: v?.uuid,
+								name: v?.fullName,
+							}))}
+						/>
+					</div>
+					<div className={styles.filter}>
+						<FilterCustom
+							isSearch
+							name='Nhân viên thị trường'
+							query='_userUuid'
+							listFilter={listUserMarket?.data?.map((v: any) => ({
+								id: v?.uuid,
+								name: v?.fullName,
+							}))}
+						/>
 					</div>
 					<div className={styles.filter}>
 						<FilterCustom
