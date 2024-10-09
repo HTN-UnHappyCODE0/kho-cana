@@ -33,6 +33,7 @@ const customerServices = {
 			typeFind: CONFIG_TYPE_FIND;
 			isPaging: CONFIG_PAGING;
 			userUuid: string;
+			parentUserUuid?: string | null;
 			partnerUUid: string | null;
 			specUuid: string;
 			provinceId: string;
