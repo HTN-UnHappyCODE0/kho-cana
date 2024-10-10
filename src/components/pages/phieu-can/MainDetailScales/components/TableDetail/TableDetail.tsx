@@ -7,7 +7,16 @@ import Pagination from '~/components/common/Pagination';
 import clsx from 'clsx';
 import Search from '~/components/common/Search';
 import {useRouter} from 'next/router';
-import {CONFIG_DESCENDING, CONFIG_PAGING, CONFIG_TYPE_FIND, QUERY_KEY, STATUS_WEIGHT_SESSION} from '~/constants/config/enum';
+import {
+	CONFIG_DESCENDING,
+	CONFIG_PAGING,
+	CONFIG_STATUS,
+	CONFIG_TYPE_FIND,
+	QUERY_KEY,
+	STATUS_WEIGHT_SESSION,
+	TYPE_BATCH,
+	TYPE_DATE,
+} from '~/constants/config/enum';
 import {useQuery} from '@tanstack/react-query';
 import {httpRequest} from '~/services';
 import Noti from '~/components/common/DataWrapper/components/Noti';
@@ -16,42 +25,217 @@ import Tippy from '@tippyjs/react';
 import TippyHeadless from '@tippyjs/react/headless';
 import weightSessionServices from '~/services/weightSessionServices';
 import {convertWeight} from '~/common/funcs/optionConvert';
+import DateRangerCustom from '~/components/common/DateRangerCustom';
+import FilterCustom from '~/components/common/FilterCustom';
+import shipServices from '~/services/shipServices';
+import wareServices from '~/services/wareServices';
+import truckServices from '~/services/truckServices';
+import storageServices from '~/services/storageServices';
+import customerServices from '~/services/customerServices';
+import useDebounce from '~/common/hooks/useDebounce';
 
 function TableDetail({}: PropsTableDetail) {
 	const router = useRouter();
 
-	const {_id, _keyword, _page, _pageSize, _status} = router.query;
+	const {
+		_id,
+		_page,
+		_pageSize,
+		_keyword,
+		_truckUuid,
+		_specUuid,
+		_status,
+		_dateFrom,
+		_dateTo,
+		_customerUuid,
+		_storageUuid,
+		_isBatch,
+		_shipUuid,
+		_shift,
+	} = router.query;
+
 	const [uuidDescription, setUuidDescription] = useState<string>('');
 
-	const listWeightSession = useQuery([QUERY_KEY.table_chi_tiet_don_hang_phieu, _page, _pageSize, _keyword, _status, _id], {
+	const [byFilter, setByFilter] = useState<boolean>(false);
+	const [formCode, setFormCode] = useState<{codeStart: string; codeEnd: string}>({
+		codeStart: '',
+		codeEnd: '',
+	});
+
+	const debounceCodeStart = useDebounce(formCode.codeStart, 500);
+	const debounceCodeEnd = useDebounce(formCode.codeEnd, 500);
+
+	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
 			httpRequest({
-				isList: true,
-				http: weightSessionServices.listWeightsession({
-					page: Number(_page) || 1,
-					pageSize: Number(_pageSize) || 50,
-					keyword: (_keyword as string) || '',
-					isPaging: CONFIG_PAGING.IS_PAGING,
+				isDropdown: true,
+				http: customerServices.listCustomer({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-					typeFind: CONFIG_TYPE_FIND.TABLE,
-					billUuid: _id as string,
-					codeEnd: null,
-					codeStart: null,
-					isBatch: null,
-					scalesType: [],
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					partnerUUid: '',
+					userUuid: '',
+					status: null,
+					typeCus: null,
+					provinceId: '',
 					specUuid: '',
-					status: !!_status ? [Number(_status)] : [],
-					storageUuid: '',
-					timeEnd: null,
-					timeStart: null,
-					truckUuid: '',
 				}),
 			}),
 		select(data) {
 			return data;
 		},
-		enabled: !!_id,
 	});
+
+	const listStorage = useQuery([QUERY_KEY.table_bai], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: storageServices.listStorage({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					warehouseUuid: '',
+					productUuid: '',
+					qualityUuid: '',
+					specificationsUuid: '',
+					status: null,
+				}),
+			}),
+		select(data) {
+			if (data) {
+				return data;
+			}
+		},
+	});
+
+	const listTruck = useQuery([QUERY_KEY.dropdown_xe_hang], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: truckServices.listTruck({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
+	const listSpecification = useQuery([QUERY_KEY.dropdown_quy_cach], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: wareServices.listSpecification({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+					qualityUuid: '',
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
+	const listShip = useQuery([QUERY_KEY.dropdown_ma_tau], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: shipServices.listShip({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					status: CONFIG_STATUS.HOAT_DONG,
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
+	const listWeightSession = useQuery(
+		[
+			QUERY_KEY.table_chi_tiet_don_hang_phieu,
+			_page,
+			_pageSize,
+			_keyword,
+			_truckUuid,
+			_specUuid,
+			_status,
+			_dateFrom,
+			_dateTo,
+			byFilter,
+			debounceCodeStart,
+			debounceCodeEnd,
+			_customerUuid,
+			_storageUuid,
+			_isBatch,
+			_shipUuid,
+			_shift,
+			_id,
+		],
+		{
+			queryFn: () =>
+				httpRequest({
+					isList: true,
+					http: weightSessionServices.listWeightsession({
+						page: Number(_page) || 1,
+						pageSize: Number(_pageSize) || 50,
+						keyword: (_keyword as string) || '',
+						isPaging: CONFIG_PAGING.IS_PAGING,
+						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+						typeFind: CONFIG_TYPE_FIND.TABLE,
+						isBatch: !!_isBatch ? Number(_isBatch) : null,
+						scalesType: [],
+						storageUuid: (_storageUuid as string) || '',
+						timeStart: _dateFrom ? (_dateFrom as string) : null,
+						timeEnd: _dateTo ? (_dateTo as string) : null,
+						customerUuid: (_customerUuid as string) || '',
+						productTypeUuid: '',
+						billUuid: (_id as string) || '',
+						codeEnd: byFilter && !!debounceCodeEnd ? Number(debounceCodeEnd) : null,
+						codeStart: byFilter && !!debounceCodeStart ? Number(debounceCodeStart) : null,
+						specUuid: !!_specUuid ? (_specUuid as string) : null,
+						// status: !!_status ? [Number(_status)] : [],
+						status: !!_status
+							? [Number(_status)]
+							: [
+									STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
+									STATUS_WEIGHT_SESSION.CAN_LAN_2,
+									STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
+									STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
+									STATUS_WEIGHT_SESSION.KCS_XONG,
+							  ],
+						truckUuid: !!_truckUuid ? (_truckUuid as string) : '',
+						shipUuid: (_shipUuid as string) || '',
+						shift: !!_shift ? Number(_shift) : null,
+					}),
+				}),
+			select(data) {
+				return data;
+			},
+			enabled: !!_id,
+		}
+	);
 
 	const handleChangeCheckBox = (e: any) => {
 		const {checked} = e.target;
@@ -90,13 +274,136 @@ function TableDetail({}: PropsTableDetail) {
 			<div className={clsx('mt')}>
 				<div className={styles.header}>
 					<div className={styles.main_search}>
-						<div className={styles.search}>
-							<Search keyName='_keyword' placeholder='Tìm kiếm theo số phiếu' />
+						<div className={styles.left}>
+							<div className={styles.search}>
+								<Search keyName='_keyword' placeholder='Tìm kiếm theo số phiếu' />
+							</div>
+
+							<div className={styles.search}>
+								<Search type='number' keyName='_shift' placeholder='Tìm kiếm theo ca' />
+							</div>
+
+							<FilterCustom
+								isSearch
+								name='Khách hàng'
+								query='_customerUuid'
+								listFilter={listCustomer?.data?.map((v: any) => ({
+									id: v?.uuid,
+									name: v?.name,
+								}))}
+							/>
+
+							<FilterCustom
+								isSearch
+								name='Kho chứa'
+								query='_storageUuid'
+								listFilter={listStorage?.data?.map((v: any) => ({
+									id: v?.uuid,
+									name: v?.name,
+								}))}
+							/>
+
+							<FilterCustom
+								isSearch
+								name='Mã tàu'
+								query='_shipUuid'
+								listFilter={listShip?.data?.map((v: any) => ({
+									id: v?.uuid,
+									name: v?.licensePalate,
+								}))}
+							/>
+
+							<FilterCustom
+								isSearch
+								name='Biển số xe'
+								query='_truckUuid'
+								listFilter={listTruck?.data?.map((v: any) => ({
+									id: v?.uuid,
+									name: v?.licensePalate,
+								}))}
+							/>
+							<div className={styles.filter}>
+								<FilterCustom
+									isSearch
+									name='Quy cách'
+									query='_specUuid'
+									listFilter={listSpecification?.data?.map((v: any) => ({
+										id: v?.uuid,
+										name: v?.name,
+									}))}
+								/>
+							</div>
+							<div className={styles.filter}>
+								<FilterCustom
+									isSearch
+									name='Kiểu cân'
+									query='_isBatch'
+									listFilter={[
+										{
+											id: TYPE_BATCH.CAN_LO,
+											name: 'Cân lô',
+										},
+										{
+											id: TYPE_BATCH.CAN_LE,
+											name: 'Cân lẻ',
+										},
+									]}
+								/>
+							</div>
+							<div className={styles.filter}>
+								<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
+							</div>
 						</div>
 						{/* <div className={clsx(styles.checkbox_right)}>
 							<input type='checkbox' id='can-lan-1' onChange={handleChangeCheckBox} />
 							<label htmlFor='can-lan-1'>Chỉ hiển thị cân lần 1 </label>
 						</div> */}
+						<div className={styles.right}>
+							<div className={clsx(styles.box_right)}>
+								<input
+									type='checkbox'
+									id='loc_theo_phieu'
+									onChange={(e) => {
+										const {checked} = e.target;
+
+										if (checked) {
+											setByFilter(true);
+										} else {
+											setByFilter(false);
+										}
+									}}
+									checked={byFilter}
+								/>
+								<label htmlFor='loc_theo_phieu'>Lọc theo phiếu</label>
+							</div>
+							<div className={clsx(styles.filter_to)}>
+								<input
+									type='number'
+									id='tu'
+									className={styles.input}
+									value={formCode.codeStart}
+									onChange={(e) =>
+										setFormCode((prev) => ({
+											...prev,
+											codeStart: e.target.value,
+										}))
+									}
+								/>
+								<p>Đến</p>
+								<input
+									type='number'
+									id='den'
+									className={styles.input}
+									value={formCode.codeEnd}
+									onChange={(e) =>
+										setFormCode((prev) => ({
+											...prev,
+											codeEnd: e.target.value,
+										}))
+									}
+								/>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -149,15 +456,15 @@ function TableDetail({}: PropsTableDetail) {
 								render: (data: IWeightSession) => <>{data?.specificationsUu?.name || '---'}</>,
 							},
 							{
-								title: 'TL lần 1 (tấn)',
+								title: 'TL lần 1 (Tấn)',
 								render: (data: IWeightSession) => <>{convertWeight(data?.weight1?.weight)}</>,
 							},
 							{
-								title: 'TL lần 2 (tấn)',
+								title: 'TL lần 2 (Tấn)',
 								render: (data: IWeightSession) => <>{convertWeight(data?.weight2?.weight || 0)}</>,
 							},
 							{
-								title: 'TL hàng (tấn)',
+								title: 'TL hàng (Tấn)',
 								render: (data: IWeightSession) => <>{convertWeight(data?.weightReal || 0)}</>,
 							},
 							{
@@ -227,7 +534,25 @@ function TableDetail({}: PropsTableDetail) {
 					currentPage={Number(_page) || 1}
 					pageSize={Number(_pageSize) || 50}
 					total={listWeightSession?.data?.pagination?.totalCount}
-					dependencies={[_id, _keyword, _pageSize, _status]}
+					dependencies={[
+						_id,
+						_page,
+						_pageSize,
+						_keyword,
+						_truckUuid,
+						_specUuid,
+						_status,
+						_dateFrom,
+						_dateTo,
+						byFilter,
+						debounceCodeStart,
+						debounceCodeEnd,
+						_customerUuid,
+						_storageUuid,
+						_isBatch,
+						_shipUuid,
+						_shift,
+					]}
 				/>
 			</div>
 		</Fragment>

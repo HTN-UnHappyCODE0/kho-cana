@@ -74,19 +74,19 @@ function TableHistoryWarehouse({}: PropsTableHistoryWarehouse) {
 							},
 
 							{
-								title: 'Tổng lượng quy khô nhập (tấn)',
+								title: 'Tổng lượng quy khô nhập (Tấn)',
 								render: (data: IDataTableHistoryWarehouse) => (
 									<span style={{color: '#2D74FF'}}>{convertWeight(data?.amountIn)}</span>
 								),
 							},
 							{
-								title: 'Tổng lượng quy khô xuất (tấn)',
+								title: 'Tổng lượng quy khô xuất (Tấn)',
 								render: (data: IDataTableHistoryWarehouse) => (
 									<span style={{color: '#2D74FF'}}>{convertWeight(data?.amountOut)}</span>
 								),
 							},
 							{
-								title: 'Tổng lượng quy khô chuyển kho (tấn)',
+								title: 'Tổng lượng quy khô chuyển kho (Tấn)',
 								render: (data: IDataTableHistoryWarehouse) => (
 									<span style={{color: '#2D74FF'}}>
 										{convertWeight(Number(data.amountChangeIn) - Number(data?.amountChangeOut))}

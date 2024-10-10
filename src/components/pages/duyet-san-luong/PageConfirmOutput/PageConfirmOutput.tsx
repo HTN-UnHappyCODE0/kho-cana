@@ -288,7 +288,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 							name: v?.name,
 						}))}
 					/>
-					<FilterCustom
+					{/* <FilterCustom
 						isSearch
 						name='Xác Nhận SL'
 						query='_state'
@@ -302,7 +302,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 								name: 'KTK duyệt lại',
 							},
 						]}
-					/>
+					/> */}
 					<FilterCustom
 						isSearch
 						name='Trạm cân'
@@ -354,14 +354,14 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 								render: (data: ITableBillScale, index: number) => <>{index + 1}</>,
 							},
 							{
-								title: 'Mã lô',
+								title: 'Mã lô/Số phiếu',
 								fixedLeft: true,
 								render: (data: ITableBillScale) => (
 									<>
 										<Link href={`/phieu-can/${data.uuid}`} className={styles.link}>
 											{data?.code}
 										</Link>
-										<p style={{fontWeight: 600, color: '#3772FF'}}>{data?.weightSessionUu?.code || '---'}</p>
+										<p style={{fontWeight: 500, color: '#3772FF'}}>{data?.weightSessionUu?.code || '---'}</p>
 									</>
 								),
 							},
@@ -390,7 +390,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 							// 	),
 							// },
 							{
-								title: 'từ(tàu/xe)',
+								title: 'Từ(tàu/xe)',
 								render: (data: ITableBillScale) => (
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>
@@ -399,9 +399,11 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 												{data?.batchsUu?.shipUu?.licensePalate || '---'}
 											</p>
 										)}
-										<p style={{fontWeight: 600, color: '#3772FF'}}>
-											{data?.weightSessionUu?.truckUu?.licensePalate || '---'}
-										</p>
+										{data?.isBatch == TYPE_BATCH.CAN_LE && (
+											<p style={{fontWeight: 600, color: '#3772FF'}}>
+												{data?.weightSessionUu?.truckUu?.licensePalate || '---'}
+											</p>
+										)}
 									</>
 								),
 							},
@@ -411,7 +413,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 							},
 
 							{
-								title: 'KL tươi (tấn)',
+								title: 'KL tươi (Tấn)',
 								render: (data: ITableBillScale) => <>{convertWeight(data?.weightTotal) || 0}</>,
 							},
 							{
@@ -419,12 +421,20 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 								render: (data: ITableBillScale) => <>{formatDrynessAvg(data?.drynessAvg) || 0}</>,
 							},
 							{
-								title: 'KL quy khô (tấn)',
+								title: 'KL quy khô (Tấn)',
 								render: (data: ITableBillScale) => <>{convertWeight(data?.weightBdmt) || 0}</>,
 							},
 							{
 								title: 'Quy cách',
 								render: (data: ITableBillScale) => <>{data?.specificationsUu?.name || '---'}</>,
+							},
+							{
+								title: 'KL 1 (Tấn)',
+								render: (data: ITableBillScale) => <>{convertWeight(data?.weigth1)}</>,
+							},
+							{
+								title: 'KL 2 (Tấn)',
+								render: (data: ITableBillScale) => <>{convertWeight(data?.weigth2)}</>,
 							},
 							{
 								title: 'Đến',

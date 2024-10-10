@@ -274,7 +274,7 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 
 						<div className={styles.item_table}>
 							<p>Khối lượng dự kiến:</p>
-							<span>{convertCoin(detailBatchBill?.batchsUu?.weightIntent!)} (tấn)</span>
+							<span>{convertCoin(detailBatchBill?.batchsUu?.weightIntent!)} (Tấn)</span>
 						</div>
 						<div className={styles.item_table}>
 							<p>Ngày dự kiến :</p>

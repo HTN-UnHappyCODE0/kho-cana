@@ -417,26 +417,22 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 									</p>
 								),
 							},
+
 							{
-								title: 'Mã tàu',
-								render: (data: ITableBillScale) => (
-									<p style={{fontWeight: 600}}>{data?.batchsUu?.shipUu?.licensePalate || '---'}</p>
-								),
-							},
-							{
-								title: 'Mã tàu xuất',
-								render: (data: ITableBillScale) => (
-									<>
-										<p style={{fontWeight: 600}}>{data?.batchsUu?.shipOutUu?.licensePalate || '---'}</p>
-									</>
-								),
-							},
-							{
-								title: 'Từ',
+								title: 'Từ(tàu/xe)',
 								render: (data: ITableBillScale) => (
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>
-										{/* <p>({data?.fromUu?.parentUu?.name || '---'})</p> */}
+										{data?.isBatch == TYPE_BATCH.CAN_LO && (
+											<p style={{fontWeight: 500, color: '#3772FF'}}>
+												{data?.batchsUu?.shipUu?.licensePalate || '---'}
+											</p>
+										)}
+										{data?.isBatch == TYPE_BATCH.CAN_LE && (
+											<p style={{fontWeight: 500, color: '#3772FF'}}>
+												{data?.weightSessionUu?.truckUu?.licensePalate || '---'}
+											</p>
+										)}
 									</>
 								),
 							},
@@ -445,13 +441,23 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 								render: (data: ITableBillScale) => (
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.toUu?.name || '---'}</p>
-										{/* <p>({data?.toUu?.parentUu?.name || '---'})</p> */}
+										<p style={{fontWeight: 400, color: '#3772FF'}}>
+											{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+										</p>
 									</>
 								),
 							},
 							{
-								title: 'KL hàng (tấn)',
+								title: 'KL hàng (Tấn)',
 								render: (data: ITableBillScale) => <>{convertWeight(data?.weightTotal) || 0}</>,
+							},
+							{
+								title: 'KL 1 (Tấn)',
+								render: (data: ITableBillScale) => <>{convertWeight(data?.weigth1) || '---'}</>,
+							},
+							{
+								title: 'KL 2 (Tấn)',
+								render: (data: ITableBillScale) => <>{convertWeight(data?.weigth2) || '---'}</>,
 							},
 							{
 								title: 'Loại hàng',

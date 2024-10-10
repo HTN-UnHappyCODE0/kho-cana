@@ -101,4 +101,6 @@ export interface IDataBill {
 	code: string;
 	uuid: string;
 	port: string;
+	weigth1: number;
+	weigth2: number;
 }

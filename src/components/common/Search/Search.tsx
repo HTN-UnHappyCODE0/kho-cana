@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import styles from './Search.module.scss';
 import {useRouter} from 'next/router';
 
-function Search({placeholder = 'Nhập từ khoá tìm kiếm', keyName = '_q'}: PropsSearch) {
+function Search({placeholder = 'Nhập từ khoá tìm kiếm', keyName = '_q', type = 'text'}: PropsSearch) {
 	const router = useRouter();
 	const [keyword, setKeyword] = useState<string>('');
 	const [isFocus, setIsfocus] = useState<boolean>(false);
@@ -59,6 +59,7 @@ function Search({placeholder = 'Nhập từ khoá tìm kiếm', keyName = '_q'}:
 				<GrSearch color='#3f4752' size={20} />
 			</div>
 			<input
+				type={type}
 				value={keyword}
 				placeholder={placeholder}
 				onFocus={() => setIsfocus(true)}

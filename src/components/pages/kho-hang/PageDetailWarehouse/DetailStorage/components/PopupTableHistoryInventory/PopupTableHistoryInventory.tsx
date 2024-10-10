@@ -49,11 +49,11 @@ function PopupTableHistoryInventory({onClose}: PropsPopupTableHistoryInventory) 
 									<p>{detailHistoryInventory?.storageUu?.name || '---'}</p>
 								</li>
 								<li>
-									<p>Tổng lượng quy khô ban đầu (tấn):</p>
+									<p>Tổng lượng quy khô ban đầu (Tấn):</p>
 									<p>{convertWeight(detailHistoryInventory?.totalAmountBefore ?? 0)}</p>
 								</li>
 								<li>
-									<p>Tổng lượng quy khô còn lại (tấn):</p>
+									<p>Tổng lượng quy khô còn lại (Tấn):</p>
 									<p>{convertWeight(detailHistoryInventory?.totalAmountAfter ?? 0)}</p>
 								</li>
 								<li>

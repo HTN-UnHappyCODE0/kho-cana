@@ -110,4 +110,17 @@ export interface ITableBillScale {
 	uuid: string;
 	currentShift: number;
 	countWs: number;
+	weightSessionUu: {
+		truckUu: {
+			code: string;
+			licensePalate: string;
+			status: number;
+			uuid: string;
+		};
+		status: number;
+		code: string;
+		uuid: string;
+	};
+	weigth1: number;
+	weigth2: number;
 }
