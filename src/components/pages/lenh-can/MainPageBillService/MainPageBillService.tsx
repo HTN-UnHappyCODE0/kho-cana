@@ -152,7 +152,7 @@ function MainPageBillService({}: PropsMainPageBillService) {
 						transportType: null,
 						shipUuid: (_shipUuid as string) || '',
 						typeCheckDay: 0,
-						ScalesStationUuid: '',
+						scalesStationUuid: '',
 					}),
 				}),
 			select(data) {

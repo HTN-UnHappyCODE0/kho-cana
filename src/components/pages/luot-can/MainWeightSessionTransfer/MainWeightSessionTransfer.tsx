@@ -73,7 +73,7 @@ function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 					qualityUuid: '',
 					transportType: null,
 					typeCheckDay: 0,
-					ScalesStationUuid: '',
+					scalesStationUuid: '',
 				}),
 			}),
 		select(data) {

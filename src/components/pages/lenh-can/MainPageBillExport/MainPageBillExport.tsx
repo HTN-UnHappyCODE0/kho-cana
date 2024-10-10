@@ -154,7 +154,7 @@ function MainPageBillExport({}: PropsMainPageBillExport) {
 						transportType: null,
 						shipUuid: (_shipUuid as string) || '',
 						typeCheckDay: 0,
-						ScalesStationUuid: '',
+						scalesStationUuid: '',
 					}),
 				}),
 			select(data) {

@@ -167,7 +167,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 						qualityUuid: '',
 						transportType: null,
 						typeCheckDay: TYPE_CHECK_DAY_BILL.DUYET_SAN_LUONG,
-						ScalesStationUuid: (_scalesStationUuid as string) || '',
+						scalesStationUuid: (_scalesStationUuid as string) || '',
 					}),
 				}),
 			onSuccess(data) {

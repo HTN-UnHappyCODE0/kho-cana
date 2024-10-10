@@ -124,7 +124,7 @@ function PageUpdatePort({}: PropsPageUpdatePort) {
 						qualityUuid: '',
 						transportType: null,
 						typeCheckDay: 0,
-						ScalesStationUuid: '',
+						scalesStationUuid: '',
 					}),
 				}),
 			onSuccess(data) {
