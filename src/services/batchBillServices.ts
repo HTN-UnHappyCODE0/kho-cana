@@ -25,7 +25,7 @@ const batchBillServices = {
 			transportType: number | null;
 			shipUuid?: string;
 			typeCheckDay: number | 0;
-			ScalesStationUuid: string | null;
+			scalesStationUuid: string | null;
 		},
 		tokenAxios?: any
 	) => {

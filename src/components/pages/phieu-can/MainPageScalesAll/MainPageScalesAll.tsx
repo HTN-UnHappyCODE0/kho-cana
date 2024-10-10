@@ -174,7 +174,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 						transportType: null,
 						shipUuid: (_shipUuid as string) || '',
 						typeCheckDay: 0,
-						ScalesStationUuid: '',
+						scalesStationUuid: '',
 					}),
 				}),
 			onSuccess(data) {

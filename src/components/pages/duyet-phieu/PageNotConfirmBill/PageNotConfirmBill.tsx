@@ -155,7 +155,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 						qualityUuid: '',
 						transportType: null,
 						typeCheckDay: 0,
-						ScalesStationUuid: (_scalesStationUuid as string) || '',
+						scalesStationUuid: (_scalesStationUuid as string) || '',
 					}),
 				}),
 			onSuccess(data) {

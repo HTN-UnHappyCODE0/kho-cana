@@ -74,7 +74,7 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 					qualityUuid: '',
 					transportType: null,
 					typeCheckDay: 0,
-					ScalesStationUuid: '',
+					scalesStationUuid: '',
 				}),
 			}),
 		select(data) {
