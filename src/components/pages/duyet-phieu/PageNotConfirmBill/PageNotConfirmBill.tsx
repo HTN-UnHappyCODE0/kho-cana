@@ -148,7 +148,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 						productTypeUuid: (_productTypeUuid as string) || '',
 						specificationsUuid: '',
 						status: [STATUS_BILL.DA_CAN_CHUA_KCS, STATUS_BILL.DA_KCS, STATUS_BILL.CHOT_KE_TOAN],
-						state: !!_state ? [Number(_state)] : [STATE_BILL.QLK_CHECKED, STATE_BILL.KTK_REJECTED],
+						state: !!_state ? [Number(_state)] : [STATE_BILL.QLK_CHECKED, STATE_BILL.KTK_REJECTED, STATE_BILL.NOT_CHECK],
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
 						warehouseUuid: '',
@@ -259,7 +259,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 							name: v?.name,
 						}))}
 					/>
-					<FilterCustom
+					{/* <FilterCustom
 						isSearch
 						name='Xác nhận SL'
 						query='_state'
@@ -273,7 +273,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 								name: 'QLK duyệt lại',
 							},
 						]}
-					/>
+					/> */}
 					<FilterCustom
 						isSearch
 						name='Trạm cân'
@@ -332,7 +332,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 										<Link href={`/phieu-can/${data.uuid}`} className={styles.link}>
 											{data?.code}
 										</Link>
-										<p style={{fontWeight: 600, color: '#3772FF'}}>{data?.weightSessionUu?.code || '---'}</p>
+										<p style={{fontWeight: 500, color: '#3772FF'}}>{data?.weightSessionUu?.code || '---'}</p>
 									</>
 								),
 							},
@@ -361,7 +361,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 							// 	),
 							// },
 							{
-								title: 'từ(tàu/xe)',
+								title: 'Từ(tàu/xe)',
 								render: (data: ITableBillScale) => (
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>
@@ -370,9 +370,11 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 												{data?.batchsUu?.shipUu?.licensePalate || '---'}
 											</p>
 										)}
-										<p style={{fontWeight: 600, color: '#3772FF'}}>
-											{data?.weightSessionUu?.truckUu?.licensePalate || '---'}
-										</p>
+										{data?.isBatch == TYPE_BATCH.CAN_LE && (
+											<p style={{fontWeight: 600, color: '#3772FF'}}>
+												{data?.weightSessionUu?.truckUu?.licensePalate || '---'}
+											</p>
+										)}
 									</>
 								),
 							},
@@ -381,7 +383,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 								render: (data: ITableBillScale) => <>{data?.productTypeUu?.name || '---'}</>,
 							},
 							{
-								title: 'KL tươi (tấn)',
+								title: 'KL tươi (Tấn)',
 								render: (data: ITableBillScale) => <>{convertWeight(data?.weightTotal) || 0}</>,
 							},
 							{
@@ -389,12 +391,20 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 								render: (data: ITableBillScale) => <>{formatDrynessAvg(data?.drynessAvg) || 0}</>,
 							},
 							{
-								title: 'KL quy khô (tấn)',
+								title: 'KL quy khô (Tấn)',
 								render: (data: ITableBillScale) => <>{convertWeight(data?.weightBdmt) || 0}</>,
 							},
 							{
 								title: 'Quy cách',
 								render: (data: ITableBillScale) => <>{data?.specificationsUu?.name || '---'}</>,
+							},
+							{
+								title: 'KL 1 (Tấn)',
+								render: (data: ITableBillScale) => <>{convertWeight(data?.weigth1)}</>,
+							},
+							{
+								title: 'KL 2 (Tấn)',
+								render: (data: ITableBillScale) => <>{convertWeight(data?.weigth2)}</>,
 							},
 
 							{

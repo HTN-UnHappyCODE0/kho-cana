@@ -61,11 +61,11 @@ function TableHistoryInventory({}: PropsTableHistoryInventory) {
 						},
 
 						{
-							title: 'Tổng lượng quy khô ban đầu (tấn)',
+							title: 'Tổng lượng quy khô ban đầu (Tấn)',
 							render: (data: IInventory) => <span>{convertWeight(data?.totalAmountBefore) || 0}</span>,
 						},
 						{
-							title: 'Tổng lượng quy khô còn lại (tấn)',
+							title: 'Tổng lượng quy khô còn lại (Tấn)',
 							render: (data: IInventory) => <span>{convertWeight(data?.totalAmountAfter) || 0}</span>,
 						},
 

@@ -24,6 +24,7 @@ const weightSessionServices = {
 			customerUuid?: string | null;
 			productTypeUuid?: string | null;
 			shift?: number | null;
+			shipUuid?: string;
 		},
 		tokenAxios?: any
 	) => {

@@ -123,4 +123,6 @@ export interface ITableBillScale {
 		code: string;
 		uuid: string;
 	};
+	weigth1: number;
+	weigth2: number;
 }

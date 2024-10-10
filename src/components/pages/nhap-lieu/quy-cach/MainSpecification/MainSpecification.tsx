@@ -295,7 +295,7 @@ function MainSpecification({}: PropsMainSpecification) {
 								render: (data: IWeightSession) => <>{data?.producTypeUu?.name || '---'}</>,
 							},
 							{
-								title: 'KL hàng (tấn)',
+								title: 'KL hàng (Tấn)',
 								render: (data: IWeightSession) => <>{convertWeight(data?.weightReal)}</>,
 							},
 							{

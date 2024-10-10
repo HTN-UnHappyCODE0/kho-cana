@@ -42,6 +42,7 @@ import wareServices from '~/services/wareServices';
 import batchBillServices from '~/services/batchBillServices';
 import shipServices from '~/services/shipServices';
 import {convertCoin} from '~/common/funcs/convertCoin';
+import {convertWeight} from '~/common/funcs/optionConvert';
 
 function MainPageBillTransfer({}: PropsMainPageBillTransfer) {
 	const router = useRouter();
@@ -323,7 +324,7 @@ function MainPageBillTransfer({}: PropsMainPageBillTransfer) {
 								),
 							},
 							{
-								title: 'KL dự kiến (tấn)',
+								title: 'KL dự kiến (Tấn)',
 								render: (data: IDataBill) => <>{convertCoin(data?.batchsUu?.weightIntent) || '---'}</>,
 							},
 							{
@@ -333,6 +334,18 @@ function MainPageBillTransfer({}: PropsMainPageBillTransfer) {
 							{
 								title: 'Quy cách',
 								render: (data: IDataBill) => <>{data?.specificationsUu?.name || '---'}</>,
+							},
+							{
+								title: 'KL 1 (Tấn)',
+								render: (data: IDataBill) => <>{convertWeight(data?.weigth1) || '---'}</>,
+							},
+							{
+								title: 'KL 2 (Tấn)',
+								render: (data: IDataBill) => <>{convertWeight(data?.weigth2) || '---'}</>,
+							},
+							{
+								title: 'Cảng bốc dỡ',
+								render: (data: IDataBill) => <>{data?.port || '---'}</>,
 							},
 							{
 								title: 'Trạm cân',

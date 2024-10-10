@@ -11,6 +11,8 @@ import {
 	CONFIG_STATUS,
 	CONFIG_TYPE_FIND,
 	QUERY_KEY,
+	STATUS_WEIGHT_SESSION,
+	TYPE_BATCH,
 	TYPE_DATE,
 	TYPE_SCALES,
 } from '~/constants/config/enum';
@@ -35,10 +37,27 @@ import {convertWeight} from '~/common/funcs/optionConvert';
 import GridColumn from '~/components/layouts/GridColumn';
 import icons from '~/constants/images/icons';
 import DashbroadWeightsession from '~/components/common/DashbroadWeightsession';
+import shipServices from '~/services/shipServices';
+import storageServices from '~/services/storageServices';
+import customerServices from '~/services/customerServices';
 
 function MainWeightSessionService({}: PropsMainWeightSessionService) {
 	const router = useRouter();
-	const {_page, _pageSize, _keyword, _truckUuid, _specUuid, _dateFrom, _dateTo} = router.query;
+	const {
+		_page,
+		_pageSize,
+		_keyword,
+		_truckUuid,
+		_specUuid,
+		_dateFrom,
+		_dateTo,
+		_customerUuid,
+		_storageUuid,
+		_isBatch,
+		_shipUuid,
+		_shift,
+		_status,
+	} = router.query;
 
 	const [byFilter, setByFilter] = useState<boolean>(false);
 	const [formCode, setFormCode] = useState<{codeStart: string; codeEnd: string}>({
@@ -49,35 +68,52 @@ function MainWeightSessionService({}: PropsMainWeightSessionService) {
 	const debounceCodeStart = useDebounce(formCode.codeStart, 500);
 	const debounceCodeEnd = useDebounce(formCode.codeEnd, 500);
 
-	const listBills = useQuery([QUERY_KEY.dropdown_lo_hang], {
+	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
-				http: batchBillServices.getListBill({
+				http: customerServices.listCustomer({
 					page: 1,
 					pageSize: 50,
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
-					scalesType: [],
-					customerUuid: '',
-					isBatch: null,
-					isCreateBatch: 1,
-					productTypeUuid: '',
-					specificationsUuid: '',
-					status: [],
-					timeStart: null,
-					timeEnd: null,
-					warehouseUuid: '',
-					qualityUuid: '',
-					transportType: null,
-					typeCheckDay: 0,
-					scalesStationUuid: '',
+					partnerUUid: '',
+					userUuid: '',
+					status: null,
+					typeCus: null,
+					provinceId: '',
+					specUuid: '',
 				}),
 			}),
 		select(data) {
 			return data;
+		},
+	});
+
+	const listStorage = useQuery([QUERY_KEY.table_bai], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: storageServices.listStorage({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					warehouseUuid: '',
+					productUuid: '',
+					qualityUuid: '',
+					specificationsUuid: '',
+					status: null,
+				}),
+			}),
+		select(data) {
+			if (data) {
+				return data;
+			}
 		},
 	});
 
@@ -93,6 +129,25 @@ function MainWeightSessionService({}: PropsMainWeightSessionService) {
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
 					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
+	const listShip = useQuery([QUERY_KEY.dropdown_ma_tau], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: shipServices.listShip({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					status: CONFIG_STATUS.HOAT_DONG,
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
 				}),
 			}),
 		select(data) {
@@ -128,11 +183,17 @@ function MainWeightSessionService({}: PropsMainWeightSessionService) {
 			_keyword,
 			_truckUuid,
 			_specUuid,
+			_status,
 			_dateFrom,
 			_dateTo,
 			byFilter,
 			debounceCodeStart,
 			debounceCodeEnd,
+			_customerUuid,
+			_storageUuid,
+			_isBatch,
+			_shipUuid,
+			_shift,
 		],
 		{
 			queryFn: () =>
@@ -145,19 +206,30 @@ function MainWeightSessionService({}: PropsMainWeightSessionService) {
 						isPaging: CONFIG_PAGING.IS_PAGING,
 						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
-						isBatch: null,
-						scalesType: [TYPE_SCALES.CAN_DICH_VU],
-						storageUuid: '',
+						isBatch: !!_isBatch ? Number(_isBatch) : null,
+						scalesType: [],
+						storageUuid: (_storageUuid as string) || '',
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
-						customerUuid: '',
+						customerUuid: (_customerUuid as string) || '',
 						productTypeUuid: '',
 						billUuid: '',
 						codeEnd: byFilter && !!debounceCodeEnd ? Number(debounceCodeEnd) : null,
 						codeStart: byFilter && !!debounceCodeStart ? Number(debounceCodeStart) : null,
 						specUuid: !!_specUuid ? (_specUuid as string) : null,
-						status: [],
+						// status: !!_status ? [Number(_status)] : [],
+						status: !!_status
+							? [Number(_status)]
+							: [
+									STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
+									STATUS_WEIGHT_SESSION.CAN_LAN_2,
+									STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
+									STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
+									STATUS_WEIGHT_SESSION.KCS_XONG,
+							  ],
 						truckUuid: !!_truckUuid ? (_truckUuid as string) : '',
+						shipUuid: (_shipUuid as string) || '',
+						shift: !!_shift ? Number(_shift) : null,
 					}),
 				}),
 			select(data) {
@@ -174,11 +246,17 @@ function MainWeightSessionService({}: PropsMainWeightSessionService) {
 			_keyword,
 			_truckUuid,
 			_specUuid,
+			_status,
 			_dateFrom,
 			_dateTo,
 			byFilter,
 			debounceCodeStart,
 			debounceCodeEnd,
+			_customerUuid,
+			_storageUuid,
+			_isBatch,
+			_shipUuid,
+			_shift,
 		],
 		{
 			queryFn: () =>
@@ -191,24 +269,31 @@ function MainWeightSessionService({}: PropsMainWeightSessionService) {
 						isPaging: CONFIG_PAGING.IS_PAGING,
 						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
-						isBatch: null,
-						scalesType: [TYPE_SCALES.CAN_DICH_VU],
-						storageUuid: '',
+						isBatch: !!_isBatch ? Number(_isBatch) : null,
+						scalesType: [],
+						storageUuid: (_storageUuid as string) || '',
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
-						customerUuid: '',
+						customerUuid: (_customerUuid as string) || '',
 						productTypeUuid: '',
 						billUuid: '',
 						codeEnd: byFilter && !!debounceCodeEnd ? Number(debounceCodeEnd) : null,
 						codeStart: byFilter && !!debounceCodeStart ? Number(debounceCodeStart) : null,
 						specUuid: !!_specUuid ? (_specUuid as string) : '',
-						status: [],
+						status: !!_status
+							? [Number(_status)]
+							: [
+									STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
+									STATUS_WEIGHT_SESSION.CAN_LAN_2,
+									STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
+									STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
+									STATUS_WEIGHT_SESSION.KCS_XONG,
+							  ],
 						truckUuid: !!_truckUuid ? (_truckUuid as string) : '',
-						shift: null,
-						shipUuid: '',
+						shift: !!_shift ? Number(_shift) : null,
+						shipUuid: (_shipUuid as string) || '',
 					}),
 				}),
-
 			select(data) {
 				return data;
 			},
@@ -223,6 +308,40 @@ function MainWeightSessionService({}: PropsMainWeightSessionService) {
 						<div className={styles.search}>
 							<Search keyName='_keyword' placeholder='Tìm kiếm theo mã lô' />
 						</div>
+
+						<div className={styles.search}>
+							<Search type='number' keyName='_shift' placeholder='Tìm kiếm theo ca' />
+						</div>
+
+						<FilterCustom
+							isSearch
+							name='Khách hàng'
+							query='_customerUuid'
+							listFilter={listCustomer?.data?.map((v: any) => ({
+								id: v?.uuid,
+								name: v?.name,
+							}))}
+						/>
+
+						<FilterCustom
+							isSearch
+							name='Kho chứa'
+							query='_storageUuid'
+							listFilter={listStorage?.data?.map((v: any) => ({
+								id: v?.uuid,
+								name: v?.name,
+							}))}
+						/>
+
+						<FilterCustom
+							isSearch
+							name='Mã tàu'
+							query='_shipUuid'
+							listFilter={listShip?.data?.map((v: any) => ({
+								id: v?.uuid,
+								name: v?.licensePalate,
+							}))}
+						/>
 
 						<FilterCustom
 							isSearch
@@ -242,6 +361,23 @@ function MainWeightSessionService({}: PropsMainWeightSessionService) {
 									id: v?.uuid,
 									name: v?.name,
 								}))}
+							/>
+						</div>
+						<div className={styles.filter}>
+							<FilterCustom
+								isSearch
+								name='Kiểu cân'
+								query='_isBatch'
+								listFilter={[
+									{
+										id: TYPE_BATCH.CAN_LO,
+										name: 'Cân lô',
+									},
+									{
+										id: TYPE_BATCH.CAN_LE,
+										name: 'Cân lẻ',
+									},
+								]}
 							/>
 						</div>
 						<div className={styles.filter}>
@@ -359,15 +495,15 @@ function MainWeightSessionService({}: PropsMainWeightSessionService) {
 								),
 							},
 							{
-								title: 'KL 1 (tấn)',
+								title: 'KL 1 (Tấn)',
 								render: (data: IWeightSession) => <>{convertWeight(data?.weight1?.weight)}</>,
 							},
 							{
-								title: 'KL 2 (tấn)',
+								title: 'KL 2 (Tấn)',
 								render: (data: IWeightSession) => <>{convertWeight(data?.weight2?.weight)}</>,
 							},
 							{
-								title: 'KL hàng (tấn)',
+								title: 'KL hàng (Tấn)',
 								render: (data: IWeightSession) => <>{convertWeight(data?.weightReal)}</>,
 							},
 							{
@@ -429,6 +565,12 @@ function MainWeightSessionService({}: PropsMainWeightSessionService) {
 						byFilter,
 						debounceCodeStart,
 						debounceCodeEnd,
+						_customerUuid,
+						_storageUuid,
+						_isBatch,
+						_shipUuid,
+						_shift,
+						_status,
 					]}
 				/>
 			</div>

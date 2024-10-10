@@ -147,7 +147,7 @@ function MainDetailScales({}: PropsMainDetailScales) {
 						<td>
 							<span>Tổng khối lượng:</span>
 							<span style={{marginLeft: '6px', fontWeight: 600}}>
-								{convertWeight(detailBatchBill?.weightTotal!) || 0} (tấn)
+								{convertWeight(detailBatchBill?.weightTotal!) || 0} (Tấn)
 							</span>
 						</td>
 					</tr>

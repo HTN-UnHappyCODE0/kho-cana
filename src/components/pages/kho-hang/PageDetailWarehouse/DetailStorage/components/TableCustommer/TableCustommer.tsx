@@ -80,7 +80,7 @@ function TableCustomer({setTotalCustomer}: PropsTableCustomer) {
 							),
 						},
 						{
-							title: 'Lượng quy khô nhập (tấn)',
+							title: 'Lượng quy khô nhập (Tấn)',
 							render: (data: IDataTableCustomerStorage) => (
 								<span style={{color: '#2D74FF'}}>{convertWeight(data?.amount)}</span>
 							),
