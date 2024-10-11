@@ -206,7 +206,7 @@ function MainWeightSessionExport({}: PropsMainWeightSessionExport) {
 						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
-						scalesType: [],
+						scalesType: [TYPE_SCALES.CAN_XUAT],
 						storageUuid: (_storageUuid as string) || '',
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
