@@ -39,6 +39,7 @@ import {LuPencil} from 'react-icons/lu';
 import shipServices from '~/services/shipServices';
 import {convertWeight} from '~/common/funcs/optionConvert';
 import clsx from 'clsx';
+import Button from '~/components/common/Button';
 
 function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 	const router = useRouter();
@@ -237,6 +238,65 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 		},
 	});
 
+	const exportExcel = useMutation({
+		mutationFn: () => {
+			return httpRequest({
+				http: batchBillServices.exportExcel({
+					page: Number(_page) || 1,
+					pageSize: Number(_pageSize) || 50,
+					keyword: (_keyword as string) || '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.TABLE,
+					scalesType: [TYPE_SCALES.CAN_CHUYEN_KHO],
+					customerUuid: (_customerUuid as string) || '',
+					isBatch: !!_isBatch ? Number(_isBatch) : null,
+					isCreateBatch: null,
+					productTypeUuid: (_productTypeUuid as string) || '',
+					specificationsUuid: '',
+					state: !!_state
+						? [Number(_state)]
+						: [
+								STATE_BILL.NOT_CHECK,
+								STATE_BILL.QLK_REJECTED,
+								STATE_BILL.QLK_CHECKED,
+								STATE_BILL.KTK_REJECTED,
+								STATE_BILL.KTK_CHECKED,
+								STATE_BILL.END,
+						  ],
+					status: !!_status
+						? [Number(_status)]
+						: [
+								STATUS_BILL.DANG_CAN,
+								STATUS_BILL.TAM_DUNG,
+								STATUS_BILL.DA_CAN_CHUA_KCS,
+								STATUS_BILL.DA_KCS,
+								STATUS_BILL.CHOT_KE_TOAN,
+						  ],
+					timeStart: _dateFrom ? (_dateFrom as string) : null,
+					timeEnd: _dateTo ? (_dateTo as string) : null,
+					warehouseUuid: '',
+					qualityUuid: '',
+					transportType: null,
+					shipUuid: (_shipUuid as string) || '',
+					typeCheckDay: 0,
+					scalesStationUuid: '',
+					documentId: '',
+					storageUuid: '',
+				}),
+			});
+		},
+		onSuccess(data) {
+			if (data) {
+				window.open(`${process.env.NEXT_PUBLIC_PATH_EXPORT}/${data}`, '_blank');
+			}
+		},
+	});
+
+	const handleExportExcel = () => {
+		return exportExcel.mutate();
+	};
+
 	return (
 		<div className={styles.container}>
 			<Loading loading={funcStartBatchBill.isLoading || funcStopBatchBill.isLoading} />
@@ -350,6 +410,11 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 					<div className={styles.filter}>
 						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
 					</div>
+				</div>
+				<div className={styles.btn}>
+					<Button rounded_2 w_fit p_8_16 green bold onClick={handleExportExcel}>
+						Xuất excel
+					</Button>
 				</div>
 			</div>
 			<div className={clsx('mt')}>
