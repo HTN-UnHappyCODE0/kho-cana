@@ -205,6 +205,39 @@ const batchBillServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	exportExcel: (
+		data: {
+			pageSize?: number;
+			page?: number | null;
+			keyword: string | null;
+			isDescending: number;
+			typeFind: number;
+			isPaging: number;
+			scalesType: number[];
+			isBatch: number | null;
+			transportType: number | null;
+			isCreateBatch: number | null;
+			status: number[];
+			state: number[];
+			timeStart: string | null;
+			timeEnd: string | null;
+			warehouseUuid: string;
+			qualityUuid: string;
+			specificationsUuid: string;
+			productTypeUuid: string;
+			customerUuid: string;
+			storageUuid: string;
+			shipUuid: string;
+			typeCheckDay: number;
+			scalesStationUuid: string;
+			documentId: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/BatchBill/export-excel-bill`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 };
 
 export default batchBillServices;
