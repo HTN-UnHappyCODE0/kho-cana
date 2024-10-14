@@ -125,6 +125,7 @@ function PageUpdatePort({}: PropsPageUpdatePort) {
 						transportType: null,
 						typeCheckDay: 0,
 						scalesStationUuid: '',
+						storageUuid: '',
 					}),
 				}),
 			onSuccess(data) {

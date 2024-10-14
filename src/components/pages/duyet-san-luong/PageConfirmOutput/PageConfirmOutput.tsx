@@ -42,13 +42,25 @@ import clsx from 'clsx';
 import Button from '~/components/common/Button';
 import {convertWeight, formatDrynessAvg} from '~/common/funcs/optionConvert';
 import scalesStationServices from '~/services/scalesStationServices';
+import storageServices from '~/services/storageServices';
 
 function PageConfirmOutput({}: PropsPageConfirmOutput) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 
-	const {_page, _pageSize, _keyword, _customerUuid, _isBatch, _productTypeUuid, _state, _dateFrom, _dateTo, _scalesStationUuid} =
-		router.query;
+	const {
+		_page,
+		_pageSize,
+		_keyword,
+		_customerUuid,
+		_isBatch,
+		_productTypeUuid,
+		_state,
+		_dateFrom,
+		_dateTo,
+		_storageUuid,
+		_scalesStationUuid,
+	} = router.query;
 
 	const [uuidKTKConfirm, setUuidKTKConfirm] = useState<string[]>([]);
 	const [uuidKTKReject, setUuidKTKReject] = useState<string[]>([]);
@@ -120,6 +132,31 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 		},
 	});
 
+	const listStorage = useQuery([QUERY_KEY.table_bai], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: storageServices.listStorage({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					warehouseUuid: '',
+					productUuid: '',
+					qualityUuid: '',
+					specificationsUuid: '',
+					status: null,
+				}),
+			}),
+		select(data) {
+			if (data) {
+				return data;
+			}
+		},
+	});
+
 	const getListBatch = useQuery(
 		[
 			QUERY_KEY.table_ktk_duyet_san_luong,
@@ -133,6 +170,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 			_state,
 			_dateTo,
 			_scalesStationUuid,
+			_storageUuid,
 		],
 		{
 			queryFn: () =>
@@ -151,23 +189,16 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 						isCreateBatch: null,
 						productTypeUuid: (_productTypeUuid as string) || '',
 						specificationsUuid: '',
-						status: [
-							STATUS_BILL.DANG_CAN,
-							STATUS_BILL.TAM_DUNG,
-							STATUS_BILL.DA_CAN_CHUA_KCS,
-							STATUS_BILL.DA_KCS,
-							STATUS_BILL.CHOT_KE_TOAN,
-						],
-						state: !!_state
-							? [Number(_state)]
-							: [STATE_BILL.QLK_CHECKED, STATE_BILL.KTK_REJECTED, STATE_BILL.KTK_CHECKED, STATE_BILL.END],
+						status: [STATUS_BILL.DA_CAN_CHUA_KCS, STATUS_BILL.DA_KCS, STATUS_BILL.CHOT_KE_TOAN],
+						state: !!_state ? [Number(_state)] : [STATE_BILL.KTK_CHECKED, STATE_BILL.END],
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
 						warehouseUuid: '',
 						qualityUuid: '',
 						transportType: null,
-						typeCheckDay: TYPE_CHECK_DAY_BILL.DUYET_SAN_LUONG,
+						typeCheckDay: TYPE_CHECK_DAY_BILL.THOI_GIAN_KTK_DUYET,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
+						storageUuid: (_storageUuid as string) || '',
 					}),
 				}),
 			onSuccess(data) {
@@ -211,9 +242,51 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 		},
 	});
 
+	const exportExcel = useMutation({
+		mutationFn: () => {
+			return httpRequest({
+				http: batchBillServices.exportExcel({
+					page: Number(_page) || 1,
+					pageSize: Number(_pageSize) || 50,
+					keyword: (_keyword as string) || '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.TABLE,
+					scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_XUAT],
+					customerUuid: (_customerUuid as string) || '',
+					isBatch: !!_isBatch ? Number(_isBatch) : null,
+					isCreateBatch: null,
+					productTypeUuid: (_productTypeUuid as string) || '',
+					specificationsUuid: '',
+					status: [STATUS_BILL.DA_CAN_CHUA_KCS, STATUS_BILL.DA_KCS, STATUS_BILL.CHOT_KE_TOAN],
+					state: !!_state ? [Number(_state)] : [STATE_BILL.KTK_CHECKED, STATE_BILL.END],
+					timeStart: _dateFrom ? (_dateFrom as string) : null,
+					timeEnd: _dateTo ? (_dateTo as string) : null,
+					warehouseUuid: '',
+					qualityUuid: '',
+					transportType: null,
+					typeCheckDay: TYPE_CHECK_DAY_BILL.THOI_GIAN_KTK_DUYET,
+					scalesStationUuid: (_scalesStationUuid as string) || '',
+					documentId: '',
+					shipUuid: '',
+					storageUuid: (_storageUuid as string) || '',
+				}),
+			});
+		},
+		onSuccess(data) {
+			if (data) {
+				window.open(`${process.env.NEXT_PUBLIC_PATH_EXPORT}/${data}`, '_blank');
+			}
+		},
+	});
+
+	const handleExportExcel = () => {
+		return exportExcel.mutate();
+	};
+
 	return (
 		<div className={styles.container}>
-			<Loading loading={funcKTKConfirmBatchBill.isLoading} />
+			<Loading loading={funcKTKConfirmBatchBill.isLoading || exportExcel.isLoading} />
 			<div className={styles.header}>
 				<div className={styles.main_search}>
 					{listBatchBill?.some((x) => x.isChecked !== false) && (
@@ -313,9 +386,24 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 						}))}
 					/>
 
+					<FilterCustom
+						isSearch
+						name='Bãi'
+						query='_storageUuid'
+						listFilter={listStorage?.data?.map((v: any) => ({
+							id: v?.uuid,
+							name: v?.name,
+						}))}
+					/>
+
 					<div className={styles.filter}>
 						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
 					</div>
+				</div>
+				<div className={styles.btn}>
+					<Button rounded_2 w_fit p_8_16 green bold onClick={handleExportExcel}>
+						Xuất excel
+					</Button>
 				</div>
 			</div>
 			<div className={clsx('mt')}>
@@ -350,7 +438,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 						column={[
 							{
 								title: 'STT',
-								checkBox: true,
+
 								render: (data: ITableBillScale, index: number) => <>{index + 1}</>,
 							},
 							{
@@ -427,6 +515,10 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 							{
 								title: 'Quy cách',
 								render: (data: ITableBillScale) => <>{data?.specificationsUu?.name || '---'}</>,
+							},
+							{
+								title: 'KL hàng (Tấn)',
+								render: (data: ITableBillScale) => <>{convertWeight(data?.weightTotal) || 0}</>,
 							},
 							{
 								title: 'KL 1 (Tấn)',
@@ -546,6 +638,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 							_dateFrom,
 							_scalesStationUuid,
 							_dateTo,
+							_storageUuid,
 						]}
 					/>
 				)}

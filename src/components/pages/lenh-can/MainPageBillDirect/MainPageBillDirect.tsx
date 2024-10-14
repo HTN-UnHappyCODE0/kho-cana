@@ -43,13 +43,15 @@ import batchBillServices from '~/services/batchBillServices';
 import shipServices from '~/services/shipServices';
 import {convertWeight} from '~/common/funcs/optionConvert';
 import {convertCoin} from '~/common/funcs/convertCoin';
+import storageServices from '~/services/storageServices';
 
 function MainPageBillDirect({}: PropsMainPageBillDirect) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 	const [uuidPlay, setUuidPlay] = useState<string>('');
 
-	const {_page, _pageSize, _keyword, _isBatch, _customerUuid, _productTypeUuid, _shipUuid, _status, _dateFrom, _dateTo} = router.query;
+	const {_page, _pageSize, _keyword, _isBatch, _customerUuid, _productTypeUuid, _shipUuid, _status, _dateFrom, _storageUuid, _dateTo} =
+		router.query;
 
 	const [billUuid, setBilldUuid] = useState<string | null>(null);
 
@@ -97,6 +99,31 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 		},
 	});
 
+	const listStorage = useQuery([QUERY_KEY.table_bai], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: storageServices.listStorage({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					warehouseUuid: '',
+					productUuid: '',
+					qualityUuid: '',
+					specificationsUuid: '',
+					status: null,
+				}),
+			}),
+		select(data) {
+			if (data) {
+				return data;
+			}
+		},
+	});
+
 	const listShip = useQuery([QUERY_KEY.dropdown_ma_tau], {
 		queryFn: () =>
 			httpRequest({
@@ -129,6 +156,7 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 			_status,
 			_dateFrom,
 			_dateTo,
+			_storageUuid,
 		],
 		{
 			queryFn: () =>
@@ -156,6 +184,7 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 						shipUuid: (_shipUuid as string) || '',
 						typeCheckDay: 0,
 						scalesStationUuid: '',
+						storageUuid: (_storageUuid as string) || '',
 					}),
 				}),
 			select(data) {
@@ -245,6 +274,16 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 								name: 'Đã hoàn thành',
 							},
 						]}
+					/>
+
+					<FilterCustom
+						isSearch
+						name='Bãi'
+						query='_storageUuid'
+						listFilter={listStorage?.data?.map((v: any) => ({
+							id: v?.uuid,
+							name: v?.name,
+						}))}
 					/>
 
 					<div className={styles.filter}>
@@ -338,6 +377,10 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 							{
 								title: 'Quy cách',
 								render: (data: IDataBill) => <>{data?.specificationsUu?.name || '---'}</>,
+							},
+							{
+								title: 'Tổng KL (Tấn)',
+								render: (data: IDataBill) => <>{convertWeight(data?.weightTotal) || '---'}</>,
 							},
 							{
 								title: 'KL 1 (Tấn)',
@@ -444,7 +487,18 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 					currentPage={Number(_page) || 1}
 					pageSize={Number(_pageSize) || 50}
 					total={listBatch?.data?.pagination?.totalCount}
-					dependencies={[_pageSize, _keyword, _isBatch, _customerUuid, _productTypeUuid, _shipUuid, _status, _dateFrom, _dateTo]}
+					dependencies={[
+						_pageSize,
+						_keyword,
+						_isBatch,
+						_customerUuid,
+						_productTypeUuid,
+						_shipUuid,
+						_status,
+						_dateFrom,
+						_dateTo,
+						_storageUuid,
+					]}
 				/>
 			</div>
 			<Dialog

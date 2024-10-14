@@ -40,13 +40,26 @@ import shipServices from '~/services/shipServices';
 import {convertWeight} from '~/common/funcs/optionConvert';
 import clsx from 'clsx';
 import Button from '~/components/common/Button';
+import storageServices from '~/services/storageServices';
 
 function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 
-	const {_page, _pageSize, _keyword, _isBatch, _customerUuid, _productTypeUuid, _shipUuid, _status, _dateFrom, _dateTo, _state} =
-		router.query;
+	const {
+		_page,
+		_pageSize,
+		_keyword,
+		_isBatch,
+		_customerUuid,
+		_productTypeUuid,
+		_shipUuid,
+		_status,
+		_dateFrom,
+		_dateTo,
+		_state,
+		_storageUuid,
+	} = router.query;
 
 	const [uuidPlay, setUuidPlay] = useState<string>('');
 	const [uuidStop, setUuidStop] = useState<string>('');
@@ -98,6 +111,31 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 		},
 	});
 
+	const listStorage = useQuery([QUERY_KEY.table_bai], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: storageServices.listStorage({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					warehouseUuid: '',
+					productUuid: '',
+					qualityUuid: '',
+					specificationsUuid: '',
+					status: null,
+				}),
+			}),
+		select(data) {
+			if (data) {
+				return data;
+			}
+		},
+	});
+
 	const listShip = useQuery([QUERY_KEY.dropdown_ma_tau], {
 		queryFn: () =>
 			httpRequest({
@@ -131,6 +169,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 			_dateFrom,
 			_dateTo,
 			_state,
+			_storageUuid,
 		],
 		{
 			queryFn: () =>
@@ -176,6 +215,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 						shipUuid: (_shipUuid as string) || '',
 						typeCheckDay: 0,
 						scalesStationUuid: '',
+						storageUuid: (_storageUuid as string) || '',
 					}),
 				}),
 			onSuccess(data) {
@@ -282,7 +322,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 					typeCheckDay: 0,
 					scalesStationUuid: '',
 					documentId: '',
-					storageUuid: '',
+					storageUuid: (_storageUuid as string) || '',
 				}),
 			});
 		},
@@ -406,6 +446,15 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 								name: 'Chốt kế toán',
 							},
 						]}
+					/>
+					<FilterCustom
+						isSearch
+						name='Bãi'
+						query='_storageUuid'
+						listFilter={listStorage?.data?.map((v: any) => ({
+							id: v?.uuid,
+							name: v?.name,
+						}))}
 					/>
 					<div className={styles.filter}>
 						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
@@ -621,6 +670,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 							_dateFrom,
 							_dateTo,
 							_state,
+							_storageUuid,
 						]}
 					/>
 				)}
