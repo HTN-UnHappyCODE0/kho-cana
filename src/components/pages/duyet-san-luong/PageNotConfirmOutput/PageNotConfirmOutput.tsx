@@ -42,13 +42,25 @@ import clsx from 'clsx';
 import Button from '~/components/common/Button';
 import {convertWeight, formatDrynessAvg} from '~/common/funcs/optionConvert';
 import scalesStationServices from '~/services/scalesStationServices';
+import storageServices from '~/services/storageServices';
 
 function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 
-	const {_page, _pageSize, _keyword, _customerUuid, _isBatch, _productTypeUuid, _state, _dateFrom, _scalesStationUuid, _dateTo} =
-		router.query;
+	const {
+		_page,
+		_pageSize,
+		_keyword,
+		_customerUuid,
+		_isBatch,
+		_productTypeUuid,
+		_state,
+		_dateFrom,
+		_scalesStationUuid,
+		_dateTo,
+		_storageUuid,
+	} = router.query;
 
 	const [uuidKTKConfirm, setUuidKTKConfirm] = useState<string[]>([]);
 	const [uuidKTKReject, setUuidKTKReject] = useState<string[]>([]);
@@ -77,6 +89,31 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 			}),
 		select(data) {
 			return data;
+		},
+	});
+
+	const listStorage = useQuery([QUERY_KEY.table_bai], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: storageServices.listStorage({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					warehouseUuid: '',
+					productUuid: '',
+					qualityUuid: '',
+					specificationsUuid: '',
+					status: null,
+				}),
+			}),
+		select(data) {
+			if (data) {
+				return data;
+			}
 		},
 	});
 
@@ -133,6 +170,7 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 			_state,
 			_dateTo,
 			_scalesStationUuid,
+			_storageUuid,
 		],
 		{
 			queryFn: () =>
@@ -151,21 +189,16 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 						isCreateBatch: null,
 						productTypeUuid: (_productTypeUuid as string) || '',
 						specificationsUuid: '',
-						status: [
-							STATUS_BILL.DANG_CAN,
-							STATUS_BILL.TAM_DUNG,
-							STATUS_BILL.DA_CAN_CHUA_KCS,
-							STATUS_BILL.DA_KCS,
-							STATUS_BILL.CHOT_KE_TOAN,
-						],
+						status: [STATUS_BILL.DA_CAN_CHUA_KCS, STATUS_BILL.DA_KCS, STATUS_BILL.CHOT_KE_TOAN],
 						state: !!_state ? [Number(_state)] : [STATE_BILL.QLK_CHECKED, STATE_BILL.KTK_REJECTED],
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
 						warehouseUuid: '',
 						qualityUuid: '',
 						transportType: null,
-						typeCheckDay: TYPE_CHECK_DAY_BILL.DUYET_SAN_LUONG,
+						typeCheckDay: TYPE_CHECK_DAY_BILL.THOI_GIAN_QLK_DUYET,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
+						storageUuid: (_storageUuid as string) || '',
 					}),
 				}),
 			onSuccess(data) {
@@ -311,6 +344,16 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 						}))}
 					/>
 
+					<FilterCustom
+						isSearch
+						name='Bãi'
+						query='_storageUuid'
+						listFilter={listStorage?.data?.map((v: any) => ({
+							id: v?.uuid,
+							name: v?.name,
+						}))}
+					/>
+
 					<div className={styles.filter}>
 						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
 					</div>
@@ -425,6 +468,10 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 							{
 								title: 'Quy cách',
 								render: (data: ITableBillScale) => <>{data?.specificationsUu?.name || '---'}</>,
+							},
+							{
+								title: 'KL hàng (Tấn)',
+								render: (data: ITableBillScale) => <>{convertWeight(data?.weightTotal) || 0}</>,
 							},
 							{
 								title: 'KL 1 (Tấn)',
@@ -544,6 +591,7 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 							_scalesStationUuid,
 							_dateFrom,
 							_dateTo,
+							_storageUuid,
 						]}
 					/>
 				)}

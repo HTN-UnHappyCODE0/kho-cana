@@ -39,13 +39,25 @@ import Loading from '~/components/common/Loading';
 import Dialog from '~/components/common/Dialog';
 import {convertWeight, formatDrynessAvg} from '~/common/funcs/optionConvert';
 import scalesStationServices from '~/services/scalesStationServices';
+import storageServices from '~/services/storageServices';
 
 function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 
-	const {_page, _pageSize, _keyword, _customerUuid, _isBatch, _productTypeUuid, _state, _dateFrom, _dateTo, _scalesStationUuid} =
-		router.query;
+	const {
+		_page,
+		_pageSize,
+		_keyword,
+		_customerUuid,
+		_isBatch,
+		_productTypeUuid,
+		_state,
+		_dateFrom,
+		_dateTo,
+		_scalesStationUuid,
+		_storageUuid,
+	} = router.query;
 
 	const [uuidQLKConfirm, setUuidQLKConfirm] = useState<string[]>([]);
 
@@ -73,6 +85,31 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 			}),
 		select(data) {
 			return data;
+		},
+	});
+
+	const listStorage = useQuery([QUERY_KEY.table_bai], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: storageServices.listStorage({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					warehouseUuid: '',
+					productUuid: '',
+					qualityUuid: '',
+					specificationsUuid: '',
+					status: null,
+				}),
+			}),
+		select(data) {
+			if (data) {
+				return data;
+			}
 		},
 	});
 
@@ -129,6 +166,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 			_dateFrom,
 			_dateTo,
 			_scalesStationUuid,
+			_storageUuid,
 		],
 		{
 			queryFn: () =>
@@ -141,21 +179,22 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 						isPaging: CONFIG_PAGING.IS_PAGING,
 						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
-						scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_XUAT],
+						scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_TRUC_TIEP],
 						customerUuid: (_customerUuid as string) || '',
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
 						isCreateBatch: null,
 						productTypeUuid: (_productTypeUuid as string) || '',
 						specificationsUuid: '',
 						status: [STATUS_BILL.DA_CAN_CHUA_KCS, STATUS_BILL.DA_KCS, STATUS_BILL.CHOT_KE_TOAN],
-						state: !!_state ? [Number(_state)] : [STATE_BILL.QLK_CHECKED, STATE_BILL.KTK_REJECTED, STATE_BILL.NOT_CHECK],
+						state: !!_state ? [Number(_state)] : [STATE_BILL.NOT_CHECK, STATE_BILL.QLK_REJECTED],
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
 						warehouseUuid: '',
 						qualityUuid: '',
 						transportType: null,
-						typeCheckDay: 0,
+						typeCheckDay: 2,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
+						storageUuid: (_storageUuid as string) || '',
 					}),
 				}),
 			onSuccess(data) {
@@ -209,24 +248,24 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 					isPaging: CONFIG_PAGING.IS_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.TABLE,
-					scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_XUAT],
+					scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_TRUC_TIEP],
 					customerUuid: (_customerUuid as string) || '',
 					isBatch: !!_isBatch ? Number(_isBatch) : null,
 					isCreateBatch: null,
 					productTypeUuid: (_productTypeUuid as string) || '',
 					specificationsUuid: '',
 					status: [STATUS_BILL.DA_CAN_CHUA_KCS, STATUS_BILL.DA_KCS, STATUS_BILL.CHOT_KE_TOAN],
-					state: !!_state ? [Number(_state)] : [STATE_BILL.QLK_CHECKED, STATE_BILL.KTK_REJECTED, STATE_BILL.NOT_CHECK],
+					state: !!_state ? [Number(_state)] : [STATE_BILL.NOT_CHECK, STATE_BILL.QLK_REJECTED],
 					timeStart: _dateFrom ? (_dateFrom as string) : null,
 					timeEnd: _dateTo ? (_dateTo as string) : null,
 					warehouseUuid: '',
 					qualityUuid: '',
 					transportType: null,
-					typeCheckDay: 0,
+					typeCheckDay: 2,
 					scalesStationUuid: (_scalesStationUuid as string) || '',
 					documentId: '',
 					shipUuid: '',
-					storageUuid: '',
+					storageUuid: (_storageUuid as string) || '',
 				}),
 			});
 		},
@@ -326,6 +365,16 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 						}))}
 					/>
 
+					<FilterCustom
+						isSearch
+						name='Bãi'
+						query='_storageUuid'
+						listFilter={listStorage?.data?.map((v: any) => ({
+							id: v?.uuid,
+							name: v?.name,
+						}))}
+					/>
+
 					<div className={styles.filter}>
 						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
 					</div>
@@ -408,7 +457,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 							// 	),
 							// },
 							{
-								title: 'Từ(tàu/xe)',
+								title: 'Từ (tàu/xe)',
 								render: (data: ITableBillScale) => (
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>
@@ -444,6 +493,10 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 							{
 								title: 'Quy cách',
 								render: (data: ITableBillScale) => <>{data?.specificationsUu?.name || '---'}</>,
+							},
+							{
+								title: 'KL hàng (Tấn)',
+								render: (data: ITableBillScale) => <>{convertWeight(data?.weightTotal) || 0}</>,
 							},
 							{
 								title: 'KL 1 (Tấn)',
@@ -552,6 +605,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 							_dateFrom,
 							_dateTo,
 							_scalesStationUuid,
+							_storageUuid,
 						]}
 					/>
 				)}

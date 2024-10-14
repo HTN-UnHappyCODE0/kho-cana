@@ -295,7 +295,7 @@ function TableDetail({}: PropsTableDetail) {
 
 							<FilterCustom
 								isSearch
-								name='Kho chứa'
+								name='Bãi'
 								query='_storageUuid'
 								listFilter={listStorage?.data?.map((v: any) => ({
 									id: v?.uuid,
