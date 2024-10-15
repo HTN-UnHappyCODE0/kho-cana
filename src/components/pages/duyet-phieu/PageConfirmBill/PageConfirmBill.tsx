@@ -380,7 +380,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 					/>
 
 					<div className={styles.filter}>
-						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
+						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.YESTERDAY} />
 					</div>
 				</div>
 				<div className={styles.btn}>
