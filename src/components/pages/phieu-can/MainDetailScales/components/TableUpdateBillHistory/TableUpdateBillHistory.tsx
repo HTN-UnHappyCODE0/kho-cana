@@ -36,7 +36,6 @@ function TableUpdateBillHistory({}: PropsTableUpdateBillHistory) {
 		},
 		enabled: !!_id,
 	});
-	console.log('detailBatchBillAudit', detailBatchBillAudit.data);
 
 	return (
 		<Fragment>

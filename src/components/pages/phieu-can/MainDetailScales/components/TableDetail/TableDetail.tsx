@@ -114,7 +114,7 @@ function TableDetail({}: PropsTableDetail) {
 		},
 	});
 
-	const listTruck = useQuery([QUERY_KEY.dropdown_xe_hang], {
+	const listTruck = useQuery([QUERY_KEY.dropdown_xe_hang, _id], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -126,11 +126,13 @@ function TableDetail({}: PropsTableDetail) {
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
 					status: CONFIG_STATUS.HOAT_DONG,
+					billUuid: (_id as string) || '',
 				}),
 			}),
 		select(data) {
 			return data;
 		},
+		enabled: !!_id,
 	});
 
 	const listSpecification = useQuery([QUERY_KEY.dropdown_quy_cach], {
@@ -283,7 +285,7 @@ function TableDetail({}: PropsTableDetail) {
 								<Search type='number' keyName='_shift' placeholder='Tìm kiếm theo ca' />
 							</div>
 
-							<FilterCustom
+							{/* <FilterCustom
 								isSearch
 								name='Khách hàng'
 								query='_customerUuid'
@@ -301,9 +303,9 @@ function TableDetail({}: PropsTableDetail) {
 									id: v?.uuid,
 									name: v?.name,
 								}))}
-							/>
+							/> */}
 
-							<FilterCustom
+							{/* <FilterCustom
 								isSearch
 								name='Mã tàu'
 								query='_shipUuid'
@@ -311,7 +313,7 @@ function TableDetail({}: PropsTableDetail) {
 									id: v?.uuid,
 									name: v?.licensePalate,
 								}))}
-							/>
+							/> */}
 
 							<FilterCustom
 								isSearch
@@ -322,7 +324,7 @@ function TableDetail({}: PropsTableDetail) {
 									name: v?.licensePalate,
 								}))}
 							/>
-							<div className={styles.filter}>
+							{/* <div className={styles.filter}>
 								<FilterCustom
 									isSearch
 									name='Quy cách'
@@ -332,8 +334,8 @@ function TableDetail({}: PropsTableDetail) {
 										name: v?.name,
 									}))}
 								/>
-							</div>
-							<div className={styles.filter}>
+							</div> */}
+							{/* <div className={styles.filter}>
 								<FilterCustom
 									isSearch
 									name='Kiểu cân'
@@ -349,7 +351,7 @@ function TableDetail({}: PropsTableDetail) {
 										},
 									]}
 								/>
-							</div>
+							</div> */}
 							<div className={styles.filter}>
 								<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
 							</div>

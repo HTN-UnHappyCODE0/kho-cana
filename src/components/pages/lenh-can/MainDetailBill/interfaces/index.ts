@@ -102,4 +102,17 @@ export interface IDetailBatchBill {
 		uuid: string;
 	};
 	port: string;
+	weightSessionUu: {
+		truckUu: {
+			code: string;
+			licensePalate: string;
+			status: number;
+			uuid: string;
+		};
+		status: number;
+		code: string;
+		uuid: string;
+	};
+	weigth1: number;
+	weigth2: number;
 }
