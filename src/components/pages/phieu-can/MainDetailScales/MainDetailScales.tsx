@@ -190,6 +190,14 @@ function MainDetailScales({}: PropsMainDetailScales) {
 					<tr>
 						<td>
 							<div style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
+								<span>Trạm cân: </span>
+								<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.scalesStationUu?.name || '---'}</span>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
 								<span>Xác nhận SL: </span>
 								<span style={{marginLeft: '6px', fontWeight: 600}}>
 									{detailBatchBill?.state == STATE_BILL.NOT_CHECK && 'Chưa duyệt'}
