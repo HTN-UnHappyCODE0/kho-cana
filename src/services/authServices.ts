@@ -7,6 +7,7 @@ const authServices = {
 			password: string;
 			ip: string;
 			address: string;
+			type: number;
 		},
 		tokenAxios?: any
 	) => {

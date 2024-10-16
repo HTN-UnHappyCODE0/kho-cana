@@ -306,3 +306,10 @@ export enum TYPE_CHECK_DAY_BILL {
 	THOI_GIAN_QLK_DUYET = 1,
 	THOI_GIAN_KTK_DUYET = 2,
 }
+
+export enum TYPE_LOGIN {
+	ADMIN = 1,
+	KHO,
+	KE_TOAN,
+	NHAP_HANG,
+}

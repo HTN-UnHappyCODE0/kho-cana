@@ -19,6 +19,7 @@ import {setDataLoginStorage, setStateLogin, setToken} from '~/redux/reducer/auth
 import {setInfoUser} from '~/redux/reducer/user';
 import {setRememberPassword} from '~/redux/reducer/site';
 import md5 from 'md5';
+import {TYPE_LOGIN} from '~/constants/config/enum';
 
 function FormLogin({}: PropsFormLogin) {
 	const router = useRouter();
@@ -53,6 +54,7 @@ function FormLogin({}: PropsFormLogin) {
 					password: md5(form.password),
 					ip: ip,
 					address: '',
+					type: TYPE_LOGIN.KHO,
 				}),
 			}),
 		onSuccess(data) {
