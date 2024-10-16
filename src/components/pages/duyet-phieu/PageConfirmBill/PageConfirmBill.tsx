@@ -521,33 +521,33 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 									</>
 								),
 							},
-							{
-								title: 'Phân loại',
-								render: (data: ITableBillScale) => (
-									<>
-										{data?.isSift == TYPE_SIFT.CAN_SANG && 'Cần sàng'}
-										{data?.isSift == TYPE_SIFT.KHONG_CAN_SANG && 'Không cần sàng'}
-									</>
-								),
-							},
+							// {
+							// 	title: 'Phân loại',
+							// 	render: (data: ITableBillScale) => (
+							// 		<>
+							// 			{data?.isSift == TYPE_SIFT.CAN_SANG && 'Cần sàng'}
+							// 			{data?.isSift == TYPE_SIFT.KHONG_CAN_SANG && 'Không cần sàng'}
+							// 		</>
+							// 	),
+							// },
 							{
 								title: 'Số chứng từ',
 								render: (data: ITableBillScale) => <>{data?.documentId || '---'}</>,
 							},
 
-							// {
-							// 	title: 'Xác nhận SL',
-							// 	render: (data: ITableBillScale) => (
-							// 		<p style={{fontWeight: 600, color: ''}}>
-							// 			{data?.state == STATE_BILL.NOT_CHECK && <span style={{color: '#FF6838'}}>Chưa duyệt</span>}
-							// 			{data?.state == STATE_BILL.QLK_REJECTED && <span style={{color: '#6170E3'}}>QLK duyệt lại</span>}
-							// 			{data?.state == STATE_BILL.QLK_CHECKED && <span style={{color: '#6FD195'}}>QLK đã duyệt</span>}
-							// 			{data?.state == STATE_BILL.KTK_REJECTED && <span style={{color: '#FFAE4C'}}>KTK duyệt lại</span>}
-							// 			{data?.state == STATE_BILL.KTK_CHECKED && <span style={{color: '#3CC3DF'}}>KTK đã duyệt</span>}
-							// 			{data?.state == STATE_BILL.END && <span style={{color: '#D95656'}}>Kết thúc</span>}
-							// 		</p>
-							// 	),
-							// },
+							{
+								title: 'Xác nhận SL',
+								render: (data: ITableBillScale) => (
+									<p style={{fontWeight: 600, color: ''}}>
+										{data?.state == STATE_BILL.NOT_CHECK && <span style={{color: '#FF6838'}}>Chưa duyệt</span>}
+										{data?.state == STATE_BILL.QLK_REJECTED && <span style={{color: '#6170E3'}}>QLK duyệt lại</span>}
+										{data?.state == STATE_BILL.QLK_CHECKED && <span style={{color: '#6FD195'}}>QLK đã duyệt</span>}
+										{data?.state == STATE_BILL.KTK_REJECTED && <span style={{color: '#FFAE4C'}}>KTK duyệt lại</span>}
+										{data?.state == STATE_BILL.KTK_CHECKED && <span style={{color: '#3CC3DF'}}>KTK đã duyệt</span>}
+										{data?.state == STATE_BILL.END && <span style={{color: '#D95656'}}>Kết thúc</span>}
+									</p>
+								),
+							},
 							{
 								title: 'Trạng thái',
 								render: (data: ITableBillScale) => (

@@ -518,15 +518,15 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 									</>
 								),
 							},
-							{
-								title: 'Phân loại',
-								render: (data: ITableBillScale) => (
-									<>
-										{data?.isSift == TYPE_SIFT.CAN_SANG && 'Cần sàng'}
-										{data?.isSift == TYPE_SIFT.KHONG_CAN_SANG && 'Không cần sàng'}
-									</>
-								),
-							},
+							// {
+							// 	title: 'Phân loại',
+							// 	render: (data: ITableBillScale) => (
+							// 		<>
+							// 			{data?.isSift == TYPE_SIFT.CAN_SANG && 'Cần sàng'}
+							// 			{data?.isSift == TYPE_SIFT.KHONG_CAN_SANG && 'Không cần sàng'}
+							// 		</>
+							// 	),
+							// },
 							{
 								title: 'Số chứng từ',
 								render: (data: ITableBillScale) => <>{data?.documentId || '---'}</>,

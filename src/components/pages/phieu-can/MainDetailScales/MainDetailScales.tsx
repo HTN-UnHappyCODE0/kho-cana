@@ -138,9 +138,9 @@ function MainDetailScales({}: PropsMainDetailScales) {
 							<span>Vận chuyển:</span>
 							<span style={{marginLeft: '6px', fontWeight: 600}}>
 								{detailBatchBill?.transportType == TYPE_TRANSPORT.DUONG_BO
-									? 'Đường bộ'
+									? `Đường bộ (${detailBatchBill?.weightSessionUu?.truckUu?.licensePalate || '---'})`
 									: detailBatchBill?.transportType == TYPE_TRANSPORT.DUONG_THUY
-									? 'Đường thủy'
+									? `Đường thủy (${detailBatchBill?.batchsUu?.shipOutUu?.licensePalate || '---'})`
 									: '---'}
 							</span>
 						</td>
@@ -149,6 +149,16 @@ function MainDetailScales({}: PropsMainDetailScales) {
 							<span style={{marginLeft: '6px', fontWeight: 600}}>
 								{convertWeight(detailBatchBill?.weightTotal!) || 0} (Tấn)
 							</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span>Từ:</span>
+							<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.fromUu?.name || '---'} </span>
+						</td>
+						<td>
+							<span>Đến:</span>
+							<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.toUu?.name || '---'} </span>
 						</td>
 					</tr>
 					<tr>
