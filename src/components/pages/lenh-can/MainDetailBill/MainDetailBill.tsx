@@ -269,6 +269,14 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 										<span style={{color: '#777E90'}}>({detailBatchBill.toUu?.parentUu?.name || '---'})</span>
 									</span>
 								</div>
+								<div className={styles.item_table}>
+									<p>Kho hàng:</p>
+									<span>{detailBatchBill?.storageTemporaryUu?.parentUu?.name}</span>
+								</div>
+								<div className={styles.item_table}>
+									<p>Bãi trung chuyển:</p>
+									<span>{detailBatchBill?.storageTemporaryUu?.name}</span>
+								</div>
 							</>
 						) : null}
 

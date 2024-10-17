@@ -193,7 +193,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 		select(data) {
 			return data;
 		},
-		enabled: !!form.warehouseUuid && !!form.productTypeUuid && !!form.warehouseUuid,
+		enabled: !!form.warehouseUuid && !!form.productTypeUuid && !!form.specificationsUuid,
 	});
 
 	const listScaleStation = useQuery([QUERY_KEY.dropdown_tram_can], {

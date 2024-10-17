@@ -20,4 +20,6 @@ export interface IFormUpdateDirect {
 	reason: string;
 	scaleStationUuid: string;
 	portname: string;
+	warehouseUuid: string;
+	storageTemporaryUuid: string;
 }

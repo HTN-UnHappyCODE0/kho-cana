@@ -115,4 +115,14 @@ export interface IDetailBatchBill {
 	};
 	weigth1: number;
 	weigth2: number;
+	storageTemporaryUu: {
+		parentUu: {
+			uuid: string;
+			code: string;
+			name: string;
+		};
+		uuid: string;
+		code: string;
+		name: string;
+	};
 }
