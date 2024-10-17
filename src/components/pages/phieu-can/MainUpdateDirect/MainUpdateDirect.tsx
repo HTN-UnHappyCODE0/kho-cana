@@ -38,6 +38,8 @@ import FormReasonUpdateBill from '../FormReasonUpdateBill';
 import Popup from '~/components/common/Popup';
 import scalesStationServices from '~/services/scalesStationServices';
 import {convertWeight} from '~/common/funcs/optionConvert';
+import storageServices from '~/services/storageServices';
+import warehouseServices from '~/services/warehouseServices';
 
 function MainUpdateDirect({}: PropsMainUpdateDirect) {
 	const router = useRouter();
@@ -72,6 +74,8 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 		reason: '',
 		scaleStationUuid: '',
 		portname: '',
+		warehouseUuid: '',
+		storageTemporaryUuid: '',
 	});
 
 	const {data: detailBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -107,6 +111,8 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 					reason: '',
 					scaleStationUuid: data?.scalesStationUu?.uuid || '',
 					portname: data?.port || '',
+					warehouseUuid: data?.storageTemporaryUu?.parentUu?.uuid || '',
+					storageTemporaryUuid: data?.storageTemporaryUu?.uuid || '',
 				});
 
 				setListTruckChecked(
@@ -213,6 +219,60 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 		enabled: !!form.fromUuid,
 	});
 
+	const listWarehouse = useQuery([QUERY_KEY.dropdown_kho_hang], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: warehouseServices.listWarehouse({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					status: CONFIG_STATUS.HOAT_DONG,
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.TABLE,
+					customerUuid: '',
+					timeEnd: null,
+					timeStart: null,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
+	const listStorage = useQuery([QUERY_KEY.dropdown_bai, form.specificationsUuid, form.productTypeUuid, form.warehouseUuid], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: storageServices.listStorage({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					status: CONFIG_STATUS.HOAT_DONG,
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					qualityUuid: '',
+					specificationsUuid: form.specificationsUuid,
+					warehouseUuid: form.warehouseUuid,
+					productUuid: form.productTypeUuid,
+				}),
+			}),
+		onSuccess(data) {
+			if (data) {
+				setForm((prev) => ({
+					...prev,
+					storageTemporaryUuid: data?.[0]?.uuid || '',
+				}));
+			}
+		},
+		select(data) {
+			return data;
+		},
+		enabled: !!form.warehouseUuid && !!form.productTypeUuid && !!form.specificationsUuid,
+	});
+
 	const listShip = useQuery([QUERY_KEY.dropdown_tau_hang], {
 		queryFn: () =>
 			httpRequest({
@@ -306,6 +366,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 					reason: form.reason,
 					scaleStationUuid: form.scaleStationUuid,
 					portname: form.portname,
+					storageTemporaryUuid: form?.storageTemporaryUuid,
 				}),
 			}),
 		onSuccess(data) {
@@ -344,7 +405,12 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 		if (listTruckChecked.length == 0) {
 			return toastWarn({msg: 'Vui lòng chọn xe hàng!'});
 		}
-
+		if (!form.warehouseUuid) {
+			return toastWarn({msg: 'Vui lòng chọn kho chính!'});
+		}
+		if (!form.storageTemporaryUuid) {
+			return toastWarn({msg: 'Vui lòng chọn kho trung chuyển!'});
+		}
 		if (
 			form.toUuid != detailBill?.toUu?.uuid ||
 			form.fromUuid != detailBill?.fromUu?.uuid ||
@@ -678,6 +744,63 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 											setForm((prev: any) => ({
 												...prev,
 												specificationsUuid: v?.specUu?.uuid,
+											}))
+										}
+									/>
+								))}
+							</Select>
+						</div>
+					</div>
+					<div className={clsx('mt', 'col_2')}>
+						<Select
+							isSearch
+							name='warehouseUuid'
+							placeholder='Chọn kho hàng'
+							value={form?.warehouseUuid}
+							label={
+								<span>
+									Kho hàng <span style={{color: 'red'}}>*</span>
+								</span>
+							}
+						>
+							{listWarehouse?.data?.map((v: any) => (
+								<Option
+									key={v?.uuid}
+									value={v?.uuid}
+									title={v?.name}
+									onClick={() =>
+										setForm((prev: any) => ({
+											...prev,
+											warehouseUuid: v?.uuid,
+											storageTemporaryUuid: '',
+											scaleStationUuid: v?.scaleStationUu?.uuid || '',
+										}))
+									}
+								/>
+							))}
+						</Select>
+						<div>
+							<Select
+								isSearch
+								name='storageTemporaryUuid'
+								placeholder='Chọn bãi trung chuyển'
+								value={form?.storageTemporaryUuid}
+								readOnly={!form.warehouseUuid || !form.productTypeUuid || !form.specificationsUuid}
+								label={
+									<span>
+										Bãi trung chuyển <span style={{color: 'red'}}>*</span>
+									</span>
+								}
+							>
+								{listStorage?.data?.map((v: any) => (
+									<Option
+										key={v?.uuid}
+										value={v?.uuid}
+										title={v?.name}
+										onClick={() =>
+											setForm((prev: any) => ({
+												...prev,
+												storageTemporaryUuid: v?.uuid,
 											}))
 										}
 									/>

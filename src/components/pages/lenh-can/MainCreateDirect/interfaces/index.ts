@@ -16,4 +16,6 @@ export interface IFormCreateDirect {
 	description: string;
 	scaleStationUuid: string;
 	portname: string;
+	warehouseUuid: string;
+	storageTemporaryUuid: string;
 }
