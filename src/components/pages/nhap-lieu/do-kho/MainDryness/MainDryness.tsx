@@ -425,7 +425,7 @@ function MainDryness({}: PropsMainDryness) {
 										interactive
 										onClickOutside={() => setDataUpdateSpec(null)}
 										visible={dataUpdateSpec?.uuid == data?.uuid}
-										placement='top'
+										placement='bottom-start'
 										render={(attrs) => (
 											<BoxUpdateSpec dataUpdateSpec={dataUpdateSpec} onClose={() => setDataUpdateSpec(null)} />
 										)}

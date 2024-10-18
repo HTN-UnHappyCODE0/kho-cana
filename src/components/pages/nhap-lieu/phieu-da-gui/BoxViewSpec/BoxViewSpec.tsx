@@ -15,7 +15,7 @@ function BoxViewSpec({dataUpdateSpec}: PropsBoxViewSpec) {
 							<span style={{margin: '0 6px'}}>{v?.criteriaUu?.ruler == TYPE_RULER.NHO_HON ? '<' : '>'}</span>
 							{v?.criteriaUu?.value}
 						</p>
-						<p>{v?.value}</p>
+						<p>{v?.value}%</p>
 					</div>
 				))}
 			</div>
