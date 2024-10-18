@@ -67,35 +67,35 @@ function FormUpdateStorage({onClose}: PropsFormUpdateStorage) {
 		enabled: !!_uuidStorage,
 	});
 
-	useQuery([QUERY_KEY.danh_sach_tieu_chi_quy_cach, form.specificationsUuid], {
-		queryFn: () =>
-			httpRequest({
-				isDropdown: true,
-				http: criteriaServices.listCriteriaSpec({
-					page: 1,
-					pageSize: 50,
-					keyword: '',
-					isPaging: CONFIG_PAGING.NO_PAGING,
-					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
-					status: CONFIG_STATUS.HOAT_DONG,
-					specificationUuid: form.specificationsUuid,
-				}),
-			}),
-		onSuccess(data) {
-			if (data) {
-				setForm((prev) => ({
-					...prev,
-					specWsValues: data?.map((v: any) => ({
-						uuid: v?.uuid,
-						title: v?.title,
-						value: v?.value,
-					})),
-				}));
-			}
-		},
-		enabled: !!form.specificationsUuid,
-	});
+	// useQuery([QUERY_KEY.danh_sach_tieu_chi_quy_cach, form.specificationsUuid], {
+	// 	queryFn: () =>
+	// 		httpRequest({
+	// 			isDropdown: true,
+	// 			http: criteriaServices.listCriteriaSpec({
+	// 				page: 1,
+	// 				pageSize: 50,
+	// 				keyword: '',
+	// 				isPaging: CONFIG_PAGING.NO_PAGING,
+	// 				isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+	// 				typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+	// 				status: CONFIG_STATUS.HOAT_DONG,
+	// 				specificationUuid: form.specificationsUuid,
+	// 			}),
+	// 		}),
+	// 	onSuccess(data) {
+	// 		if (data) {
+	// 			setForm((prev) => ({
+	// 				...prev,
+	// 				specWsValues: data?.map((v: any) => ({
+	// 					uuid: v?.uuid,
+	// 					title: v?.title,
+	// 					value: v?.value,
+	// 				})),
+	// 			}));
+	// 		}
+	// 	},
+	// 	enabled: !!form.specificationsUuid,
+	// });
 
 	const handleChange = (rule: {uuid: string; title: string; value: number}, value: any) => {
 		setForm((prev) => ({
@@ -384,12 +384,12 @@ function FormUpdateStorage({onClose}: PropsFormUpdateStorage) {
 														className={styles.input}
 														type='number'
 														step='0.01'
-														value={v?.value}
+														value={(v?.value).toFixed(2)}
 														readOnly={true}
 														disabled={true}
 														onChange={(e) => handleChange(v, e.target.value)}
 													/>
-													<div className={clsx(styles.unit, {[styles.disabled]: !form.amountKcs})}>%</div>
+													<div className={clsx(styles.unit, {[styles.disabled]: true})}>%</div>
 												</div>
 											</div>
 										))}

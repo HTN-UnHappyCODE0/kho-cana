@@ -199,7 +199,18 @@ function DetailStorage({}: PropsDetailStorage) {
 							</div>
 						}
 					/>
-					<DetailBox name={'Độ khô trung bình'} value={formatDrynessAvg(detailStorage?.drynessAvg!)} />
+					<DetailBox
+						name={'Độ khô trung bình'}
+						value={formatDrynessAvg(detailStorage?.drynessAvg!)}
+						action={
+							<div className={styles.action}>
+								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />
+								<div className={styles.note}>
+									<span>Dữ liệu lấy theo độ khô chuẩn</span>
+								</div>
+							</div>
+						}
+					/>
 				</GridColumn>
 			</div>
 			<div className={'mt'}>
