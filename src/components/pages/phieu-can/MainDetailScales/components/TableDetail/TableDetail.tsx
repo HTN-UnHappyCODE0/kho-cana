@@ -538,7 +538,6 @@ function TableDetail({}: PropsTableDetail) {
 					total={listWeightSession?.data?.pagination?.totalCount}
 					dependencies={[
 						_id,
-						_page,
 						_pageSize,
 						_keyword,
 						_truckUuid,
