@@ -252,7 +252,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 					isPaging: CONFIG_PAGING.IS_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.TABLE,
-					scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_XUAT],
+					scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_TRUC_TIEP],
 					customerUuid: (_customerUuid as string) || '',
 					isBatch: !!_isBatch ? Number(_isBatch) : null,
 					isCreateBatch: null,
