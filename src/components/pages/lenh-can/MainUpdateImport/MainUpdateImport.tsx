@@ -41,6 +41,7 @@ import shipServices from '~/services/shipServices';
 import scalesStationServices from '~/services/scalesStationServices';
 import Popup from '~/components/common/Popup';
 import FormReasonUpdateBill from '../FormReasonUpdateBill';
+import {IDetailCustomer} from '../MainCreateImport/interfaces';
 
 function MainUpdateImport({}: PropsMainUpdateImport) {
 	const router = useRouter();
@@ -148,6 +149,31 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 		},
 	});
 
+	const {data: detailCustomer} = useQuery<IDetailCustomer>([QUERY_KEY.chi_tiet_khach_hang, form.fromUuid], {
+		queryFn: () =>
+			httpRequest({
+				http: customerServices.getDetail({
+					uuid: form.fromUuid,
+				}),
+			}),
+		onSuccess(detailCustomer) {
+			if (detailCustomer) {
+				const listspecUu: any[] = [...new Map(detailCustomer?.customerSpec?.map((v: any) => [v?.specUu?.uuid, v])).values()];
+				// const listProductTypeUu: any[] = [...new Map(data?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()];
+
+				setForm((prev) => ({
+					...prev,
+					specificationsUuid: listspecUu?.[0]?.specUu?.uuid || '',
+					// productTypeUuid: listProductTypeUu?.[0]?.productTypeUu?.uuid || '',
+				}));
+			}
+		},
+		select(data) {
+			return data;
+		},
+		enabled: !!form.fromUuid,
+	});
+
 	const listPriceTagInfo = useQuery([QUERY_KEY.dropdown_loai_go_quy_cach, form.fromUuid], {
 		queryFn: () =>
 			httpRequest({
@@ -169,12 +195,12 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 			}),
 		onSuccess(data) {
 			if (data && !form.productTypeUuid && !form.specificationsUuid) {
-				const listspecUu: any[] = [...new Map(data?.map((v: any) => [v?.specUu?.uuid, v])).values()];
+				// const listspecUu: any[] = [...new Map(data?.map((v: any) => [v?.specUu?.uuid, v])).values()];
 				const listProductTypeUu: any[] = [...new Map(data?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()];
 
 				setForm((prev) => ({
 					...prev,
-					specificationsUuid: listspecUu?.[0]?.specUu?.uuid || '',
+					// specificationsUuid: listspecUu?.[0]?.specUu?.uuid || '',
 					productTypeUuid: listProductTypeUu?.[0]?.productTypeUu?.uuid || '',
 				}));
 			}
@@ -694,7 +720,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 									</span>
 								}
 							>
-								{[...new Map(listPriceTagInfo?.data?.map((v: any) => [v?.specUu?.uuid, v])).values()]?.map((v: any) => (
+								{/* {[...new Map(listPriceTagInfo?.data?.map((v: any) => [v?.specUu?.uuid, v])).values()]?.map((v: any) => (
 									<Option
 										key={v?.specUu?.uuid}
 										value={v?.specUu?.uuid}
@@ -707,7 +733,23 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 											}))
 										}
 									/>
-								))}
+								))} */}
+								{[...new Map(detailCustomer?.customerSpec?.map((v: any) => [v?.specUu?.uuid, v])).values()]?.map(
+									(v: any) => (
+										<Option
+											key={v?.specUu?.uuid}
+											value={v?.specUu?.uuid}
+											title={v?.specUu?.name}
+											onClick={() =>
+												setForm((prev: any) => ({
+													...prev,
+													specificationsUuid: v?.specUu?.uuid,
+													toUuid: '',
+												}))
+											}
+										/>
+									)
+								)}
 							</Select>
 						</div>
 					</div>
