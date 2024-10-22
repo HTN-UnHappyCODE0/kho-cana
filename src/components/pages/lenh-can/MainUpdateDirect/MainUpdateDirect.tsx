@@ -40,6 +40,7 @@ import Popup from '~/components/common/Popup';
 import FormReasonUpdateBill from '../FormReasonUpdateBill';
 import storageServices from '~/services/storageServices';
 import warehouseServices from '~/services/warehouseServices';
+import {IDetailCustomer} from '../MainCreateImport/interfaces';
 
 function MainUpdateDirect({}: PropsMainUpdateDirect) {
 	const router = useRouter();
@@ -174,6 +175,31 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 		},
 	});
 
+	const {data: detailCustomer} = useQuery<IDetailCustomer>([QUERY_KEY.chi_tiet_khach_hang, form.fromUuid], {
+		queryFn: () =>
+			httpRequest({
+				http: customerServices.getDetail({
+					uuid: form.fromUuid,
+				}),
+			}),
+		onSuccess(detailCustomer) {
+			if (detailCustomer) {
+				const listspecUu: any[] = [...new Map(detailCustomer?.customerSpec?.map((v: any) => [v?.specUu?.uuid, v])).values()];
+				// const listProductTypeUu: any[] = [...new Map(data?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()];
+
+				setForm((prev) => ({
+					...prev,
+					specificationsUuid: listspecUu?.[0]?.specUu?.uuid || '',
+					// productTypeUuid: listProductTypeUu?.[0]?.productTypeUu?.uuid || '',
+				}));
+			}
+		},
+		select(data) {
+			return data;
+		},
+		enabled: !!form.fromUuid,
+	});
+
 	const listPriceTagInfo = useQuery([QUERY_KEY.dropdown_loai_go_quy_cach, form.fromUuid], {
 		queryFn: () =>
 			httpRequest({
@@ -195,12 +221,12 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 			}),
 		onSuccess(data) {
 			if (data && !form.productTypeUuid && !form.specificationsUuid) {
-				const listspecUu: any[] = [...new Map(data?.map((v: any) => [v?.specUu?.uuid, v])).values()];
+				// const listspecUu: any[] = [...new Map(data?.map((v: any) => [v?.specUu?.uuid, v])).values()];
 				const listProductTypeUu: any[] = [...new Map(data?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()];
 
 				setForm((prev) => ({
 					...prev,
-					specificationsUuid: listspecUu?.[0]?.specUu?.uuid || '',
+					// specificationsUuid: listspecUu?.[0]?.specUu?.uuid || '',
 					productTypeUuid: listProductTypeUu?.[0]?.productTypeUu?.uuid || '',
 				}));
 			}
@@ -699,7 +725,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 									</span>
 								}
 							>
-								{[...new Map(listPriceTagInfo?.data?.map((v: any) => [v?.specUu?.uuid, v])).values()]?.map((v: any) => (
+								{/* {[...new Map(listPriceTagInfo?.data?.map((v: any) => [v?.specUu?.uuid, v])).values()]?.map((v: any) => (
 									<Option
 										key={v?.specUu?.uuid}
 										value={v?.specUu?.uuid}
@@ -712,7 +738,23 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 											}))
 										}
 									/>
-								))}
+								))} */}
+								{[...new Map(detailCustomer?.customerSpec?.map((v: any) => [v?.specUu?.uuid, v])).values()]?.map(
+									(v: any) => (
+										<Option
+											key={v?.specUu?.uuid}
+											value={v?.specUu?.uuid}
+											title={v?.specUu?.name}
+											onClick={() =>
+												setForm((prev: any) => ({
+													...prev,
+													specificationsUuid: v?.specUu?.uuid,
+													toUuid: '',
+												}))
+											}
+										/>
+									)
+								)}
 							</Select>
 						</div>
 					</div>

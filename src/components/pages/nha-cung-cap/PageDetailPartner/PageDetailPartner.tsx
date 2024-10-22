@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-import {IDetailCustomer, PropsPageDetailPartner} from './interfaces';
+import {IDetailCustomer, IlistCustomerSpec, PropsPageDetailPartner} from './interfaces';
 import styles from './PageDetailPartner.module.scss';
 import {IoArrowBackOutline} from 'react-icons/io5';
 import clsx from 'clsx';
@@ -34,6 +34,7 @@ import icons from '~/constants/images/icons';
 import IconCustom from '~/components/common/IconCustom';
 import {LuPencil} from 'react-icons/lu';
 import PopupUpdatePrice from '../PopupUpdatePrice';
+import {convertCoin} from '~/common/funcs/convertCoin';
 
 function PageDetailPartner({}: PropsPageDetailPartner) {
 	const router = useRouter();
@@ -196,50 +197,52 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 			<div className={clsx('mt')}>
 				<div className={styles.table}>
 					<DataWrapper
-						data={listPriceTagCustomer?.data?.items || []}
-						loading={listPriceTagCustomer?.isLoading}
-						noti={<Noti disableButton des='Hiện tại chưa có loại hàng nào!' />}
+						data={detailCustomer?.customerSpec || []}
+						// loading={detailCustomer.isloading}
+						noti={<Noti disableButton des='Hiện tại chưa có hàng hóa nào!' />}
 					>
 						<Table
-							data={listPriceTagCustomer?.data?.items || []}
+							data={detailCustomer?.customerSpec || []}
 							column={[
 								{
 									title: 'STT',
-									render: (data: any, index: number) => <>{index + 1}</>,
+									render: (data: IlistCustomerSpec, index: number) => <>{index + 1}</>,
 								},
 								{
 									title: 'Loại hàng',
-									render: (data: any) => <>{data?.productTypeUu?.name}</>,
+									fixedLeft: true,
+									render: (data: IlistCustomerSpec) => <>{data?.productTypeUu?.name}</>,
 								},
 								{
 									title: 'Quốc gia',
-									render: (data: any) => <>{data?.qualityUu?.name}</>,
+									render: (data: IlistCustomerSpec) => <>{data?.qualityUu?.name}</>,
 								},
 								{
 									title: 'Quy cách',
-									render: (data: any) => <>{data?.specUu?.name}</>,
+									render: (data: IlistCustomerSpec) => <>{data?.specUu?.name}</>,
 								},
 								{
 									title: 'Bãi',
-									render: (data: any) => <>{data?.storageUu?.name || '---'}</>,
+									render: (data: IlistCustomerSpec) => <>{data?.storageUu?.name || '---'}</>,
 								},
 								{
 									title: 'Vận chuyển',
-									render: (data: any) => (
+									render: (data: IlistCustomerSpec) => (
 										<>
 											{data?.transportType == TYPE_TRANSPORT.DUONG_BO && 'Đường bộ'}
 											{data?.transportType == TYPE_TRANSPORT.DUONG_THUY && 'Đường thủy'}
 										</>
 									),
 								},
+
 								{
 									title: 'Cung cấp',
-									render: (data: any) => <TagStatusSpecCustomer status={data.state} />,
+									render: (data: IlistCustomerSpec) => <TagStatusSpecCustomer status={data.state} />,
 								},
 								{
 									title: 'Tác vụ',
 									fixedRight: true,
-									render: (data: any) => (
+									render: (data: IlistCustomerSpec) => (
 										<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
 											<IconCustom
 												edit
@@ -254,12 +257,12 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 							]}
 						/>
 					</DataWrapper>
-					<Pagination
+					{/* <Pagination
 						currentPage={Number(_page) || 1}
 						pageSize={Number(_pageSize) || 50}
 						total={listPriceTagCustomer?.data?.pagination?.totalCount}
 						dependencies={[_id, _pageSize]}
-					/>
+					/> */}
 				</div>
 			</div>
 

@@ -31,43 +31,7 @@ export interface IDetailCustomer {
 		type: number;
 		uuid: string;
 	};
-	customerSpec: [
-		{
-			state: number;
-			status: number;
-			transportType: number;
-			specUu: {
-				name: string;
-				status: number;
-				qualityUu: {
-					name: string;
-					status: number;
-					uuid: string;
-				};
-				uuid: string;
-			};
-			pricetagUu: {
-				code: string;
-				amount: number;
-				status: number;
-				uuid: string;
-			};
-			qualityUu: {
-				name: string;
-				status: number;
-				uuid: string;
-			};
-			productTypeUu: {
-				code: string;
-				name: string;
-				status: number;
-				type: number;
-				uuid: string;
-			};
-			accountUu: any;
-			uuid: string;
-		}
-	];
+	customerSpec: IlistCustomerSpec[];
 	phoneNumber: string;
 	isSift: number;
 	transportType: number;
@@ -115,5 +79,51 @@ export interface IDetailCustomer {
 	name: string;
 	status: number;
 	typeCus: number;
+	uuid: string;
+}
+
+export interface IlistCustomerSpec {
+	state: number;
+	status: number;
+	transportType: number;
+	specUu: {
+		name: string;
+		status: number;
+		qualityUu: {
+			name: string;
+			status: number;
+			uuid: string;
+		};
+		uuid: string;
+	};
+	pricetagUu: {
+		code: string;
+		amount: number;
+		status: number;
+		uuid: string;
+	};
+	qualityUu: {
+		name: string;
+		status: number;
+		uuid: string;
+	};
+	productTypeUu: {
+		code: string;
+		name: string;
+		status: number;
+		type: number;
+		uuid: string;
+	};
+	accountUu: {
+		username: string;
+		status: number;
+		uuid: string;
+	};
+	storageUu: {
+		code: string;
+		name: string;
+		status: number;
+		uuid: string;
+	};
 	uuid: string;
 }
