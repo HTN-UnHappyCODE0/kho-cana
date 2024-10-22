@@ -25,6 +25,7 @@ function ButtonSelectMany({
 	dataList = [],
 	dataChecked,
 	setDataChecked,
+	isShowCheckAll = true,
 }: PropsButtonSelectMany) {
 	const [open, setOpen] = useState<boolean>(false);
 	const [keyword, setKeyword] = useState<string>('');
@@ -134,19 +135,23 @@ function ButtonSelectMany({
 							autoComplete='off'
 						/>
 					</div>
-					<div className={styles.select_all}>
-						<div className={clsx(styles.option, styles.notBorder)}>
-							<input
-								id='check_all'
-								type='checkbox'
-								className={styles.checkbox}
-								onChange={handleCheckAll}
-								checked={listChecked.length == dataList.length}
-							/>
-							<label htmlFor='check_all' className={styles.label_check_all}>
-								Chọn tất cả
-							</label>
-						</div>
+					<div className={clsx(styles.select_all, {[styles.isShowCheckAll]: !isShowCheckAll})}>
+						{isShowCheckAll ? (
+							<div className={clsx(styles.option, styles.notBorder)}>
+								<input
+									id='check_all'
+									type='checkbox'
+									className={styles.checkbox}
+									onChange={handleCheckAll}
+									checked={listChecked.length == dataList.length}
+								/>
+								<label htmlFor='check_all' className={styles.label_check_all}>
+									Chọn tất cả
+								</label>
+							</div>
+						) : (
+							<div></div>
+						)}
 						<p className={styles.selected}>
 							Đã chọn: <span>{listChecked.length}</span>
 						</p>

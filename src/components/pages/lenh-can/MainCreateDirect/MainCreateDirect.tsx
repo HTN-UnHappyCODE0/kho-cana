@@ -120,51 +120,14 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 					uuid: form.fromUuid,
 				}),
 			}),
-		onSuccess(detailCustomer) {
-			if (detailCustomer) {
-				const listspecUu: any[] = [...new Map(detailCustomer?.customerSpec?.map((v: any) => [v?.specUu?.uuid, v])).values()];
-				// const listProductTypeUu: any[] = [...new Map(data?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()];
+		onSuccess(data) {
+			if (data) {
+				const listspecUu: any[] = [...new Map(data?.customerSpec?.map((v: any) => [v?.specUu?.uuid, v])).values()];
+				const listProductTypeUu: any[] = [...new Map(data?.customerSpec?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()];
 
 				setForm((prev) => ({
 					...prev,
 					specificationsUuid: listspecUu?.[0]?.specUu?.uuid || '',
-					// productTypeUuid: listProductTypeUu?.[0]?.productTypeUu?.uuid || '',
-				}));
-			}
-		},
-		select(data) {
-			return data;
-		},
-		enabled: !!form.fromUuid,
-	});
-
-	const listPriceTagInfo = useQuery([QUERY_KEY.dropdown_loai_go_quy_cach, form.fromUuid], {
-		queryFn: () =>
-			httpRequest({
-				isDropdown: true,
-				http: priceTagServices.listPriceTag({
-					page: 1,
-					pageSize: 100,
-					keyword: '',
-					isPaging: CONFIG_PAGING.IS_PAGING,
-					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-					typeFind: CONFIG_TYPE_FIND.TABLE,
-					status: CONFIG_STATUS.HOAT_DONG,
-					state: 1,
-					customerUuid: form.fromUuid,
-					priceTagUuid: '',
-					productTypeUuid: '',
-					specUuid: '',
-				}),
-			}),
-		onSuccess(data) {
-			if (data) {
-				// const listspecUu: any[] = [...new Map(data?.map((v: any) => [v?.specUu?.uuid, v])).values()];
-				const listProductTypeUu: any[] = [...new Map(data?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()];
-
-				setForm((prev) => ({
-					...prev,
-					// specificationsUuid: listspecUu?.[0]?.specUu?.uuid || '',
 					productTypeUuid: listProductTypeUu?.[0]?.productTypeUu?.uuid || '',
 				}));
 			}
@@ -174,6 +137,43 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 		},
 		enabled: !!form.fromUuid,
 	});
+
+	// const listPriceTagInfo = useQuery([QUERY_KEY.dropdown_loai_go_quy_cach, form.fromUuid], {
+	// 	queryFn: () =>
+	// 		httpRequest({
+	// 			isDropdown: true,
+	// 			http: priceTagServices.listPriceTag({
+	// 				page: 1,
+	// 				pageSize: 100,
+	// 				keyword: '',
+	// 				isPaging: CONFIG_PAGING.IS_PAGING,
+	// 				isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+	// 				typeFind: CONFIG_TYPE_FIND.TABLE,
+	// 				status: CONFIG_STATUS.HOAT_DONG,
+	// 				state: 1,
+	// 				customerUuid: form.fromUuid,
+	// 				priceTagUuid: '',
+	// 				productTypeUuid: '',
+	// 				specUuid: '',
+	// 			}),
+	// 		}),
+	// 	onSuccess(data) {
+	// 		if (data) {
+	// 			// const listspecUu: any[] = [...new Map(data?.map((v: any) => [v?.specUu?.uuid, v])).values()];
+	// 			const listProductTypeUu: any[] = [...new Map(data?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()];
+
+	// 			setForm((prev) => ({
+	// 				...prev,
+	// 				// specificationsUuid: listspecUu?.[0]?.specUu?.uuid || '',
+	// 				productTypeUuid: listProductTypeUu?.[0]?.productTypeUu?.uuid || '',
+	// 			}));
+	// 		}
+	// 	},
+	// 	select(data) {
+	// 		return data;
+	// 	},
+	// 	enabled: !!form.fromUuid,
+	// });
 
 	const listWarehouse = useQuery([QUERY_KEY.dropdown_kho_hang], {
 		queryFn: () =>
@@ -615,7 +615,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 								</span>
 							}
 						>
-							{[...new Map(listPriceTagInfo?.data?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()]?.map((v: any) => (
+							{/* {[...new Map(listPriceTagInfo?.data?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()]?.map((v: any) => (
 								<Option
 									key={v?.uuid}
 									value={v?.productTypeUu?.uuid}
@@ -627,7 +627,22 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 										}))
 									}
 								/>
-							))}
+							))} */}
+							{[...new Map(detailCustomer?.customerSpec?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()]?.map(
+								(v: any) => (
+									<Option
+										key={v?.uuid}
+										value={v?.productTypeUu?.uuid}
+										title={v?.productTypeUu?.name}
+										onClick={() =>
+											setForm((prev: any) => ({
+												...prev,
+												productTypeUuid: v?.productTypeUu?.uuid,
+											}))
+										}
+									/>
+								)
+							)}
 						</Select>
 						<div>
 							<Select
@@ -651,7 +666,6 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 												setForm((prev: any) => ({
 													...prev,
 													specificationsUuid: v?.specUu?.uuid,
-													toUuid: '',
 												}))
 											}
 										/>
@@ -838,6 +852,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 					</div>
 					<div className={clsx('mt', 'col_2')}>
 						<ButtonSelectMany
+							isShowCheckAll={false}
 							label={
 								<span>
 									Xe hàng <span style={{color: 'red'}}>*</span>

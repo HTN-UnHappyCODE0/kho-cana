@@ -6,6 +6,7 @@ export interface PropsButtonSelectMany {
 	showOverlay?: boolean;
 	isShowCode?: boolean;
 	readonly?: boolean;
+	isShowCheckAll?: boolean;
 
 	listDataDisable?: {
 		uuid: string;
