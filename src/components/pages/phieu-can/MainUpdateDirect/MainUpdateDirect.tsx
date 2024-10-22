@@ -40,6 +40,7 @@ import scalesStationServices from '~/services/scalesStationServices';
 import {convertWeight} from '~/common/funcs/optionConvert';
 import storageServices from '~/services/storageServices';
 import warehouseServices from '~/services/warehouseServices';
+import {IDetailCustomer} from '../../lenh-can/MainCreateImport/interfaces';
 
 function MainUpdateDirect({}: PropsMainUpdateDirect) {
 	const router = useRouter();
@@ -180,6 +181,31 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 		select(data) {
 			return data;
 		},
+	});
+
+	const {data: detailCustomer} = useQuery<IDetailCustomer>([QUERY_KEY.chi_tiet_khach_hang, form.fromUuid], {
+		queryFn: () =>
+			httpRequest({
+				http: customerServices.getDetail({
+					uuid: form.fromUuid,
+				}),
+			}),
+		onSuccess(data) {
+			if (data && !form.productTypeUuid && !form.specificationsUuid) {
+				const listspecUu: any[] = [...new Map(data?.customerSpec?.map((v: any) => [v?.specUu?.uuid, v])).values()];
+				const listProductTypeUu: any[] = [...new Map(data?.customerSpec?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()];
+
+				setForm((prev) => ({
+					...prev,
+					specificationsUuid: listspecUu?.[0]?.specUu?.uuid || '',
+					productTypeUuid: listProductTypeUu?.[0]?.productTypeUu?.uuid || '',
+				}));
+			}
+		},
+		select(data) {
+			return data;
+		},
+		enabled: !!form.fromUuid,
 	});
 
 	const listPriceTagInfo = useQuery([QUERY_KEY.dropdown_loai_go_quy_cach, form.fromUuid], {
@@ -709,19 +735,21 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 								</span>
 							}
 						>
-							{[...new Map(listPriceTagInfo?.data?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()]?.map((v: any) => (
-								<Option
-									key={v?.uuid}
-									value={v?.productTypeUu?.uuid}
-									title={v?.productTypeUu?.name}
-									onClick={() =>
-										setForm((prev: any) => ({
-											...prev,
-											productTypeUuid: v?.productTypeUu?.uuid,
-										}))
-									}
-								/>
-							))}
+							{[...new Map(detailCustomer?.customerSpec?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()]?.map(
+								(v: any) => (
+									<Option
+										key={v?.uuid}
+										value={v?.productTypeUu?.uuid}
+										title={v?.productTypeUu?.name}
+										onClick={() =>
+											setForm((prev: any) => ({
+												...prev,
+												productTypeUuid: v?.productTypeUu?.uuid,
+											}))
+										}
+									/>
+								)
+							)}
 						</Select>
 						<div>
 							<Select
@@ -735,19 +763,21 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 									</span>
 								}
 							>
-								{[...new Map(listPriceTagInfo?.data?.map((v: any) => [v?.specUu?.uuid, v])).values()]?.map((v: any) => (
-									<Option
-										key={v?.specUu?.uuid}
-										value={v?.specUu?.uuid}
-										title={v?.specUu?.name}
-										onClick={() =>
-											setForm((prev: any) => ({
-												...prev,
-												specificationsUuid: v?.specUu?.uuid,
-											}))
-										}
-									/>
-								))}
+								{[...new Map(detailCustomer?.customerSpec?.map((v: any) => [v?.specUu?.uuid, v])).values()]?.map(
+									(v: any) => (
+										<Option
+											key={v?.specUu?.uuid}
+											value={v?.specUu?.uuid}
+											title={v?.specUu?.name}
+											onClick={() =>
+												setForm((prev: any) => ({
+													...prev,
+													specificationsUuid: v?.specUu?.uuid,
+												}))
+											}
+										/>
+									)
+								)}
 							</Select>
 						</div>
 					</div>

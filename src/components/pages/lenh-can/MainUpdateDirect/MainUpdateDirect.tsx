@@ -182,51 +182,14 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 					uuid: form.fromUuid,
 				}),
 			}),
-		onSuccess(detailCustomer) {
-			if (detailCustomer) {
-				const listspecUu: any[] = [...new Map(detailCustomer?.customerSpec?.map((v: any) => [v?.specUu?.uuid, v])).values()];
-				// const listProductTypeUu: any[] = [...new Map(data?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()];
+		onSuccess(data) {
+			if (data && !form.productTypeUuid && !form.specificationsUuid) {
+				const listspecUu: any[] = [...new Map(data?.customerSpec?.map((v: any) => [v?.specUu?.uuid, v])).values()];
+				const listProductTypeUu: any[] = [...new Map(data?.customerSpec?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()];
 
 				setForm((prev) => ({
 					...prev,
 					specificationsUuid: listspecUu?.[0]?.specUu?.uuid || '',
-					// productTypeUuid: listProductTypeUu?.[0]?.productTypeUu?.uuid || '',
-				}));
-			}
-		},
-		select(data) {
-			return data;
-		},
-		enabled: !!form.fromUuid,
-	});
-
-	const listPriceTagInfo = useQuery([QUERY_KEY.dropdown_loai_go_quy_cach, form.fromUuid], {
-		queryFn: () =>
-			httpRequest({
-				isDropdown: true,
-				http: priceTagServices.listPriceTag({
-					page: 1,
-					pageSize: 100,
-					keyword: '',
-					isPaging: CONFIG_PAGING.IS_PAGING,
-					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-					typeFind: CONFIG_TYPE_FIND.TABLE,
-					status: CONFIG_STATUS.HOAT_DONG,
-					state: 1,
-					priceTagUuid: '',
-					customerUuid: form.fromUuid,
-					productTypeUuid: '',
-					specUuid: '',
-				}),
-			}),
-		onSuccess(data) {
-			if (data && !form.productTypeUuid && !form.specificationsUuid) {
-				// const listspecUu: any[] = [...new Map(data?.map((v: any) => [v?.specUu?.uuid, v])).values()];
-				const listProductTypeUu: any[] = [...new Map(data?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()];
-
-				setForm((prev) => ({
-					...prev,
-					// specificationsUuid: listspecUu?.[0]?.specUu?.uuid || '',
 					productTypeUuid: listProductTypeUu?.[0]?.productTypeUu?.uuid || '',
 				}));
 			}
@@ -236,6 +199,43 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 		},
 		enabled: !!form.fromUuid,
 	});
+
+	// const listPriceTagInfo = useQuery([QUERY_KEY.dropdown_loai_go_quy_cach, form.fromUuid], {
+	// 	queryFn: () =>
+	// 		httpRequest({
+	// 			isDropdown: true,
+	// 			http: priceTagServices.listPriceTag({
+	// 				page: 1,
+	// 				pageSize: 100,
+	// 				keyword: '',
+	// 				isPaging: CONFIG_PAGING.IS_PAGING,
+	// 				isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+	// 				typeFind: CONFIG_TYPE_FIND.TABLE,
+	// 				status: CONFIG_STATUS.HOAT_DONG,
+	// 				state: 1,
+	// 				priceTagUuid: '',
+	// 				customerUuid: form.fromUuid,
+	// 				productTypeUuid: '',
+	// 				specUuid: '',
+	// 			}),
+	// 		}),
+	// 	onSuccess(data) {
+	// 		if (data && !form.productTypeUuid && !form.specificationsUuid) {
+	// 			// const listspecUu: any[] = [...new Map(data?.map((v: any) => [v?.specUu?.uuid, v])).values()];
+	// 			const listProductTypeUu: any[] = [...new Map(data?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()];
+
+	// 			setForm((prev) => ({
+	// 				...prev,
+	// 				// specificationsUuid: listspecUu?.[0]?.specUu?.uuid || '',
+	// 				productTypeUuid: listProductTypeUu?.[0]?.productTypeUu?.uuid || '',
+	// 			}));
+	// 		}
+	// 	},
+	// 	select(data) {
+	// 		return data;
+	// 	},
+	// 	enabled: !!form.fromUuid,
+	// });
 
 	const listShip = useQuery([QUERY_KEY.dropdown_tau_hang], {
 		queryFn: () =>
@@ -699,7 +699,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 								</span>
 							}
 						>
-							{[...new Map(listPriceTagInfo?.data?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()]?.map((v: any) => (
+							{/* {[...new Map(listPriceTagInfo?.data?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()]?.map((v: any) => (
 								<Option
 									key={v?.uuid}
 									value={v?.productTypeUu?.uuid}
@@ -711,7 +711,22 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 										}))
 									}
 								/>
-							))}
+							))} */}
+							{[...new Map(detailCustomer?.customerSpec?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()]?.map(
+								(v: any) => (
+									<Option
+										key={v?.uuid}
+										value={v?.productTypeUu?.uuid}
+										title={v?.productTypeUu?.name}
+										onClick={() =>
+											setForm((prev: any) => ({
+												...prev,
+												productTypeUuid: v?.productTypeUu?.uuid,
+											}))
+										}
+									/>
+								)
+							)}
 						</Select>
 						<div>
 							<Select
@@ -725,20 +740,6 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 									</span>
 								}
 							>
-								{/* {[...new Map(listPriceTagInfo?.data?.map((v: any) => [v?.specUu?.uuid, v])).values()]?.map((v: any) => (
-									<Option
-										key={v?.specUu?.uuid}
-										value={v?.specUu?.uuid}
-										title={v?.specUu?.name}
-										onClick={() =>
-											setForm((prev: any) => ({
-												...prev,
-												specificationsUuid: v?.specUu?.uuid,
-												toUuid: '',
-											}))
-										}
-									/>
-								))} */}
 								{[...new Map(detailCustomer?.customerSpec?.map((v: any) => [v?.specUu?.uuid, v])).values()]?.map(
 									(v: any) => (
 										<Option
@@ -749,7 +750,6 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 												setForm((prev: any) => ({
 													...prev,
 													specificationsUuid: v?.specUu?.uuid,
-													toUuid: '',
 												}))
 											}
 										/>
