@@ -846,6 +846,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 					</div>
 					<div className={clsx('mt')}>
 						<ButtonSelectMany
+							isShowCheckAll={false}
 							label={
 								<span>
 									Xe hàng <span style={{color: 'red'}}>*</span>
