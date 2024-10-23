@@ -936,6 +936,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 					</div>
 					<div className={clsx('mt', 'col_2')}>
 						<ButtonSelectMany
+							isShowCheckAll={false}
 							label={
 								<span>
 									Xe hàng <span style={{color: 'red'}}>*</span>

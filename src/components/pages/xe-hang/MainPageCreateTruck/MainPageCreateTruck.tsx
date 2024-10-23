@@ -318,6 +318,7 @@ function MainPageCreateTruck({}: PropsMainPageCreateTruck) {
 
 					<div className={clsx('mt')}>
 						<ButtonSelectMany
+							isShowCheckAll={false}
 							isShowCode={false}
 							label={<span>RFID</span>}
 							placeholder='Chọn RFID'
