@@ -342,12 +342,20 @@ function MainPageBillExport({}: PropsMainPageBillExport) {
 							// 	),
 							// },
 							{
-								title: 'Từ',
+								title: 'Từ(tàu/xe)',
 								render: (data: IDataBill) => (
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>
 										{/* <p>({data?.fromUu?.parentUu?.name || '---'})</p> */}
-										<p style={{fontWeight: 400, color: '#3772FF'}}>{data?.batchsUu?.shipUu?.licensePalate || '---'}</p>
+										{/* <p style={{fontWeight: 400, color: '#3772FF'}}>{data?.batchsUu?.shipUu?.licensePalate || '---'}</p> */}
+										{data?.scalesType == TYPE_SCALES.CAN_XUAT && (
+											<p style={{fontWeight: 400, color: '#3772FF'}}>{'---'}</p>
+										)}
+										{!(data?.scalesType == TYPE_SCALES.CAN_XUAT) && (
+											<p style={{fontWeight: 400, color: '#3772FF'}}>
+												{data?.batchsUu?.shipUu?.licensePalate || '---'}
+											</p>
+										)}
 									</>
 								),
 							},
@@ -356,9 +364,17 @@ function MainPageBillExport({}: PropsMainPageBillExport) {
 								render: (data: IDataBill) => (
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.toUu?.name || '---'}</p>
-										<p style={{fontWeight: 400, color: '#3772FF'}}>
-											{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
-										</p>
+										{data?.scalesType == TYPE_SCALES.CAN_XUAT && (
+											<p style={{fontWeight: 400, color: '#3772FF'}}>
+												{data?.batchsUu?.shipUu?.licensePalate || '---'}
+											</p>
+										)}
+										{!(data?.scalesType == TYPE_SCALES.CAN_XUAT) && (
+											<p style={{fontWeight: 400, color: '#3772FF'}}>
+												{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+											</p>
+										)}
+
 										{/* <p>({data?.toUu?.parentUu?.name || '---'})</p> */}
 									</>
 								),

@@ -526,15 +526,29 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 								render: (data: ITableBillScale) => (
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>
-										{data?.isBatch == TYPE_BATCH.CAN_LO && (
-											<p style={{fontWeight: 500, color: '#3772FF'}}>
-												{data?.batchsUu?.shipUu?.licensePalate || '---'}
-											</p>
+										{data?.scalesType == TYPE_SCALES.CAN_XUAT && (
+											<>
+												{data?.isBatch == TYPE_BATCH.CAN_LO && (
+													<p style={{fontWeight: 500, color: '#3772FF'}}>{'---'}</p>
+												)}
+												{data?.isBatch == TYPE_BATCH.CAN_LE && (
+													<p style={{fontWeight: 500, color: '#3772FF'}}>{'---'}</p>
+												)}
+											</>
 										)}
-										{data?.isBatch == TYPE_BATCH.CAN_LE && (
-											<p style={{fontWeight: 500, color: '#3772FF'}}>
-												{data?.weightSessionUu?.truckUu?.licensePalate || '---'}
-											</p>
+										{!(data?.scalesType == TYPE_SCALES.CAN_XUAT) && (
+											<>
+												{data?.isBatch == TYPE_BATCH.CAN_LO && (
+													<p style={{fontWeight: 500, color: '#3772FF'}}>
+														{data?.batchsUu?.shipUu?.licensePalate || '---'}
+													</p>
+												)}
+												{data?.isBatch == TYPE_BATCH.CAN_LE && (
+													<p style={{fontWeight: 500, color: '#3772FF'}}>
+														{data?.weightSessionUu?.truckUu?.licensePalate || '---'}
+													</p>
+												)}
+											</>
 										)}
 									</>
 								),
@@ -544,9 +558,18 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 								render: (data: ITableBillScale) => (
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.toUu?.name || '---'}</p>
-										<p style={{fontWeight: 400, color: '#3772FF'}}>
-											{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
-										</p>
+										{data?.scalesType == TYPE_SCALES.CAN_XUAT && (
+											<p style={{fontWeight: 400, color: '#3772FF'}}>
+												{data?.batchsUu?.shipUu?.licensePalate || '---'}
+											</p>
+										)}
+										{!(data?.scalesType == TYPE_SCALES.CAN_XUAT) && (
+											<p style={{fontWeight: 400, color: '#3772FF'}}>
+												{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+											</p>
+										)}
+
+										{/* <p>({data?.toUu?.parentUu?.name || '---'})</p> */}
 									</>
 								),
 							},
@@ -561,6 +584,10 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 							{
 								title: 'KL 2 (Tấn)',
 								render: (data: ITableBillScale) => <>{convertWeight(data?.weigth2) || '---'}</>,
+							},
+							{
+								title: 'Cảng bốc dỡ',
+								render: (data: ITableBillScale) => <>{data?.port || '---'}</>,
 							},
 							{
 								title: 'Loại hàng',
