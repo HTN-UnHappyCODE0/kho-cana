@@ -199,7 +199,6 @@ function MainCreateExport({}: PropsMainCreateExport) {
 		select(data) {
 			return data;
 		},
-
 		enabled: !!form.warehouseUuid,
 	});
 

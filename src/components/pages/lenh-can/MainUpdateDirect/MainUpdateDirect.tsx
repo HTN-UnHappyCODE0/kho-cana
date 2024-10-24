@@ -32,7 +32,6 @@ import TextArea from '~/components/common/Form/components/TextArea';
 import {timeSubmit} from '~/common/funcs/optionConvert';
 import batchBillServices from '~/services/batchBillServices';
 import {IDetailBatchBill} from '../MainDetailBill/interfaces';
-import priceTagServices from '~/services/priceTagServices';
 import customerServices from '~/services/customerServices';
 import shipServices from '~/services/shipServices';
 import scalesStationServices from '~/services/scalesStationServices';
@@ -199,43 +198,6 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 		},
 		enabled: !!form.fromUuid,
 	});
-
-	// const listPriceTagInfo = useQuery([QUERY_KEY.dropdown_loai_go_quy_cach, form.fromUuid], {
-	// 	queryFn: () =>
-	// 		httpRequest({
-	// 			isDropdown: true,
-	// 			http: priceTagServices.listPriceTag({
-	// 				page: 1,
-	// 				pageSize: 100,
-	// 				keyword: '',
-	// 				isPaging: CONFIG_PAGING.IS_PAGING,
-	// 				isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-	// 				typeFind: CONFIG_TYPE_FIND.TABLE,
-	// 				status: CONFIG_STATUS.HOAT_DONG,
-	// 				state: 1,
-	// 				priceTagUuid: '',
-	// 				customerUuid: form.fromUuid,
-	// 				productTypeUuid: '',
-	// 				specUuid: '',
-	// 			}),
-	// 		}),
-	// 	onSuccess(data) {
-	// 		if (data && !form.productTypeUuid && !form.specificationsUuid) {
-	// 			// const listspecUu: any[] = [...new Map(data?.map((v: any) => [v?.specUu?.uuid, v])).values()];
-	// 			const listProductTypeUu: any[] = [...new Map(data?.map((v: any) => [v?.productTypeUu?.uuid, v])).values()];
-
-	// 			setForm((prev) => ({
-	// 				...prev,
-	// 				// specificationsUuid: listspecUu?.[0]?.specUu?.uuid || '',
-	// 				productTypeUuid: listProductTypeUu?.[0]?.productTypeUu?.uuid || '',
-	// 			}));
-	// 		}
-	// 	},
-	// 	select(data) {
-	// 		return data;
-	// 	},
-	// 	enabled: !!form.fromUuid,
-	// });
 
 	const listShip = useQuery([QUERY_KEY.dropdown_tau_hang], {
 		queryFn: () =>
