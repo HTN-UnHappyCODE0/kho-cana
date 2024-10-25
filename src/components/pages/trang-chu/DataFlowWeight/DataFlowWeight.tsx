@@ -27,20 +27,26 @@ function DataFlowWeight({}: PropsDataFlowWeight) {
 			</div>
 			<div className={styles.main}>
 				<div className={styles.circle}>QUẢN LÝ CÂN</div>
-				<div className={styles.arrow}>
+				<div
+					className={clsx(styles.arrow, {
+						[styles.level_1]: countBillWeight?.billNeedQlkCheck == 0,
+						[styles.level_2]: countBillWeight?.billNeedQlkCheck > 0 && countBillWeight?.billNeedQlkCheck < 100,
+						[styles.level_3]: countBillWeight?.billNeedQlkCheck > 100,
+					})}
+				>
 					<div className={styles.arrow_right}></div>
-					<div style={{background: '#2cae39'}} className={styles.box}>
-						<p>{countBillWeight?.billNeedQlkCheck || 0} phiếu đợi duyệt</p>
-						<p>{countBillWeight?.billOverQlkCheck || 0} phiếu quá hạn</p>
-					</div>
+					{countBillWeight?.billNeedQlkCheck > 0 && <p className={styles.text}>{countBillWeight?.billNeedQlkCheck}</p>}
 				</div>
 				<div className={styles.circle}>KẾ TOÁN KHO</div>
-				<div className={clsx(styles.arrow, styles.arrow_two)}>
+				<div
+					className={clsx(styles.arrow, {
+						[styles.level_1]: countBillWeight?.billNeedKtkCheck == 0,
+						[styles.level_2]: countBillWeight?.billNeedKtkCheck > 0 && countBillWeight?.billNeedKtkCheck < 100,
+						[styles.level_3]: countBillWeight?.billNeedKtkCheck > 100,
+					})}
+				>
 					<div className={styles.arrow_right}></div>
-					<div className={styles.box}>
-						<p>{countBillWeight?.billNeedKtkCheck || 0} phiếu đợi duyệt</p>
-						<p>{countBillWeight?.billOverKtkCheck || 0} phiếu quá hạn</p>
-					</div>
+					{countBillWeight?.billNeedKtkCheck > 0 && <p className={styles.text}>{countBillWeight?.billNeedKtkCheck}</p>}
 				</div>
 				<div className={styles.circle}>KẾ TOÁN CÔNG TY</div>
 			</div>

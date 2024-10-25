@@ -27,20 +27,26 @@ function DataFlowDryness({}: PropsDataFlowDryness) {
 			</div>
 			<div className={styles.main}>
 				<div className={styles.circle}>PHIẾU ĐÃ CÂN</div>
-				<div className={styles.arrow}>
-					<div className={clsx(styles.arrow, styles.arrow_two)}>
-						<div className={styles.arrow_right}></div>
-						<div className={styles.box}>
-							<p>{countBillKcs?.billScaleDone || 0} phiếu</p>
-						</div>
-					</div>
+				<div
+					className={clsx(styles.arrow, {
+						[styles.level_1]: countBillKcs?.billScaleDone == 0,
+						[styles.level_2]: countBillKcs?.billScaleDone > 0 && countBillKcs?.billScaleDone < 100,
+						[styles.level_3]: countBillKcs?.billScaleDone > 100,
+					})}
+				>
+					<div className={styles.arrow_right}></div>
+					{countBillKcs?.billScaleDone > 0 && <p className={styles.text}>{countBillKcs?.billScaleDone}</p>}
 				</div>
 				<div className={styles.circle}>PHIẾU ĐÃ KCS</div>
-				<div className={clsx(styles.arrow)}>
+				<div
+					className={clsx(styles.arrow, {
+						[styles.level_1]: countBillKcs?.billKcsDone == 0,
+						[styles.level_2]: countBillKcs?.billKcsDone > 0 && countBillKcs?.billKcsDone < 100,
+						[styles.level_3]: countBillKcs?.billKcsDone > 100,
+					})}
+				>
 					<div className={styles.arrow_right}></div>
-					<div className={styles.box}>
-						<p>{countBillKcs?.billKcsDone || 0} phiếu</p>
-					</div>
+					{countBillKcs?.billKcsDone > 0 && <p className={styles.text}>{countBillKcs?.billKcsDone}</p>}
 				</div>
 				<div className={styles.circle}>PHIẾU ĐÃ KẾT THÚC</div>
 			</div>

@@ -1,3 +1,5 @@
+@import '../../../../styles/variables';
+
 .container {
 	margin-top: 24px;
 	border-radius: 4px;
@@ -44,8 +46,33 @@
 .arrow {
 	position: relative;
 	flex: 1;
-	height: 12px;
-	background-color: #f95b5b;
+	width: 100%;
+	height: 24px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	&.level_1 {
+		background-color: #2cae39;
+
+		.arrow_right {
+			border-left: 28px solid #2cae39;
+		}
+	}
+	&.level_2 {
+		background-color: #fb923c;
+
+		.arrow_right {
+			border-left: 28px solid #fb923c;
+		}
+	}
+	&.level_3 {
+		background-color: #f95b5b;
+
+		.arrow_right {
+			border-left: 28px solid #f95b5b;
+		}
+	}
 
 	.arrow_right {
 		width: 0;
@@ -53,35 +80,76 @@
 		background-color: #fff;
 		border-top: 28px solid transparent;
 		border-bottom: 28px solid transparent;
-		border-left: 28px solid #f95b5b;
 		position: absolute;
 		top: 50%;
-		left: calc(100% - 14px);
+		left: calc(100% - 13px);
 		transform: translate(-50%, -50%);
 	}
 
-	&.arrow_two {
-		background-color: #fb923c;
+	.text {
+		font-size: 18px;
+		font-weight: 700;
+		color: #fff;
+	}
+}
+
+@media (max-width: $widthTablet) {
+	.container {
+		margin-top: 0;
+	}
+
+	.main {
+		flex-direction: column;
+	}
+
+	.head {
+		margin-bottom: 13px;
+
+		& > h3 {
+			font-size: 14px;
+		}
+	}
+
+	.arrow {
+		flex: unset;
+		height: 180px;
+		width: 24px;
 
 		.arrow_right {
-			border-left: 28px solid #fb923c;
+			top: calc(100% - 13px);
+			left: 10px;
+			border-right: 28px solid transparent;
+			border-bottom: 0 solid transparent;
+			border-left: 28px solid transparent;
 		}
 
-		.box {
-			background: #fb923c;
+		&.level_1 {
+			background-color: #2cae39;
+
+			.arrow_right {
+				border-top: 28px solid #2cae39;
+				border-left: 28px solid transparent;
+			}
+		}
+		&.level_2 {
+			background-color: #fb923c;
+
+			.arrow_right {
+				border-top: 28px solid #fb923c;
+				border-left: 28px solid transparent;
+			}
+		}
+		&.level_3 {
+			background-color: #f95b5b;
+
+			.arrow_right {
+				border-top: 28px solid #f95b5b;
+				border-left: 28px solid transparent;
+			}
 		}
 	}
 
-	.box {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		border-radius: 3px;
-		padding: 10px 16px;
-		font-size: 16px;
-		font-weight: 500;
-		background: #f95b5b;
-		color: #fff;
+	.text {
+		transform: rotate(90deg);
 	}
 }

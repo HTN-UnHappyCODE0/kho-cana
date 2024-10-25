@@ -11,8 +11,10 @@ import DataFlowDryness from '../DataFlowDryness';
 function MainDashboard({}: PropsMainDashboard) {
 	return (
 		<div className={styles.container}>
-			<DataFlowWeight />
-			<DataFlowDryness />
+			<div className={styles.col_2}>
+				<DataFlowWeight />
+				<DataFlowDryness />
+			</div>
 			<ChartImportCompany />
 			<ChartExportCompany />
 			<ChartServiceCompany />
