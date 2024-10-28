@@ -14,13 +14,15 @@ import weightSessionServices from '~/services/weightSessionServices';
 import Loading from '~/components/common/Loading';
 import criteriaServices from '~/services/criteriaServices';
 import {toastWarn} from '~/common/funcs/toast';
+import clsx from 'clsx';
 
 function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 	const queryClient = useQueryClient();
 
-	const [form, setForm] = useState<{numberChecked: number; specificationsUuid: string}>({
+	const [form, setForm] = useState<{numberChecked: number; specificationsUuid: string; weightTotal?: number}>({
 		numberChecked: 0,
 		specificationsUuid: '',
+		weightTotal: 0,
 	});
 
 	const [dataRules, setDataRules] = useState<
@@ -112,6 +114,7 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 						uuid: v?.uuid,
 						value: Number(v?.value),
 					})),
+					weightTotal: Number(form?.weightTotal),
 				}),
 			}),
 		onSuccess(data) {
@@ -146,7 +149,7 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 					label={<span>Số phiếu đã chọn</span>}
 					readOnly
 				/>
-				<div className='mt'>
+				<div className={clsx('mt', 'col_2')}>
 					<Select
 						isSearch
 						name='specificationsUuid'
@@ -173,6 +176,19 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 							/>
 						))}
 					</Select>
+					<Input
+						name='weightTotal'
+						value={form.weightTotal || ''}
+						isRequired
+						type='number'
+						placeholder='Nhập khối lượng cân mẫu'
+						label={
+							<span>
+								Khối lượng cân mẫu <span style={{color: 'red'}}>*</span>
+							</span>
+						}
+						unit='gr'
+					/>
 				</div>
 
 				<div className='mt'>
@@ -183,11 +199,10 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 								<input
 									className={styles.input}
 									type='number'
-									step='0.01'
 									value={v?.value}
 									onChange={(e) => handleChange(v, e.target.value)}
 								/>
-								<div className={styles.unit}>%</div>
+								<div className={styles.unit}>gr</div>
 							</div>
 						</div>
 					))}

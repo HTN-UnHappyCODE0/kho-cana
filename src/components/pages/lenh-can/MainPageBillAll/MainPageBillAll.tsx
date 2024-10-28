@@ -44,6 +44,7 @@ import shipServices from '~/services/shipServices';
 import {convertCoin} from '~/common/funcs/convertCoin';
 import {convertWeight} from '~/common/funcs/optionConvert';
 import storageServices from '~/services/storageServices';
+import StateActive from '~/components/common/StateActive';
 
 function MainPageBillAll({}: PropsMainPageBillAll) {
 	const router = useRouter();
@@ -508,6 +509,35 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 											<span style={{color: '#2CAE39'}}>Đã hoàn thành</span>
 										)}
 									</>
+									// <StateActive
+									// 	stateActive={data?.status}
+									// 	listState={[
+									// 		{
+									// 			state: STATUS_BILL.DANG_CAN || STATUS_BILL.TAM_DUNG,
+									// 			text: 'Đang xử lý',
+									// 			textColor: '#9757D7',
+									// 			backgroundColor: 'rgba(151, 87, 215, 0.10)',
+									// 		},
+									// 		{
+									// 			state: STATUS_BILL.DA_HUY,
+									// 			text: 'Đã hủy bỏ',
+									// 			textColor: '#F95B5B',
+									// 			backgroundColor: 'rgba(249, 91, 91, 0.10)',
+									// 		},
+									// 		{
+									// 			state: STATUS_BILL.CHUA_CAN,
+									// 			text: 'Chưa xử lý',
+									// 			textColor: '#2D74FF',
+									// 			backgroundColor: 'rgba(45, 116, 255, 0.10)',
+									// 		},
+									// 		{
+									// 			state: STATUS_BILL.DA_CAN_CHUA_KCS || STATUS_BILL.DA_KCS || STATUS_BILL.CHOT_KE_TOAN,
+									// 			text: 'Đã hoàn thành',
+									// 			textColor: '#41CD4F',
+									// 			backgroundColor: 'rgba(65, 205, 79, 0.1)',
+									// 		},
+									// 	]}
+									// />
 								),
 							},
 							{
