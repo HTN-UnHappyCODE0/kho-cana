@@ -11,7 +11,7 @@ import {IoChevronBackOutline, IoChevronForwardOutline} from 'react-icons/io5';
 function Pagination({total, pageSize, currentPage, onSetPage, onSetpageSize, dependencies = []}: PropsPagination) {
 	const router = useRouter();
 
-	const pageSizes: number[] = [10, 20, 50, 100];
+	const pageSizes: number[] = [10, 20, 50, 100, 200];
 
 	const [openLimit, setOpenLimit] = useState<boolean>(false);
 	const [firstLoad, setFirstLoad] = useState<boolean>(true);

@@ -90,26 +90,12 @@ $font-size: 16px;
 }
 
 .containerOption {
-	margin-top: 6px;
-	position: absolute;
 	width: 100%;
 	border-radius: $border-radius;
-	z-index: 15;
 	padding: 6px;
-	transform: scaleY(0);
-	transform-origin: top center;
-	visibility: hidden;
-	opacity: 0;
-	transition: 0.15s;
 	border: 1px solid $border;
 	background-color: $bg;
-	margin-bottom: 24px;
-
-	&.active {
-		visibility: visible;
-		opacity: 1;
-		transform: scaleY(1);
-	}
+	max-height: max-content;
 }
 
 .main {
