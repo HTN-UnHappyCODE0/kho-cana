@@ -41,6 +41,7 @@ import {convertWeight} from '~/common/funcs/optionConvert';
 import clsx from 'clsx';
 import Button from '~/components/common/Button';
 import storageServices from '~/services/storageServices';
+import StateActive from '~/components/common/StateActive';
 
 function MainPageScalesService({}: PropsMainPageScalesService) {
 	const router = useRouter();
@@ -603,28 +604,87 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 							{
 								title: 'Xác nhận SL',
 								render: (data: ITableBillScale) => (
-									<p style={{fontWeight: 600, color: ''}}>
-										{data?.state == STATE_BILL.NOT_CHECK && <span style={{color: '#FF6838'}}>Chưa duyệt</span>}
-										{data?.state == STATE_BILL.QLK_REJECTED && <span style={{color: '#6170E3'}}>QLK duyệt lại</span>}
-										{data?.state == STATE_BILL.QLK_CHECKED && <span style={{color: '#6FD195'}}>QLK đã duyệt</span>}
-										{data?.state == STATE_BILL.KTK_REJECTED && <span style={{color: '#FFAE4C'}}>KTK duyệt lại</span>}
-										{data?.state == STATE_BILL.KTK_CHECKED && <span style={{color: '#3CC3DF'}}>KTK đã duyệt</span>}
-										{data?.state == STATE_BILL.END && <span style={{color: '#D95656'}}>Kết thúc</span>}
-									</p>
+									<StateActive
+										stateActive={data?.state}
+										listState={[
+											{
+												state: STATE_BILL.NOT_CHECK,
+												text: 'Chưa duyệt',
+												textColor: '#fff',
+												backgroundColor: '#FF5C5C',
+											},
+											{
+												state: STATE_BILL.QLK_REJECTED,
+												text: 'QLK duyệt lại',
+												textColor: '#fff',
+												backgroundColor: '#FB923C',
+											},
+											{
+												state: STATE_BILL.QLK_CHECKED,
+												text: 'QLK đã duyệt',
+												textColor: '#fff',
+												backgroundColor: '#0EA5E9',
+											},
+											{
+												state: STATE_BILL.KTK_REJECTED,
+												text: 'KTK duyệt lại',
+												textColor: '#fff',
+												backgroundColor: '#FF6838',
+											},
+											{
+												state: STATE_BILL.KTK_CHECKED,
+												text: 'KTK đã duyệt',
+												textColor: '#fff',
+												backgroundColor: '#2A85FF',
+											},
+											{
+												state: STATE_BILL.END,
+												text: 'Kết thúc',
+												textColor: '#fff',
+												backgroundColor: '#9757D7',
+											},
+										]}
+									/>
 								),
 							},
 							{
 								title: 'Trạng thái',
 								render: (data: ITableBillScale) => (
-									<>
-										{data?.status == STATUS_BILL.DANG_CAN && <span style={{color: '#9757D7'}}>Đang cân</span>}
-										{data?.status == STATUS_BILL.TAM_DUNG && <span style={{color: '#353945'}}>Tạm dừng</span>}
-										{data?.status == STATUS_BILL.DA_CAN_CHUA_KCS && (
-											<span style={{color: '#D94212'}}>Đã cân chưa KCS</span>
-										)}
-										{data?.status == STATUS_BILL.DA_KCS && <span style={{color: '#3772FF'}}>Đã KCS</span>}
-										{data?.status == STATUS_BILL.CHOT_KE_TOAN && <span style={{color: '#2CAE39'}}>Chốt kế toán</span>}
-									</>
+									<StateActive
+										stateActive={data?.status}
+										listState={[
+											{
+												state: STATUS_BILL.DANG_CAN,
+												text: 'Đang cân',
+												textColor: '#9757D7',
+												backgroundColor: 'rgba(151, 87, 215, 0.10)',
+											},
+											{
+												state: STATUS_BILL.TAM_DUNG,
+												text: 'Tạm dừng',
+												textColor: '#F95B5B',
+												backgroundColor: 'rgba(249, 91, 91, 0.10)',
+											},
+											{
+												state: STATUS_BILL.DA_CAN_CHUA_KCS,
+												text: 'Đã cân chưa KCS',
+												textColor: '#2D74FF',
+												backgroundColor: 'rgba(45, 116, 255, 0.10)',
+											},
+											{
+												state: STATUS_BILL.DA_KCS,
+												text: 'Đã KCS',
+												textColor: '#41CD4F',
+												backgroundColor: 'rgba(65, 205, 79, 0.1)',
+											},
+											{
+												state: STATUS_BILL.CHOT_KE_TOAN,
+												text: 'Chốt kế toán',
+												textColor: '#0EA5E9',
+												backgroundColor: 'rgba(14, 165, 233, 0.1)',
+											},
+										]}
+									/>
 								),
 							},
 							{

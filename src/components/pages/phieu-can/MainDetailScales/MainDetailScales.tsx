@@ -18,6 +18,7 @@ import {convertCoin} from '~/common/funcs/convertCoin';
 import {IDetailBatchBill} from '../../lenh-can/MainDetailBill/interfaces';
 import {convertWeight} from '~/common/funcs/optionConvert';
 import TableUpdateBillHistory from './components/TableUpdateBillHistory';
+import StateActive from '~/components/common/StateActive';
 
 function MainDetailScales({}: PropsMainDetailScales) {
 	const router = useRouter();
@@ -163,28 +164,56 @@ function MainDetailScales({}: PropsMainDetailScales) {
 					</tr>
 					<tr>
 						<td>
-							<span>Trạng thái: </span>
-							<span style={{marginLeft: '6px', fontWeight: 600}}>
-								{detailBatchBill?.status == STATUS_BILL.DANG_CAN && (
-									<span style={{color: '#9757D7', fontWeight: 600}}>Đang cân</span>
-								)}
-								{detailBatchBill?.status == STATUS_BILL.TAM_DUNG && (
-									<span style={{color: '#353945', fontWeight: 600}}>Tạm dừng</span>
-								)}
-								{detailBatchBill?.status == STATUS_BILL.DA_CAN_CHUA_KCS && (
-									<span style={{color: '#D94212', fontWeight: 600}}>Đã cân chưa KCS</span>
-								)}
-								{detailBatchBill?.status == STATUS_BILL.DA_KCS && (
-									<span style={{color: '#3772FF', fontWeight: 600}}>Đã KCS</span>
-								)}
-								{detailBatchBill?.status == STATUS_BILL.CHOT_KE_TOAN && (
-									<span style={{color: '#2CAE39', fontWeight: 600}}>Chốt kế toán</span>
-								)}
+							<span className={styles.state_action}>
+								<span style={{marginRight: '6px'}}>Trạng thái: </span>
+								<StateActive
+									stateActive={detailBatchBill?.status!}
+									listState={[
+										{
+											state: STATUS_BILL.DANG_CAN,
+											text: 'Đang cân',
+											textColor: '#9757D7',
+											backgroundColor: 'rgba(151, 87, 215, 0.10)',
+										},
+										{
+											state: STATUS_BILL.TAM_DUNG,
+											text: 'Tạm dừng',
+											textColor: '#F95B5B',
+											backgroundColor: 'rgba(249, 91, 91, 0.10)',
+										},
+										{
+											state: STATUS_BILL.DA_CAN_CHUA_KCS,
+											text: 'Đã cân chưa KCS',
+											textColor: '#2D74FF',
+											backgroundColor: 'rgba(45, 116, 255, 0.10)',
+										},
+										{
+											state: STATUS_BILL.DA_KCS,
+											text: 'Đã KCS',
+											textColor: '#41CD4F',
+											backgroundColor: 'rgba(65, 205, 79, 0.1)',
+										},
+										{
+											state: STATUS_BILL.CHOT_KE_TOAN,
+											text: 'Chốt kế toán',
+											textColor: '#0EA5E9',
+											backgroundColor: 'rgba(14, 165, 233, 0.1)',
+										},
+									]}
+								/>
 							</span>
 						</td>
-						<td rowSpan={3} className={styles.description}>
+						<td rowSpan={4} className={styles.description}>
 							<span>{detailBatchBill?.state == STATE_BILL.QLK_REJECTED ? 'Lý do' : 'Mô tả'} :</span>
 							<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.description || '---'}</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
+								<span>Cảng bốc dỡ: </span>
+								<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.port || '---'}</span>
+							</div>
 						</td>
 					</tr>
 					<tr>
@@ -197,7 +226,7 @@ function MainDetailScales({}: PropsMainDetailScales) {
 					</tr>
 					<tr>
 						<td>
-							<div style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
+							{/* <div style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
 								<span>Xác nhận SL: </span>
 								<span style={{marginLeft: '6px', fontWeight: 600}}>
 									{detailBatchBill?.state == STATE_BILL.NOT_CHECK && 'Chưa duyệt'}
@@ -207,7 +236,51 @@ function MainDetailScales({}: PropsMainDetailScales) {
 									{detailBatchBill?.state == STATE_BILL.KTK_CHECKED && 'KTK đã duyệt'}
 									{detailBatchBill?.state == STATE_BILL.END && 'Kết thúc'}
 								</span>
-							</div>
+							</div> */}
+							<span className={styles.state_action}>
+								<span style={{marginRight: '6px'}}>Xác nhận SL: </span>
+								<StateActive
+									stateActive={detailBatchBill?.state!}
+									listState={[
+										{
+											state: STATE_BILL.NOT_CHECK,
+											text: 'Chưa duyệt',
+											textColor: '#fff',
+											backgroundColor: '#FF5C5C',
+										},
+										{
+											state: STATE_BILL.QLK_REJECTED,
+											text: 'QLK duyệt lại',
+											textColor: '#fff',
+											backgroundColor: '#FB923C',
+										},
+										{
+											state: STATE_BILL.QLK_CHECKED,
+											text: 'QLK đã duyệt',
+											textColor: '#fff',
+											backgroundColor: '#0EA5E9',
+										},
+										{
+											state: STATE_BILL.KTK_REJECTED,
+											text: 'KTK duyệt lại',
+											textColor: '#fff',
+											backgroundColor: '#FF6838',
+										},
+										{
+											state: STATE_BILL.KTK_CHECKED,
+											text: 'KTK đã duyệt',
+											textColor: '#fff',
+											backgroundColor: '#2A85FF',
+										},
+										{
+											state: STATE_BILL.END,
+											text: 'Kết thúc',
+											textColor: '#fff',
+											backgroundColor: '#9757D7',
+										},
+									]}
+								/>
+							</span>
 						</td>
 					</tr>
 				</table>

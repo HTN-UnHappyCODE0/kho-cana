@@ -39,6 +39,7 @@ const weightSessionServices = {
 				uuid: string;
 				value: number;
 			}[];
+			weightTotal?: number;
 		},
 		tokenAxios?: any
 	) => {

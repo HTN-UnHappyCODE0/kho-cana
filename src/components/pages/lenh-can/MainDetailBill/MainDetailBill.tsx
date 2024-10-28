@@ -197,7 +197,7 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 
 						{detailBatchBill?.scalesType != TYPE_SCALES.CAN_DICH_VU ? (
 							<div className={styles.item_table}>
-								<p>Chất lượng hàng:</p>
+								<p>Quy cách:</p>
 								<span>
 									{detailBatchBill?.specificationsUu?.name}{' '}
 									{detailBatchBill?.isSift != null ? (
@@ -283,6 +283,10 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 						<div className={styles.item_table}>
 							<p>Khối lượng dự kiến:</p>
 							<span>{convertCoin(detailBatchBill?.batchsUu?.weightIntent!)} (Tấn)</span>
+						</div>
+						<div className={styles.item_table}>
+							<p>Cảng bốc dỡ:</p>
+							<span>{detailBatchBill?.port || '---'}</span>
 						</div>
 						<div className={styles.item_table}>
 							<p>Ngày dự kiến :</p>
