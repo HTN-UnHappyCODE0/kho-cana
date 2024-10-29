@@ -119,7 +119,7 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 						uuid: v?.uuid,
 						amountSample: v?.amountSample ? Number(v?.amountSample) : 0,
 					})),
-					totalSample: form?.totalSample ? price(form?.totalSample) : 0,
+					totalSample: form?.totalSample ? Number(form?.totalSample) : 0,
 				}),
 			}),
 		onSuccess(data) {
@@ -191,9 +191,8 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 					</Select>
 				</div>
 
-				<div className={clsx('mt')}>
+				{/* <div className={clsx('mt')}>
 					<Input
-						name='totalSample'
 						value={form.totalSample}
 						type='text'
 						isMoney
@@ -201,6 +200,20 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 						label={<span>Khối lượng cân mẫu</span>}
 						unit='gr'
 					/>
+				</div> */}
+
+				<label className={styles.label}>Nhập khối lượng cân mẫu</label>
+				<div className={styles.input_total}>
+					<input
+						className={styles.input_sample}
+						name='totalSample'
+						type='number'
+						step='any'
+						placeholder='Nhập khối lượng cân mẫu'
+						value={form.totalSample}
+						onChange={(e) => setForm((prev) => ({...prev, totalSample: e.target.value}))}
+					/>
+					<div className={styles.unit}>gr</div>
 				</div>
 
 				<div className='mt'>
