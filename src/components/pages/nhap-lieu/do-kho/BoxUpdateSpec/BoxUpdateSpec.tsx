@@ -74,7 +74,7 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 						uuid: v?.uuid,
 						amountSample: Number(v?.amountSample),
 					})),
-					totalSample: form?.totalSample ? price(form?.totalSample) : 0,
+					totalSample: form?.totalSample ? Number(form?.totalSample) : 0,
 				}),
 			}),
 		onSuccess(data) {
@@ -108,9 +108,9 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 	return (
 		<div className={styles.container}>
 			<Loading loading={funcUpdateSpecWeightSession.isLoading} />
-			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
+			<Form form={form} setForm={setForm}>
 				<div className={styles.main}>
-					<Input
+					{/* <Input
 						name='totalSample'
 						value={form.totalSample}
 						type='text'
@@ -118,7 +118,20 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 						placeholder='Nhập khối lượng cân mẫu'
 						label={<span>Khối lượng cân mẫu</span>}
 						unit='gr'
-					/>
+					/> */}
+					<label className={styles.label}>Nhập khối lượng cân mẫu</label>
+					<div className={styles.input_total}>
+						<input
+							className={styles.input_sample}
+							name='totalSample'
+							type='number'
+							step='any'
+							placeholder='Nhập khối lượng cân mẫu'
+							value={form.totalSample}
+							onChange={(e) => setForm((prev) => ({...prev, totalSample: e.target.value}))}
+						/>
+						<div className={styles.unit}>gr</div>
+					</div>
 					<div className='mt'>
 						{dataRules?.map((v, i) => {
 							const totalGr = dataRules.reduce((sum, rule) => sum + (rule.amountSample || 0), 0);
@@ -158,13 +171,14 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 						</Button>
 					</div>
 					<div>
-						<FormContext.Consumer>
+						<Button p_10_24 rounded_2 primary onClick={handleSubmit}>
+							Cập nhật
+						</Button>
+						{/* <FormContext.Consumer>
 							{({isDone}) => (
-								<Button disable={!isDone} p_10_24 rounded_2 primary>
-									Cập nhật
-								</Button>
+								
 							)}
-						</FormContext.Consumer>
+						</FormContext.Consumer> */}
 					</div>
 				</div>
 				<Popup
