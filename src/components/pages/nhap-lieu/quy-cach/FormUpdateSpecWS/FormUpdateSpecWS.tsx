@@ -196,7 +196,7 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 						<div key={i} className={styles.item}>
 							<p>{v?.title}</p>
 							<div className={styles.value_spec}>
-								<div className={styles.percent}> %</div>
+								{/* <div className={styles.percent}> %</div> */}
 								<div className={styles.box_input}>
 									<input
 										className={styles.input}
