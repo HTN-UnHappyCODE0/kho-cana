@@ -37,9 +37,9 @@ const weightSessionServices = {
 			wsUuids: string[];
 			lstValueSpec: {
 				uuid: string;
-				value: number;
+				amountSample: number;
 			}[];
-			weightTotal?: number;
+			totalSample?: number;
 		},
 		tokenAxios?: any
 	) => {

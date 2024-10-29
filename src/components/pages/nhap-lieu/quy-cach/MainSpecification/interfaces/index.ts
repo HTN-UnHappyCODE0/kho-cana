@@ -61,6 +61,8 @@ export interface IWeightSession {
 			status: number;
 		};
 		value: number;
+		amountSample: number;
+		totalSample: number;
 	}[];
 	billUu: {
 		uuid: string;
@@ -103,4 +105,5 @@ export interface IWeightSession {
 	status: number;
 	code: string;
 	uuid: string;
+	weightTotal: number;
 }

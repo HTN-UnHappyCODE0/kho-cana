@@ -9,16 +9,26 @@ import {httpRequest} from '~/services';
 import {QUERY_KEY, TYPE_RULER} from '~/constants/config/enum';
 import {toastWarn} from '~/common/funcs/toast';
 import Loading from '~/components/common/Loading';
+import Form, {FormContext, Input} from '~/components/common/Form';
+import Popup from '~/components/common/Popup';
+import FormReasonUpdateSpec from '../../quy-cach/FormReasonUpdateSpec';
+import {convertCoin, price} from '~/common/funcs/convertCoin';
 
 function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 	const queryClient = useQueryClient();
+
+	const [openWarning, setOpenWarning] = useState<boolean>(false);
+	const [form, setForm] = useState<{totalSample: number | string}>({
+		totalSample: 0,
+	});
 
 	const [dataRules, setDataRules] = useState<
 		{
 			uuid: string;
 			title: string;
-			value: number;
+			amountSample: number;
 			ruler: number;
+			value: number;
 			valuecriteria: number;
 		}[]
 	>([]);
@@ -28,20 +38,24 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 			dataUpdateSpec?.specStyleUu?.map((v) => ({
 				uuid: v?.criteriaUu?.uuid!,
 				title: v?.criteriaUu?.title!,
-				value: v?.value!,
+				amountSample: v?.amountSample! || 0,
 				ruler: v?.criteriaUu?.ruler!,
 				valuecriteria: v?.criteriaUu.value!,
+				value: v?.value!,
 			}))!
 		);
+		setForm({
+			totalSample: convertCoin(dataUpdateSpec?.specStyleUu?.[0]?.totalSample || 0),
+		});
 	}, [dataUpdateSpec]);
 
-	const handleChange = (rule: {uuid: string; title: string; value: number}, value: any) => {
+	const handleChange = (rule: {uuid: string; title: string; amountSample: number}, value: any) => {
 		setDataRules((prevRules) =>
 			prevRules.map((r) =>
 				r.uuid === rule.uuid
 					? {
 							...r,
-							value: value,
+							amountSample: value,
 					  }
 					: r
 			)
@@ -58,8 +72,9 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 					wsUuids: [dataUpdateSpec?.uuid!],
 					lstValueSpec: dataRules?.map((v) => ({
 						uuid: v?.uuid,
-						value: Number(v?.value),
+						amountSample: Number(v?.amountSample),
 					})),
+					totalSample: form?.totalSample ? price(form?.totalSample) : 0,
 				}),
 			}),
 		onSuccess(data) {
@@ -75,45 +90,98 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 	});
 
 	const handleSubmit = async () => {
-		if (dataRules?.some((v) => isNaN(v?.value))) {
+		if (dataRules?.some((v) => isNaN(v?.amountSample))) {
 			return toastWarn({msg: 'Nhập giá trị cho tiêu chí quy cách!'});
 		}
 
+		if (dataRules?.some((v) => v?.amountSample > price(form?.totalSample!))) {
+			return setOpenWarning(true);
+		} else {
+			return funcUpdateSpecWeightSession.mutate();
+		}
+	};
+
+	const handleSubmitWarning = async () => {
 		return funcUpdateSpecWeightSession.mutate();
 	};
 
 	return (
 		<div className={styles.container}>
 			<Loading loading={funcUpdateSpecWeightSession.isLoading} />
-			<div className={styles.main}>
-				{dataRules?.map((v, i) => (
-					<div key={i} className={styles.item}>
-						<p>
-							{v?.title}
-							<span style={{margin: '0 6px'}}>{v?.ruler == TYPE_RULER.NHO_HON ? '<' : '>'}</span>
-							{v?.valuecriteria}
-						</p>
-						<div className={styles.box_input}>
-							<input
-								className={styles.input}
-								type='number'
-								step='0.01'
-								value={v?.value}
-								onChange={(e) => handleChange(v, e.target.value)}
-							/>
-							<div className={styles.unit}>%</div>
-						</div>
-					</div>
-				))}
-			</div>
+			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
+				<div className={styles.main}>
+					<Input
+						name='totalSample'
+						value={form.totalSample}
+						type='text'
+						isMoney
+						placeholder='Nhập khối lượng cân mẫu'
+						label={<span>Khối lượng cân mẫu</span>}
+						unit='gr'
+					/>
+					<div className='mt'>
+						{dataRules?.map((v, i) => {
+							const totalGr = dataRules.reduce((sum, rule) => sum + (rule.amountSample || 0), 0);
+							const percentage = price(form?.totalSample)
+								? (v?.amountSample / price(form?.totalSample)) * 100
+								: (v?.amountSample / totalGr) * 100;
 
-			<div className={styles.box_btn}>
-				<div className={styles.btn}>
-					<Button p_8_24 rounded_2 primary onClick={handleSubmit}>
-						Xác nhận
-					</Button>
+							return (
+								<div key={i} className={styles.item}>
+									<p>
+										{v?.title} <span style={{fontWeight: '600'}}>( {v?.value?.toFixed(2)} %)</span>
+									</p>
+
+									<div className={styles.value_spec}>
+										<div className={styles.percent}>{!isNaN(percentage) ? `${percentage.toFixed(2)}%` : ''}</div>
+
+										<div className={styles.box_input}>
+											<input
+												className={styles.input}
+												type='number'
+												value={v?.amountSample}
+												onChange={(e) => handleChange(v, parseFloat(e.target.value))}
+											/>
+											<div className={styles.unit}>gr</div>
+										</div>
+									</div>
+								</div>
+							);
+						})}
+					</div>
 				</div>
-			</div>
+
+				<div className={styles.box_btn}>
+					<div>
+						<Button p_10_24 rounded_2 grey_outline onClick={onClose}>
+							Hủy bỏ
+						</Button>
+					</div>
+					<div>
+						<FormContext.Consumer>
+							{({isDone}) => (
+								<Button disable={!isDone} p_10_24 rounded_2 primary>
+									Cập nhật
+								</Button>
+							)}
+						</FormContext.Consumer>
+					</div>
+				</div>
+				<Popup
+					zIndex={102}
+					open={openWarning}
+					onClose={() => {
+						setOpenWarning(false);
+					}}
+				>
+					<FormReasonUpdateSpec
+						onSubmit={handleSubmitWarning}
+						onClose={() => {
+							setOpenWarning(false);
+						}}
+					/>
+				</Popup>
+			</Form>
 		</div>
 	);
 }

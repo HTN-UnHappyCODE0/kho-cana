@@ -4,17 +4,18 @@ import clsx from 'clsx';
 import style from './Popup.module.scss';
 
 /*===========> INTERFACE <==========*/
-interface props {
+interface Props {
 	open: boolean;
 	isFull?: boolean;
 	onClose: () => void;
 	children?: React.ReactNode;
 	showOverlay?: boolean;
+	zIndex?: number;
 	[props: string]: any;
 }
 
 /*===========> MAIN COMPONENT <==========*/
-function Overlay({open, onClose, showOverlay = true, isFull, children}: props) {
+function Overlay({open, onClose, showOverlay = true, isFull, children, zIndex = 100}: Props) {
 	useEffect(() => {
 		if (open) {
 			document.body.style.overflowY = 'hidden';
@@ -31,8 +32,10 @@ function Overlay({open, onClose, showOverlay = true, isFull, children}: props) {
 		<Fragment>
 			{open && (
 				<Portal>
-					{showOverlay && <div className={clsx(style.overlay, 'click')} onClick={onClose}></div>}
-					<div className={clsx(style.main, {[style.isFull]: isFull})}>{children}</div>
+					{showOverlay && <div className={clsx(style.overlay, 'click')} style={{zIndex: zIndex}} onClick={onClose}></div>}
+					<div className={clsx(style.main, {[style.isFull]: isFull})} style={{zIndex: zIndex + 1}}>
+						{children}
+					</div>
 				</Portal>
 			)}
 		</Fragment>
