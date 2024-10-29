@@ -126,3 +126,13 @@ $font-size: 16px;
 		}
 	}
 }
+
+.value_spec {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	.percent {
+		margin-right: 10px;
+	}
+}
