@@ -402,48 +402,6 @@ function MainDryness({}: PropsMainDryness) {
 								render: (data: IWeightSession) => <>{data?.truckUu?.licensePalate || '---'}</>,
 							},
 							{
-								title: 'Khách hàng',
-								render: (data: IWeightSession) => <>{data?.fromUu?.name || '---'}</>,
-							},
-							{
-								title: 'Kho hàng',
-								render: (data: IWeightSession) => <>{data?.toUu?.name || '---'}</>,
-							},
-							{
-								title: 'Loại hàng',
-								render: (data: IWeightSession) => <>{data?.producTypeUu?.name || '---'}</>,
-							},
-							{
-								title: 'KL hàng (Tấn)',
-								render: (data: IWeightSession) => <>{convertWeight(data?.weightReal)}</>,
-							},
-							{
-								title: 'Quy cách',
-								render: (data: IWeightSession) => (
-									<TippyHeadless
-										maxWidth={'100%'}
-										interactive
-										onClickOutside={() => setDataUpdateSpec(null)}
-										visible={dataUpdateSpec?.uuid == data?.uuid}
-										placement='bottom-start'
-										render={(attrs) => (
-											<BoxUpdateSpec dataUpdateSpec={dataUpdateSpec} onClose={() => setDataUpdateSpec(null)} />
-										)}
-									>
-										<Tippy content='CN quy cách'>
-											<p
-												className={clsx(styles.specification, {
-													[styles.active]: dataUpdateSpec?.uuid == data?.uuid,
-												})}
-												onClick={() => setDataUpdateSpec(data)}
-											>
-												{data?.specificationsUu?.name || '---'}
-											</p>
-										</Tippy>
-									</TippyHeadless>
-								),
-							},
-							{
 								title: 'Độ khô',
 								render: (data: IWeightSession, index: number) => (
 									<div className={styles.valueDryness}>
@@ -463,6 +421,50 @@ function MainDryness({}: PropsMainDryness) {
 									</div>
 								),
 							},
+							{
+								title: 'Khách hàng',
+								render: (data: IWeightSession) => <>{data?.fromUu?.name || '---'}</>,
+							},
+							{
+								title: 'Kho hàng',
+								render: (data: IWeightSession) => <>{data?.toUu?.name || '---'}</>,
+							},
+							{
+								title: 'Loại hàng',
+								render: (data: IWeightSession) => <>{data?.producTypeUu?.name || '---'}</>,
+							},
+							{
+								title: 'KL hàng (Tấn)',
+								render: (data: IWeightSession) => <>{convertWeight(data?.weightReal)}</>,
+							},
+							{
+								title: 'Quy cách',
+								render: (data: IWeightSession) => (
+									<TippyHeadless
+										zIndex={100}
+										maxWidth={'100%'}
+										interactive
+										// onClickOutside={() => setDataUpdateSpec(null)}
+										visible={dataUpdateSpec?.uuid == data?.uuid}
+										placement='bottom-start'
+										render={(attrs) => (
+											<BoxUpdateSpec dataUpdateSpec={dataUpdateSpec} onClose={() => setDataUpdateSpec(null)} />
+										)}
+									>
+										<Tippy content='CN quy cách'>
+											<p
+												className={clsx(styles.specification, {
+													[styles.active]: dataUpdateSpec?.uuid == data?.uuid,
+												})}
+												onClick={() => setDataUpdateSpec(data)}
+											>
+												{data?.specificationsUu?.name || '---'}
+											</p>
+										</Tippy>
+									</TippyHeadless>
+								),
+							},
+
 							{
 								title: 'Tác vụ',
 								fixedRight: true,

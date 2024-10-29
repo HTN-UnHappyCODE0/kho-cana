@@ -347,7 +347,7 @@ function UpdateSpecifications({}: PropsUpdateSpecifications) {
 								key={idx}
 								data={v}
 								idx={idx}
-								showBtnDelete={idx != 0}
+								showBtnDelete={true}
 								handleDeleteRow={handleDeleteRow}
 								handleChangeValue={handleChangeValue}
 								handleChangeValueSelectSearch={handleChangeValueSelectSearch}
