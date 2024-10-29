@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 
 import {PropsFormUpdateSpecWS} from './interfaces';
 import styles from './FormUpdateSpecWS.module.scss';
-import Form, {Input} from '~/components/common/Form';
+import Form, {FormContext, Input} from '~/components/common/Form';
 import Button from '~/components/common/Button';
 import {IoClose} from 'react-icons/io5';
 import Select, {Option} from '~/components/common/Select';
@@ -140,7 +140,7 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 		<div className={styles.container}>
 			<Loading loading={funcUpdateSpecWeightSession.isLoading} />
 			<h4>Cập nhật quy cách</h4>
-			<Form form={form} setForm={setForm}>
+			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<Input
 					name='numberChecked'
 					value={form.numberChecked || ''}
@@ -195,20 +195,23 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 					{dataRules?.map((v, i) => (
 						<div key={i} className={styles.item}>
 							<p>{v?.title}</p>
-							<div className={styles.box_input}>
-								<input
-									className={styles.input}
-									type='number'
-									value={v?.value}
-									onChange={(e) => handleChange(v, e.target.value)}
-								/>
-								<div className={styles.unit}>gr</div>
+							<div className={styles.value_spec}>
+								<div className={styles.percent}> %</div>
+								<div className={styles.box_input}>
+									<input
+										className={styles.input}
+										type='number'
+										value={v?.value}
+										onChange={(e) => handleChange(v, e.target.value)}
+									/>
+									<div className={styles.unit}>gr</div>
+								</div>
 							</div>
 						</div>
 					))}
 				</div>
 
-				<div className={styles.btn}>
+				{/* <div className={styles.btn}>
 					<div>
 						<Button p_10_24 rounded_2 grey_outline onClick={onClose}>
 							Hủy bỏ
@@ -218,6 +221,23 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 						<Button p_10_24 rounded_2 primary onClick={handleSubmit}>
 							Xác nhận
 						</Button>
+					</div>
+				</div> */}
+
+				<div className={styles.btn}>
+					<div>
+						<Button p_10_24 rounded_2 grey_outline onClick={onClose}>
+							Hủy bỏ
+						</Button>
+					</div>
+					<div>
+						<FormContext.Consumer>
+							{({isDone}) => (
+								<Button disable={!isDone} p_10_24 rounded_2 primary>
+									Cập nhật
+								</Button>
+							)}
+						</FormContext.Consumer>
 					</div>
 				</div>
 
