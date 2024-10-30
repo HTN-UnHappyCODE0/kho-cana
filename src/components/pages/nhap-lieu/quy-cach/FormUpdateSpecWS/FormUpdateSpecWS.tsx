@@ -225,6 +225,8 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 						placeholder='Nhập khối lượng cân mẫu'
 						value={form.totalSample}
 						onChange={(e) => setForm((prev) => ({...prev, totalSample: e.target.value}))}
+						onKeyDown={(e) => handleKeyEnter(e, -1)}
+						ref={(el) => (inputRefs.current[-1] = el)}
 					/>
 					<div className={styles.unit}>gr</div>
 				</div>
