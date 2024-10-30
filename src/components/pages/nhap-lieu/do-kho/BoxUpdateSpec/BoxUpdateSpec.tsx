@@ -58,7 +58,7 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 			}))!
 		);
 		setForm({
-			totalSample: dataUpdateSpec?.specStyleUu?.[0]?.totalSample || 0,
+			totalSample: dataUpdateSpec?.specStyleUu?.[0]?.totalSample?.toFixed(2) || 0,
 		});
 	}, [dataUpdateSpec]);
 
@@ -149,8 +149,9 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 						{dataRules?.map((v, i) => {
 							const totalGr = dataRules.reduce((sum, rule) => sum + (rule.amountSample || 0), 0);
 							const percentage = price(form?.totalSample)
-								? (v?.amountSample / price(form?.totalSample)) * 100
+								? (v?.amountSample / Number(form?.totalSample)) * 100
 								: (v?.amountSample / totalGr) * 100;
+							// console.log(Number(form?.totalSample));
 
 							return (
 								<div key={i} className={styles.item}>
@@ -159,8 +160,6 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 									</p>
 
 									<div className={styles.value_spec}>
-										<div className={styles.percent}>{!isNaN(percentage) ? `${percentage.toFixed(2)}%` : ''}</div>
-
 										<div className={styles.box_input}>
 											<input
 												className={styles.input}
@@ -172,6 +171,7 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 											/>
 											<div className={styles.unit}>gr</div>
 										</div>
+										<div className={styles.percent}>{!isNaN(percentage) ? `${percentage.toFixed(2)}%` : ''}</div>
 									</div>
 								</div>
 							);
