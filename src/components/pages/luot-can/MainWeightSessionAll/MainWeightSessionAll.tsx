@@ -224,6 +224,7 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 									STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
 									STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
 									STATUS_WEIGHT_SESSION.KCS_XONG,
+									STATUS_WEIGHT_SESSION.DA_HUY,
 							  ],
 						truckUuid: !!_truckUuid ? (_truckUuid as string) : '',
 						shipUuid: (_shipUuid as string) || '',
