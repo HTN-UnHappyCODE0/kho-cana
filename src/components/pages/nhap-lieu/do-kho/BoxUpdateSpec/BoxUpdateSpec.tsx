@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import {PropsBoxUpdateSpec} from './interfaces';
 import styles from './BoxUpdateSpec.module.scss';
@@ -16,6 +16,19 @@ import {convertCoin, price} from '~/common/funcs/convertCoin';
 
 function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 	const queryClient = useQueryClient();
+
+	const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+	const handleKeyEnter = (event: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+		if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+			event.preventDefault();
+			const newIndex = event.key === 'ArrowUp' ? index - 1 : index + 1;
+
+			if (inputRefs.current[newIndex]) {
+				inputRefs.current[newIndex]?.focus();
+			}
+		}
+	};
 
 	const [openWarning, setOpenWarning] = useState<boolean>(false);
 	const [form, setForm] = useState<{totalSample: number | string}>({
@@ -45,7 +58,7 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 			}))!
 		);
 		setForm({
-			totalSample: convertCoin(dataUpdateSpec?.specStyleUu?.[0]?.totalSample || 0),
+			totalSample: dataUpdateSpec?.specStyleUu?.[0]?.totalSample || 0,
 		});
 	}, [dataUpdateSpec]);
 
@@ -72,7 +85,7 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 					wsUuids: [dataUpdateSpec?.uuid!],
 					lstValueSpec: dataRules?.map((v) => ({
 						uuid: v?.uuid,
-						amountSample: Number(v?.amountSample),
+						amountSample: v?.amountSample ? Number(v?.amountSample) : 0,
 					})),
 					totalSample: form?.totalSample ? Number(form?.totalSample) : 0,
 				}),
@@ -154,6 +167,8 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 												type='number'
 												value={v?.amountSample}
 												onChange={(e) => handleChange(v, parseFloat(e.target.value))}
+												onKeyDown={(e) => handleKeyEnter(e, i)}
+												ref={(el) => (inputRefs.current[i] = el)}
 											/>
 											<div className={styles.unit}>gr</div>
 										</div>

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import {PropsFormUpdateSpecWS} from './interfaces';
 import styles from './FormUpdateSpecWS.module.scss';
@@ -21,6 +21,19 @@ import {price} from '~/common/funcs/convertCoin';
 
 function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 	const queryClient = useQueryClient();
+
+	const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+	const handleKeyEnter = (event: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+		if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+			event.preventDefault();
+			const newIndex = event.key === 'ArrowUp' ? index - 1 : index + 1;
+
+			if (inputRefs.current[newIndex]) {
+				inputRefs.current[newIndex]?.focus();
+			}
+		}
+	};
 
 	const [openWarning, setOpenWarning] = useState<boolean>(false);
 	const [form, setForm] = useState<{numberChecked: number; specificationsUuid: string; totalSample: number | string}>({
@@ -235,6 +248,8 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 											step='any'
 											value={v?.amountSample}
 											onChange={(e) => handleChange(v, parseFloat(e.target.value))}
+											onKeyDown={(e) => handleKeyEnter(e, i)}
+											ref={(el) => (inputRefs.current[i] = el)}
 										/>
 										<div className={styles.unit}>gr</div>
 									</div>
