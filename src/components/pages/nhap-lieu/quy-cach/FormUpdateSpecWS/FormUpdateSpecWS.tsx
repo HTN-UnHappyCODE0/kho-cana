@@ -233,14 +233,13 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 					{dataRules?.map((v, i) => {
 						const totalGr = dataRules.reduce((sum, rule) => sum + (rule.amountSample || 0), 0);
 						const percentage = price(form?.totalSample)
-							? (v?.amountSample / price(form?.totalSample)) * 100
+							? (v?.amountSample / Number(form?.totalSample)) * 100
 							: (v?.amountSample / totalGr) * 100;
 
 						return (
 							<div key={i} className={styles.item}>
 								<p>{v?.title}</p>
 								<div className={styles.value_spec}>
-									<div className={styles.percent}>{!isNaN(percentage) ? `${percentage.toFixed(2)}%` : ''}</div>
 									<div className={styles.box_input}>
 										<input
 											className={styles.input}
@@ -253,6 +252,7 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 										/>
 										<div className={styles.unit}>gr</div>
 									</div>
+									<div className={styles.percent}>{!isNaN(percentage) ? `${percentage.toFixed(2)}%` : ''}</div>
 								</div>
 							</div>
 						);
