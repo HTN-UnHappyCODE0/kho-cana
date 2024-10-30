@@ -28,6 +28,11 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 				inputRefs.current[newIndex]?.focus();
 			}
 		}
+		if (event.key === 'Enter' || event.keyCode === 13) {
+			if (index === -1) {
+				handleSubmit();
+			}
+		}
 	};
 
 	const [openWarning, setOpenWarning] = useState<boolean>(false);
