@@ -40,6 +40,7 @@ import icons from '~/constants/images/icons';
 import shipServices from '~/services/shipServices';
 import storageServices from '~/services/storageServices';
 import customerServices from '~/services/customerServices';
+import {ST} from 'next/dist/shared/lib/utils';
 
 function MainWeightSessionExport({}: PropsMainWeightSessionExport) {
 	const router = useRouter();
@@ -224,6 +225,7 @@ function MainWeightSessionExport({}: PropsMainWeightSessionExport) {
 									STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
 									STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
 									STATUS_WEIGHT_SESSION.KCS_XONG,
+									STATUS_WEIGHT_SESSION.DA_HUY,
 							  ],
 						truckUuid: !!_truckUuid ? (_truckUuid as string) : '',
 						shipUuid: (_shipUuid as string) || '',
@@ -286,6 +288,7 @@ function MainWeightSessionExport({}: PropsMainWeightSessionExport) {
 									STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
 									STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
 									STATUS_WEIGHT_SESSION.KCS_XONG,
+									STATUS_WEIGHT_SESSION.DA_HUY,
 							  ],
 						truckUuid: !!_truckUuid ? (_truckUuid as string) : '',
 						shift: !!_shift ? Number(_shift) : null,
@@ -375,6 +378,39 @@ function MainWeightSessionExport({}: PropsMainWeightSessionExport) {
 									{
 										id: TYPE_BATCH.CAN_LE,
 										name: 'Cân lẻ',
+									},
+								]}
+							/>
+						</div>
+						<div className={styles.filter}>
+							<FilterCustom
+								isSearch
+								name='Trạng thái'
+								query='_status'
+								listFilter={[
+									{
+										id: STATUS_WEIGHT_SESSION.DA_HUY,
+										name: 'Đã hủy',
+									},
+									{
+										id: STATUS_WEIGHT_SESSION.CAN_LAN_2,
+										name: 'Đã cân xong',
+									},
+									{
+										id: STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
+										name: 'Đã cập nhật quy cách',
+									},
+									{
+										id: STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
+										name: 'Đã cập nhật độ khô',
+									},
+									{
+										id: STATUS_WEIGHT_SESSION.KCS_XONG,
+										name: 'Đã KCS',
+									},
+									{
+										id: STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
+										name: 'Kết thúc',
 									},
 								]}
 							/>

@@ -36,6 +36,11 @@ import BoxViewSpec from '../BoxViewSpec';
 import Moment from 'react-moment';
 import Link from 'next/link';
 import {convertWeight, formatDrynessAvg} from '~/common/funcs/optionConvert';
+import IconCustom from '~/components/common/IconCustom';
+import {DocumentText, Edit, Eye} from 'iconsax-react';
+import Popup from '~/components/common/Popup';
+import PopupChangeDryness from '../PopupChangeDryness';
+import Button from '~/components/common/Button';
 
 function MainBillSend({}: PropsMainBillSend) {
 	const router = useRouter();
@@ -43,6 +48,10 @@ function MainBillSend({}: PropsMainBillSend) {
 	const {_page, _pageSize, _keyword, _isBatch, _isShift, _customerUuid, _productTypeUuid, _specUuid, _dateFrom, _dateTo} = router.query;
 
 	const [dataSpec, setDataSpec] = useState<IWeightSession | null>(null);
+	const [total, setTotal] = useState<number>(0);
+	const [listSelectBill, setListSelectBill] = useState<any[]>([]);
+	const [listBillSend, setListBillSend] = useState<any[]>([]);
+	const [loading, setLoading] = useState<boolean>(false);
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
@@ -108,7 +117,7 @@ function MainBillSend({}: PropsMainBillSend) {
 		},
 	});
 
-	const queryWeightsession = useQuery(
+	useQuery(
 		[
 			QUERY_KEY.table_phieu_da_gui_KT,
 			_page,
@@ -126,6 +135,7 @@ function MainBillSend({}: PropsMainBillSend) {
 			queryFn: () =>
 				httpRequest({
 					isList: true,
+					setLoading: setLoading,
 					http: weightSessionServices.listWeightsession({
 						page: Number(_page) || 1,
 						pageSize: Number(_pageSize) || 50,
@@ -149,6 +159,18 @@ function MainBillSend({}: PropsMainBillSend) {
 						shift: !!_isShift ? Number(_isShift) : null,
 					}),
 				}),
+			onSuccess(data) {
+				if (data) {
+					setListBillSend(
+						data?.items?.map((v: any, index: number) => ({
+							...v,
+							index: index,
+							isChecked: false,
+						}))
+					);
+					setTotal(data?.pagination?.totalCount);
+				}
+			},
 			select(data) {
 				if (data) {
 					return data;
@@ -159,8 +181,25 @@ function MainBillSend({}: PropsMainBillSend) {
 
 	return (
 		<div className={styles.container}>
+			{/* <Loading loading={.isLoading} /> */}
 			<div className={styles.header}>
 				<div className={styles.main_search}>
+					{listBillSend?.some((x) => x.isChecked !== false) && (
+						<div style={{height: 40}}>
+							<Button
+								className={styles.btn}
+								rounded_2
+								maxHeight
+								danger
+								p_4_12
+								onClick={() => {
+									setListSelectBill(listBillSend?.filter((v) => v.isChecked !== false)?.map((x: any) => x.uuid));
+								}}
+							>
+								Chỉnh sửa độ khô
+							</Button>
+						</div>
+					)}
 					<div className={styles.search}>
 						<Search keyName='_keyword' placeholder='Tìm kiếm theo số phiếu và mã lô hàng' />
 					</div>
@@ -216,12 +255,12 @@ function MainBillSend({}: PropsMainBillSend) {
 			</div>
 			<div className={styles.table}>
 				<DataWrapper
-					data={queryWeightsession?.data?.items || []}
-					loading={queryWeightsession.isFetching}
+					data={listBillSend || []}
+					loading={loading}
 					noti={<Noti des='Hiện tại chưa có danh sách nhập liệu nào!' disableButton />}
 				>
 					<Table
-						data={queryWeightsession?.data?.items || []}
+						data={listBillSend || []}
 						column={[
 							{
 								title: 'STT',
@@ -292,15 +331,48 @@ function MainBillSend({}: PropsMainBillSend) {
 								title: 'Thời gian gửi',
 								render: (data: IWeightSession) => <Moment date={data?.updatedTime} format='HH:mm, DD/MM/YYYY' />,
 							},
+							{
+								title: 'Tác vụ',
+								fixedRight: true,
+								render: (data: IWeightSession) => (
+									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
+										<IconCustom
+											edit
+											icon={<Edit fontSize={20} fontWeight={600} />}
+											tooltip='Chỉnh sửa'
+											color='#2CAE39'
+											onClick={() => {
+												setListSelectBill([data?.uuid]);
+											}}
+										/>
+
+										<IconCustom
+											edit
+											icon={<Eye fontSize={20} fontWeight={600} />}
+											tooltip='Xem chi tiết'
+											color='#777E90'
+											href={``}
+										/>
+										<IconCustom
+											edit
+											icon={<DocumentText fontSize={20} fontWeight={600} />}
+											tooltip=''
+											color='#777E90'
+											onClick={() => {}}
+										/>
+									</div>
+								),
+							},
 						]}
 					/>
 				</DataWrapper>
 
-				{!queryWeightsession.isFetching && (
+				{/* {!queryWeightsession.isFetching && ( */}
+				{!loading && (
 					<Pagination
 						currentPage={Number(_page) || 1}
 						pageSize={Number(_pageSize) || 50}
-						total={queryWeightsession?.data?.pagination?.totalCount}
+						total={total}
 						dependencies={[
 							_pageSize,
 							_keyword,
@@ -315,6 +387,19 @@ function MainBillSend({}: PropsMainBillSend) {
 					/>
 				)}
 			</div>
+			<Popup
+				open={listSelectBill.length > 0}
+				onClose={() => {
+					setListSelectBill([]);
+				}}
+			>
+				<PopupChangeDryness
+					dataBillChangeDryness={listBillSend}
+					onClose={() => {
+						setListSelectBill([]);
+					}}
+				/>
+			</Popup>
 		</div>
 	);
 }

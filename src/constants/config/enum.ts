@@ -85,6 +85,7 @@ export enum QUERY_KEY {
 	table_phieu_da_gui_KT,
 	table_chi_tiet_don_hang_phieu,
 	table_chi_tiet_xe_hang_phieu_can,
+	table_lich_su_thay_doi_do_kho,
 
 	chi_tiet_lenh_can,
 	chi_tiet_phieu_can,
