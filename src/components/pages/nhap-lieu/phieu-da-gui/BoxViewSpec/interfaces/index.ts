@@ -1,5 +1,5 @@
 import {IWeightSession} from '../../../quy-cach/MainSpecification/interfaces';
 
 export interface PropsBoxViewSpec {
-	dataUpdateSpec: IWeightSession | null;
+	dataUpdateSpec: any | null;
 }

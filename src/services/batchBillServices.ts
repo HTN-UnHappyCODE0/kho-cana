@@ -240,6 +240,18 @@ const batchBillServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	reupDryness: (
+		data: {
+			billUuid: string[];
+			drynessNew: number;
+			description: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/BatchBill/reup-dryness-bill`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 };
 
 export default batchBillServices;
