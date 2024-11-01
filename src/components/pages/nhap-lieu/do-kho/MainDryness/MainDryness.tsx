@@ -58,7 +58,8 @@ function MainDryness({}: PropsMainDryness) {
 
 	const [dataUpdateSpec, setDataUpdateSpec] = useState<IWeightSession | null>(null);
 	const [dataWeightSessionSubmit, setDataWeightSessionSubmit] = useState<any[]>([]);
-	const [openUpdateDryness, setOpenUpdateDryness] = useState<boolean>(false);
+	const [dataWeightSessionSpec, setDataWeightSessionSpec] = useState<any[]>([]);
+	// const [openUpdateDryness, setOpenUpdateDryness] = useState<boolean>(false);
 	const [openSentData, setOpenSentData] = useState<boolean>(false);
 
 	const [weightSessions, setWeightSessions] = useState<any[]>([]);
@@ -232,7 +233,6 @@ function MainDryness({}: PropsMainDryness) {
 		onSuccess(data) {
 			if (data) {
 				queryClient.invalidateQueries([QUERY_KEY.table_nhap_lieu_do_kho]);
-				setOpenSentData(false);
 				setDataWeightSessionSubmit([]);
 			}
 		},
@@ -293,7 +293,7 @@ function MainDryness({}: PropsMainDryness) {
 		if (!arr?.every((obj: any) => obj?.specificationsUu?.uuid === arr[0]?.specificationsUu?.uuid)) {
 			return toastWarn({msg: 'Chỉ chọn được các lô có cùng quy cách!'});
 		} else {
-			setDataWeightSessionSubmit(arr);
+			setDataWeightSessionSpec(arr);
 		}
 	};
 
@@ -312,7 +312,6 @@ function MainDryness({}: PropsMainDryness) {
 								p_4_12
 								icon={<IoMdAdd size={18} />}
 								onClick={() => {
-									setOpenUpdateDryness(true);
 									setDataWeightSessionSubmit(weightSessions?.filter((v) => v.isChecked !== false));
 								}}
 							>
@@ -572,16 +571,14 @@ function MainDryness({}: PropsMainDryness) {
 			</div>
 
 			<Popup
-				open={openUpdateDryness}
+				open={dataWeightSessionSubmit.length > 0}
 				onClose={() => {
-					setOpenUpdateDryness(false);
 					setDataWeightSessionSubmit([]);
 				}}
 			>
 				<FormUpdateDryness
 					dataUpdateDryness={dataWeightSessionSubmit}
 					onClose={() => {
-						setOpenUpdateDryness(false);
 						setDataWeightSessionSubmit([]);
 					}}
 				/>
@@ -598,8 +595,8 @@ function MainDryness({}: PropsMainDryness) {
 				onSubmit={handleSubmitSentData}
 			/>
 
-			<Popup open={dataWeightSessionSubmit.length > 0} onClose={() => setDataWeightSessionSubmit([])}>
-				<FormUpdateSpecWS dataUpdateSpecWS={dataWeightSessionSubmit} onClose={() => setDataWeightSessionSubmit([])} />
+			<Popup open={dataWeightSessionSpec.length > 0} onClose={() => setDataWeightSessionSpec([])}>
+				<FormUpdateSpecWS dataUpdateSpecWS={dataWeightSessionSpec} onClose={() => setDataWeightSessionSpec([])} />
 			</Popup>
 		</div>
 	);
