@@ -57,6 +57,7 @@ export enum PATH {
 	NhapLieuQuyCach = '/nhap-lieu/quy-cach',
 	NhapLieuDoKho = '/nhap-lieu/do-kho',
 	NhapLieuPhieuDaGui = '/nhap-lieu/phieu-da-gui',
+	LishSuPhieuGui = '/nhap-lieu/phieu-da-gui/lich-su',
 
 	// Nhà cung cấp
 	NhaCungCap = '/nha-cung-cap',

@@ -12,34 +12,36 @@ import {QUERY_KEY} from '~/constants/config/enum';
 import {toastWarn} from '~/common/funcs/toast';
 import Loading from '~/components/common/Loading';
 import TextArea from '~/components/common/Form/components/TextArea';
+import batchBillServices from '~/services/batchBillServices';
 
 function PopupChangeDryness({dataBillChangeDryness, onClose}: PropsPopupChangeDryness) {
 	const queryClient = useQueryClient();
 
-	const [form, setForm] = useState<{numberChecked: number; dryness: number; description: string}>({
-		numberChecked: 0,
-		dryness: 0,
+	const [form, setForm] = useState<{drynessNew: number; description: string; billNumber: string}>({
+		drynessNew: 0,
 		description: '',
+		billNumber: '',
 	});
 
+	console.log({dataBillChangeDryness});
+
 	useEffect(() => {
-		if (dataBillChangeDryness?.length > 0) {
-			setForm((prev) => ({
-				...prev,
-				numberChecked: dataBillChangeDryness?.length,
-			}));
-		}
+		setForm((prev) => ({
+			...prev,
+			billNumber: dataBillChangeDryness?.length > 1 ? String(dataBillChangeDryness?.length) : dataBillChangeDryness[0]?.code,
+		}));
 	}, [dataBillChangeDryness]);
 
 	const funcUpdateDrynessWeightSession = useMutation({
-		mutationFn: (body: {uuids: string[]; dryness: number; description: string}) =>
+		mutationFn: (body: {uuids: string[]; drynessNew: number; description: string}) =>
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
 				msgSuccess: 'Cập nhật độ khô thành công, Đợi duyệt!',
-				http: weightSessionServices.updateDrynessWeightSession({
-					wsUuids: body.uuids,
-					dryness: body.dryness,
+				http: batchBillServices.reupDryness({
+					billUuid: body.uuids,
+					drynessNew: body.drynessNew,
+					description: body.description,
 				}),
 			}),
 		onSuccess(data) {
@@ -55,13 +57,13 @@ function PopupChangeDryness({dataBillChangeDryness, onClose}: PropsPopupChangeDr
 	});
 
 	const handleSubmit = async () => {
-		if (Number(form.dryness) <= 0 || Number(form.dryness) > 100) {
+		if (Number(form.drynessNew) <= 0 || Number(form.drynessNew) > 100) {
 			return toastWarn({msg: 'Giá trị độ khô không hợp lệ!'});
 		}
 
 		return funcUpdateDrynessWeightSession.mutate({
-			uuids: dataBillChangeDryness?.map((v: any) => v?.uuid),
-			dryness: Number(form.dryness),
+			uuids: dataBillChangeDryness?.length > 1 ? dataBillChangeDryness : dataBillChangeDryness?.map((v: any) => v?.uuid),
+			drynessNew: Number(form.drynessNew),
 			description: form.description,
 		});
 	};
@@ -72,34 +74,31 @@ function PopupChangeDryness({dataBillChangeDryness, onClose}: PropsPopupChangeDr
 			<h4>Cập nhật lại độ khô</h4>
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<Input
-					name='numberChecked'
-					value={form.numberChecked || ''}
-					type='number'
-					placeholder='Số phiếu đã chọn '
-					label={<span>Số phiếu đã chọn</span>}
+					name='billNumber'
+					value={form.billNumber || ''}
+					type='text'
+					placeholder='Số lố/phiếu đã chọn'
+					label={<span>Số lố/phiếu đã chọn</span>}
 					readOnly
 				/>
+
 				<div className='mt'>
-					<div>
-						<label className={styles.label}>
-							Độ khô <span style={{color: 'red'}}>*</span>
-						</label>
-						<input
-							name='dryness'
-							value={form.dryness || ''}
-							className={styles.input}
-							type='number'
-							step='0.01'
-							max={100}
-							placeholder='Nhập độ khô'
-							onChange={(e) =>
-								setForm((prev: any) => ({
-									...prev,
-									dryness: e.target?.value,
-								}))
-							}
-						/>
-					</div>
+					<label className={styles.label}>
+						Độ khô thay đổi <span style={{color: 'red'}}>*</span>
+					</label>
+					<input
+						name='drynessNew'
+						value={form.drynessNew || ''}
+						className={styles.input}
+						type='number'
+						placeholder='Nhập độ khô'
+						onChange={(e) =>
+							setForm((prev: any) => ({
+								...prev,
+								drynessNew: e.target?.value,
+							}))
+						}
+					/>
 				</div>
 				<div className='mt'>
 					<TextArea
@@ -126,7 +125,7 @@ function PopupChangeDryness({dataBillChangeDryness, onClose}: PropsPopupChangeDr
 						{({isDone}) => (
 							<div>
 								<Button disable={!isDone} p_10_24 rounded_2 primary>
-									Xác nhận
+									Gửi yêu cầu cập nhật độ khô
 								</Button>
 							</div>
 						)}

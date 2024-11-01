@@ -45,6 +45,7 @@ import Popup from '~/components/common/Popup';
 import FormUpdateDryness from '../FormUpdateDryness';
 import Link from 'next/link';
 import {convertWeight} from '~/common/funcs/optionConvert';
+import FormUpdateSpecWS from '../../quy-cach/FormUpdateSpecWS';
 
 function MainDryness({}: PropsMainDryness) {
 	const router = useRouter();
@@ -52,7 +53,8 @@ function MainDryness({}: PropsMainDryness) {
 
 	const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-	const {_page, _pageSize, _keyword, _isBatch, _isShift, _customerUuid, _productTypeUuid, _specUuid, _dateFrom, _dateTo} = router.query;
+	const {_page, _pageSize, _keyword, _isBatch, _isShift, _customerUuid, _status, _productTypeUuid, _specUuid, _dateFrom, _dateTo} =
+		router.query;
 
 	const [dataUpdateSpec, setDataUpdateSpec] = useState<IWeightSession | null>(null);
 	const [dataWeightSessionSubmit, setDataWeightSessionSubmit] = useState<any[]>([]);
@@ -126,6 +128,16 @@ function MainDryness({}: PropsMainDryness) {
 		},
 	});
 
+	useEffect(() => {
+		router.push({
+			pathname: '/nhap-lieu/do-kho',
+			query: {
+				...router.query,
+				_status: STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
+			},
+		});
+	}, []);
+
 	const queryWeightsession = useQuery(
 		[
 			QUERY_KEY.table_nhap_lieu_do_kho,
@@ -139,6 +151,7 @@ function MainDryness({}: PropsMainDryness) {
 			_dateFrom,
 			_dateTo,
 			_isShift,
+			_status,
 		],
 		{
 			queryFn: () =>
@@ -157,7 +170,9 @@ function MainDryness({}: PropsMainDryness) {
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
 						scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_TRUC_TIEP],
 						specUuid: !!_specUuid ? (_specUuid as string) : null,
-						status: [STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE, STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE],
+						status: !!_status
+							? [Number(_status)]
+							: [STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE, STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE],
 						storageUuid: '',
 						truckUuid: '',
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
@@ -272,6 +287,16 @@ function MainDryness({}: PropsMainDryness) {
 		return funcUpdateKCSWeightSession.mutate();
 	};
 
+	const handleUpdateAll = () => {
+		const arr = weightSessions?.filter((v) => v.isChecked !== false);
+
+		if (!arr?.every((obj: any) => obj?.specificationsUu?.uuid === arr[0]?.specificationsUu?.uuid)) {
+			return toastWarn({msg: 'Chỉ chọn được các lô có cùng quy cách!'});
+		} else {
+			setDataWeightSessionSubmit(arr);
+		}
+	};
+
 	return (
 		<div className={styles.container}>
 			<Loading loading={funcUpdateDrynessWeightSession.isLoading || funcUpdateKCSWeightSession.isLoading} />
@@ -283,7 +308,7 @@ function MainDryness({}: PropsMainDryness) {
 								className={styles.btn}
 								rounded_2
 								maxHeight
-								green
+								primary
 								p_4_12
 								icon={<IoMdAdd size={18} />}
 								onClick={() => {
@@ -295,8 +320,23 @@ function MainDryness({}: PropsMainDryness) {
 							</Button>
 						</div>
 					)}
-
 					{weightSessions?.some((x) => x.isChecked !== false) && (
+						<div style={{height: 40}}>
+							<Button
+								className={styles.btn}
+								rounded_2
+								maxHeight
+								green
+								p_4_12
+								icon={<AiOutlineFileAdd size={20} />}
+								onClick={handleUpdateAll}
+							>
+								Cập nhật quy cách
+							</Button>
+						</div>
+					)}
+
+					{/* {weightSessions?.some((x) => x.isChecked !== false) && (
 						<div style={{height: 40}}>
 							<Button
 								className={styles.btn}
@@ -313,7 +353,7 @@ function MainDryness({}: PropsMainDryness) {
 								Gửi kế toán
 							</Button>
 						</div>
-					)}
+					)} */}
 
 					<div className={styles.search}>
 						<Search keyName='_keyword' placeholder='Tìm kiếm theo số phiếu và mã lô hàng' />
@@ -331,6 +371,23 @@ function MainDryness({}: PropsMainDryness) {
 								{
 									id: TYPE_BATCH.CAN_LE,
 									name: 'Cân lẻ',
+								},
+							]}
+						/>
+					</div>
+					<div className={styles.filter}>
+						<FilterCustom
+							isSearch
+							name='Độ khô'
+							query='_status'
+							listFilter={[
+								{
+									id: STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
+									name: 'Chưa có',
+								},
+								{
+									id: STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
+									name: 'Đã có',
 								},
 							]}
 						/>
@@ -465,31 +522,31 @@ function MainDryness({}: PropsMainDryness) {
 								),
 							},
 
-							{
-								title: 'Tác vụ',
-								fixedRight: true,
-								render: (data: IWeightSession) => (
-									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
-										<div>
-											<Button
-												className={styles.btn}
-												rounded_2
-												maxHeight
-												primary
-												p_4_12
-												icon={<AiOutlineFileAdd size={20} />}
-												disable={data?.dryness == null}
-												onClick={() => {
-													setOpenSentData(true);
-													setDataWeightSessionSubmit([data]);
-												}}
-											>
-												Gửi kế toán
-											</Button>
-										</div>
-									</div>
-								),
-							},
+							// {
+							// 	title: 'Tác vụ',
+							// 	fixedRight: true,
+							// 	render: (data: IWeightSession) => (
+							// 		<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
+							// 			<div>
+							// 				<Button
+							// 					className={styles.btn}
+							// 					rounded_2
+							// 					maxHeight
+							// 					primary
+							// 					p_4_12
+							// 					icon={<AiOutlineFileAdd size={20} />}
+							// 					disable={data?.dryness == null}
+							// 					onClick={() => {
+							// 						setOpenSentData(true);
+							// 						setDataWeightSessionSubmit([data]);
+							// 					}}
+							// 				>
+							// 					Gửi kế toán
+							// 				</Button>
+							// 			</div>
+							// 		</div>
+							// 	),
+							// },
 						]}
 					/>
 				</DataWrapper>
@@ -508,6 +565,7 @@ function MainDryness({}: PropsMainDryness) {
 							_dateFrom,
 							_dateTo,
 							_isShift,
+							_status,
 						]}
 					/>
 				)}
@@ -539,6 +597,10 @@ function MainDryness({}: PropsMainDryness) {
 				note={`Đang chọn ${dataWeightSessionSubmit?.length} phiếu đã có độ khô! Bạn có chắc chắn muốn gửi đi ?`}
 				onSubmit={handleSubmitSentData}
 			/>
+
+			<Popup open={dataWeightSessionSubmit.length > 0} onClose={() => setDataWeightSessionSubmit([])}>
+				<FormUpdateSpecWS dataUpdateSpecWS={dataWeightSessionSubmit} onClose={() => setDataWeightSessionSubmit([])} />
+			</Popup>
 		</div>
 	);
 }
