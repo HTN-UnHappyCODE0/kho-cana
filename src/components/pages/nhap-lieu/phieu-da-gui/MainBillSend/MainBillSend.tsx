@@ -199,7 +199,7 @@ function MainBillSend({}: PropsMainBillSend) {
 								danger
 								p_4_12
 								onClick={() => {
-									setListSelectBill(listBillSend?.filter((v) => v.isChecked !== false)?.map((x: any) => x.uuid));
+									setListSelectBill(listBillSend?.filter((v) => v.isChecked !== false));
 								}}
 							>
 								Chỉnh sửa độ khô
@@ -307,30 +307,30 @@ function MainBillSend({}: PropsMainBillSend) {
 								title: 'KL hàng (Tấn)',
 								render: (data: IBillSend) => <>{convertWeight(data?.weightTotal)}</>,
 							},
-							{
-								title: 'Quy cách',
-								render: (data: IBillSend) => (
-									<TippyHeadless
-										maxWidth={'100%'}
-										interactive
-										onClickOutside={() => setDataSpec(null)}
-										visible={dataSpec?.uuid == data?.uuid}
-										placement='top'
-										render={(attrs) => <BoxViewSpec dataUpdateSpec={dataSpec} />}
-									>
-										<Tippy content='Xem quy cách'>
-											<p
-												className={clsx(styles.specification, {
-													[styles.active]: dataSpec?.uuid == data?.uuid,
-												})}
-												onClick={() => setDataSpec(data)}
-											>
-												{data?.specificationsUu?.name || '---'}
-											</p>
-										</Tippy>
-									</TippyHeadless>
-								),
-							},
+							// {
+							// 	title: 'Quy cách',
+							// 	render: (data: IBillSend) => (
+							// 		<TippyHeadless
+							// 			maxWidth={'100%'}
+							// 			interactive
+							// 			onClickOutside={() => setDataSpec(null)}
+							// 			visible={dataSpec?.uuid == data?.uuid}
+							// 			placement='top'
+							// 			render={(attrs) => <BoxViewSpec dataUpdateSpec={dataSpec} />}
+							// 		>
+							// 			<Tippy content='Xem quy cách'>
+							// 				<p
+							// 					className={clsx(styles.specification, {
+							// 						[styles.active]: dataSpec?.uuid == data?.uuid,
+							// 					})}
+							// 					onClick={() => setDataSpec(data)}
+							// 				>
+							// 					{data?.specificationsUu?.name || '---'}
+							// 				</p>
+							// 			</Tippy>
+							// 		</TippyHeadless>
+							// 	),
+							// },
 							{
 								title: 'Độ khô',
 								render: (data: IBillSend) => <p className={styles.dryness}>{formatDrynessAvg(data?.drynessAvg)} %</p>,
@@ -361,13 +361,13 @@ function MainBillSend({}: PropsMainBillSend) {
 											color='#777E90'
 											href={``}
 										/> */}
-										<IconCustom
+										{/* <IconCustom
 											edit
 											icon={<DocumentText fontSize={20} fontWeight={600} />}
 											tooltip='Xem chi tiết'
 											color='#777E90'
 											href={PATH.LishSuPhieuGui + `?_BillSendUuid=${data?.uuid}`}
-										/>
+										/> */}
 									</div>
 								),
 							},

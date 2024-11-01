@@ -156,6 +156,10 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 		if (dataRules?.some((v) => isNaN(v?.amountSample))) {
 			return toastWarn({msg: 'Nhập giá trị cho tiêu chí quy cách!'});
 		}
+		if (dataRules?.every((v) => v?.amountSample === 0)) {
+			return toastWarn({msg: 'Nhập giá trị cho tiêu chí quy cách!'});
+		}
+
 		if (dataRules?.some((v) => v?.amountSample > price(form?.totalSample))) {
 			return setOpenWarning(true);
 		} else {

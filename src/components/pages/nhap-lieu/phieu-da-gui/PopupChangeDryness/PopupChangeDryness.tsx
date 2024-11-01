@@ -23,8 +23,6 @@ function PopupChangeDryness({dataBillChangeDryness, onClose}: PropsPopupChangeDr
 		billNumber: '',
 	});
 
-	console.log({dataBillChangeDryness});
-
 	useEffect(() => {
 		setForm((prev) => ({
 			...prev,
@@ -62,7 +60,7 @@ function PopupChangeDryness({dataBillChangeDryness, onClose}: PropsPopupChangeDr
 		}
 
 		return funcUpdateDrynessWeightSession.mutate({
-			uuids: dataBillChangeDryness?.length > 1 ? dataBillChangeDryness : dataBillChangeDryness?.map((v: any) => v?.uuid),
+			uuids: dataBillChangeDryness?.map((v: any) => v?.uuid),
 			drynessNew: Number(form.drynessNew),
 			description: form.description,
 		});
