@@ -9,7 +9,7 @@ import {IoArrowBackOutline} from 'react-icons/io5';
 import clsx from 'clsx';
 import TableListTruck from './components/TableListTruck';
 import {useQuery} from '@tanstack/react-query';
-import {QUERY_KEY, STATE_BILL, STATUS_BILL, TYPE_SCALES, TYPE_SIFT, TYPE_TRANSPORT} from '~/constants/config/enum';
+import {QUERY_KEY, STATE_BILL, STATUS_BILL, TYPE_BATCH, TYPE_SCALES, TYPE_SIFT, TYPE_TRANSPORT} from '~/constants/config/enum';
 import {httpRequest} from '~/services';
 import batchBillServices from '~/services/batchBillServices';
 import Button from '~/components/common/Button';
@@ -162,6 +162,23 @@ function MainDetailScales({}: PropsMainDetailScales) {
 							<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.toUu?.name || '---'} </span>
 						</td>
 					</tr>
+
+					<tr>
+						<td>
+							<div style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
+								<span>Cảng bốc dỡ: </span>
+								<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.port || '---'}</span>
+							</div>
+						</td>
+
+						<td>
+							<span>Kiểu cân:</span>
+							<span style={{marginLeft: '6px', fontWeight: 600}}>
+								{detailBatchBill?.isBatch == TYPE_BATCH.CAN_LO && 'Cân lô'}
+								{detailBatchBill?.isBatch == TYPE_BATCH.CAN_LE && 'Cân lẻ'}
+							</span>
+						</td>
+					</tr>
 					<tr>
 						<td>
 							<span className={styles.state_action}>
@@ -203,17 +220,9 @@ function MainDetailScales({}: PropsMainDetailScales) {
 								/>
 							</span>
 						</td>
-						<td rowSpan={4} className={styles.description}>
+						<td rowSpan={3} className={styles.description}>
 							<span>{detailBatchBill?.state == STATE_BILL.QLK_REJECTED ? 'Lý do' : 'Mô tả'} :</span>
 							<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.description || '---'}</span>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
-								<span>Cảng bốc dỡ: </span>
-								<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.port || '---'}</span>
-							</div>
 						</td>
 					</tr>
 					<tr>
@@ -224,6 +233,7 @@ function MainDetailScales({}: PropsMainDetailScales) {
 							</div>
 						</td>
 					</tr>
+
 					<tr>
 						<td>
 							{/* <div style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
