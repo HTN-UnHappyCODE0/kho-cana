@@ -31,16 +31,6 @@ function Select(props: PropsSelector) {
 	};
 
 	useEffect(() => {
-		const handleClick = (e: any) => {
-			if (ref.current && !ref.current.contains(e.target)) {
-				setShow(false);
-			}
-		};
-		document.addEventListener('click', handleClick);
-		return () => document.removeEventListener('click', handleClick);
-	}, [ref]);
-
-	useEffect(() => {
 		if (ref.current) {
 			const resizeObserver = new ResizeObserver((entries) => {
 				if (entries[0].contentRect) {
