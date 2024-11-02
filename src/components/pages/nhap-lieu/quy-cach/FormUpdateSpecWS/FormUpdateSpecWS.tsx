@@ -151,6 +151,7 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 			if (data) {
 				onClose();
 				queryClient.invalidateQueries([QUERY_KEY.table_nhap_lieu_quy_cach]);
+				queryClient.invalidateQueries([QUERY_KEY.table_nhap_lieu_do_kho]);
 			}
 		},
 		onError(error) {
