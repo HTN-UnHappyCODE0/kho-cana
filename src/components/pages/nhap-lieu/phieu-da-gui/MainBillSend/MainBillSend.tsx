@@ -333,7 +333,7 @@ function MainBillSend({}: PropsMainBillSend) {
 							// },
 							{
 								title: 'Độ khô',
-								render: (data: IBillSend) => <p className={styles.dryness}>{formatDrynessAvg(data?.drynessAvg)} %</p>,
+								render: (data: IBillSend) => <p className={styles.dryness}>{data?.drynessAvg?.toFixed(2)} %</p>,
 							},
 							{
 								title: 'Thời gian gửi',
