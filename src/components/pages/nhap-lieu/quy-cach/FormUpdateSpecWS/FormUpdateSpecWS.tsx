@@ -34,8 +34,15 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 			}
 		}
 		if (event.key === 'Enter' || event.keyCode === 13) {
+			event.preventDefault();
 			if (index === -1) {
-				handleSubmit();
+				inputRefs.current[0]?.focus();
+			} else {
+				if (inputRefs.current[index + 1]) {
+					inputRefs.current[index + 1]?.focus();
+				} else {
+					inputRefs.current[-1]?.focus();
+				}
 			}
 		}
 	};
@@ -263,7 +270,8 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 										/>
 										<div className={styles.unit}>gr</div>
 									</div>
-									<div className={styles.percent}>{!isNaN(percentage) ? `${percentage.toFixed(2)}%` : ''}</div>
+									{/* <div className={styles.percent}>{!isNaN(percentage) ? `${percentage.toFixed(2)}%` : ''}</div> */}
+									<div className={styles.percent}>{!isNaN(percentage) ? `${percentage.toFixed(2)}%` : '0.00 %'}</div>
 								</div>
 							</div>
 						);
