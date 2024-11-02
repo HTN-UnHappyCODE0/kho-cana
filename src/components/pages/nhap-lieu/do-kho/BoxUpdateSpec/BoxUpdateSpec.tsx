@@ -29,8 +29,15 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 			}
 		}
 		if (event.key === 'Enter' || event.keyCode === 13) {
+			event.preventDefault();
 			if (index === -1) {
-				handleSubmit();
+				inputRefs.current[0]?.focus();
+			} else {
+				if (inputRefs.current[index + 1]) {
+					inputRefs.current[index + 1]?.focus();
+				} else {
+					inputRefs.current[-1]?.focus();
+				}
 			}
 		}
 	};
