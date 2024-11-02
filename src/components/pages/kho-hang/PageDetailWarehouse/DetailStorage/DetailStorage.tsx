@@ -201,7 +201,7 @@ function DetailStorage({}: PropsDetailStorage) {
 					/>
 					<DetailBox
 						name={'Độ khô trung bình'}
-						value={formatDrynessAvg(detailStorage?.drynessAvg!)}
+						value={detailStorage?.drynessAvg!?.toFixed(2)}
 						action={
 							<div className={styles.action}>
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />
@@ -299,7 +299,7 @@ function DetailStorage({}: PropsDetailStorage) {
 														{/* <span style={{marginRight: 4}}>
 															{v?.criteriaUu?.ruler == TYPE_RULER.NHO_HON ? '<' : '>'}
 														</span> */}
-														{formatDrynessAvg(v?.value)}%
+														{v?.value?.toFixed(2)}%
 													</p>
 												</div>
 											))}

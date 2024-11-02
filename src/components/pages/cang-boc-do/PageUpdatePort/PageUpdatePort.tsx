@@ -260,7 +260,7 @@ function PageUpdatePort({}: PropsPageUpdatePort) {
 							},
 							{
 								title: 'Độ khô (%)',
-								render: (data: ITableBillScale) => <>{formatDrynessAvg(data?.drynessAvg) || 0}</>,
+								render: (data: ITableBillScale) => <>{data?.drynessAvg?.toFixed(2) || 0}</>,
 							},
 							{
 								title: 'Loại hàng',
