@@ -41,6 +41,7 @@ import {convertWeight, formatDrynessAvg} from '~/common/funcs/optionConvert';
 import scalesStationServices from '~/services/scalesStationServices';
 import storageServices from '~/services/storageServices';
 import StateActive from '~/components/common/StateActive';
+import Moment from 'react-moment';
 
 function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 	const router = useRouter();
@@ -434,15 +435,20 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 								),
 							},
 							{
-								title: 'Loại cân',
+								title: 'Loại cân?thời gian kêt thúc',
 								render: (data: ITableBillScale) => (
-									<p style={{fontWeight: 600}}>
-										{data?.scalesType == TYPE_SCALES.CAN_NHAP && 'Cân nhập'}
-										{data?.scalesType == TYPE_SCALES.CAN_XUAT && 'Cân xuất'}
-										{data?.scalesType == TYPE_SCALES.CAN_DICH_VU && 'Cân dịch vụ'}
-										{data?.scalesType == TYPE_SCALES.CAN_CHUYEN_KHO && 'Cân chuyển kho'}
-										{data?.scalesType == TYPE_SCALES.CAN_TRUC_TIEP && 'Cân xuất thẳng'}
-									</p>
+									<>
+										<p style={{fontWeight: 600}}>
+											{data?.scalesType == TYPE_SCALES.CAN_NHAP && 'Cân nhập'}
+											{data?.scalesType == TYPE_SCALES.CAN_XUAT && 'Cân xuất'}
+											{data?.scalesType == TYPE_SCALES.CAN_DICH_VU && 'Cân dịch vụ'}
+											{data?.scalesType == TYPE_SCALES.CAN_CHUYEN_KHO && 'Cân chuyển kho'}
+											{data?.scalesType == TYPE_SCALES.CAN_TRUC_TIEP && 'Cân xuất thẳng'}
+										</p>
+										<p style={{fontWeight: 500, color: '#3772FF'}}>
+											<Moment date={data?.timeEnd} format='HH:mm - DD/MM/YYYY' />
+										</p>
+									</>
 								),
 							},
 							// {
