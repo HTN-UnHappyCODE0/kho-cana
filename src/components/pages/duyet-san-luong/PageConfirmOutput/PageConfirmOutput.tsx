@@ -456,7 +456,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 								),
 							},
 							{
-								title: 'Loại cân',
+								title: 'Loại cân/ thời gian kêt thúc',
 								render: (data: ITableBillScale) => (
 									<>
 										<p style={{fontWeight: 600}}>
