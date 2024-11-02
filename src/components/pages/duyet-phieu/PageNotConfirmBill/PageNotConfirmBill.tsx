@@ -435,7 +435,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 								),
 							},
 							{
-								title: 'Loại cân/thời gian kêt thúc',
+								title: 'Loại cân/ thời gian kêt thúc',
 								render: (data: ITableBillScale) => (
 									<>
 										<p style={{fontWeight: 600}}>
