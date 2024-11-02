@@ -38,7 +38,6 @@ import Button from '~/components/common/Button';
 import {Edit2} from 'iconsax-react';
 import {toastWarn} from '~/common/funcs/toast';
 import Loading from '~/components/common/Loading';
-import {LuFileSymlink} from 'react-icons/lu';
 import {IoMdAdd} from 'react-icons/io';
 import Dialog from '~/components/common/Dialog';
 import Popup from '~/components/common/Popup';
@@ -59,11 +58,9 @@ function MainDryness({}: PropsMainDryness) {
 	const [dataUpdateSpec, setDataUpdateSpec] = useState<IWeightSession | null>(null);
 	const [dataWeightSessionSubmit, setDataWeightSessionSubmit] = useState<any[]>([]);
 	const [dataWeightSessionSpec, setDataWeightSessionSpec] = useState<any[]>([]);
-	// const [openUpdateDryness, setOpenUpdateDryness] = useState<boolean>(false);
 	const [openSentData, setOpenSentData] = useState<boolean>(false);
 
 	const [weightSessions, setWeightSessions] = useState<any[]>([]);
-	const [total, setTotal] = useState<number>(0);
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
@@ -192,14 +189,16 @@ function MainDryness({}: PropsMainDryness) {
 							isChecked: false,
 						}))
 					);
-					setTotal(data?.pagination?.totalCount);
 				}
+			},
+			select(data) {
+				return data;
 			},
 		}
 	);
 
 	const funcUpdateDrynessWeightSession = useMutation({
-		mutationFn: (body: {uuid: string; dryness: number}) =>
+		mutationFn: (body: {uuid: string; dryness: number; index: number}) =>
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
@@ -209,8 +208,9 @@ function MainDryness({}: PropsMainDryness) {
 					dryness: body.dryness,
 				}),
 			}),
-		onSuccess(data) {
+		onSuccess(data, variable) {
 			if (data) {
+				inputRefs.current[variable?.index + 1]?.focus();
 				queryClient.invalidateQueries([QUERY_KEY.table_nhap_lieu_do_kho]);
 			}
 		},
@@ -275,6 +275,7 @@ function MainDryness({}: PropsMainDryness) {
 			return funcUpdateDrynessWeightSession.mutate({
 				uuid: uuid,
 				dryness: value,
+				index: index,
 			});
 		}
 	};
@@ -299,7 +300,7 @@ function MainDryness({}: PropsMainDryness) {
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={funcUpdateDrynessWeightSession.isLoading || funcUpdateKCSWeightSession.isLoading} />
+			<Loading loading={funcUpdateKCSWeightSession.isLoading} />
 			<div className={styles.header}>
 				<div className={styles.main_search}>
 					{weightSessions?.some((x) => x.isChecked !== false) && (
@@ -334,25 +335,6 @@ function MainDryness({}: PropsMainDryness) {
 							</Button>
 						</div>
 					)}
-
-					{/* {weightSessions?.some((x) => x.isChecked !== false) && (
-						<div style={{height: 40}}>
-							<Button
-								className={styles.btn}
-								rounded_2
-								maxHeight
-								primary
-								p_4_12
-								icon={<LuFileSymlink size={18} />}
-								onClick={() => {
-									setOpenSentData(true);
-									setDataWeightSessionSubmit(weightSessions?.filter((v) => v.isChecked !== false));
-								}}
-							>
-								Gửi kế toán
-							</Button>
-						</div>
-					)} */}
 
 					<div className={styles.search}>
 						<Search keyName='_keyword' placeholder='Tìm kiếm theo số phiếu và mã lô hàng' />
@@ -428,7 +410,7 @@ function MainDryness({}: PropsMainDryness) {
 			<div className={styles.table}>
 				<DataWrapper
 					data={weightSessions || []}
-					loading={queryWeightsession.isFetching}
+					loading={queryWeightsession.isLoading}
 					noti={<Noti des='Hiện tại chưa có danh sách nhập liệu nào!' disableButton />}
 				>
 					<Table
@@ -500,7 +482,6 @@ function MainDryness({}: PropsMainDryness) {
 										zIndex={100}
 										maxWidth={'100%'}
 										interactive
-										// onClickOutside={() => setDataUpdateSpec(null)}
 										visible={dataUpdateSpec?.uuid == data?.uuid}
 										placement='bottom-start'
 										render={(attrs) => (
@@ -520,54 +501,26 @@ function MainDryness({}: PropsMainDryness) {
 									</TippyHeadless>
 								),
 							},
-
-							// {
-							// 	title: 'Tác vụ',
-							// 	fixedRight: true,
-							// 	render: (data: IWeightSession) => (
-							// 		<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
-							// 			<div>
-							// 				<Button
-							// 					className={styles.btn}
-							// 					rounded_2
-							// 					maxHeight
-							// 					primary
-							// 					p_4_12
-							// 					icon={<AiOutlineFileAdd size={20} />}
-							// 					disable={data?.dryness == null}
-							// 					onClick={() => {
-							// 						setOpenSentData(true);
-							// 						setDataWeightSessionSubmit([data]);
-							// 					}}
-							// 				>
-							// 					Gửi kế toán
-							// 				</Button>
-							// 			</div>
-							// 		</div>
-							// 	),
-							// },
 						]}
 					/>
 				</DataWrapper>
-				{!queryWeightsession.isFetching && (
-					<Pagination
-						currentPage={Number(_page) || 1}
-						pageSize={Number(_pageSize) || 50}
-						total={total}
-						dependencies={[
-							_pageSize,
-							_keyword,
-							_isBatch,
-							_customerUuid,
-							_productTypeUuid,
-							_specUuid,
-							_dateFrom,
-							_dateTo,
-							_isShift,
-							_status,
-						]}
-					/>
-				)}
+				<Pagination
+					currentPage={Number(_page) || 1}
+					pageSize={Number(_pageSize) || 50}
+					total={queryWeightsession?.data?.pagination?.totalCount}
+					dependencies={[
+						_pageSize,
+						_keyword,
+						_isBatch,
+						_customerUuid,
+						_productTypeUuid,
+						_specUuid,
+						_dateFrom,
+						_dateTo,
+						_isShift,
+						_status,
+					]}
+				/>
 			</div>
 
 			<Popup
