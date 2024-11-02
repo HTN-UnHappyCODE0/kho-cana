@@ -135,7 +135,7 @@ export const Menu: {
 		group: [
 			{title: 'Duyệt sản lượng', icon: icons.duyetsanluong, path: PATH.SanLuongChuaDuyet, pathActive: PATH.DuyetSanLuong},
 			// {title: 'Cảng bốc dỡ', icon: icons.cang, path: PATH.CangBocDo, pathActive: PATH.CangBocDo},
-			{title: 'Gửi kế toán', icon: icons.nhaplieu, path: PATH.GuiKeToan, pathActive: PATH.GuiKeToan},
+			{title: 'Duyệt độ khô', icon: icons.nhaplieu, path: PATH.GuiKeToan, pathActive: PATH.GuiKeToan},
 		],
 	},
 	{
