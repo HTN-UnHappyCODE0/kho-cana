@@ -123,12 +123,14 @@ export const Menu: {
 			{title: 'Lệnh cân', icon: icons.phieudukien, path: PATH.PhieuDuKienTatCa, pathActive: PATH.PhieuDuKien},
 			{title: 'Phiếu cân', icon: icons.phieudacan, path: PATH.PhieuCanTatCa, pathActive: PATH.PhieuCan},
 			{title: 'Lượt cân', icon: icons.luotcan, path: PATH.LuotCanTatCa, pathActive: PATH.LuotCan},
-			{title: 'Nhập liệu', icon: icons.nhaplieu, path: PATH.NhapLieuQuyCach, pathActive: PATH.NhapLieu},
 		],
 	},
 	{
 		title: 'Quản lý kho',
-		group: [{title: 'Duyệt phiếu', icon: icons.duyetphieu, path: PATH.PhieuChuaDuyet, pathActive: PATH.DuyetPhieu}],
+		group: [
+			{title: 'Duyệt phiếu', icon: icons.duyetphieu, path: PATH.PhieuChuaDuyet, pathActive: PATH.DuyetPhieu},
+			{title: 'Nhập liệu', icon: icons.nhaplieu, path: PATH.NhapLieuQuyCach, pathActive: PATH.NhapLieu},
+		],
 	},
 	{
 		title: 'Kế toán kho',
