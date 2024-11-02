@@ -152,7 +152,7 @@ function MainDetailScales({}: PropsMainDetailScales) {
 							</span>
 						</td>
 					</tr>
-					<tr>
+					{/* <tr>
 						<td>
 							<span>Từ:</span>
 							<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.fromUu?.name || '---'} </span>
@@ -161,7 +161,7 @@ function MainDetailScales({}: PropsMainDetailScales) {
 							<span>Đến:</span>
 							<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.toUu?.name || '---'} </span>
 						</td>
-					</tr>
+					</tr> */}
 
 					<tr>
 						<td>
