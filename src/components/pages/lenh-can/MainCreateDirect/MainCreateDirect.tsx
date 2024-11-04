@@ -658,7 +658,6 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 											...prev,
 											warehouseUuid: v?.uuid,
 											storageTemporaryUuid: '',
-											scaleStationUuid: v?.scaleStationUu?.uuid || '',
 										}))
 									}
 								/>

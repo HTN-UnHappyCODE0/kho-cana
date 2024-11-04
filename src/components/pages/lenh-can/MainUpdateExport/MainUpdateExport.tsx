@@ -681,7 +681,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 											fromUuid: '',
 											specificationsUuid: '',
 											productTypeUuid: '',
-											scaleStationUuid: v?.scaleStationUu?.uuid || '',
+											// scaleStationUuid: v?.scaleStationUu?.uuid || '',
 										}))
 									}
 								/>

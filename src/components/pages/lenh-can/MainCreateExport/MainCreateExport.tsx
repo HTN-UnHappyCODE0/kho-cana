@@ -591,7 +591,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 											...prev,
 											warehouseUuid: v?.uuid,
 											fromUuid: '',
-											scaleStationUuid: v?.scaleStationUu?.uuid || '',
+											// scaleStationUuid: v?.scaleStationUu?.uuid || '',
 										}))
 									}
 								/>

@@ -742,7 +742,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 											...prev,
 											warehouseUuid: v?.uuid,
 											storageTemporaryUuid: '',
-											scaleStationUuid: v?.scaleStationUu?.uuid || '',
+											// scaleStationUuid: v?.scaleStationUu?.uuid || '',
 										}))
 									}
 								/>
