@@ -174,13 +174,17 @@ function MainDetailScales({}: PropsMainDetailScales) {
 						<td>
 							<span>Thời gian bắt đầu:</span>
 							<span style={{marginLeft: '6px', fontWeight: 600}}>
-								<Moment date={detailBatchBill?.timeStart} format='HH:mm - DD/MM/YYYY' />
+								{detailBatchBill?.timeStart ? (
+									<Moment date={detailBatchBill?.timeStart} format='HH:mm - DD/MM/YYYY' />
+								) : (
+									'---'
+								)}
 							</span>
 						</td>
 						<td>
 							<span>Thời gian kết thúc:</span>
 							<span style={{marginLeft: '6px', fontWeight: 600}}>
-								<Moment date={detailBatchBill?.timeEnd} format='HH:mm - DD/MM/YYYY' />
+								{detailBatchBill?.timeEnd ? <Moment date={detailBatchBill?.timeEnd} format='HH:mm - DD/MM/YYYY' /> : '---'}
 							</span>
 						</td>
 					</tr>

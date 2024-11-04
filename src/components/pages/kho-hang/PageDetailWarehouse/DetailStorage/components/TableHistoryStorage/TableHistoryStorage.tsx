@@ -71,7 +71,9 @@ function TableHistoryStorage({}: PropsTableHistoryStorage) {
 							},
 							{
 								title: 'Thời gian',
-								render: (data: IDataTableHistoryStorage) => <Moment date={data?.dayUpdate} format='DD/MM/YYYY' />,
+								render: (data: IDataTableHistoryStorage) => {
+									data?.dayUpdate ? <Moment date={data?.dayUpdate} format='DD/MM/YYYY' /> : '---';
+								},
 							},
 
 							{
