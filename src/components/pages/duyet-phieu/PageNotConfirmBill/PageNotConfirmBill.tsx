@@ -502,10 +502,6 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 								render: (data: ITableBillScale) => <>{data?.specificationsUu?.name || '---'}</>,
 							},
 							{
-								title: 'KL hàng (Tấn)',
-								render: (data: ITableBillScale) => <>{convertWeight(data?.weightTotal) || 0}</>,
-							},
-							{
 								title: 'KL 1 (Tấn)',
 								render: (data: ITableBillScale) => <>{convertWeight(data?.weigth1)}</>,
 							},

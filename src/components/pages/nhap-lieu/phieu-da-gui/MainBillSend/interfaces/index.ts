@@ -7,6 +7,7 @@ export interface IBillSend {
 		status: number;
 		uuid: string;
 	};
+	weightBdmt: number;
 	lstTruck: {
 		code: string;
 		licensePalate: string;
@@ -125,4 +126,13 @@ export interface IBillSend {
 	weigth1: number;
 	weigth2: number;
 	port: string;
+	weight2: {
+		weight: number;
+		timeScales: string;
+		scalesMachineUu: {
+			status: number;
+			name: string;
+			uuid: string;
+		};
+	};
 }

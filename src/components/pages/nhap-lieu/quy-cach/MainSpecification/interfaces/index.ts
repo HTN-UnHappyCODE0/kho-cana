@@ -9,6 +9,7 @@ export interface IWeightSession {
 	};
 	updatedTime: string;
 	created: string;
+	weightBdmt: number;
 	weight1: {
 		weight: number;
 		timeScales: string;

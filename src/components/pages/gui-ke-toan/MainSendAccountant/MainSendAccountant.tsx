@@ -40,6 +40,7 @@ import Dialog from '~/components/common/Dialog';
 import Link from 'next/link';
 import {convertWeight} from '~/common/funcs/optionConvert';
 import {IWeightSession} from '../../nhap-lieu/quy-cach/MainSpecification/interfaces';
+import Moment from 'react-moment';
 
 function MainSendAccountant({}: PropsMainSendAccountant) {
 	const router = useRouter();
@@ -162,9 +163,7 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
 						scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_TRUC_TIEP],
 						specUuid: !!_specUuid ? (_specUuid as string) : null,
-						status: !!_status
-							? [Number(_status)]
-							: [STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE, STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE],
+						status: [STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE],
 						storageUuid: '',
 						truckUuid: '',
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
@@ -272,23 +271,7 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 							]}
 						/>
 					</div>
-					<div className={styles.filter}>
-						<FilterCustom
-							isSearch
-							name='Độ khô'
-							query='_status'
-							listFilter={[
-								{
-									id: STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
-									name: 'Chưa có',
-								},
-								{
-									id: STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
-									name: 'Đã có',
-								},
-							]}
-						/>
-					</div>
+
 					<FilterCustom
 						isSearch
 						name='Khách hàng'
@@ -342,9 +325,14 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 								title: 'Mã lô',
 								fixedLeft: true,
 								render: (data: IWeightSession) => (
-									<Link href={`/phieu-can/${data?.billUu?.uuid}`} className={styles.link}>
-										{data?.billUu?.code}
-									</Link>
+									<>
+										<Link href={`/phieu-can/${data?.billUu?.uuid}`} className={styles.link}>
+											{data?.billUu?.code}
+										</Link>
+										<p style={{fontWeight: 500, color: '#3772FF'}}>
+											<Moment date={data?.weight2?.timeScales} format='HH:mm - DD/MM/YYYY' />
+										</p>
+									</>
 								),
 							},
 							{
@@ -354,6 +342,14 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 							{
 								title: 'Số xe',
 								render: (data: IWeightSession) => <>{data?.truckUu?.licensePalate || '---'}</>,
+							},
+							{
+								title: 'KL hàng (Tấn)',
+								render: (data: IWeightSession) => <>{convertWeight(data?.weightReal)}</>,
+							},
+							{
+								title: 'KL quy khô (Tấn)',
+								render: (data: IWeightSession) => <>{convertWeight(data?.weightBdmt) || '---'}</>,
 							},
 							{
 								title: 'Độ khô',
@@ -371,10 +367,7 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 								title: 'Loại hàng',
 								render: (data: IWeightSession) => <>{data?.producTypeUu?.name || '---'}</>,
 							},
-							{
-								title: 'KL hàng (Tấn)',
-								render: (data: IWeightSession) => <>{convertWeight(data?.weightReal)}</>,
-							},
+
 							{
 								title: 'Quy cách',
 								render: (data: IWeightSession) => <p>{data?.specificationsUu?.name || '---'}</p>,

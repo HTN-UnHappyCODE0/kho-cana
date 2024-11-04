@@ -40,6 +40,7 @@ import icons from '~/constants/images/icons';
 import shipServices from '~/services/shipServices';
 import storageServices from '~/services/storageServices';
 import customerServices from '~/services/customerServices';
+import StateActive from '~/components/common/StateActive';
 
 function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 	const router = useRouter();
@@ -226,7 +227,6 @@ function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 									STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
 									STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
 									STATUS_WEIGHT_SESSION.KCS_XONG,
-									STATUS_WEIGHT_SESSION.DA_HUY,
 							  ],
 						truckUuid: !!_truckUuid ? (_truckUuid as string) : '',
 						shipUuid: (_shipUuid as string) || '',
@@ -289,7 +289,6 @@ function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 									STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
 									STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
 									STATUS_WEIGHT_SESSION.KCS_XONG,
-									STATUS_WEIGHT_SESSION.DA_HUY,
 							  ],
 						truckUuid: !!_truckUuid ? (_truckUuid as string) : '',
 						shift: !!_shift ? Number(_shift) : null,
@@ -387,10 +386,6 @@ function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 								name='Trạng thái'
 								query='_status'
 								listFilter={[
-									{
-										id: STATUS_WEIGHT_SESSION.DA_HUY,
-										name: 'Đã hủy',
-									},
 									{
 										id: STATUS_WEIGHT_SESSION.CAN_LAN_2,
 										name: 'Đã cân xong',
@@ -569,6 +564,46 @@ function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 											<Moment date={data?.weight2?.timeScales} format='HH:mm, DD/MM/YYYY' />
 										</p>
 									</>
+								),
+							},
+							{
+								title: 'Trạng thái',
+								render: (data: IWeightSession) => (
+									<StateActive
+										stateActive={data?.status}
+										listState={[
+											{
+												state: STATUS_WEIGHT_SESSION.KCS_XONG,
+												text: 'Đã KCS',
+												textColor: '#9757D7',
+												backgroundColor: 'rgba(151, 87, 215, 0.10)',
+											},
+											{
+												state: STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
+												text: 'Đã cập nhật quy cách',
+												textColor: '#F95B5B',
+												backgroundColor: 'rgba(249, 91, 91, 0.10)',
+											},
+											{
+												state: STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
+												text: 'Đã cập nhật độ khô',
+												textColor: '#2D74FF',
+												backgroundColor: 'rgba(45, 116, 255, 0.10)',
+											},
+											{
+												state: STATUS_WEIGHT_SESSION.CAN_LAN_2,
+												text: 'Đã cân xong',
+												textColor: '#41CD4F',
+												backgroundColor: 'rgba(65, 205, 79, 0.1)',
+											},
+											{
+												state: STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
+												text: 'Kết thúc',
+												textColor: '#0EA5E9',
+												backgroundColor: 'rgba(14, 165, 233, 0.1)',
+											},
+										]}
+									/>
 								),
 							},
 							// {
