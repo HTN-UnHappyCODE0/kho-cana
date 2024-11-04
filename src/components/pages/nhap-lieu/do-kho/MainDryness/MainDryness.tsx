@@ -35,17 +35,17 @@ import clsx from 'clsx';
 import BoxUpdateSpec from '../BoxUpdateSpec';
 import {AiOutlineFileAdd} from 'react-icons/ai';
 import Button from '~/components/common/Button';
-import {Edit2} from 'iconsax-react';
+import {Edit2, TickCircle} from 'iconsax-react';
 import {toastWarn} from '~/common/funcs/toast';
 import Loading from '~/components/common/Loading';
 import {IoMdAdd} from 'react-icons/io';
-import Dialog from '~/components/common/Dialog';
 import Popup from '~/components/common/Popup';
 import FormUpdateDryness from '../FormUpdateDryness';
 import Link from 'next/link';
 import {convertWeight} from '~/common/funcs/optionConvert';
 import FormUpdateSpecWS from '../../quy-cach/FormUpdateSpecWS';
 import Moment from 'react-moment';
+import Dialog from '~/components/common/Dialog';
 
 function MainDryness({}: PropsMainDryness) {
 	const router = useRouter();
@@ -56,10 +56,10 @@ function MainDryness({}: PropsMainDryness) {
 	const {_page, _pageSize, _keyword, _isBatch, _isShift, _customerUuid, _status, _productTypeUuid, _specUuid, _dateFrom, _dateTo} =
 		router.query;
 
+	const [openUpdateMultipleDryness, setOpenUpdateMultipleDryness] = useState<boolean>(false);
 	const [dataUpdateSpec, setDataUpdateSpec] = useState<IWeightSession | null>(null);
 	const [dataWeightSessionSubmit, setDataWeightSessionSubmit] = useState<any[]>([]);
 	const [dataWeightSessionSpec, setDataWeightSessionSpec] = useState<any[]>([]);
-	const [openSentData, setOpenSentData] = useState<boolean>(false);
 
 	const [weightSessions, setWeightSessions] = useState<any[]>([]);
 
@@ -199,7 +199,7 @@ function MainDryness({}: PropsMainDryness) {
 	);
 
 	const funcUpdateDrynessWeightSession = useMutation({
-		mutationFn: (body: {uuid: string; dryness: number; index: number}) =>
+		mutationFn: (body: {uuid: string; dryness: number}) =>
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
@@ -209,9 +209,35 @@ function MainDryness({}: PropsMainDryness) {
 					dryness: body.dryness,
 				}),
 			}),
-		onSuccess(data, variable) {
+		onSuccess(data) {
 			if (data) {
-				inputRefs.current[variable?.index + 1]?.focus();
+				queryClient.invalidateQueries([QUERY_KEY.table_nhap_lieu_do_kho]);
+			}
+		},
+		onError(error) {
+			console.log({error});
+			return;
+		},
+	});
+
+	const funcMultipleDrynessWeightSession = useMutation({
+		mutationFn: () =>
+			httpRequest({
+				showMessageFailed: true,
+				showMessageSuccess: true,
+				msgSuccess: 'Xác nhận độ khô thành công!',
+				http: weightSessionServices.updateMultipleDrynessWeightSession({
+					lstInfo: weightSessions
+						?.filter((v: IWeightSession) => v?.dryness)
+						?.map((x: IWeightSession) => ({
+							wsUuids: x?.uuid,
+							dryness: Number(x?.dryness),
+						})),
+				}),
+			}),
+		onSuccess(data) {
+			if (data) {
+				setOpenUpdateMultipleDryness(false);
 				queryClient.invalidateQueries([QUERY_KEY.table_nhap_lieu_do_kho]);
 			}
 		},
@@ -276,17 +302,8 @@ function MainDryness({}: PropsMainDryness) {
 			return funcUpdateDrynessWeightSession.mutate({
 				uuid: uuid,
 				dryness: value,
-				index: index,
 			});
 		}
-	};
-
-	const handleSubmitSentData = async () => {
-		if (dataWeightSessionSubmit.some((v) => v.dryness == null)) {
-			return toastWarn({msg: 'Nhập độ khô trước khi gửi kể toán!'});
-		}
-
-		return funcUpdateKCSWeightSession.mutate();
 	};
 
 	const handleUpdateAll = () => {
@@ -301,9 +318,24 @@ function MainDryness({}: PropsMainDryness) {
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={funcUpdateKCSWeightSession.isLoading} />
+			<Loading loading={funcUpdateKCSWeightSession.isLoading || funcMultipleDrynessWeightSession.isLoading} />
 			<div className={styles.header}>
 				<div className={styles.main_search}>
+					<div style={{height: 40}}>
+						<Button
+							className={styles.btn}
+							rounded_2
+							maxHeight
+							edit
+							p_4_12
+							icon={<TickCircle size={18} />}
+							onClick={() => {
+								setOpenUpdateMultipleDryness(true);
+							}}
+						>
+							Xác nhận độ khô
+						</Button>
+					</div>
 					{weightSessions?.some((x) => x.isChecked !== false) && (
 						<div style={{height: 40}}>
 							<Button
@@ -317,7 +349,7 @@ function MainDryness({}: PropsMainDryness) {
 									setDataWeightSessionSubmit(weightSessions?.filter((v) => v.isChecked !== false));
 								}}
 							>
-								Thêm độ khô
+								Thêm nhiều độ khô
 							</Button>
 						</div>
 					)}
@@ -403,7 +435,7 @@ function MainDryness({}: PropsMainDryness) {
 					/>
 
 					<div className={styles.filter}>
-						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.YESTERDAY} />
+						<DateRangerCustom titleTime='Thời gian' />
 					</div>
 				</div>
 			</div>
@@ -459,7 +491,7 @@ function MainDryness({}: PropsMainDryness) {
 											className={styles.input}
 											type='number'
 											step='0.01'
-											value={data?.dryness!}
+											value={data?.dryness || ''}
 											onChange={(e) => handleDrynessChange(data.uuid, parseFloat(e.target.value))}
 											onKeyDown={(e) => handleKeyEnter(data.uuid, Number(data?.dryness), e, index)}
 										/>
@@ -547,20 +579,18 @@ function MainDryness({}: PropsMainDryness) {
 				/>
 			</Popup>
 
-			<Dialog
-				open={openSentData}
-				onClose={() => {
-					setOpenSentData(false);
-					setDataWeightSessionSubmit([]);
-				}}
-				title='Xác nhận số liệu và gửi đi!'
-				note={`Đang chọn ${dataWeightSessionSubmit?.length} phiếu đã có độ khô! Bạn có chắc chắn muốn gửi đi ?`}
-				onSubmit={handleSubmitSentData}
-			/>
-
 			<Popup open={dataWeightSessionSpec.length > 0} onClose={() => setDataWeightSessionSpec([])}>
 				<FormUpdateSpecWS dataUpdateSpecWS={dataWeightSessionSpec} onClose={() => setDataWeightSessionSpec([])} />
 			</Popup>
+
+			<Dialog
+				danger
+				open={openUpdateMultipleDryness}
+				onClose={() => setOpenUpdateMultipleDryness(false)}
+				title='Xác nhận độ khô'
+				note='Bạn có chắc chắn muốn xác nhận hàng loạt độ khộ không?'
+				onSubmit={funcMultipleDrynessWeightSession.mutate}
+			/>
 		</div>
 	);
 }

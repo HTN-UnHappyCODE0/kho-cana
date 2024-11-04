@@ -58,6 +58,19 @@ const weightSessionServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	updateMultipleDrynessWeightSession: (
+		data: {
+			lstInfo: {
+				wsUuids: string;
+				dryness: number;
+			}[];
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/WeightSession/update-dryness2`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 	updateKCSWeightSession: (
 		data: {
 			wsUuids: string[];
