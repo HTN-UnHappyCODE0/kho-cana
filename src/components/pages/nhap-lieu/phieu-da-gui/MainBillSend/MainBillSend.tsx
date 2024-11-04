@@ -278,14 +278,27 @@ function MainBillSend({}: PropsMainBillSend) {
 								title: 'Mã lô',
 								fixedLeft: true,
 								render: (data: IBillSend) => (
-									<Link href={`/phieu-can/${data?.uuid}`} className={styles.link}>
-										{data?.code}
-									</Link>
+									<>
+										<Link href={`/phieu-can/${data?.uuid}`} className={styles.link}>
+											{data?.code}
+										</Link>
+										<p style={{fontWeight: 500, color: '#3772FF'}}>
+											<Moment date={data?.weight2?.timeScales} format='HH:mm - DD/MM/YYYY' />
+										</p>
+									</>
 								),
 							},
 							{
 								title: 'Số phiếu',
 								render: (data: IBillSend) => <>{data?.code}</>,
+							},
+							{
+								title: 'KL hàng (Tấn)',
+								render: (data: IBillSend) => <>{convertWeight(data?.weightTotal)}</>,
+							},
+							{
+								title: 'KL quy khô (Tấn)',
+								render: (data: IBillSend) => <>{convertWeight(data?.weightBdmt) || '---'}</>,
 							},
 							{
 								title: 'Tổng số phiếu',
@@ -303,10 +316,7 @@ function MainBillSend({}: PropsMainBillSend) {
 								title: 'Loại hàng',
 								render: (data: IBillSend) => <>{data?.productTypeUu?.name || '---'}</>,
 							},
-							{
-								title: 'KL hàng (Tấn)',
-								render: (data: IBillSend) => <>{convertWeight(data?.weightTotal)}</>,
-							},
+
 							// {
 							// 	title: 'Quy cách',
 							// 	render: (data: IBillSend) => (

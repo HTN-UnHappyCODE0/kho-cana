@@ -128,8 +128,8 @@ export const Menu: {
 	{
 		title: 'Quản lý kho',
 		group: [
-			{title: 'Duyệt phiếu', icon: icons.duyetphieu, path: PATH.PhieuChuaDuyet, pathActive: PATH.DuyetPhieu},
 			{title: 'Nhập liệu', icon: icons.nhaplieu, path: PATH.NhapLieuQuyCach, pathActive: PATH.NhapLieu},
+			{title: 'Duyệt phiếu', icon: icons.duyetphieu, path: PATH.PhieuChuaDuyet, pathActive: PATH.DuyetPhieu},
 		],
 	},
 	{

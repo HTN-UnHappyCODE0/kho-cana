@@ -35,6 +35,7 @@ import FormUpdateSpecWS from '../FormUpdateSpecWS';
 import {toastWarn} from '~/common/funcs/toast';
 import Link from 'next/link';
 import {convertWeight} from '~/common/funcs/optionConvert';
+import Moment from 'react-moment';
 
 function MainSpecification({}: PropsMainSpecification) {
 	const router = useRouter();
@@ -269,9 +270,14 @@ function MainSpecification({}: PropsMainSpecification) {
 								title: 'Mã lô',
 								fixedLeft: true,
 								render: (data: IWeightSession) => (
-									<Link href={`/phieu-can/${data?.billUu?.uuid}`} className={styles.link}>
-										{data?.billUu?.code}
-									</Link>
+									<>
+										<Link href={`/phieu-can/${data?.billUu?.uuid}`} className={styles.link}>
+											{data?.billUu?.code}
+										</Link>
+										<p style={{fontWeight: 500, color: '#3772FF'}}>
+											<Moment date={data?.weight2?.timeScales} format='HH:mm - DD/MM/YYYY' />
+										</p>
+									</>
 								),
 							},
 							{
@@ -281,6 +287,14 @@ function MainSpecification({}: PropsMainSpecification) {
 							{
 								title: 'Số xe',
 								render: (data: IWeightSession) => <>{data?.truckUu?.licensePalate || '---'}</>,
+							},
+							{
+								title: 'KL hàng (Tấn)',
+								render: (data: IWeightSession) => <>{convertWeight(data?.weightReal)}</>,
+							},
+							{
+								title: 'KL quy khô (Tấn)',
+								render: (data: IWeightSession) => <>{convertWeight(data?.weightBdmt) || '---'}</>,
 							},
 							{
 								title: 'Khách hàng',
@@ -294,10 +308,7 @@ function MainSpecification({}: PropsMainSpecification) {
 								title: 'Loại hàng',
 								render: (data: IWeightSession) => <>{data?.producTypeUu?.name || '---'}</>,
 							},
-							{
-								title: 'KL hàng (Tấn)',
-								render: (data: IWeightSession) => <>{convertWeight(data?.weightReal)}</>,
-							},
+
 							{
 								title: 'Quy cách',
 								render: (data: IWeightSession) => <>{data?.specificationsUu?.name || '---'}</>,

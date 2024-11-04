@@ -38,7 +38,6 @@ import Button from '~/components/common/Button';
 import {Edit2} from 'iconsax-react';
 import {toastWarn} from '~/common/funcs/toast';
 import Loading from '~/components/common/Loading';
-import {LuFileSymlink} from 'react-icons/lu';
 import {IoMdAdd} from 'react-icons/io';
 import Dialog from '~/components/common/Dialog';
 import Popup from '~/components/common/Popup';
@@ -46,6 +45,7 @@ import FormUpdateDryness from '../FormUpdateDryness';
 import Link from 'next/link';
 import {convertWeight} from '~/common/funcs/optionConvert';
 import FormUpdateSpecWS from '../../quy-cach/FormUpdateSpecWS';
+import Moment from 'react-moment';
 
 function MainDryness({}: PropsMainDryness) {
 	const router = useRouter();
@@ -59,7 +59,6 @@ function MainDryness({}: PropsMainDryness) {
 	const [dataUpdateSpec, setDataUpdateSpec] = useState<IWeightSession | null>(null);
 	const [dataWeightSessionSubmit, setDataWeightSessionSubmit] = useState<any[]>([]);
 	const [dataWeightSessionSpec, setDataWeightSessionSpec] = useState<any[]>([]);
-	// const [openUpdateDryness, setOpenUpdateDryness] = useState<boolean>(false);
 	const [openSentData, setOpenSentData] = useState<boolean>(false);
 
 	const [weightSessions, setWeightSessions] = useState<any[]>([]);
@@ -163,7 +162,7 @@ function MainDryness({}: PropsMainDryness) {
 						pageSize: Number(_pageSize) || 50,
 						keyword: (_keyword as string) || '',
 						isPaging: CONFIG_PAGING.IS_PAGING,
-						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+						isDescending: CONFIG_DESCENDING.IS_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
 						billUuid: '',
 						codeEnd: null,
@@ -444,9 +443,14 @@ function MainDryness({}: PropsMainDryness) {
 								title: 'Mã lô',
 								fixedLeft: true,
 								render: (data: IWeightSession) => (
-									<Link href={`/phieu-can/${data?.billUu?.uuid}`} className={styles.link}>
-										{data?.billUu?.code}
-									</Link>
+									<>
+										<Link href={`/phieu-can/${data?.billUu?.uuid}`} className={styles.link}>
+											{data?.billUu?.code}
+										</Link>
+										<p style={{fontWeight: 500, color: '#3772FF'}}>
+											<Moment date={data?.weight2?.timeScales} format='HH:mm - DD/MM/YYYY' />
+										</p>
+									</>
 								),
 							},
 							{
@@ -456,6 +460,10 @@ function MainDryness({}: PropsMainDryness) {
 							{
 								title: 'Số xe',
 								render: (data: IWeightSession) => <>{data?.truckUu?.licensePalate || '---'}</>,
+							},
+							{
+								title: 'KL hàng (Tấn)',
+								render: (data: IWeightSession) => <>{convertWeight(data?.weightReal)}</>,
 							},
 							{
 								title: 'Độ khô',
@@ -478,6 +486,10 @@ function MainDryness({}: PropsMainDryness) {
 								),
 							},
 							{
+								title: 'KL quy khô (Tấn)',
+								render: (data: IWeightSession) => <>{convertWeight(data?.weightBdmt) || '---'}</>,
+							},
+							{
 								title: 'Khách hàng',
 								render: (data: IWeightSession) => <>{data?.fromUu?.name || '---'}</>,
 							},
@@ -488,10 +500,6 @@ function MainDryness({}: PropsMainDryness) {
 							{
 								title: 'Loại hàng',
 								render: (data: IWeightSession) => <>{data?.producTypeUu?.name || '---'}</>,
-							},
-							{
-								title: 'KL hàng (Tấn)',
-								render: (data: IWeightSession) => <>{convertWeight(data?.weightReal)}</>,
 							},
 							{
 								title: 'Quy cách',
