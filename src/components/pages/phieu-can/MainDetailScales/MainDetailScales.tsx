@@ -19,6 +19,7 @@ import {IDetailBatchBill} from '../../lenh-can/MainDetailBill/interfaces';
 import {convertWeight} from '~/common/funcs/optionConvert';
 import TableUpdateBillHistory from './components/TableUpdateBillHistory';
 import StateActive from '~/components/common/StateActive';
+import Moment from 'react-moment';
 
 function MainDetailScales({}: PropsMainDetailScales) {
 	const router = useRouter();
@@ -54,6 +55,22 @@ function MainDetailScales({}: PropsMainDetailScales) {
 			return `/phieu-can/chinh-sua-phieu-xuat-thang?_id=${detailBatchBill?.uuid}`;
 		}
 		return '/phieu-can/tat-ca';
+	};
+
+	const getlicensePalate = () => {
+		if (detailBatchBill?.transportType == TYPE_TRANSPORT.DUONG_BO) {
+			return `Đường bộ (${detailBatchBill?.weightSessionUu?.truckUu?.licensePalate || '---'})`;
+		}
+		if (detailBatchBill?.transportType == TYPE_TRANSPORT.DUONG_THUY) {
+			if (detailBatchBill?.scalesType == TYPE_SCALES.CAN_TRUC_TIEP) {
+				return `Đường thủy (${detailBatchBill?.batchsUu?.shipUu?.licensePalate || '---'} - ${
+					detailBatchBill?.batchsUu?.shipOutUu?.licensePalate || '---'
+				})`;
+			} else {
+				return `Đường thủy (${detailBatchBill?.batchsUu?.shipUu?.licensePalate || '---'})`;
+			}
+		}
+		return '---';
 	};
 
 	return (
@@ -138,30 +155,35 @@ function MainDetailScales({}: PropsMainDetailScales) {
 						<td>
 							<span>Vận chuyển:</span>
 							<span style={{marginLeft: '6px', fontWeight: 600}}>
-								{detailBatchBill?.transportType == TYPE_TRANSPORT.DUONG_BO
+								{/* {detailBatchBill?.transportType == TYPE_TRANSPORT.DUONG_BO
 									? `Đường bộ (${detailBatchBill?.weightSessionUu?.truckUu?.licensePalate || '---'})`
 									: detailBatchBill?.transportType == TYPE_TRANSPORT.DUONG_THUY
-									? `Đường thủy (${detailBatchBill?.batchsUu?.shipOutUu?.licensePalate || '---'})`
-									: '---'}
+									? `Đường thủy (${detailBatchBill?.batchsUu?.shipUu?.licensePalate || '---'} - ${
+											detailBatchBill?.batchsUu?.shipOutUu?.licensePalate || '---'
+									  })`
+									: '---'} */}
+								{getlicensePalate()}
 							</span>
 						</td>
 						<td>
 							<span>Tổng khối lượng:</span>
+							<span style={{marginLeft: '6px', fontWeight: 600}}>{convertWeight(detailBatchBill?.weightTotal!)} (Tấn)</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span>Thời gian bắt đầu:</span>
 							<span style={{marginLeft: '6px', fontWeight: 600}}>
-								{convertWeight(detailBatchBill?.weightTotal!) || 0} (Tấn)
+								<Moment date={detailBatchBill?.timeStart} format='HH:mm - DD/MM/YYYY' />
+							</span>
+						</td>
+						<td>
+							<span>Thời gian kết thúc:</span>
+							<span style={{marginLeft: '6px', fontWeight: 600}}>
+								<Moment date={detailBatchBill?.timeEnd} format='HH:mm - DD/MM/YYYY' />
 							</span>
 						</td>
 					</tr>
-					{/* <tr>
-						<td>
-							<span>Từ:</span>
-							<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.fromUu?.name || '---'} </span>
-						</td>
-						<td>
-							<span>Đến:</span>
-							<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.toUu?.name || '---'} </span>
-						</td>
-					</tr> */}
 
 					<tr>
 						<td>
