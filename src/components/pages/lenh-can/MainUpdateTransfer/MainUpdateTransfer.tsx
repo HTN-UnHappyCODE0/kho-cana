@@ -673,7 +673,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 											toUuid: '',
 											specificationsUuid: '',
 											productTypeUuid: '',
-											scaleStationUuid: v?.scaleStationUu?.uuid || '',
+											// scaleStationUuid: v?.scaleStationUu?.uuid || '',
 										}))
 									}
 								/>

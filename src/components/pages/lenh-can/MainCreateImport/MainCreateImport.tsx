@@ -650,7 +650,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 											...prev,
 											warehouseUuid: v?.uuid,
 											toUuid: '',
-											scaleStationUuid: v?.scaleStationUu?.uuid || '',
+											// scaleStationUuid: v?.scaleStationUu?.uuid || '',
 										}))
 									}
 								/>
