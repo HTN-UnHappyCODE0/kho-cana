@@ -144,11 +144,15 @@ function MainPageShip({}: PropsMainPageShip) {
 
 							{
 								title: 'Thời gian tạo',
-								render: (data: IShip) => <Moment date={data?.created} format='HH:mm - DD/MM/YYYY'></Moment>,
+								render: (data: IShip) => {
+									data?.created ? <Moment date={data?.created} format='HH:mm - DD/MM/YYYY' /> : '---';
+								},
 							},
 							{
 								title: 'Thời gian cập nhật',
-								render: (data: IShip) => <Moment date={data?.updatedTime} format='HH:mm - DD/MM/YYYY'></Moment>,
+								render: (data: IShip) => {
+									data?.updatedTime ? <Moment date={data?.updatedTime} format='HH:mm - DD/MM/YYYY' /> : '---';
+								},
 							},
 							{
 								title: 'Trạng thái',

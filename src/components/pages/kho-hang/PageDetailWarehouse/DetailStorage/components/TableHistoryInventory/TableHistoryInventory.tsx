@@ -71,7 +71,9 @@ function TableHistoryInventory({}: PropsTableHistoryInventory) {
 
 						{
 							title: 'Thời gian thay đổi',
-							render: (data: IInventory) => <Moment date={data?.created} format='HH:mm,DD/MM/YYYY' />,
+							render: (data: IInventory) => {
+								data?.created ? <Moment date={data?.created} format='HH:mm,DD/MM/YYYY' /> : '---';
+							},
 						},
 						{
 							title: 'Người thay đổi ',

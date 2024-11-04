@@ -70,7 +70,9 @@ function TableHistoryWarehouse({}: PropsTableHistoryWarehouse) {
 							},
 							{
 								title: 'Thời gian',
-								render: (data: IDataTableHistoryWarehouse) => <Moment date={data?.dayUpdate} format='DD/MM/YYYY' />,
+								render: (data: IDataTableHistoryWarehouse) => {
+									data?.dayUpdate ? <Moment date={data?.dayUpdate} format='DD/MM/YYYY' /> : '---';
+								},
 							},
 
 							{
