@@ -51,8 +51,12 @@ function MenuTab({}: PropsMenuTab) {
 						<div className={styles.menuGroup}>
 							{v.group.map((item, j) => (
 								<Link
-									onClick={() => {
+									onClick={(e) => {
 										isMobile && context?.setShowFull!(!context?.showFull);
+
+										if (checkActive(item.path) || checkActive(item.pathActive!)) {
+											e.preventDefault();
+										}
 									}}
 									href={item.path}
 									className={clsx(styles.itemGroup, {

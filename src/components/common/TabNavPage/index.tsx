@@ -20,6 +20,11 @@ function TabNavPage({listPages}: PropsTabNavPage) {
 		<div className={clsx(styles.container)}>
 			{listPages.map((item, i) => (
 				<Link
+					onClick={(e) => {
+						if (checkActive(item.url)) {
+							e.preventDefault();
+						}
+					}}
 					href={item.url}
 					className={clsx(styles.item, {
 						[styles.active]: checkActive(item.url),
