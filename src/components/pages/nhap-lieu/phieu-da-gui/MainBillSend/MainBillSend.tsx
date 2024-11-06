@@ -44,11 +44,26 @@ import PopupChangeDryness from '../PopupChangeDryness';
 import Button from '~/components/common/Button';
 import {PATH} from '~/constants/config';
 import batchBillServices from '~/services/batchBillServices';
+import scalesStationServices from '~/services/scalesStationServices';
+import storageServices from '~/services/storageServices';
 
 function MainBillSend({}: PropsMainBillSend) {
 	const router = useRouter();
 
-	const {_page, _pageSize, _keyword, _isBatch, _isShift, _customerUuid, _productTypeUuid, _specUuid, _dateFrom, _dateTo} = router.query;
+	const {
+		_page,
+		_pageSize,
+		_keyword,
+		_isBatch,
+		_isShift,
+		_customerUuid,
+		_productTypeUuid,
+		_specUuid,
+		_dateFrom,
+		_dateTo,
+		_storageUuid,
+		_scalesStationUuid,
+	} = router.query;
 
 	const [dataSpec, setDataSpec] = useState<IBillSend | null>(null);
 	const [total, setTotal] = useState<number>(0);
@@ -120,6 +135,51 @@ function MainBillSend({}: PropsMainBillSend) {
 		},
 	});
 
+	const listScalesStation = useQuery([QUERY_KEY.table_tram_can], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: scalesStationServices.listScalesStation({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					companyUuid: '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.TABLE,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
+	const listStorage = useQuery([QUERY_KEY.table_bai], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: storageServices.listStorage({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					warehouseUuid: '',
+					productUuid: '',
+					qualityUuid: '',
+					specificationsUuid: '',
+					status: null,
+				}),
+			}),
+		select(data) {
+			if (data) {
+				return data;
+			}
+		},
+	});
+
 	useQuery(
 		[
 			QUERY_KEY.table_phieu_da_gui_KT,
@@ -133,6 +193,8 @@ function MainBillSend({}: PropsMainBillSend) {
 			_dateFrom,
 			_dateTo,
 			_isShift,
+			_storageUuid,
+			_scalesStationUuid,
 		],
 		{
 			queryFn: () =>
@@ -149,7 +211,6 @@ function MainBillSend({}: PropsMainBillSend) {
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
 						scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_TRUC_TIEP],
 						status: [STATUS_BILL.DA_KCS, STATUS_BILL.CHOT_KE_TOAN],
-						storageUuid: '',
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
 						customerUuid: _customerUuid ? (_customerUuid as string) : '',
@@ -157,12 +218,13 @@ function MainBillSend({}: PropsMainBillSend) {
 						specificationsUuid: (_specUuid as string) || '',
 						isCreateBatch: null,
 						qualityUuid: '',
-						scalesStationUuid: '',
 						transportType: null,
 						typeCheckDay: 0,
 						warehouseUuid: '',
 						shipUuid: '',
 						state: [],
+						scalesStationUuid: (_scalesStationUuid as string) || '',
+						storageUuid: (_storageUuid as string) || '',
 					}),
 				}),
 			onSuccess(data) {
@@ -249,6 +311,24 @@ function MainBillSend({}: PropsMainBillSend) {
 						name='Quy cách'
 						query='_specUuid'
 						listFilter={listSpecification?.data?.map((v: any) => ({
+							id: v?.uuid,
+							name: v?.name,
+						}))}
+					/>
+					<FilterCustom
+						isSearch
+						name='Trạm cân'
+						query='_scalesStationUuid'
+						listFilter={listScalesStation?.data?.map((v: any) => ({
+							id: v?.uuid,
+							name: v?.name,
+						}))}
+					/>
+					<FilterCustom
+						isSearch
+						name='Bãi'
+						query='_storageUuid'
+						listFilter={listStorage?.data?.map((v: any) => ({
 							id: v?.uuid,
 							name: v?.name,
 						}))}
@@ -403,6 +483,8 @@ function MainBillSend({}: PropsMainBillSend) {
 							_dateFrom,
 							_dateTo,
 							_isShift,
+							_storageUuid,
+							_scalesStationUuid,
 						]}
 					/>
 				)}
