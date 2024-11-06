@@ -136,15 +136,15 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 		},
 	});
 
-	useEffect(() => {
-		router.push({
-			pathname: '/gui-ke-toan',
-			query: {
-				...router.query,
-				_status: STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
-			},
-		});
-	}, []);
+	// useEffect(() => {
+	// 	router.push({
+	// 		pathname: '/gui-ke-toan',
+	// 		query: {
+	// 			...router.query,
+	// 			_status: STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
+	// 		},
+	// 	});
+	// }, []);
 
 	const queryWeightsession = useQuery(
 		[
@@ -383,7 +383,7 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 					/>
 
 					<div className={styles.filter}>
-						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
+						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.YESTERDAY} />
 					</div>
 				</div>
 			</div>

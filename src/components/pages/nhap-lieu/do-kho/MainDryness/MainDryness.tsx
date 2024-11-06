@@ -516,7 +516,7 @@ function MainDryness({}: PropsMainDryness) {
 					/>
 
 					<div className={styles.filter}>
-						<DateRangerCustom titleTime='Thời gian' />
+						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
 					</div>
 				</div>
 			</div>
