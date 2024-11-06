@@ -41,6 +41,7 @@ import shipServices from '~/services/shipServices';
 import storageServices from '~/services/storageServices';
 import customerServices from '~/services/customerServices';
 import StateActive from '~/components/common/StateActive';
+import scalesStationServices from '~/services/scalesStationServices';
 
 function MainWeightSessionService({}: PropsMainWeightSessionService) {
 	const router = useRouter();
@@ -58,6 +59,7 @@ function MainWeightSessionService({}: PropsMainWeightSessionService) {
 		_shipUuid,
 		_shift,
 		_status,
+		_scalesStationUuid,
 	} = router.query;
 
 	const [byFilter, setByFilter] = useState<boolean>(false);
@@ -176,6 +178,26 @@ function MainWeightSessionService({}: PropsMainWeightSessionService) {
 		},
 	});
 
+	const listScalesStation = useQuery([QUERY_KEY.table_tram_can], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: scalesStationServices.listScalesStation({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					companyUuid: '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.TABLE,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
 	const listWeightsession = useQuery(
 		[
 			QUERY_KEY.table_luot_can_phieu_dich_vu,
@@ -195,6 +217,7 @@ function MainWeightSessionService({}: PropsMainWeightSessionService) {
 			_isBatch,
 			_shipUuid,
 			_shift,
+			_scalesStationUuid,
 		],
 		{
 			queryFn: () =>
@@ -231,6 +254,7 @@ function MainWeightSessionService({}: PropsMainWeightSessionService) {
 						truckUuid: !!_truckUuid ? (_truckUuid as string) : '',
 						shipUuid: (_shipUuid as string) || '',
 						shift: !!_shift ? Number(_shift) : null,
+						scalesStationUuid: (_scalesStationUuid as string) || '',
 					}),
 				}),
 			select(data) {
@@ -258,6 +282,7 @@ function MainWeightSessionService({}: PropsMainWeightSessionService) {
 			_isBatch,
 			_shipUuid,
 			_shift,
+			_scalesStationUuid,
 		],
 		{
 			queryFn: () =>
@@ -293,6 +318,7 @@ function MainWeightSessionService({}: PropsMainWeightSessionService) {
 						truckUuid: !!_truckUuid ? (_truckUuid as string) : '',
 						shift: !!_shift ? Number(_shift) : null,
 						shipUuid: (_shipUuid as string) || '',
+						scalesStationUuid: (_scalesStationUuid as string) || '',
 					}),
 				}),
 			select(data) {
@@ -329,6 +355,15 @@ function MainWeightSessionService({}: PropsMainWeightSessionService) {
 							name='Bãi'
 							query='_storageUuid'
 							listFilter={listStorage?.data?.map((v: any) => ({
+								id: v?.uuid,
+								name: v?.name,
+							}))}
+						/>
+						<FilterCustom
+							isSearch
+							name='Trạm cân'
+							query='_scalesStationUuid'
+							listFilter={listScalesStation?.data?.map((v: any) => ({
 								id: v?.uuid,
 								name: v?.name,
 							}))}
@@ -641,6 +676,7 @@ function MainWeightSessionService({}: PropsMainWeightSessionService) {
 						_shipUuid,
 						_shift,
 						_status,
+						_scalesStationUuid,
 					]}
 				/>
 			</div>

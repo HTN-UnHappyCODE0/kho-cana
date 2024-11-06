@@ -42,6 +42,7 @@ import customerServices from '~/services/customerServices';
 import shipServices from '~/services/shipServices';
 import {ST} from 'next/dist/shared/lib/utils';
 import StateActive from '~/components/common/StateActive';
+import scalesStationServices from '~/services/scalesStationServices';
 
 function MainWeightSessionImport({}: PropsMainWeightSessionImport) {
 	const router = useRouter();
@@ -59,6 +60,7 @@ function MainWeightSessionImport({}: PropsMainWeightSessionImport) {
 		_shipUuid,
 		_storageUuid,
 		_isBatch,
+		_scalesStationUuid,
 	} = router.query;
 
 	const [byFilter, setByFilter] = useState<boolean>(false);
@@ -116,6 +118,25 @@ function MainWeightSessionImport({}: PropsMainWeightSessionImport) {
 			if (data) {
 				return data;
 			}
+		},
+	});
+	const listScalesStation = useQuery([QUERY_KEY.table_tram_can], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: scalesStationServices.listScalesStation({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					companyUuid: '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.TABLE,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
 		},
 	});
 
@@ -196,6 +217,7 @@ function MainWeightSessionImport({}: PropsMainWeightSessionImport) {
 			_shipUuid,
 			_storageUuid,
 			_isBatch,
+			_scalesStationUuid,
 		],
 		{
 			queryFn: () =>
@@ -231,6 +253,7 @@ function MainWeightSessionImport({}: PropsMainWeightSessionImport) {
 						truckUuid: !!_truckUuid ? (_truckUuid as string) : '',
 						shipUuid: (_shipUuid as string) || '',
 						shift: !!_shift ? Number(_shift) : null,
+						scalesStationUuid: (_scalesStationUuid as string) || '',
 					}),
 				}),
 			select(data) {
@@ -258,6 +281,7 @@ function MainWeightSessionImport({}: PropsMainWeightSessionImport) {
 			_shipUuid,
 			_storageUuid,
 			_isBatch,
+			_scalesStationUuid,
 		],
 		{
 			queryFn: () =>
@@ -293,6 +317,7 @@ function MainWeightSessionImport({}: PropsMainWeightSessionImport) {
 						truckUuid: !!_truckUuid ? (_truckUuid as string) : '',
 						shift: !!_shift ? Number(_shift) : null,
 						shipUuid: (_shipUuid as string) || '',
+						scalesStationUuid: (_scalesStationUuid as string) || '',
 					}),
 				}),
 
@@ -330,6 +355,15 @@ function MainWeightSessionImport({}: PropsMainWeightSessionImport) {
 							name='Bãi'
 							query='_storageUuid'
 							listFilter={listStorage?.data?.map((v: any) => ({
+								id: v?.uuid,
+								name: v?.name,
+							}))}
+						/>
+						<FilterCustom
+							isSearch
+							name='Trạm cân'
+							query='_scalesStationUuid'
+							listFilter={listScalesStation?.data?.map((v: any) => ({
 								id: v?.uuid,
 								name: v?.name,
 							}))}
@@ -651,6 +685,7 @@ function MainWeightSessionImport({}: PropsMainWeightSessionImport) {
 						_shipUuid,
 						_storageUuid,
 						_isBatch,
+						_scalesStationUuid,
 					]}
 				/>
 			</div>

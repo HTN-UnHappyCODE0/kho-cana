@@ -36,11 +36,26 @@ import {toastWarn} from '~/common/funcs/toast';
 import Link from 'next/link';
 import {convertWeight} from '~/common/funcs/optionConvert';
 import Moment from 'react-moment';
+import scalesStationServices from '~/services/scalesStationServices';
+import storageServices from '~/services/storageServices';
 
 function MainSpecification({}: PropsMainSpecification) {
 	const router = useRouter();
 
-	const {_page, _pageSize, _keyword, _isBatch, _customerUuid, _productTypeUuid, _specUuid, _dateFrom, _dateTo, _isShift} = router.query;
+	const {
+		_page,
+		_pageSize,
+		_keyword,
+		_isBatch,
+		_customerUuid,
+		_storageUuid,
+		_scalesStationUuid,
+		_productTypeUuid,
+		_specUuid,
+		_dateFrom,
+		_dateTo,
+		_isShift,
+	} = router.query;
 
 	const [weightSessionSubmits, setWeightSessionSubmits] = useState<any[]>([]);
 	const [weightSessions, setWeightSessions] = useState<any[]>([]);
@@ -68,6 +83,51 @@ function MainSpecification({}: PropsMainSpecification) {
 			}),
 		select(data) {
 			return data;
+		},
+	});
+
+	const listScalesStation = useQuery([QUERY_KEY.table_tram_can], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: scalesStationServices.listScalesStation({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					companyUuid: '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.TABLE,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
+	const listStorage = useQuery([QUERY_KEY.table_bai], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: storageServices.listStorage({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					warehouseUuid: '',
+					productUuid: '',
+					qualityUuid: '',
+					specificationsUuid: '',
+					status: null,
+				}),
+			}),
+		select(data) {
+			if (data) {
+				return data;
+			}
 		},
 	});
 
@@ -124,6 +184,8 @@ function MainSpecification({}: PropsMainSpecification) {
 			_dateFrom,
 			_dateTo,
 			_isShift,
+			_storageUuid,
+			_scalesStationUuid,
 		],
 		{
 			queryFn: () =>
@@ -144,13 +206,14 @@ function MainSpecification({}: PropsMainSpecification) {
 						scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_TRUC_TIEP],
 						specUuid: !!_specUuid ? (_specUuid as string) : null,
 						status: [STATUS_WEIGHT_SESSION.CAN_LAN_2],
-						storageUuid: '',
 						truckUuid: '',
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
 						customerUuid: _customerUuid ? (_customerUuid as string) : '',
 						productTypeUuid: _productTypeUuid ? (_productTypeUuid as string) : '',
 						shift: !!_isShift ? Number(_isBatch) : null,
+						scalesStationUuid: (_scalesStationUuid as string) || '',
+						storageUuid: (_storageUuid as string) || '',
 					}),
 				}),
 			onSuccess(data) {
@@ -240,6 +303,24 @@ function MainSpecification({}: PropsMainSpecification) {
 						name='Quy cách'
 						query='_specUuid'
 						listFilter={listSpecification?.data?.map((v: any) => ({
+							id: v?.uuid,
+							name: v?.name,
+						}))}
+					/>
+					<FilterCustom
+						isSearch
+						name='Trạm cân'
+						query='_scalesStationUuid'
+						listFilter={listScalesStation?.data?.map((v: any) => ({
+							id: v?.uuid,
+							name: v?.name,
+						}))}
+					/>
+					<FilterCustom
+						isSearch
+						name='Bãi'
+						query='_storageUuid'
+						listFilter={listStorage?.data?.map((v: any) => ({
 							id: v?.uuid,
 							name: v?.name,
 						}))}
@@ -393,6 +474,8 @@ function MainSpecification({}: PropsMainSpecification) {
 							_dateFrom,
 							_dateTo,
 							_isShift,
+							_storageUuid,
+							_scalesStationUuid,
 						]}
 					/>
 				)}

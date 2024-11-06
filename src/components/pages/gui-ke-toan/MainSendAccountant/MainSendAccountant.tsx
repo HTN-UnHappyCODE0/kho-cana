@@ -41,6 +41,8 @@ import Link from 'next/link';
 import {convertWeight} from '~/common/funcs/optionConvert';
 import {IWeightSession} from '../../nhap-lieu/quy-cach/MainSpecification/interfaces';
 import Moment from 'react-moment';
+import storageServices from '~/services/storageServices';
+import scalesStationServices from '~/services/scalesStationServices';
 
 function MainSendAccountant({}: PropsMainSendAccountant) {
 	const router = useRouter();
@@ -48,8 +50,21 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 
 	const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-	const {_page, _pageSize, _keyword, _isBatch, _isShift, _customerUuid, _status, _productTypeUuid, _specUuid, _dateFrom, _dateTo} =
-		router.query;
+	const {
+		_page,
+		_pageSize,
+		_keyword,
+		_isBatch,
+		_isShift,
+		_customerUuid,
+		_status,
+		_productTypeUuid,
+		_specUuid,
+		_dateFrom,
+		_dateTo,
+		_storageUuid,
+		_scalesStationUuid,
+	} = router.query;
 
 	const [dataWeightSessionSubmit, setDataWeightSessionSubmit] = useState<any[]>([]);
 	const [openSentData, setOpenSentData] = useState<boolean>(false);
@@ -145,6 +160,8 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 			_dateTo,
 			_isShift,
 			_status,
+			_storageUuid,
+			_scalesStationUuid,
 		],
 		{
 			queryFn: () =>
@@ -164,13 +181,14 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 						scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_TRUC_TIEP],
 						specUuid: !!_specUuid ? (_specUuid as string) : null,
 						status: [STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE],
-						storageUuid: '',
 						truckUuid: '',
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
 						customerUuid: _customerUuid ? (_customerUuid as string) : '',
 						productTypeUuid: _productTypeUuid ? (_productTypeUuid as string) : '',
 						shift: !!_isShift ? Number(_isShift) : null,
+						scalesStationUuid: (_scalesStationUuid as string) || '',
+						storageUuid: (_storageUuid as string) || '',
 					}),
 				}),
 			onSuccess(data) {
@@ -187,6 +205,51 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 			},
 		}
 	);
+
+	const listStorage = useQuery([QUERY_KEY.table_bai], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: storageServices.listStorage({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					warehouseUuid: '',
+					productUuid: '',
+					qualityUuid: '',
+					specificationsUuid: '',
+					status: null,
+				}),
+			}),
+		select(data) {
+			if (data) {
+				return data;
+			}
+		},
+	});
+
+	const listScalesStation = useQuery([QUERY_KEY.table_tram_can], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: scalesStationServices.listScalesStation({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					companyUuid: '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.TABLE,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
 
 	const funcUpdateKCSWeightSession = useMutation({
 		mutationFn: () =>
@@ -295,6 +358,25 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 						name='Quy cách'
 						query='_specUuid'
 						listFilter={listSpecification?.data?.map((v: any) => ({
+							id: v?.uuid,
+							name: v?.name,
+						}))}
+					/>
+
+					<FilterCustom
+						isSearch
+						name='Trạm cân'
+						query='_scalesStationUuid'
+						listFilter={listScalesStation?.data?.map((v: any) => ({
+							id: v?.uuid,
+							name: v?.name,
+						}))}
+					/>
+					<FilterCustom
+						isSearch
+						name='Bãi'
+						query='_storageUuid'
+						listFilter={listStorage?.data?.map((v: any) => ({
 							id: v?.uuid,
 							name: v?.name,
 						}))}
@@ -417,6 +499,8 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 							_dateTo,
 							_isShift,
 							_status,
+							_storageUuid,
+							_scalesStationUuid,
 						]}
 					/>
 				)}

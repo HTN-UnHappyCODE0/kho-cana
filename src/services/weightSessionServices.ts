@@ -135,6 +135,7 @@ const weightSessionServices = {
 			codeStart: number | null;
 			codeEnd: number | null;
 			shift: number | null;
+			scalesStationUuid?: string;
 		},
 		tokenAxios?: any
 	) => {
