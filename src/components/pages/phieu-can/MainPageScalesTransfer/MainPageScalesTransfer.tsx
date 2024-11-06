@@ -42,6 +42,7 @@ import clsx from 'clsx';
 import Button from '~/components/common/Button';
 import storageServices from '~/services/storageServices';
 import StateActive from '~/components/common/StateActive';
+import scalesStationServices from '~/services/scalesStationServices';
 
 function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 	const router = useRouter();
@@ -60,6 +61,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 		_dateTo,
 		_state,
 		_storageUuid,
+		_scalesStationUuid,
 	} = router.query;
 
 	const [uuidPlay, setUuidPlay] = useState<string>('');
@@ -155,6 +157,25 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 			return data;
 		},
 	});
+	const listScalesStation = useQuery([QUERY_KEY.table_tram_can], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: scalesStationServices.listScalesStation({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					companyUuid: '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.TABLE,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
 
 	const getListBatch = useQuery(
 		[
@@ -171,6 +192,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 			_dateTo,
 			_state,
 			_storageUuid,
+			_scalesStationUuid,
 		],
 		{
 			queryFn: () =>
@@ -215,7 +237,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 						transportType: null,
 						shipUuid: (_shipUuid as string) || '',
 						typeCheckDay: 0,
-						scalesStationUuid: '',
+						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
 					}),
 				}),
@@ -321,7 +343,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 					transportType: null,
 					shipUuid: (_shipUuid as string) || '',
 					typeCheckDay: 0,
-					scalesStationUuid: '',
+					scalesStationUuid: (_scalesStationUuid as string) || '',
 					documentId: '',
 					storageUuid: (_storageUuid as string) || '',
 				}),
@@ -447,6 +469,15 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 								name: 'Chốt kế toán',
 							},
 						]}
+					/>
+					<FilterCustom
+						isSearch
+						name='Trạm cân'
+						query='_scalesStationUuid'
+						listFilter={listScalesStation?.data?.map((v: any) => ({
+							id: v?.uuid,
+							name: v?.name,
+						}))}
 					/>
 					<FilterCustom
 						isSearch
@@ -758,6 +789,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 							_dateTo,
 							_state,
 							_storageUuid,
+							_scalesStationUuid,
 						]}
 					/>
 				)}

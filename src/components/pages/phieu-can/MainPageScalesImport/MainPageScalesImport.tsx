@@ -42,6 +42,7 @@ import clsx from 'clsx';
 import Button from '~/components/common/Button';
 import storageServices from '~/services/storageServices';
 import StateActive from '~/components/common/StateActive';
+import scalesStationServices from '~/services/scalesStationServices';
 
 function MainPageScalesImport({}: PropsMainPageScalesImport) {
 	const router = useRouter();
@@ -60,6 +61,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 		_dateTo,
 		_state,
 		_storageUuid,
+		_scalesStationUuid,
 	} = router.query;
 
 	const [uuidPlay, setUuidPlay] = useState<string>('');
@@ -136,6 +138,26 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 		},
 	});
 
+	const listScalesStation = useQuery([QUERY_KEY.table_tram_can], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: scalesStationServices.listScalesStation({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					companyUuid: '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.TABLE,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
 	const listShip = useQuery([QUERY_KEY.dropdown_ma_tau], {
 		queryFn: () =>
 			httpRequest({
@@ -170,6 +192,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 			_dateTo,
 			_state,
 			_storageUuid,
+			_scalesStationUuid,
 		],
 		{
 			queryFn: () =>
@@ -214,7 +237,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 						transportType: null,
 						shipUuid: (_shipUuid as string) || '',
 						typeCheckDay: 0,
-						scalesStationUuid: '',
+						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
 					}),
 				}),
@@ -320,7 +343,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 					transportType: null,
 					shipUuid: (_shipUuid as string) || '',
 					typeCheckDay: 0,
-					scalesStationUuid: '',
+					scalesStationUuid: (_scalesStationUuid as string) || '',
 					documentId: '',
 					storageUuid: (_storageUuid as string) || '',
 				}),
@@ -448,6 +471,15 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 								name: 'Chốt kế toán',
 							},
 						]}
+					/>
+					<FilterCustom
+						isSearch
+						name='Trạm cân'
+						query='_scalesStationUuid'
+						listFilter={listScalesStation?.data?.map((v: any) => ({
+							id: v?.uuid,
+							name: v?.name,
+						}))}
 					/>
 					<FilterCustom
 						isSearch
@@ -760,6 +792,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 							_dateTo,
 							_state,
 							_storageUuid,
+							_scalesStationUuid,
 						]}
 					/>
 				)}

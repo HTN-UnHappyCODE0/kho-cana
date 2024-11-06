@@ -41,6 +41,7 @@ import clsx from 'clsx';
 import Button from '~/components/common/Button';
 import storageServices from '~/services/storageServices';
 import StateActive from '~/components/common/StateActive';
+import scalesStationServices from '~/services/scalesStationServices';
 
 function MainPageScalesAll({}: PropsMainPageScalesAll) {
 	const router = useRouter();
@@ -59,6 +60,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 		_dateTo,
 		_state,
 		_storageUuid,
+		_scalesStationUuid,
 	} = router.query;
 
 	const [uuidPlay, setUuidPlay] = useState<string>('');
@@ -84,6 +86,26 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 					typeCus: null,
 					provinceId: '',
 					specUuid: '',
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
+	const listScalesStation = useQuery([QUERY_KEY.table_tram_can], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: scalesStationServices.listScalesStation({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					companyUuid: '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.TABLE,
+					status: CONFIG_STATUS.HOAT_DONG,
 				}),
 			}),
 		select(data) {
@@ -171,6 +193,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 			_dateTo,
 			_state,
 			_storageUuid,
+			_scalesStationUuid,
 		],
 		{
 			queryFn: () =>
@@ -215,7 +238,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 						transportType: null,
 						shipUuid: (_shipUuid as string) || '',
 						typeCheckDay: 0,
-						scalesStationUuid: '',
+						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
 					}),
 				}),
@@ -321,7 +344,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 					transportType: null,
 					shipUuid: (_shipUuid as string) || '',
 					typeCheckDay: 0,
-					scalesStationUuid: '',
+					scalesStationUuid: (_scalesStationUuid as string) || '',
 					documentId: '',
 					storageUuid: (_storageUuid as string) || '',
 				}),
@@ -470,7 +493,15 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 							},
 						]}
 					/>
-
+					<FilterCustom
+						isSearch
+						name='Trạm cân'
+						query='_scalesStationUuid'
+						listFilter={listScalesStation?.data?.map((v: any) => ({
+							id: v?.uuid,
+							name: v?.name,
+						}))}
+					/>
 					<FilterCustom
 						isSearch
 						name='Bãi'
@@ -789,6 +820,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 							_dateTo,
 							_state,
 							_storageUuid,
+							_scalesStationUuid,
 						]}
 					/>
 				)}

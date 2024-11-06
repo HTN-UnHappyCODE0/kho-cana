@@ -44,13 +44,25 @@ import shipServices from '~/services/shipServices';
 import {convertCoin} from '~/common/funcs/convertCoin';
 import {convertWeight} from '~/common/funcs/optionConvert';
 import storageServices from '~/services/storageServices';
+import scalesStationServices from '~/services/scalesStationServices';
 
 function MainPageBillService({}: PropsMainPageBillService) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 	const [uuidPlay, setUuidPlay] = useState<string>('');
-	const {_page, _pageSize, _keyword, _customerUuid, _productTypeUuid, _shipUuid, _status, _dateFrom, _dateTo, _storageUuid} =
-		router.query;
+	const {
+		_page,
+		_pageSize,
+		_keyword,
+		_customerUuid,
+		_productTypeUuid,
+		_shipUuid,
+		_status,
+		_scalesStationUuid,
+		_dateFrom,
+		_dateTo,
+		_storageUuid,
+	} = router.query;
 
 	const [billUuid, setBilldUuid] = useState<string | null>(null);
 
@@ -100,6 +112,26 @@ function MainPageBillService({}: PropsMainPageBillService) {
 			if (data) {
 				return data;
 			}
+		},
+	});
+
+	const listScalesStation = useQuery([QUERY_KEY.table_tram_can], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: scalesStationServices.listScalesStation({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					companyUuid: '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.TABLE,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
 		},
 	});
 
@@ -155,6 +187,7 @@ function MainPageBillService({}: PropsMainPageBillService) {
 			_dateFrom,
 			_dateTo,
 			_storageUuid,
+			_scalesStationUuid,
 		],
 		{
 			queryFn: () =>
@@ -181,7 +214,7 @@ function MainPageBillService({}: PropsMainPageBillService) {
 						transportType: null,
 						shipUuid: (_shipUuid as string) || '',
 						typeCheckDay: 0,
-						scalesStationUuid: '',
+						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
 					}),
 				}),
@@ -270,6 +303,16 @@ function MainPageBillService({}: PropsMainPageBillService) {
 								name: 'Đã hoàn thành',
 							},
 						]}
+					/>
+
+					<FilterCustom
+						isSearch
+						name='Trạm cân'
+						query='_scalesStationUuid'
+						listFilter={listScalesStation?.data?.map((v: any) => ({
+							id: v?.uuid,
+							name: v?.name,
+						}))}
 					/>
 
 					<FilterCustom
@@ -505,6 +548,7 @@ function MainPageBillService({}: PropsMainPageBillService) {
 						_dateFrom,
 						_dateTo,
 						_storageUuid,
+						_scalesStationUuid,
 					]}
 				/>
 			</div>

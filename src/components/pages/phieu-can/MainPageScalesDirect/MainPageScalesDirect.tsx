@@ -42,6 +42,7 @@ import {convertWeight} from '~/common/funcs/optionConvert';
 import Button from '~/components/common/Button';
 import storageServices from '~/services/storageServices';
 import StateActive from '~/components/common/StateActive';
+import scalesStationServices from '~/services/scalesStationServices';
 
 function MainPageScalesDirect({}: PropsMainPageScalesDirect) {
 	const router = useRouter();
@@ -60,6 +61,7 @@ function MainPageScalesDirect({}: PropsMainPageScalesDirect) {
 		_dateTo,
 		_state,
 		_storageUuid,
+		_scalesStationUuid,
 	} = router.query;
 
 	const [uuidPlay, setUuidPlay] = useState<string>('');
@@ -105,6 +107,26 @@ function MainPageScalesDirect({}: PropsMainPageScalesDirect) {
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
 					type: [TYPE_PRODUCT.CONG_TY, TYPE_PRODUCT.DUNG_CHUNG],
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
+	const listScalesStation = useQuery([QUERY_KEY.table_tram_can], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: scalesStationServices.listScalesStation({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					companyUuid: '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.TABLE,
+					status: CONFIG_STATUS.HOAT_DONG,
 				}),
 			}),
 		select(data) {
@@ -171,6 +193,7 @@ function MainPageScalesDirect({}: PropsMainPageScalesDirect) {
 			_dateTo,
 			_state,
 			_storageUuid,
+			_scalesStationUuid,
 		],
 		{
 			queryFn: () =>
@@ -215,7 +238,7 @@ function MainPageScalesDirect({}: PropsMainPageScalesDirect) {
 						transportType: null,
 						shipUuid: (_shipUuid as string) || '',
 						typeCheckDay: 0,
-						scalesStationUuid: '',
+						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
 					}),
 				}),
@@ -321,7 +344,7 @@ function MainPageScalesDirect({}: PropsMainPageScalesDirect) {
 					transportType: null,
 					shipUuid: (_shipUuid as string) || '',
 					typeCheckDay: 0,
-					scalesStationUuid: '',
+					scalesStationUuid: (_scalesStationUuid as string) || '',
 					documentId: '',
 					storageUuid: (_storageUuid as string) || '',
 				}),
@@ -447,6 +470,15 @@ function MainPageScalesDirect({}: PropsMainPageScalesDirect) {
 								name: 'Chốt kế toán',
 							},
 						]}
+					/>
+					<FilterCustom
+						isSearch
+						name='Trạm cân'
+						query='_scalesStationUuid'
+						listFilter={listScalesStation?.data?.map((v: any) => ({
+							id: v?.uuid,
+							name: v?.name,
+						}))}
 					/>
 					<FilterCustom
 						isSearch
@@ -759,6 +791,7 @@ function MainPageScalesDirect({}: PropsMainPageScalesDirect) {
 							_dateTo,
 							_state,
 							_storageUuid,
+							_scalesStationUuid,
 						]}
 					/>
 				)}
