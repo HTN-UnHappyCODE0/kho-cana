@@ -6,13 +6,13 @@ import Button from '~/components/common/Button';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import weightSessionServices from '~/services/weightSessionServices';
 import {httpRequest} from '~/services';
-import {QUERY_KEY, TYPE_RULER} from '~/constants/config/enum';
+import {QUERY_KEY} from '~/constants/config/enum';
 import {toastWarn} from '~/common/funcs/toast';
 import Loading from '~/components/common/Loading';
-import Form, {FormContext, Input} from '~/components/common/Form';
+import Form from '~/components/common/Form';
 import Popup from '~/components/common/Popup';
 import FormReasonUpdateSpec from '../../quy-cach/FormReasonUpdateSpec';
-import {convertCoin, price} from '~/common/funcs/convertCoin';
+import {price} from '~/common/funcs/convertCoin';
 
 function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 	const queryClient = useQueryClient();

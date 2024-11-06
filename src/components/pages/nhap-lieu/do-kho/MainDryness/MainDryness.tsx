@@ -358,14 +358,22 @@ function MainDryness({}: PropsMainDryness) {
 		}
 
 		if (event.key === 'Enter' || event.keyCode === 13) {
-			if (value < 0 || value > 100) {
-				return toastWarn({msg: 'Giá trị độ khô không hợp lệ!'});
+			event.preventDefault();
+
+			const newIndex = index + 1;
+
+			if (inputRefs.current[newIndex]?.focus) {
+				inputRefs.current[newIndex]?.focus();
 			}
 
-			return funcUpdateDrynessWeightSession.mutate({
-				uuid: uuid,
-				dryness: value,
-			});
+			// if (value < 0 || value > 100) {
+			// 	return toastWarn({msg: 'Giá trị độ khô không hợp lệ!'});
+			// }
+
+			// return funcUpdateDrynessWeightSession.mutate({
+			// 	uuid: uuid,
+			// 	dryness: value,
+			// });
 		}
 	};
 
