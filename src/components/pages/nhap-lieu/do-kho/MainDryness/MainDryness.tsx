@@ -234,7 +234,6 @@ function MainDryness({}: PropsMainDryness) {
 						status: !!_status
 							? [Number(_status)]
 							: [STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE, STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE],
-						storageUuid: (_storageUuid as string) || '',
 						truckUuid: '',
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
@@ -242,6 +241,7 @@ function MainDryness({}: PropsMainDryness) {
 						productTypeUuid: _productTypeUuid ? (_productTypeUuid as string) : '',
 						shift: !!_isShift ? Number(_isShift) : null,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
+						storageUuid: (_storageUuid as string) || '',
 					}),
 				}),
 			onSuccess(data) {

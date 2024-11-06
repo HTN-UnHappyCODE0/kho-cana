@@ -33,6 +33,7 @@ import truckServices from '~/services/truckServices';
 import storageServices from '~/services/storageServices';
 import customerServices from '~/services/customerServices';
 import useDebounce from '~/common/hooks/useDebounce';
+import scalesStationServices from '~/services/scalesStationServices';
 
 function TableDetail({}: PropsTableDetail) {
 	const router = useRouter();
@@ -52,6 +53,7 @@ function TableDetail({}: PropsTableDetail) {
 		_isBatch,
 		_shipUuid,
 		_shift,
+		_scalesStationUuid,
 	} = router.query;
 
 	const [uuidDescription, setUuidDescription] = useState<string>('');
@@ -155,6 +157,26 @@ function TableDetail({}: PropsTableDetail) {
 		},
 	});
 
+	const listScalesStation = useQuery([QUERY_KEY.table_tram_can], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: scalesStationServices.listScalesStation({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					companyUuid: '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.TABLE,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
 	const listShip = useQuery([QUERY_KEY.dropdown_ma_tau], {
 		queryFn: () =>
 			httpRequest({
@@ -194,6 +216,7 @@ function TableDetail({}: PropsTableDetail) {
 			_shipUuid,
 			_shift,
 			_id,
+			_scalesStationUuid,
 		],
 		{
 			queryFn: () =>
@@ -231,6 +254,7 @@ function TableDetail({}: PropsTableDetail) {
 						truckUuid: !!_truckUuid ? (_truckUuid as string) : '',
 						shipUuid: (_shipUuid as string) || '',
 						shift: !!_shift ? Number(_shift) : null,
+						scalesStationUuid: (_scalesStationUuid as string) || '',
 					}),
 				}),
 			select(data) {
@@ -296,16 +320,7 @@ function TableDetail({}: PropsTableDetail) {
 								}))}
 							/>
 
-							<FilterCustom
-								isSearch
-								name='Bãi'
-								query='_storageUuid'
-								listFilter={listStorage?.data?.map((v: any) => ({
-									id: v?.uuid,
-									name: v?.name,
-								}))}
-							/> */}
-
+							
 							{/* <FilterCustom
 								isSearch
 								name='Mã tàu'
@@ -386,6 +401,25 @@ function TableDetail({}: PropsTableDetail) {
 									]}
 								/>
 							</div> */}
+							<FilterCustom
+								isSearch
+								name='Bãi'
+								query='_storageUuid'
+								listFilter={listStorage?.data?.map((v: any) => ({
+									id: v?.uuid,
+									name: v?.name,
+								}))}
+							/>
+
+							<FilterCustom
+								isSearch
+								name='Trạm cân'
+								query='_scalesStationUuid'
+								listFilter={listScalesStation?.data?.map((v: any) => ({
+									id: v?.uuid,
+									name: v?.name,
+								}))}
+							/>
 							<div className={styles.filter}>
 								<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
 							</div>
@@ -587,6 +621,7 @@ function TableDetail({}: PropsTableDetail) {
 						_isBatch,
 						_shipUuid,
 						_shift,
+						_scalesStationUuid,
 					]}
 				/>
 			</div>
