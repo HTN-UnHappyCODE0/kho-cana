@@ -31,7 +31,7 @@ function DataFlowDryness({}: PropsDataFlowDryness) {
 					className={clsx(styles.arrow, {
 						[styles.level_1]: countBillKcs?.billScaleDone == 0,
 						[styles.level_2]: countBillKcs?.billScaleDone > 0 && countBillKcs?.billScaleDone < 100,
-						[styles.level_3]: countBillKcs?.billScaleDone > 100,
+						[styles.level_3]: countBillKcs?.billScaleDone >= 100,
 					})}
 				>
 					<div className={styles.arrow_right}></div>
@@ -42,7 +42,7 @@ function DataFlowDryness({}: PropsDataFlowDryness) {
 					className={clsx(styles.arrow, {
 						[styles.level_1]: countBillKcs?.billKcsDone == 0,
 						[styles.level_2]: countBillKcs?.billKcsDone > 0 && countBillKcs?.billKcsDone < 100,
-						[styles.level_3]: countBillKcs?.billKcsDone > 100,
+						[styles.level_3]: countBillKcs?.billKcsDone >= 100,
 					})}
 				>
 					<div className={styles.arrow_right}></div>

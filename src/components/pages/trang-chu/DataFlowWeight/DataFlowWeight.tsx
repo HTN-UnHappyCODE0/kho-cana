@@ -31,7 +31,7 @@ function DataFlowWeight({}: PropsDataFlowWeight) {
 					className={clsx(styles.arrow, {
 						[styles.level_1]: countBillWeight?.billNeedQlkCheck == 0,
 						[styles.level_2]: countBillWeight?.billNeedQlkCheck > 0 && countBillWeight?.billNeedQlkCheck < 100,
-						[styles.level_3]: countBillWeight?.billNeedQlkCheck > 100,
+						[styles.level_3]: countBillWeight?.billNeedQlkCheck >= 100,
 					})}
 				>
 					<div className={styles.arrow_right}></div>
@@ -42,7 +42,7 @@ function DataFlowWeight({}: PropsDataFlowWeight) {
 					className={clsx(styles.arrow, {
 						[styles.level_1]: countBillWeight?.billNeedKtkCheck == 0,
 						[styles.level_2]: countBillWeight?.billNeedKtkCheck > 0 && countBillWeight?.billNeedKtkCheck < 100,
-						[styles.level_3]: countBillWeight?.billNeedKtkCheck > 100,
+						[styles.level_3]: countBillWeight?.billNeedKtkCheck >= 100,
 					})}
 				>
 					<div className={styles.arrow_right}></div>
