@@ -1,7 +1,7 @@
 export interface PropsTable {
 	data: any;
 	column: {
-		title: any;
+		title: string | React.ReactNode;
 		render: any;
 		className?: string;
 		checkBox?: boolean;

@@ -427,9 +427,9 @@ function MainBillSend({}: PropsMainBillSend) {
 							},
 							{
 								title: 'Thời gian gửi',
-								render: (data: IBillSend) => {
-									data?.updatedTime ? <Moment date={data?.updatedTime} format='HH:mm, DD/MM/YYYY' /> : '---';
-								},
+								render: (data: IBillSend) => (
+									<>{data?.updatedTime ? <Moment date={data?.updatedTime} format='HH:mm, DD/MM/YYYY' /> : '---'}</>
+								),
 							},
 							{
 								title: 'Tác vụ',

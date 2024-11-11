@@ -273,7 +273,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 			return toastWarn({msg: 'Vui lòng chọn tàu!'});
 		}
 		if (!form.fromUuid) {
-			return toastWarn({msg: 'Vui lòng chọn khách hàng!'});
+			return toastWarn({msg: 'Vui lòng chọn nhà cũng cấp!'});
 		}
 		if (!form.productTypeUuid) {
 			return toastWarn({msg: 'Vui lòng chọn loại hàng!'});
