@@ -385,7 +385,7 @@ function MainSpecification({}: PropsMainSpecification) {
 							},
 							{
 								title: 'KL quy khô (Tấn)',
-								render: (data: IWeightSession) => <>{convertWeight(data?.weightBdmt) || '---'}</>,
+								render: (data: IWeightSession) => <>{convertWeight(data?.weightBdmt)}</>,
 							},
 							{
 								title: 'Khách hàng',

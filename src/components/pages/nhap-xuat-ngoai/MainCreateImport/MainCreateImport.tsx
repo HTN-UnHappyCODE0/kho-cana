@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
-import {IFormCreateImport, PropsMainCreateImport} from './interfaces';
+import { IFormCreateImport, PropsMainCreateImport } from './interfaces';
 import styles from './MainCreateImport.module.scss';
 import TextArea from '~/components/common/Form/components/TextArea';
-import Form, {FormContext, Input} from '~/components/common/Form';
-import Select, {Option} from '~/components/common/Select';
+import Form, { FormContext, Input } from '~/components/common/Form';
+import Select, { Option } from '~/components/common/Select';
 import Button from '~/components/common/Button';
 import Loading from '~/components/common/Loading';
-import {clsx} from 'clsx';
-import {useRouter} from 'next/router';
+import { clsx } from 'clsx';
+import { useRouter } from 'next/router';
 import {
 	CONFIG_DESCENDING,
 	CONFIG_PAGING,
@@ -23,21 +23,21 @@ import {
 	TYPE_TRANSPORT,
 } from '~/constants/config/enum';
 import customerServices from '~/services/customerServices';
-import {httpRequest} from '~/services';
-import {useMutation, useQuery} from '@tanstack/react-query';
-import {IDetailCustomer} from '../../lenh-can/MainCreateImport/interfaces';
+import { httpRequest } from '~/services';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { IDetailCustomer } from '../../lenh-can/MainCreateImport/interfaces';
 import storageServices from '~/services/storageServices';
 import warehouseServices from '~/services/warehouseServices';
 import batchBillServices from '~/services/batchBillServices';
-import {price} from '~/common/funcs/convertCoin';
+import { price } from '~/common/funcs/convertCoin';
 import moment from 'moment';
 import UploadMultipleFile from '~/components/common/UploadMultipleFile';
-import {toastWarn} from '~/common/funcs/toast';
+import { toastWarn } from '~/common/funcs/toast';
 import uploadImageService from '~/services/uploadService';
-import {timeSubmit} from '~/common/funcs/optionConvert';
+import { timeSubmit } from '~/common/funcs/optionConvert';
 import shipServices from '~/services/shipServices';
 
-function MainCreateImport({}: PropsMainCreateImport) {
+function MainCreateImport({ }: PropsMainCreateImport) {
 	const router = useRouter();
 	const [loading, setLoading] = useState<boolean>(false);
 	const [images, setImages] = useState<any[]>([]);
@@ -52,13 +52,13 @@ function MainCreateImport({}: PropsMainCreateImport) {
 		fromUuid: '',
 		toUuid: '',
 		transportType: TYPE_TRANSPORT.DUONG_THUY,
-		timeStart: '',
-		timeEnd: '',
+		timeStart: null,
+		timeEnd: null,
 		portname: '',
 		shipUuid: '',
 	});
 
-	const {data: detailCustomer} = useQuery<IDetailCustomer>([QUERY_KEY.chi_tiet_khach_hang, form.fromUuid], {
+	const { data: detailCustomer } = useQuery<IDetailCustomer>([QUERY_KEY.chi_tiet_khach_hang, form.fromUuid], {
 		queryFn: () =>
 			httpRequest({
 				http: customerServices.getDetail({
@@ -181,7 +181,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 	});
 
 	const funcCreatBill = useMutation({
-		mutationFn: (body: {paths: string[]}) =>
+		mutationFn: (body: { paths: string[] }) =>
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
@@ -212,8 +212,8 @@ function MainCreateImport({}: PropsMainCreateImport) {
 					portname: form.portname,
 					descriptionWs: '',
 					paths: body.paths,
-					timeEnd: form?.timeEnd ? moment(form?.timeEnd!).format('YYYY-MM-DD') : null,
-					timeStart: form?.timeStart ? moment(form?.timeStart!).format('YYYY-MM-DD') : null,
+					timeEnd: form?.timeEnd ? timeSubmit(new Date(form?.timeEnd!), true) : null,
+					timeStart: form?.timeStart ? timeSubmit(new Date(form?.timeStart!)) : null,
 				}),
 			}),
 		onSuccess(data) {
@@ -222,7 +222,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 			}
 		},
 		onError(error) {
-			console.log({error});
+			console.log({ error });
 			return;
 		},
 	});
@@ -233,22 +233,22 @@ function MainCreateImport({}: PropsMainCreateImport) {
 		const timeEnd = new Date(form.timeEnd!);
 
 		if (form.transportType == TYPE_TRANSPORT.DUONG_THUY && !form.shipUuid) {
-			return toastWarn({msg: 'Vui lòng chọn tàu!'});
+			return toastWarn({ msg: 'Vui lòng chọn tàu!' });
 		}
 		if (!form.fromUuid) {
-			return toastWarn({msg: 'Vui lòng chọn nhà cũng cấp!'});
+			return toastWarn({ msg: 'Vui lòng chọn nhà cũng cấp!' });
 		}
 		if (!form.productTypeUuid) {
-			return toastWarn({msg: 'Vui lòng chọn loại hàng!'});
+			return toastWarn({ msg: 'Vui lòng chọn loại hàng!' });
 		}
 		if (!form.specificationsUuid) {
-			return toastWarn({msg: 'Vui lòng chọn quy cách!'});
+			return toastWarn({ msg: 'Vui lòng chọn quy cách!' });
 		}
 		if (!form.warehouseUuid) {
-			return toastWarn({msg: 'Vui lòng chọn kho chính!'});
+			return toastWarn({ msg: 'Vui lòng chọn kho chính!' });
 		}
 		if (!form.toUuid) {
-			return toastWarn({msg: 'Vui lòng chọn bãi!'});
+			return toastWarn({ msg: 'Vui lòng chọn bãi!' });
 		}
 
 		// if (today > timeStart) {
@@ -260,7 +260,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 		// }
 
 		if (timeStart > timeEnd) {
-			return toastWarn({msg: 'Ngày kết thúc không hợp lệ!'});
+			return toastWarn({ msg: 'Ngày kết thúc không hợp lệ!' });
 		}
 
 		const imgs = images?.map((v: any) => v?.file);
@@ -276,7 +276,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 					paths: dataImage.items,
 				});
 			} else {
-				return toastWarn({msg: 'Upload ảnh thất bại!'});
+				return toastWarn({ msg: 'Upload ảnh thất bại!' });
 			}
 		} else {
 			return funcCreatBill.mutate({
@@ -300,7 +300,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 							Hủy bỏ
 						</Button>
 						<FormContext.Consumer>
-							{({isDone}) => (
+							{({ isDone }) => (
 								<Button disable={!isDone} p_10_24 rounded_2 primary>
 									Lưu lại
 								</Button>
@@ -313,7 +313,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 						<div className='col_2'>
 							<div className={styles.item}>
 								<label className={styles.label}>
-									Hình thức vận chuyển <span style={{color: 'red'}}>*</span>
+									Hình thức vận chuyển <span style={{ color: 'red' }}>*</span>
 								</label>
 								<div className={styles.group_radio}>
 									<div className={styles.item_radio}>
@@ -397,7 +397,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 							value={form?.fromUuid}
 							label={
 								<span>
-									Nhà cung cấp <span style={{color: 'red'}}>*</span>
+									Nhà cung cấp <span style={{ color: 'red' }}>*</span>
 								</span>
 							}
 						>
@@ -429,7 +429,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 							readOnly={form.transportType == TYPE_TRANSPORT.DUONG_BO}
 							label={
 								<span>
-									Tàu <span style={{color: 'red'}}>*</span>
+									Tàu <span style={{ color: 'red' }}>*</span>
 								</span>
 							}
 						>
@@ -464,7 +464,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 							value={form?.productTypeUuid}
 							label={
 								<span>
-									Loại hàng<span style={{color: 'red'}}>*</span>
+									Loại hàng<span style={{ color: 'red' }}>*</span>
 								</span>
 							}
 						>
@@ -493,7 +493,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 								value={form?.specificationsUuid}
 								label={
 									<span>
-										Quy cách <span style={{color: 'red'}}>*</span>
+										Quy cách <span style={{ color: 'red' }}>*</span>
 									</span>
 								}
 							>
@@ -524,7 +524,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 							value={form?.warehouseUuid}
 							label={
 								<span>
-									Kho hàng chính <span style={{color: 'red'}}>*</span>
+									Kho hàng chính <span style={{ color: 'red' }}>*</span>
 								</span>
 							}
 						>
@@ -553,7 +553,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 								readOnly={!form.warehouseUuid || !form.productTypeUuid || !form.specificationsUuid}
 								label={
 									<span>
-										Bãi <span style={{color: 'red'}}>*</span>
+										Bãi <span style={{ color: 'red' }}>*</span>
 									</span>
 								}
 							>
@@ -582,7 +582,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 							unit='KG'
 							label={
 								<span>
-									Khối lượng hàng <span style={{color: 'red'}}>*</span>
+									Khối lượng hàng <span style={{ color: 'red' }}>*</span>
 								</span>
 							}
 							placeholder='Nhập khối lượng hàng'
@@ -624,7 +624,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 							blur={true}
 							label={
 								<span>
-									Ngày bắt đầu <span style={{color: 'red'}}>*</span>
+									Ngày bắt đầu <span style={{ color: 'red' }}>*</span>
 								</span>
 							}
 							placeholder='Chọn ngày bắt đầu'
@@ -653,7 +653,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 								blur={true}
 								label={
 									<span>
-										Ngày kết thúc <span style={{color: 'red'}}>*</span>
+										Ngày kết thúc <span style={{ color: 'red' }}>*</span>
 									</span>
 								}
 								placeholder='Chọn ngày kết thúc'

@@ -373,7 +373,7 @@ function MainBillSend({}: PropsMainBillSend) {
 											</Link>
 										)}
 										<p style={{fontWeight: 500, color: '#3772FF'}}>
-											<Moment date={data?.weight2?.timeScales} format='HH:mm - DD/MM/YYYY' />
+											<Moment date={data?.timeEnd} format='HH:mm - DD/MM/YYYY' />
 										</p>
 									</>
 								),
@@ -388,7 +388,7 @@ function MainBillSend({}: PropsMainBillSend) {
 							},
 							{
 								title: 'KL quy khô (Tấn)',
-								render: (data: IBillSend) => <>{convertWeight(data?.weightBdmt) || '---'}</>,
+								render: (data: IBillSend) => <>{convertWeight(data?.weightBdmt) || 0}</>,
 							},
 							{
 								title: 'Tổng số phiếu',
