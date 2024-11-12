@@ -125,4 +125,5 @@ export interface IDetailBatchBill {
 		code: string;
 		name: string;
 	};
+	path: string[];
 }

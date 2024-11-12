@@ -321,6 +321,10 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 									id: TYPE_BATCH.CAN_LE,
 									name: 'Cân lẻ',
 								},
+								{
+									id: TYPE_BATCH.KHONG_CAN,
+									name: 'Không qua cân',
+								},
 							]}
 						/>
 					</div>
@@ -427,9 +431,15 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 								fixedLeft: true,
 								render: (data: ITableBillScale) => (
 									<>
-										<Link href={`/phieu-can/${data.uuid}`} className={styles.link}>
-											{data?.code}
-										</Link>
+										{data?.isBatch == TYPE_BATCH.KHONG_CAN ? (
+											<Link href={`/nhap-xuat-ngoai/${data.uuid}`} className={styles.link}>
+												{data?.code}
+											</Link>
+										) : (
+											<Link href={`/phieu-can/${data.uuid}`} className={styles.link}>
+												{data?.code}
+											</Link>
+										)}
 										<p style={{fontWeight: 500, color: '#3772FF'}}>{data?.weightSessionUu?.code || '---'}</p>
 									</>
 								),
@@ -643,7 +653,11 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 											icon={<Eye fontSize={20} fontWeight={600} />}
 											tooltip='Xem chi tiết'
 											color='#777E90'
-											href={`/phieu-can/${data.uuid}`}
+											href={
+												data?.isBatch == TYPE_BATCH.KHONG_CAN
+													? `/nhap-xuat-ngoai/${data.uuid}`
+													: `/phieu-can/${data.uuid}`
+											}
 										/>
 									</div>
 								),

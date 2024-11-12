@@ -202,6 +202,7 @@ function MainDetailScales({}: PropsMainDetailScales) {
 							<span style={{marginLeft: '6px', fontWeight: 600}}>
 								{detailBatchBill?.isBatch == TYPE_BATCH.CAN_LO && 'Cân lô'}
 								{detailBatchBill?.isBatch == TYPE_BATCH.CAN_LE && 'Cân lẻ'}
+								{detailBatchBill?.isBatch == TYPE_BATCH.KHONG_CAN && 'Không qua cân'}
 							</span>
 						</td>
 					</tr>

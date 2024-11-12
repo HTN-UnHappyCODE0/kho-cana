@@ -277,6 +277,10 @@ function MainSpecification({}: PropsMainSpecification) {
 									id: TYPE_BATCH.CAN_LE,
 									name: 'Cân lẻ',
 								},
+								{
+									id: TYPE_BATCH.KHONG_CAN,
+									name: 'Không qua cân',
+								},
 							]}
 						/>
 					</div>
@@ -352,9 +356,15 @@ function MainSpecification({}: PropsMainSpecification) {
 								fixedLeft: true,
 								render: (data: IWeightSession) => (
 									<>
-										<Link href={`/phieu-can/${data?.billUu?.uuid}`} className={styles.link}>
-											{data?.billUu?.code}
-										</Link>
+										{data?.billUu?.isBatch == TYPE_BATCH.KHONG_CAN ? (
+											<Link href={`/nhap-xuat-ngoai/${data?.billUu?.uuid}`} className={styles.link}>
+												{data?.billUu?.code}
+											</Link>
+										) : (
+											<Link href={`/phieu-can/${data?.billUu?.uuid}`} className={styles.link}>
+												{data?.billUu?.code}
+											</Link>
+										)}
 										<p style={{fontWeight: 500, color: '#3772FF'}}>
 											<Moment date={data?.weight2?.timeScales} format='HH:mm - DD/MM/YYYY' />
 										</p>
