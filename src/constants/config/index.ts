@@ -98,6 +98,13 @@ export enum PATH {
 	CangBocDo = '/cang-boc-do',
 	PhieuChuaDuyet = '/duyet-phieu/phieu-chua-duyet',
 	PhieuDaDuyet = '/duyet-phieu/phieu-da-duyet',
+
+	// xuất/nhập ngoài hệ thống
+	NhapXuatNgoai = '/nhap-xuat-ngoai',
+	NhapXuatNgoaiTatCa = '/nhap-xuat-ngoai/tat-ca',
+	NhapXuatNgoaiNhapHang = '/nhap-xuat-ngoai/nhap-hang',
+	NhapXuatNgoaiXuatHang = '/nhap-xuat-ngoai/xuat-hang',
+	NhapXuatNgoaiXuatThang = '/nhap-xuat-ngoai/xuat-thang',
 }
 
 export const Menu: {
@@ -115,7 +122,10 @@ export const Menu: {
 	},
 	{
 		title: 'Kho hàng',
-		group: [{title: 'Kho hàng', icon: icons.danhsachkho, path: PATH.KhoHang, pathActive: '/kho-hang'}],
+		group: [
+			{title: 'Kho hàng', icon: icons.danhsachkho, path: PATH.KhoHang, pathActive: '/kho-hang'},
+			{title: 'Nhập/xuất ngoài hệ thống', icon: icons.nhapxuatngoai, path: PATH.NhapXuatNgoaiTatCa, pathActive: PATH.NhapXuatNgoai},
+		],
 	},
 	{
 		title: 'Quản lý cân',

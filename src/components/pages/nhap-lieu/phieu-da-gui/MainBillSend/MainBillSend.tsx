@@ -285,6 +285,10 @@ function MainBillSend({}: PropsMainBillSend) {
 									id: TYPE_BATCH.CAN_LE,
 									name: 'Cân lẻ',
 								},
+								{
+									id: TYPE_BATCH.KHONG_CAN,
+									name: 'Không qua cân',
+								},
 							]}
 						/>
 					</div>
@@ -359,9 +363,15 @@ function MainBillSend({}: PropsMainBillSend) {
 								fixedLeft: true,
 								render: (data: IBillSend) => (
 									<>
-										<Link href={`/phieu-can/${data?.uuid}`} className={styles.link}>
-											{data?.code}
-										</Link>
+										{data?.isBatch == TYPE_BATCH.KHONG_CAN ? (
+											<Link href={`/nhap-xuat-ngoai/${data.uuid}`} className={styles.link}>
+												{data?.code}
+											</Link>
+										) : (
+											<Link href={`/phieu-can/${data.uuid}`} className={styles.link}>
+												{data?.code}
+											</Link>
+										)}
 										<p style={{fontWeight: 500, color: '#3772FF'}}>
 											<Moment date={data?.weight2?.timeScales} format='HH:mm - DD/MM/YYYY' />
 										</p>

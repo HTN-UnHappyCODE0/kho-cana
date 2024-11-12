@@ -252,6 +252,44 @@ const batchBillServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	upsertBillNoScales: (
+		data: {
+			batchUuid: string;
+			shipUuid: string;
+			shipOutUuid: string;
+			transportType: number | null;
+			timeIntend: string | null;
+			weightIntent: number | null;
+			customerName: string;
+			billUuid: string;
+			isBatch: number | null;
+			isCreateBatch: number | null;
+			isSift: number | null;
+			scalesType: number | null;
+			fromUuid: string;
+			toUuid: string;
+			documentId: string;
+			description: string;
+			isPrint: number | null;
+			specificationsUuid: string;
+			productTypeUuid: string;
+			lstTruckAddUuid: string[];
+			lstTruckRemoveUuid: string[];
+			reason?: string;
+			scaleStationUuid: string | null;
+			portname: string;
+			storageTemporaryUuid?: string;
+			timeStart: string | null;
+			timeEnd: string | null;
+			descriptionWs: string;
+			paths: string[];
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/BatchBill/upsert-bill-no-scale`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 };
 
 export default batchBillServices;

@@ -103,6 +103,7 @@ export enum QUERY_KEY {
 	chi_tiet_nhan_vien,
 	chi_tiet_gia_tien_hang,
 	chi_tiet_lich_su_thay_doi_phieu,
+	chi_tiet_nhap_xuat_ngoai,
 
 	thong_ke_kho_hang,
 	thong_ke_tong_hang_dich_vu,
@@ -254,6 +255,7 @@ export enum CONFIG_PRINT {
 export enum TYPE_BATCH {
 	CAN_LE,
 	CAN_LO,
+	KHONG_CAN,
 }
 
 export enum TYPE_SCALES {

@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
-import {PropsMainPageScalesService} from './interfaces';
+import { PropsMainPageScalesService } from './interfaces';
 import styles from './MainPageScalesService.module.scss';
 import Search from '~/components/common/Search';
 import FilterCustom from '~/components/common/FilterCustom';
@@ -18,8 +18,8 @@ import {
 	TYPE_SCALES,
 	TYPE_SIFT,
 } from '~/constants/config/enum';
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {httpRequest} from '~/services';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { httpRequest } from '~/services';
 import customerServices from '~/services/customerServices';
 import wareServices from '~/services/wareServices';
 import DateRangerCustom from '~/components/common/DateRangerCustom';
@@ -27,24 +27,24 @@ import DataWrapper from '~/components/common/DataWrapper';
 import Noti from '~/components/common/DataWrapper/components/Noti';
 import Table from '~/components/common/Table';
 import Pagination from '~/components/common/Pagination';
-import {useRouter} from 'next/router';
+import { useRouter } from 'next/router';
 import batchBillServices from '~/services/batchBillServices';
-import {ITableBillScale} from '../MainPageScalesAll/interfaces';
+import { ITableBillScale } from '../MainPageScalesAll/interfaces';
 import Dialog from '~/components/common/Dialog';
 import IconCustom from '~/components/common/IconCustom';
-import {Eye, Play, StopCircle} from 'iconsax-react';
+import { Eye, Play, StopCircle } from 'iconsax-react';
 import Loading from '~/components/common/Loading';
 import Link from 'next/link';
-import {LuPencil} from 'react-icons/lu';
+import { LuPencil } from 'react-icons/lu';
 import shipServices from '~/services/shipServices';
-import {convertWeight} from '~/common/funcs/optionConvert';
+import { convertWeight } from '~/common/funcs/optionConvert';
 import clsx from 'clsx';
 import Button from '~/components/common/Button';
 import storageServices from '~/services/storageServices';
 import StateActive from '~/components/common/StateActive';
 import scalesStationServices from '~/services/scalesStationServices';
 
-function MainPageScalesService({}: PropsMainPageScalesService) {
+function MainPageScalesService({ }: PropsMainPageScalesService) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 
@@ -215,22 +215,22 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 						state: !!_state
 							? [Number(_state)]
 							: [
-									STATE_BILL.NOT_CHECK,
-									STATE_BILL.QLK_REJECTED,
-									STATE_BILL.QLK_CHECKED,
-									STATE_BILL.KTK_REJECTED,
-									STATE_BILL.KTK_CHECKED,
-									STATE_BILL.END,
-							  ],
+								STATE_BILL.NOT_CHECK,
+								STATE_BILL.QLK_REJECTED,
+								STATE_BILL.QLK_CHECKED,
+								STATE_BILL.KTK_REJECTED,
+								STATE_BILL.KTK_CHECKED,
+								STATE_BILL.END,
+							],
 						status: !!_status
 							? [Number(_status)]
 							: [
-									STATUS_BILL.DANG_CAN,
-									STATUS_BILL.TAM_DUNG,
-									STATUS_BILL.DA_CAN_CHUA_KCS,
-									STATUS_BILL.DA_KCS,
-									STATUS_BILL.CHOT_KE_TOAN,
-							  ],
+								STATUS_BILL.DANG_CAN,
+								STATUS_BILL.TAM_DUNG,
+								STATUS_BILL.DA_CAN_CHUA_KCS,
+								STATUS_BILL.DA_KCS,
+								STATUS_BILL.CHOT_KE_TOAN,
+							],
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
 						warehouseUuid: '',
@@ -277,7 +277,7 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 			}
 		},
 		onError(error) {
-			console.log({error});
+			console.log({ error });
 		},
 	});
 
@@ -298,7 +298,7 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 			}
 		},
 		onError(error) {
-			console.log({error});
+			console.log({ error });
 		},
 	});
 
@@ -321,22 +321,22 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 					state: !!_state
 						? [Number(_state)]
 						: [
-								STATE_BILL.NOT_CHECK,
-								STATE_BILL.QLK_REJECTED,
-								STATE_BILL.QLK_CHECKED,
-								STATE_BILL.KTK_REJECTED,
-								STATE_BILL.KTK_CHECKED,
-								STATE_BILL.END,
-						  ],
+							STATE_BILL.NOT_CHECK,
+							STATE_BILL.QLK_REJECTED,
+							STATE_BILL.QLK_CHECKED,
+							STATE_BILL.KTK_REJECTED,
+							STATE_BILL.KTK_CHECKED,
+							STATE_BILL.END,
+						],
 					status: !!_status
 						? [Number(_status)]
 						: [
-								STATUS_BILL.DANG_CAN,
-								STATUS_BILL.TAM_DUNG,
-								STATUS_BILL.DA_CAN_CHUA_KCS,
-								STATUS_BILL.DA_KCS,
-								STATUS_BILL.CHOT_KE_TOAN,
-						  ],
+							STATUS_BILL.DANG_CAN,
+							STATUS_BILL.TAM_DUNG,
+							STATUS_BILL.DA_CAN_CHUA_KCS,
+							STATUS_BILL.DA_KCS,
+							STATUS_BILL.CHOT_KE_TOAN,
+						],
 					timeStart: _dateFrom ? (_dateFrom as string) : null,
 					timeEnd: _dateTo ? (_dateTo as string) : null,
 					warehouseUuid: '',
@@ -382,6 +382,10 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 								{
 									id: TYPE_BATCH.CAN_LE,
 									name: 'Cân lẻ',
+								},
+								{
+									id: TYPE_BATCH.KHONG_CAN,
+									name: 'Không qua cân',
 								},
 							]}
 						/>
@@ -503,7 +507,7 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 				<div className={styles.parameter}>
 					<div>
 						TỔNG LƯỢNG HÀNG TƯƠI:
-						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getListBatch?.data?.amountMt) || 0} </span>(Tấn)
+						<span style={{ color: '#2D74FF', marginLeft: 4 }}>{convertWeight(getListBatch?.data?.amountMt) || 0} </span>(Tấn)
 					</div>
 				</div>
 			</div>
@@ -533,7 +537,7 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 							{
 								title: 'Loại cân',
 								render: (data: ITableBillScale) => (
-									<p style={{fontWeight: 600}}>
+									<p style={{ fontWeight: 600 }}>
 										{data?.scalesType == TYPE_SCALES.CAN_NHAP && 'Cân nhập'}
 										{data?.scalesType == TYPE_SCALES.CAN_XUAT && 'Cân xuất'}
 										{data?.scalesType == TYPE_SCALES.CAN_DICH_VU && 'Cân dịch vụ'}
@@ -556,26 +560,26 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 								title: 'Từ(tàu/xe)',
 								render: (data: ITableBillScale) => (
 									<>
-										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>
+										<p style={{ marginBottom: 4, fontWeight: 600 }}>{data?.fromUu?.name || data?.customerName}</p>
 										{data?.scalesType == TYPE_SCALES.CAN_XUAT && (
 											<>
 												{data?.isBatch == TYPE_BATCH.CAN_LO && (
-													<p style={{fontWeight: 500, color: '#3772FF'}}>{'---'}</p>
+													<p style={{ fontWeight: 500, color: '#3772FF' }}>{'---'}</p>
 												)}
 												{data?.isBatch == TYPE_BATCH.CAN_LE && (
-													<p style={{fontWeight: 500, color: '#3772FF'}}>{'---'}</p>
+													<p style={{ fontWeight: 500, color: '#3772FF' }}>{'---'}</p>
 												)}
 											</>
 										)}
 										{!(data?.scalesType == TYPE_SCALES.CAN_XUAT) && (
 											<>
 												{data?.isBatch == TYPE_BATCH.CAN_LO && (
-													<p style={{fontWeight: 500, color: '#3772FF'}}>
+													<p style={{ fontWeight: 500, color: '#3772FF' }}>
 														{data?.batchsUu?.shipUu?.licensePalate || '---'}
 													</p>
 												)}
 												{data?.isBatch == TYPE_BATCH.CAN_LE && (
-													<p style={{fontWeight: 500, color: '#3772FF'}}>
+													<p style={{ fontWeight: 500, color: '#3772FF' }}>
 														{data?.weightSessionUu?.truckUu?.licensePalate || '---'}
 													</p>
 												)}
@@ -588,14 +592,14 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 								title: 'Đến',
 								render: (data: ITableBillScale) => (
 									<>
-										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.toUu?.name || '---'}</p>
+										<p style={{ marginBottom: 4, fontWeight: 600 }}>{data?.toUu?.name || '---'}</p>
 										{data?.scalesType == TYPE_SCALES.CAN_XUAT && (
-											<p style={{fontWeight: 400, color: '#3772FF'}}>
+											<p style={{ fontWeight: 400, color: '#3772FF' }}>
 												{data?.batchsUu?.shipUu?.licensePalate || '---'}
 											</p>
 										)}
 										{!(data?.scalesType == TYPE_SCALES.CAN_XUAT) && (
-											<p style={{fontWeight: 400, color: '#3772FF'}}>
+											<p style={{ fontWeight: 400, color: '#3772FF' }}>
 												{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
 											</p>
 										)}
@@ -723,7 +727,7 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 								title: 'Tác vụ',
 								fixedRight: true,
 								render: (data: ITableBillScale) => (
-									<div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px'}}>
+									<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px' }}>
 										{/* Bắt đầu cân */}
 										{data?.status == STATUS_BILL.CHUA_CAN || data?.status == STATUS_BILL.TAM_DUNG ? (
 											<IconCustom
