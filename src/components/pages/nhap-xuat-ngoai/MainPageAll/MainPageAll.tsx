@@ -1,15 +1,15 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
-import {PropsMainPageAll} from './interfaces';
+import { PropsMainPageAll } from './interfaces';
 import styles from './MainPageAll.module.scss';
-import {useRouter} from 'next/router';
+import { useRouter } from 'next/router';
 import Search from '~/components/common/Search';
 import DateRangerCustom from '~/components/common/DateRangerCustom';
 import DataWrapper from '~/components/common/DataWrapper';
 import Table from '~/components/common/Table';
 import Link from 'next/link';
 import Noti from '~/components/common/DataWrapper/components/Noti';
-import {convertWeight} from '~/common/funcs/optionConvert';
+import { convertWeight } from '~/common/funcs/optionConvert';
 import Button from '~/components/common/Button';
 import Pagination from '~/components/common/Pagination';
 import {
@@ -31,10 +31,10 @@ import Image from 'next/image';
 import icons from '~/constants/images/icons';
 import Moment from 'react-moment';
 import IconCustom from '~/components/common/IconCustom';
-import {AddSquare, Edit, Eye} from 'iconsax-react';
-import {LuPencil} from 'react-icons/lu';
-import {useMutation, useQuery} from '@tanstack/react-query';
-import {httpRequest} from '~/services';
+import { AddSquare, Edit, Eye } from 'iconsax-react';
+import { LuPencil } from 'react-icons/lu';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { httpRequest } from '~/services';
 import batchBillServices from '~/services/batchBillServices';
 import TippyHeadless from '@tippyjs/react/headless';
 import FilterCustom from '~/components/common/FilterCustom';
@@ -43,9 +43,10 @@ import scalesStationServices from '~/services/scalesStationServices';
 import wareServices from '~/services/wareServices';
 import storageServices from '~/services/storageServices';
 import customerServices from '~/services/customerServices';
-import {clsx} from 'clsx';
+import { clsx } from 'clsx';
+import StateActive from '~/components/common/StateActive';
 
-function MainPageAll({}: PropsMainPageAll) {
+function MainPageAll({ }: PropsMainPageAll) {
 	const [openCreate, setOpenCreate] = useState<boolean>(false);
 	const router = useRouter();
 
@@ -97,13 +98,13 @@ function MainPageAll({}: PropsMainPageAll) {
 						state: !!_state
 							? [Number(_state)]
 							: [
-									STATE_BILL.NOT_CHECK,
-									STATE_BILL.QLK_REJECTED,
-									STATE_BILL.QLK_CHECKED,
-									STATE_BILL.KTK_REJECTED,
-									STATE_BILL.KTK_CHECKED,
-									STATE_BILL.END,
-							  ],
+								STATE_BILL.NOT_CHECK,
+								STATE_BILL.QLK_REJECTED,
+								STATE_BILL.QLK_CHECKED,
+								STATE_BILL.KTK_REJECTED,
+								STATE_BILL.KTK_CHECKED,
+								STATE_BILL.END,
+							],
 						customerUuid: (_customerUuid as string) || '',
 						isBatch: TYPE_BATCH.KHONG_CAN,
 						isCreateBatch: null,
@@ -112,12 +113,12 @@ function MainPageAll({}: PropsMainPageAll) {
 						status: !!_status
 							? [Number(_status)]
 							: [
-									STATUS_BILL.DANG_CAN,
-									STATUS_BILL.TAM_DUNG,
-									STATUS_BILL.DA_CAN_CHUA_KCS,
-									STATUS_BILL.DA_KCS,
-									STATUS_BILL.CHOT_KE_TOAN,
-							  ],
+								STATUS_BILL.DANG_CAN,
+								STATUS_BILL.TAM_DUNG,
+								STATUS_BILL.DA_CAN_CHUA_KCS,
+								STATUS_BILL.DA_KCS,
+								STATUS_BILL.CHOT_KE_TOAN,
+							],
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
 						warehouseUuid: '',
@@ -250,13 +251,13 @@ function MainPageAll({}: PropsMainPageAll) {
 					state: !!_state
 						? [Number(_state)]
 						: [
-								STATE_BILL.NOT_CHECK,
-								STATE_BILL.QLK_REJECTED,
-								STATE_BILL.QLK_CHECKED,
-								STATE_BILL.KTK_REJECTED,
-								STATE_BILL.KTK_CHECKED,
-								STATE_BILL.END,
-						  ],
+							STATE_BILL.NOT_CHECK,
+							STATE_BILL.QLK_REJECTED,
+							STATE_BILL.QLK_CHECKED,
+							STATE_BILL.KTK_REJECTED,
+							STATE_BILL.KTK_CHECKED,
+							STATE_BILL.END,
+						],
 					customerUuid: (_customerUuid as string) || '',
 					isBatch: TYPE_BATCH.KHONG_CAN,
 					isCreateBatch: null,
@@ -265,12 +266,11 @@ function MainPageAll({}: PropsMainPageAll) {
 					status: !!_status
 						? [Number(_status)]
 						: [
-								STATUS_BILL.DANG_CAN,
-								STATUS_BILL.TAM_DUNG,
-								STATUS_BILL.DA_CAN_CHUA_KCS,
-								STATUS_BILL.DA_KCS,
-								STATUS_BILL.CHOT_KE_TOAN,
-						  ],
+							STATUS_BILL.TAM_DUNG,
+							STATUS_BILL.DA_CAN_CHUA_KCS,
+							STATUS_BILL.DA_KCS,
+							STATUS_BILL.CHOT_KE_TOAN,
+						],
 					timeStart: _dateFrom ? (_dateFrom as string) : null,
 					timeEnd: _dateTo ? (_dateTo as string) : null,
 					warehouseUuid: '',
@@ -342,6 +342,61 @@ function MainPageAll({}: PropsMainPageAll) {
 							name: v?.name,
 						}))}
 					/>
+					<FilterCustom
+						isSearch
+						name='Xác nhận SL'
+						query='_state'
+						listFilter={[
+							{
+								id: STATE_BILL.NOT_CHECK,
+								name: 'Chưa duyệt',
+							},
+							{
+								id: STATE_BILL.QLK_REJECTED,
+								name: 'QLK duyệt lại',
+							},
+							{
+								id: STATE_BILL.QLK_CHECKED,
+								name: 'QLK đã duyệt',
+							},
+							{
+								id: STATE_BILL.KTK_REJECTED,
+								name: 'KTK duyệt lại',
+							},
+							{
+								id: STATE_BILL.KTK_CHECKED,
+								name: 'KTK đã duyệt',
+							},
+							{
+								id: STATE_BILL.END,
+								name: 'Kết thúc',
+							},
+						]}
+					/>
+					<FilterCustom
+						isSearch
+						name='Trạng thái'
+						query='_status'
+						listFilter={[
+
+							{
+								id: STATUS_BILL.TAM_DUNG,
+								name: 'Tạm dừng',
+							},
+							{
+								id: STATUS_BILL.DA_CAN_CHUA_KCS,
+								name: 'chưa KCS',
+							},
+							{
+								id: STATUS_BILL.DA_KCS,
+								name: 'Đã KCS',
+							},
+							{
+								id: STATUS_BILL.CHOT_KE_TOAN,
+								name: 'Chốt kế toán',
+							},
+						]}
+					/>
 
 					<div className={styles.filter}>
 						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
@@ -412,7 +467,7 @@ function MainPageAll({}: PropsMainPageAll) {
 				<div className={styles.parameter}>
 					<div>
 						TỔNG LƯỢNG HÀNG TƯƠI:
-						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(listBill?.data?.amountMt) || 0} </span>(Tấn)
+						<span style={{ color: '#2D74FF', marginLeft: 4 }}>{convertWeight(listBill?.data?.amountMt) || 0} </span>(Tấn)
 					</div>
 				</div>
 			</div>
@@ -443,7 +498,7 @@ function MainPageAll({}: PropsMainPageAll) {
 							{
 								title: 'Loại cân',
 								render: (data: any) => (
-									<p style={{fontWeight: 600}}>
+									<p style={{ fontWeight: 600 }}>
 										{data?.scalesType == TYPE_SCALES.CAN_NHAP && 'Cân nhập'}
 										{data?.scalesType == TYPE_SCALES.CAN_XUAT && 'Cân xuất'}
 										{data?.scalesType == TYPE_SCALES.CAN_DICH_VU && 'Cân dịch vụ'}
@@ -465,15 +520,15 @@ function MainPageAll({}: PropsMainPageAll) {
 								title: 'Từ (tàu/xe)',
 								render: (data: any) => (
 									<>
-										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>
+										<p style={{ marginBottom: 4, fontWeight: 600 }}>{data?.fromUu?.name || data?.customerName}</p>
 										{data?.scalesType == TYPE_SCALES.CAN_XUAT && (
 											<>
-												<p style={{fontWeight: 500, color: '#3772FF'}}>{'---'}</p>
+												<p style={{ fontWeight: 500, color: '#3772FF' }}>{'---'}</p>
 											</>
 										)}
 										{!(data?.scalesType == TYPE_SCALES.CAN_XUAT) && (
 											<>
-												<p style={{fontWeight: 500, color: '#3772FF'}}>
+												<p style={{ fontWeight: 500, color: '#3772FF' }}>
 													{data?.batchsUu?.shipUu?.licensePalate || '---'}
 												</p>
 											</>
@@ -485,14 +540,14 @@ function MainPageAll({}: PropsMainPageAll) {
 								title: 'Đến',
 								render: (data: any) => (
 									<>
-										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.toUu?.name || '---'}</p>
+										<p style={{ marginBottom: 4, fontWeight: 600 }}>{data?.toUu?.name || '---'}</p>
 										{data?.scalesType == TYPE_SCALES.CAN_XUAT && (
-											<p style={{fontWeight: 400, color: '#3772FF'}}>
+											<p style={{ fontWeight: 400, color: '#3772FF' }}>
 												{data?.batchsUu?.shipUu?.licensePalate || '---'}
 											</p>
 										)}
 										{!(data?.scalesType == TYPE_SCALES.CAN_XUAT) && (
-											<p style={{fontWeight: 400, color: '#3772FF'}}>
+											<p style={{ fontWeight: 400, color: '#3772FF' }}>
 												{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
 											</p>
 										)}
@@ -530,12 +585,91 @@ function MainPageAll({}: PropsMainPageAll) {
 								title: 'Ngày kết thúc',
 								render: (data: any) => <>{data?.timeEnd ? <Moment date={data?.timeEnd} format='DD/MM/YYYY' /> : '---'}</>,
 							},
-
+							{
+								title: 'Xác nhận SL',
+								render: (data: any) => (
+									<StateActive
+										stateActive={data?.state}
+										listState={[
+											{
+												state: STATE_BILL.NOT_CHECK,
+												text: 'Chưa duyệt',
+												textColor: '#fff',
+												backgroundColor: '#FF5C5C',
+											},
+											{
+												state: STATE_BILL.QLK_REJECTED,
+												text: 'QLK duyệt lại',
+												textColor: '#fff',
+												backgroundColor: '#FB923C',
+											},
+											{
+												state: STATE_BILL.QLK_CHECKED,
+												text: 'QLK đã duyệt',
+												textColor: '#fff',
+												backgroundColor: '#0EA5E9',
+											},
+											{
+												state: STATE_BILL.KTK_REJECTED,
+												text: 'KTK duyệt lại',
+												textColor: '#fff',
+												backgroundColor: '#FF6838',
+											},
+											{
+												state: STATE_BILL.KTK_CHECKED,
+												text: 'KTK đã duyệt',
+												textColor: '#fff',
+												backgroundColor: '#2A85FF',
+											},
+											{
+												state: STATE_BILL.END,
+												text: 'Kết thúc',
+												textColor: '#fff',
+												backgroundColor: '#9757D7',
+											},
+										]}
+									/>
+								),
+							},
+							{
+								title: 'Trạng thái',
+								render: (data: any) => (
+									<StateActive
+										stateActive={data?.status}
+										listState={[
+											{
+												state: STATUS_BILL.TAM_DUNG,
+												text: 'Tạm dừng',
+												textColor: '#F95B5B',
+												backgroundColor: 'rgba(249, 91, 91, 0.10)',
+											},
+											{
+												state: STATUS_BILL.DA_CAN_CHUA_KCS,
+												text: 'Đã cân chưa KCS',
+												textColor: '#2D74FF',
+												backgroundColor: 'rgba(45, 116, 255, 0.10)',
+											},
+											{
+												state: STATUS_BILL.DA_KCS,
+												text: 'Đã KCS',
+												textColor: '#41CD4F',
+												backgroundColor: 'rgba(65, 205, 79, 0.1)',
+											},
+											{
+												state: STATUS_BILL.CHOT_KE_TOAN,
+												text: 'Chốt kế toán',
+												textColor: '#0EA5E9',
+												backgroundColor: 'rgba(14, 165, 233, 0.1)',
+											},
+										]}
+									/>
+								),
+							},
 							{
 								title: 'Tác vụ',
 								fixedRight: true,
 								render: (data: any) => (
-									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
+									<div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
 										<IconCustom
 											edit
 											icon={<LuPencil fontSize={20} fontWeight={600} />}

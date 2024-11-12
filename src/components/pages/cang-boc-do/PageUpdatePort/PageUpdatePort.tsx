@@ -268,11 +268,11 @@ function PageUpdatePort({}: PropsPageUpdatePort) {
 							},
 							{
 								title: 'KL 1 (Tấn)',
-								render: (data: ITableBillScale) => <>{convertWeight(data?.weigth1) || '---'}</>,
+								render: (data: ITableBillScale) => <>{convertWeight(data?.weigth1) || 0}</>,
 							},
 							{
 								title: 'KL 2 (Tấn)',
-								render: (data: ITableBillScale) => <>{convertWeight(data?.weigth2) || '---'}</>,
+								render: (data: ITableBillScale) => <>{convertWeight(data?.weigth2) || 0}</>,
 							},
 							{
 								title: 'Phân loại',

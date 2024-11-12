@@ -8,8 +8,8 @@ export interface IFormUpdateImport {
 	toUuid: string;
 	weightIntent: number | string;
 	description: string;
-	timeStart: string | Date;
-	timeEnd: string | Date;
+	timeStart: string | Date | null;
+	timeEnd: string | Date | null;
 	transportType: number;
 	documentId: string;
 	batchUuid: string;

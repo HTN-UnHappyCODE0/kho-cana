@@ -440,15 +440,15 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 							},
 							{
 								title: 'Tổng KL (Tấn)',
-								render: (data: IDataBill) => <>{convertWeight(data?.weightTotal) || '---'}</>,
+								render: (data: IDataBill) => <>{convertWeight(data?.weightTotal) || 0}</>,
 							},
 							{
 								title: 'KL 1 (Tấn)',
-								render: (data: IDataBill) => <>{convertWeight(data?.weigth1) || '---'}</>,
+								render: (data: IDataBill) => <>{convertWeight(data?.weigth1) || 0}</>,
 							},
 							{
 								title: 'KL 2 (Tấn)',
-								render: (data: IDataBill) => <>{convertWeight(data?.weigth2) || '---'}</>,
+								render: (data: IDataBill) => <>{convertWeight(data?.weigth2) || 0}</>,
 							},
 							{
 								title: 'Cảng bốc dỡ',

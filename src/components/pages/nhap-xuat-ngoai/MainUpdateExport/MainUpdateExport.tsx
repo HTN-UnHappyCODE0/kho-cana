@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
-import {IFormUpdateExport, PropsMainUpdateExport} from './interfaces';
+import { IFormUpdateExport, PropsMainUpdateExport } from './interfaces';
 import styles from './MainUpdateExport.module.scss';
 
-import Form, {FormContext, Input} from '~/components/common/Form';
+import Form, { FormContext, Input } from '~/components/common/Form';
 import Button from '~/components/common/Button';
-import {useRouter} from 'next/router';
-import {clsx} from 'clsx';
-import Select, {Option} from '~/components/common/Select';
-import {useMutation, useQuery} from '@tanstack/react-query';
+import { useRouter } from 'next/router';
+import { clsx } from 'clsx';
+import Select, { Option } from '~/components/common/Select';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
 	CONFIG_DESCENDING,
 	CONFIG_PAGING,
@@ -23,7 +23,7 @@ import {
 	TYPE_SIFT,
 	TYPE_TRANSPORT,
 } from '~/constants/config/enum';
-import {httpRequest} from '~/services';
+import { httpRequest } from '~/services';
 import customerServices from '~/services/customerServices';
 import wareServices from '~/services/wareServices';
 import warehouseServices from '~/services/warehouseServices';
@@ -33,16 +33,17 @@ import TextArea from '~/components/common/Form/components/TextArea';
 import batchBillServices from '~/services/batchBillServices';
 import moment from 'moment';
 import Loading from '~/components/common/Loading';
-import {toastWarn} from '~/common/funcs/toast';
+import { toastWarn } from '~/common/funcs/toast';
 import UploadMultipleFile from '~/components/common/UploadMultipleFile';
 import uploadImageService from '~/services/uploadService';
-import {convertCoin, price} from '~/common/funcs/convertCoin';
-import {IDetailBatchBill} from '../../lenh-can/MainDetailBill/interfaces';
+import { convertCoin, price } from '~/common/funcs/convertCoin';
+import { IDetailBatchBill } from '../../lenh-can/MainDetailBill/interfaces';
 import shipServices from '~/services/shipServices';
+import { timeSubmit } from '~/common/funcs/optionConvert';
 
-function MainUpdateExport({}: PropsMainUpdateExport) {
+function MainUpdateExport({ }: PropsMainUpdateExport) {
 	const router = useRouter();
-	const {_id} = router.query;
+	const { _id } = router.query;
 	const [loading, setLoading] = useState<boolean>(false);
 	const [images, setImages] = useState<any[]>([]);
 	const [form, setForm] = useState<IFormUpdateExport>({
@@ -63,7 +64,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 		portname: '',
 	});
 
-	const {data: detailBatchBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_nhap_xuat_ngoai, _id], {
+	const { data: detailBatchBill } = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_nhap_xuat_ngoai, _id], {
 		queryFn: () =>
 			httpRequest({
 				http: batchBillServices.detailBatchbill({
@@ -238,7 +239,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 	});
 
 	const funcUpdateBatchBillNoScale = useMutation({
-		mutationFn: (body: {paths: string[]}) =>
+		mutationFn: (body: { paths: string[] }) =>
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
@@ -268,8 +269,8 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 					portname: form?.portname,
 					lstTruckAddUuid: [],
 					lstTruckRemoveUuid: [],
-					timeStart: form?.timeStart ? moment(form?.timeStart!).format('YYYY-MM-DD') : null,
-					timeEnd: form?.timeEnd ? moment(form?.timeEnd!).format('YYYY-MM-DD') : null,
+					timeEnd: form?.timeEnd ? timeSubmit(new Date(form?.timeEnd!), true) : null,
+					timeStart: form?.timeStart ? timeSubmit(new Date(form?.timeStart!)) : null,
 					descriptionWs: '',
 					paths: body.paths,
 				}),
@@ -280,7 +281,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 			}
 		},
 		onError(error) {
-			console.log({error});
+			console.log({ error });
 			return;
 		},
 	});
@@ -290,25 +291,25 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 		const timeEnd = new Date(form.timeEnd!);
 
 		if (!form.toUuid) {
-			return toastWarn({msg: 'Vui lòng chọn khách hàng xuất!'});
+			return toastWarn({ msg: 'Vui lòng chọn khách hàng xuất!' });
 		}
 		if (!form.warehouseUuid) {
-			return toastWarn({msg: 'Vui lòng chọn kho!'});
+			return toastWarn({ msg: 'Vui lòng chọn kho!' });
 		}
 		if (!form.fromUuid) {
-			return toastWarn({msg: 'Vui lòng chọn bãi!'});
+			return toastWarn({ msg: 'Vui lòng chọn bãi!' });
 		}
 		if (!form.productTypeUuid) {
-			return toastWarn({msg: 'Vui lòng chọn loại hàng!'});
+			return toastWarn({ msg: 'Vui lòng chọn loại hàng!' });
 		}
 		if (!form.specificationsUuid) {
-			return toastWarn({msg: 'Vui lòng chọn quy cách!'});
+			return toastWarn({ msg: 'Vui lòng chọn quy cách!' });
 		}
 		if (!form.weightIntent) {
-			return toastWarn({msg: 'Vui lòng nhập khối lượng cân'});
+			return toastWarn({ msg: 'Vui lòng nhập khối lượng cân' });
 		}
 		if (timeStart > timeEnd) {
-			return toastWarn({msg: 'Ngày kết thúc không hợp lệ!'});
+			return toastWarn({ msg: 'Ngày kết thúc không hợp lệ!' });
 		}
 		const currentImage = images.filter((item) => !!item.img).map((v) => v.img);
 
@@ -325,7 +326,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 					paths: [...currentImage, ...dataImage.items],
 				});
 			} else {
-				return toastWarn({msg: 'Upload ảnh thất bại!'});
+				return toastWarn({ msg: 'Upload ảnh thất bại!' });
 			}
 		} else {
 			return funcUpdateBatchBillNoScale.mutate({
@@ -348,7 +349,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 							Hủy bỏ
 						</Button>
 						<FormContext.Consumer>
-							{({isDone}) => (
+							{({ isDone }) => (
 								<Button disable={!isDone} p_10_24 rounded_2 primary>
 									Lưu lại
 								</Button>
@@ -361,7 +362,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 					<div className='col_2'>
 						<div className={styles.item}>
 							<label className={styles.label}>
-								Hình thức vận chuyển <span style={{color: 'red'}}>*</span>
+								Hình thức vận chuyển <span style={{ color: 'red' }}>*</span>
 							</label>
 							<div className={styles.group_radio}>
 								<div className={styles.item_radio}>
@@ -407,7 +408,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 							value={form?.toUuid}
 							label={
 								<span>
-									Khách hàng xuất<span style={{color: 'red'}}>*</span>
+									Khách hàng xuất<span style={{ color: 'red' }}>*</span>
 								</span>
 							}
 						>
@@ -437,7 +438,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 							readOnly={form.transportType == TYPE_TRANSPORT.DUONG_BO}
 							label={
 								<span>
-									Tàu <span style={{color: 'red'}}>*</span>
+									Tàu <span style={{ color: 'red' }}>*</span>
 								</span>
 							}
 						>
@@ -472,7 +473,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 							value={form?.warehouseUuid}
 							label={
 								<span>
-									Từ kho hàng<span style={{color: 'red'}}>*</span>
+									Từ kho hàng<span style={{ color: 'red' }}>*</span>
 								</span>
 							}
 						>
@@ -499,7 +500,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 								value={form?.fromUuid}
 								label={
 									<span>
-										Từ bãi<span style={{color: 'red'}}>*</span>
+										Từ bãi<span style={{ color: 'red' }}>*</span>
 									</span>
 								}
 							>
@@ -530,7 +531,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 							value={form?.productTypeUuid}
 							label={
 								<span>
-									Loại hàng<span style={{color: 'red'}}>*</span>
+									Loại hàng<span style={{ color: 'red' }}>*</span>
 								</span>
 							}
 						>
@@ -556,7 +557,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 								value={form?.specificationsUuid}
 								label={
 									<span>
-										Quy cách<span style={{color: 'red'}}>*</span>
+										Quy cách<span style={{ color: 'red' }}>*</span>
 									</span>
 								}
 							>
@@ -586,7 +587,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 							unit='KG'
 							label={
 								<span>
-									Khối lượng cân<span style={{color: 'red'}}>*</span>
+									Khối lượng cân<span style={{ color: 'red' }}>*</span>
 								</span>
 							}
 							placeholder='Nhập khối lượng'
@@ -606,7 +607,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 						<DatePicker
 							label={
 								<span>
-									Ngày bắt đầu <span style={{color: 'red'}}>*</span>
+									Ngày bắt đầu <span style={{ color: 'red' }}>*</span>
 								</span>
 							}
 							value={form.timeStart}
@@ -622,7 +623,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 							<DatePicker
 								label={
 									<span>
-										Ngày kết thúc <span style={{color: 'red'}}>*</span>
+										Ngày kết thúc <span style={{ color: 'red' }}>*</span>
 									</span>
 								}
 								value={form.timeEnd}

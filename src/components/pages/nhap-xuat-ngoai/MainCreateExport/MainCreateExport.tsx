@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
-import {IFormCreateExport, PropsMainCreateExport} from './interfaces';
+import { IFormCreateExport, PropsMainCreateExport } from './interfaces';
 import styles from './MainCreateExport.module.scss';
-import Form, {FormContext, Input} from '~/components/common/Form';
+import Form, { FormContext, Input } from '~/components/common/Form';
 import Button from '~/components/common/Button';
-import {useRouter} from 'next/router';
-import {clsx} from 'clsx';
-import Select, {Option} from '~/components/common/Select';
-import {useMutation, useQuery} from '@tanstack/react-query';
+import { useRouter } from 'next/router';
+import { clsx } from 'clsx';
+import Select, { Option } from '~/components/common/Select';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
 	CONFIG_DESCENDING,
 	CONFIG_PAGING,
@@ -22,7 +22,7 @@ import {
 	TYPE_SIFT,
 	TYPE_TRANSPORT,
 } from '~/constants/config/enum';
-import {httpRequest} from '~/services';
+import { httpRequest } from '~/services';
 import customerServices from '~/services/customerServices';
 import wareServices from '~/services/wareServices';
 import warehouseServices from '~/services/warehouseServices';
@@ -32,15 +32,15 @@ import TextArea from '~/components/common/Form/components/TextArea';
 import batchBillServices from '~/services/batchBillServices';
 import moment from 'moment';
 import Loading from '~/components/common/Loading';
-import {toastWarn} from '~/common/funcs/toast';
-import {timeSubmit} from '~/common/funcs/optionConvert';
+import { toastWarn } from '~/common/funcs/toast';
+import { timeSubmit } from '~/common/funcs/optionConvert';
 import UploadMultipleFile from '~/components/common/UploadMultipleFile';
 import uploadImageService from '~/services/uploadService';
-import {price} from '~/common/funcs/convertCoin';
-import {TimerStart} from 'iconsax-react';
+import { price } from '~/common/funcs/convertCoin';
+import { TimerStart } from 'iconsax-react';
 import shipServices from '~/services/shipServices';
 
-function MainCreateExport({}: PropsMainCreateExport) {
+function MainCreateExport({ }: PropsMainCreateExport) {
 	const router = useRouter();
 	const [loading, setLoading] = useState<boolean>(false);
 	const [images, setImages] = useState<any[]>([]);
@@ -51,8 +51,8 @@ function MainCreateExport({}: PropsMainCreateExport) {
 		specificationsUuid: '',
 		warehouseUuid: '',
 		weightIntent: 0,
-		timeEnd: '',
-		timeStart: '',
+		timeEnd: null,
+		timeStart: null,
 		description: '',
 		transportType: TYPE_TRANSPORT.DUONG_THUY,
 		documentId: '',
@@ -197,7 +197,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 	});
 
 	const funcCreateBatchBillNoScale = useMutation({
-		mutationFn: (body: {paths: string[]}) =>
+		mutationFn: (body: { paths: string[] }) =>
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
@@ -228,8 +228,8 @@ function MainCreateExport({}: PropsMainCreateExport) {
 					portname: form.portname,
 					lstTruckAddUuid: [],
 					lstTruckRemoveUuid: [],
-					timeStart: form?.timeStart ? moment(form?.timeStart!).format('YYYY-MM-DD') : null,
-					timeEnd: form?.timeEnd ? moment(form?.timeEnd!).format('YYYY-MM-DD') : null,
+					timeEnd: form?.timeEnd ? timeSubmit(new Date(form?.timeEnd!), true) : null,
+					timeStart: form?.timeStart ? timeSubmit(new Date(form?.timeStart!)) : null,
 					descriptionWs: '',
 					paths: body.paths,
 				}),
@@ -240,7 +240,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 			}
 		},
 		onError(error) {
-			console.log({error});
+			console.log({ error });
 			return;
 		},
 	});
@@ -251,25 +251,25 @@ function MainCreateExport({}: PropsMainCreateExport) {
 		const imgs = images?.map((v: any) => v?.file);
 
 		if (!form.toUuid) {
-			return toastWarn({msg: 'Vui lòng chọn khách hàng xuất!'});
+			return toastWarn({ msg: 'Vui lòng chọn khách hàng xuất!' });
 		}
 		if (!form.warehouseUuid) {
-			return toastWarn({msg: 'Vui lòng chọn kho!'});
+			return toastWarn({ msg: 'Vui lòng chọn kho!' });
 		}
 		if (!form.fromUuid) {
-			return toastWarn({msg: 'Vui lòng chọn bãi!'});
+			return toastWarn({ msg: 'Vui lòng chọn bãi!' });
 		}
 		if (!form.productTypeUuid) {
-			return toastWarn({msg: 'Vui lòng chọn loại hàng!'});
+			return toastWarn({ msg: 'Vui lòng chọn loại hàng!' });
 		}
 		if (!form.specificationsUuid) {
-			return toastWarn({msg: 'Vui lòng chọn quy cách!'});
+			return toastWarn({ msg: 'Vui lòng chọn quy cách!' });
 		}
 		if (!form.weightIntent) {
-			return toastWarn({msg: 'Vui lòng nhập khối lượng cân'});
+			return toastWarn({ msg: 'Vui lòng nhập khối lượng cân' });
 		}
 		if (timeStart > timeEnd) {
-			return toastWarn({msg: 'Ngày kết thúc không hợp lệ!'});
+			return toastWarn({ msg: 'Ngày kết thúc không hợp lệ!' });
 		}
 		if (imgs.length > 0) {
 			const dataImage = await httpRequest({
@@ -282,7 +282,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 					paths: dataImage.items,
 				});
 			} else {
-				return toastWarn({msg: 'Upload ảnh thất bại!'});
+				return toastWarn({ msg: 'Upload ảnh thất bại!' });
 			}
 		} else {
 			return funcCreateBatchBillNoScale.mutate({
@@ -308,7 +308,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 							Hủy bỏ
 						</Button>
 						<FormContext.Consumer>
-							{({isDone}) => (
+							{({ isDone }) => (
 								<Button disable={!isDone} p_10_24 rounded_2 primary>
 									Lưu lại
 								</Button>
@@ -321,7 +321,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 					<div className='col_2'>
 						<div className={styles.item}>
 							<label className={styles.label}>
-								Hình thức vận chuyển <span style={{color: 'red'}}>*</span>
+								Hình thức vận chuyển <span style={{ color: 'red' }}>*</span>
 							</label>
 							<div className={styles.group_radio}>
 								<div className={styles.item_radio}>
@@ -367,7 +367,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 							value={form?.toUuid}
 							label={
 								<span>
-									Khách hàng xuất<span style={{color: 'red'}}>*</span>
+									Khách hàng xuất<span style={{ color: 'red' }}>*</span>
 								</span>
 							}
 						>
@@ -397,7 +397,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 							readOnly={form.transportType == TYPE_TRANSPORT.DUONG_BO}
 							label={
 								<span>
-									Tàu <span style={{color: 'red'}}>*</span>
+									Tàu <span style={{ color: 'red' }}>*</span>
 								</span>
 							}
 						>
@@ -432,7 +432,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 							value={form?.warehouseUuid}
 							label={
 								<span>
-									Từ kho hàng<span style={{color: 'red'}}>*</span>
+									Từ kho hàng<span style={{ color: 'red' }}>*</span>
 								</span>
 							}
 						>
@@ -459,7 +459,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 								value={form?.fromUuid}
 								label={
 									<span>
-										Từ bãi<span style={{color: 'red'}}>*</span>
+										Từ bãi<span style={{ color: 'red' }}>*</span>
 									</span>
 								}
 							>
@@ -490,7 +490,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 							value={form?.productTypeUuid}
 							label={
 								<span>
-									Loại hàng<span style={{color: 'red'}}>*</span>
+									Loại hàng<span style={{ color: 'red' }}>*</span>
 								</span>
 							}
 						>
@@ -516,7 +516,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 								value={form?.specificationsUuid}
 								label={
 									<span>
-										Quy cách<span style={{color: 'red'}}>*</span>
+										Quy cách<span style={{ color: 'red' }}>*</span>
 									</span>
 								}
 							>
@@ -546,7 +546,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 							unit='KG'
 							label={
 								<span>
-									Khối lượng cân<span style={{color: 'red'}}>*</span>
+									Khối lượng cân<span style={{ color: 'red' }}>*</span>
 								</span>
 							}
 							placeholder='Nhập khối lượng'
@@ -566,7 +566,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 						<DatePicker
 							label={
 								<span>
-									Ngày bắt đầu <span style={{color: 'red'}}>*</span>
+									Ngày bắt đầu <span style={{ color: 'red' }}>*</span>
 								</span>
 							}
 							value={form.timeStart}
@@ -582,7 +582,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 							<DatePicker
 								label={
 									<span>
-										Ngày kết thúc <span style={{color: 'red'}}>*</span>
+										Ngày kết thúc <span style={{ color: 'red' }}>*</span>
 									</span>
 								}
 								value={form.timeEnd}

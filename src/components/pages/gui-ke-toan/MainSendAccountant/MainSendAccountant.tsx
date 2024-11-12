@@ -441,7 +441,7 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 							},
 							{
 								title: 'KL quy khô (Tấn)',
-								render: (data: IWeightSession) => <>{convertWeight(data?.weightBdmt) || '---'}</>,
+								render: (data: IWeightSession) => <>{convertWeight(data?.weightBdmt) || 0}</>,
 							},
 							{
 								title: 'Độ khô',
