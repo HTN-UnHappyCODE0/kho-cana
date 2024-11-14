@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { PropsMainPageImport } from './interfaces';
+import {PropsMainPageImport} from './interfaces';
 import styles from './MainPageImport.module.scss';
 import DataWrapper from '~/components/common/DataWrapper';
 import Pagination from '~/components/common/Pagination';
-import { Eye } from 'iconsax-react';
+import {Eye} from 'iconsax-react';
 import IconCustom from '~/components/common/IconCustom';
-import { LuPencil } from 'react-icons/lu';
+import {LuPencil} from 'react-icons/lu';
 import Moment from 'react-moment';
-import { convertWeight } from '~/common/funcs/optionConvert';
+import {convertWeight} from '~/common/funcs/optionConvert';
 import {
 	CONFIG_DESCENDING,
 	CONFIG_PAGING,
@@ -31,20 +31,20 @@ import Button from '~/components/common/Button';
 import Image from 'next/image';
 import DateRangerCustom from '~/components/common/DateRangerCustom';
 import Search from '~/components/common/Search';
-import { useRouter } from 'next/router';
+import {useRouter} from 'next/router';
 import icons from '~/constants/images/icons';
 import batchBillServices from '~/services/batchBillServices';
-import { httpRequest } from '~/services';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import {httpRequest} from '~/services';
+import {useMutation, useQuery} from '@tanstack/react-query';
 import FilterCustom from '~/components/common/FilterCustom';
 import shipServices from '~/services/shipServices';
 import wareServices from '~/services/wareServices';
 import storageServices from '~/services/storageServices';
 import customerServices from '~/services/customerServices';
-import { clsx } from 'clsx';
+import {clsx} from 'clsx';
 import StateActive from '~/components/common/StateActive';
 
-function MainPageImport({ }: PropsMainPageImport) {
+function MainPageImport({}: PropsMainPageImport) {
 	const router = useRouter();
 
 	const {
@@ -95,13 +95,13 @@ function MainPageImport({ }: PropsMainPageImport) {
 						state: !!_state
 							? [Number(_state)]
 							: [
-								STATE_BILL.NOT_CHECK,
-								STATE_BILL.QLK_REJECTED,
-								STATE_BILL.QLK_CHECKED,
-								STATE_BILL.KTK_REJECTED,
-								STATE_BILL.KTK_CHECKED,
-								STATE_BILL.END,
-							],
+									STATE_BILL.NOT_CHECK,
+									STATE_BILL.QLK_REJECTED,
+									STATE_BILL.QLK_CHECKED,
+									STATE_BILL.KTK_REJECTED,
+									STATE_BILL.KTK_CHECKED,
+									STATE_BILL.END,
+							  ],
 						customerUuid: (_customerUuid as string) || '',
 						isBatch: TYPE_BATCH.KHONG_CAN,
 						isCreateBatch: null,
@@ -110,12 +110,12 @@ function MainPageImport({ }: PropsMainPageImport) {
 						status: !!_status
 							? [Number(_status)]
 							: [
-								STATUS_BILL.DANG_CAN,
-								STATUS_BILL.TAM_DUNG,
-								STATUS_BILL.DA_CAN_CHUA_KCS,
-								STATUS_BILL.DA_KCS,
-								STATUS_BILL.CHOT_KE_TOAN,
-							],
+									STATUS_BILL.DANG_CAN,
+									STATUS_BILL.TAM_DUNG,
+									STATUS_BILL.DA_CAN_CHUA_KCS,
+									STATUS_BILL.DA_KCS,
+									STATUS_BILL.CHOT_KE_TOAN,
+							  ],
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
 						warehouseUuid: '',
@@ -235,13 +235,13 @@ function MainPageImport({ }: PropsMainPageImport) {
 					state: !!_state
 						? [Number(_state)]
 						: [
-							STATE_BILL.NOT_CHECK,
-							STATE_BILL.QLK_REJECTED,
-							STATE_BILL.QLK_CHECKED,
-							STATE_BILL.KTK_REJECTED,
-							STATE_BILL.KTK_CHECKED,
-							STATE_BILL.END,
-						],
+								STATE_BILL.NOT_CHECK,
+								STATE_BILL.QLK_REJECTED,
+								STATE_BILL.QLK_CHECKED,
+								STATE_BILL.KTK_REJECTED,
+								STATE_BILL.KTK_CHECKED,
+								STATE_BILL.END,
+						  ],
 					customerUuid: (_customerUuid as string) || '',
 					isBatch: TYPE_BATCH.KHONG_CAN,
 					isCreateBatch: null,
@@ -250,12 +250,12 @@ function MainPageImport({ }: PropsMainPageImport) {
 					status: !!_status
 						? [Number(_status)]
 						: [
-							STATUS_BILL.DANG_CAN,
-							STATUS_BILL.TAM_DUNG,
-							STATUS_BILL.DA_CAN_CHUA_KCS,
-							STATUS_BILL.DA_KCS,
-							STATUS_BILL.CHOT_KE_TOAN,
-						],
+								STATUS_BILL.DANG_CAN,
+								STATUS_BILL.TAM_DUNG,
+								STATUS_BILL.DA_CAN_CHUA_KCS,
+								STATUS_BILL.DA_KCS,
+								STATUS_BILL.CHOT_KE_TOAN,
+						  ],
 					timeStart: _dateFrom ? (_dateFrom as string) : null,
 					timeEnd: _dateTo ? (_dateTo as string) : null,
 					warehouseUuid: '',
@@ -363,7 +363,6 @@ function MainPageImport({ }: PropsMainPageImport) {
 						name='Trạng thái'
 						query='_status'
 						listFilter={[
-
 							{
 								id: STATUS_BILL.TAM_DUNG,
 								name: 'Tạm dừng',
@@ -410,7 +409,7 @@ function MainPageImport({ }: PropsMainPageImport) {
 				<div className={styles.parameter}>
 					<div>
 						TỔNG LƯỢNG HÀNG TƯƠI:
-						<span style={{ color: '#2D74FF', marginLeft: 4 }}>{convertWeight(listBill?.data?.amountMt) || 0} </span>(Tấn)
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(listBill?.data?.amountMt) || 0} </span>(Tấn)
 					</div>
 				</div>
 			</div>
@@ -441,7 +440,7 @@ function MainPageImport({ }: PropsMainPageImport) {
 							{
 								title: 'Loại cân',
 								render: (data: any) => (
-									<p style={{ fontWeight: 600 }}>
+									<p style={{fontWeight: 600}}>
 										{data?.scalesType == TYPE_SCALES.CAN_NHAP && 'Cân nhập'}
 										{data?.scalesType == TYPE_SCALES.CAN_XUAT && 'Cân xuất'}
 										{data?.scalesType == TYPE_SCALES.CAN_DICH_VU && 'Cân dịch vụ'}
@@ -460,18 +459,18 @@ function MainPageImport({ }: PropsMainPageImport) {
 								),
 							},
 							{
-								title: 'Từ (tàu/xe)',
+								title: 'Từ (Tàu/Xe)',
 								render: (data: any) => (
 									<>
-										<p style={{ marginBottom: 4, fontWeight: 600 }}>{data?.fromUu?.name || data?.customerName}</p>
+										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>
 										{data?.scalesType == TYPE_SCALES.CAN_XUAT && (
 											<>
-												<p style={{ fontWeight: 500, color: '#3772FF' }}>{'---'}</p>
+												<p style={{fontWeight: 500, color: '#3772FF'}}>{'---'}</p>
 											</>
 										)}
 										{!(data?.scalesType == TYPE_SCALES.CAN_XUAT) && (
 											<>
-												<p style={{ fontWeight: 500, color: '#3772FF' }}>
+												<p style={{fontWeight: 500, color: '#3772FF'}}>
 													{data?.batchsUu?.shipUu?.licensePalate || '---'}
 												</p>
 											</>
@@ -483,14 +482,14 @@ function MainPageImport({ }: PropsMainPageImport) {
 								title: 'Đến',
 								render: (data: any) => (
 									<>
-										<p style={{ marginBottom: 4, fontWeight: 600 }}>{data?.toUu?.name || '---'}</p>
+										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.toUu?.name || '---'}</p>
 										{data?.scalesType == TYPE_SCALES.CAN_XUAT && (
-											<p style={{ fontWeight: 400, color: '#3772FF' }}>
+											<p style={{fontWeight: 400, color: '#3772FF'}}>
 												{data?.batchsUu?.shipUu?.licensePalate || '---'}
 											</p>
 										)}
 										{!(data?.scalesType == TYPE_SCALES.CAN_XUAT) && (
-											<p style={{ fontWeight: 400, color: '#3772FF' }}>
+											<p style={{fontWeight: 400, color: '#3772FF'}}>
 												{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
 											</p>
 										)}
@@ -611,7 +610,7 @@ function MainPageImport({ }: PropsMainPageImport) {
 								title: 'Tác vụ',
 								fixedRight: true,
 								render: (data: any) => (
-									<div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
 										<IconCustom
 											edit
 											icon={<LuPencil size={22} fontWeight={600} />}

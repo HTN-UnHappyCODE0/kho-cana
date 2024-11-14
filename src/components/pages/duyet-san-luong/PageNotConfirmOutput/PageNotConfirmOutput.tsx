@@ -419,7 +419,7 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 								),
 							},
 							{
-								title: 'Loại cân/ thời gian kêt thúc',
+								title: 'Loại cân/ Thời gian kết thúc',
 								render: (data: ITableBillScale) => (
 									<>
 										<p style={{fontWeight: 600}}>
@@ -448,7 +448,7 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 							// 	),
 							// },
 							{
-								title: 'Từ(tàu/xe)',
+								title: 'Từ(Tàu/Xe)',
 								render: (data: ITableBillScale) => (
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>

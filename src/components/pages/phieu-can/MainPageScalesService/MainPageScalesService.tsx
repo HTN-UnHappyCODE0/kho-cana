@@ -557,7 +557,7 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 								),
 							},
 							{
-								title: 'Từ(tàu/xe)',
+								title: 'Từ(Tàu/Xe)',
 								render: (data: ITableBillScale) => (
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>

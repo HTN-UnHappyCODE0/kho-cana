@@ -41,6 +41,31 @@ const partnerServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	upsertPartner: (
+		data: {
+			uuid: string;
+			name: string;
+			type: number;
+			taxCode: string;
+			phoneNumber: string;
+			email: string;
+			director: string;
+			districtId: string;
+			provinceId: string;
+			townId: string;
+			address: string;
+			description: string;
+			userOwenerUuid: string;
+			bankName: string;
+			bankAccount: string;
+			companyUuid: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/Partner/upsert-partner`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 };
 
 export default partnerServices;
