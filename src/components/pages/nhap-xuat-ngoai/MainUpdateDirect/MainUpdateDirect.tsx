@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
-import { IFormUpdateDirect, PropsMainUpdateDirect } from './interfaces';
+import {IFormUpdateDirect, PropsMainUpdateDirect} from './interfaces';
 import styles from './MainUpdateDirect.module.scss';
-import { useRouter } from 'next/router';
+import {useRouter} from 'next/router';
 import {
 	CONFIG_DESCENDING,
 	CONFIG_PAGING,
@@ -17,15 +17,15 @@ import {
 	TYPE_TRANSPORT,
 } from '~/constants/config/enum';
 import batchBillServices from '~/services/batchBillServices';
-import { httpRequest } from '~/services';
-import { IDetailBatchBill } from '../../lenh-can/MainDetailBill/interfaces';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { convertCoin, price } from '~/common/funcs/convertCoin';
+import {httpRequest} from '~/services';
+import {IDetailBatchBill} from '../../lenh-can/MainDetailBill/interfaces';
+import {useMutation, useQuery} from '@tanstack/react-query';
+import {convertCoin, price} from '~/common/funcs/convertCoin';
 import Loading from '~/components/common/Loading';
-import Form, { FormContext, Input } from '~/components/common/Form';
+import Form, {FormContext, Input} from '~/components/common/Form';
 import Button from '~/components/common/Button';
 import clsx from 'clsx';
-import Select, { Option } from '~/components/common/Select';
+import Select, {Option} from '~/components/common/Select';
 import DatePicker from '~/components/common/DatePicker';
 import TextArea from '~/components/common/Form/components/TextArea';
 import UploadMultipleFile from '~/components/common/UploadMultipleFile';
@@ -33,15 +33,15 @@ import customerServices from '~/services/customerServices';
 import shipServices from '~/services/shipServices';
 import warehouseServices from '~/services/warehouseServices';
 import storageServices from '~/services/storageServices';
-import { IDetailCustomer } from '../MainCreateDirect/interfaces';
+import {IDetailCustomer} from '../MainCreateDirect/interfaces';
 import moment from 'moment';
-import { toastWarn } from '~/common/funcs/toast';
+import {toastWarn} from '~/common/funcs/toast';
 import uploadImageService from '~/services/uploadService';
-import { timeSubmit } from '~/common/funcs/optionConvert';
+import {timeSubmit} from '~/common/funcs/optionConvert';
 
-function MainUpdateDirect({ }: PropsMainUpdateDirect) {
+function MainUpdateDirect({}: PropsMainUpdateDirect) {
 	const router = useRouter();
-	const { _id } = router.query;
+	const {_id} = router.query;
 	const [loading, setLoading] = useState<boolean>(false);
 	const [images, setImages] = useState<any[]>([]);
 	const [form, setForm] = useState<IFormUpdateDirect>({
@@ -63,7 +63,7 @@ function MainUpdateDirect({ }: PropsMainUpdateDirect) {
 		billUuid: '',
 	});
 
-	const { data: detailBatchBill } = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_nhap_xuat_ngoai, _id], {
+	const {data: detailBatchBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_nhap_xuat_ngoai, _id], {
 		queryFn: () =>
 			httpRequest({
 				http: batchBillServices.detailBatchbill({
@@ -223,7 +223,7 @@ function MainUpdateDirect({ }: PropsMainUpdateDirect) {
 		},
 	});
 
-	const { data: detailCustomer } = useQuery<IDetailCustomer>([QUERY_KEY.chi_tiet_khach_hang, form.fromUuid], {
+	const {data: detailCustomer} = useQuery<IDetailCustomer>([QUERY_KEY.chi_tiet_khach_hang, form.fromUuid], {
 		queryFn: () =>
 			httpRequest({
 				http: customerServices.getDetail({
@@ -249,7 +249,7 @@ function MainUpdateDirect({ }: PropsMainUpdateDirect) {
 	});
 
 	const funcUpdateBatchBillNoScale = useMutation({
-		mutationFn: (body: { paths: string[] }) =>
+		mutationFn: (body: {paths: string[]}) =>
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
@@ -291,7 +291,7 @@ function MainUpdateDirect({ }: PropsMainUpdateDirect) {
 			}
 		},
 		onError(error) {
-			console.log({ error });
+			console.log({error});
 			return;
 		},
 	});
@@ -300,43 +300,45 @@ function MainUpdateDirect({ }: PropsMainUpdateDirect) {
 		const today = new Date(timeSubmit(new Date())!);
 		const timeStart = new Date(form.timeStart!);
 		const timeEnd = new Date(form.timeEnd!);
+		const tomorrow = new Date(today);
+		tomorrow.setDate(today.getDate() + 1);
 
 		if (!form.fromUuid) {
-			return toastWarn({ msg: 'Vui lòng chọn nhà cung cấp!' });
+			return toastWarn({msg: 'Vui lòng chọn nhà cung cấp!'});
 		}
 		if (!form.shipUuid) {
-			return toastWarn({ msg: 'Vui lòng chọn tàu!' });
+			return toastWarn({msg: 'Vui lòng chọn tàu!'});
 		}
 		if (!form.productTypeUuid) {
-			return toastWarn({ msg: 'Vui lòng chọn loại hàng!' });
+			return toastWarn({msg: 'Vui lòng chọn loại hàng!'});
 		}
 		if (!form.specificationsUuid) {
-			return toastWarn({ msg: 'Vui lòng chọn quy cách!' });
+			return toastWarn({msg: 'Vui lòng chọn quy cách!'});
 		}
 		if (!form.warehouseUuid) {
-			return toastWarn({ msg: 'Vui lòng chọn kho hàng!' });
+			return toastWarn({msg: 'Vui lòng chọn kho hàng!'});
 		}
 
 		if (!form.storageTemporaryUuid) {
-			return toastWarn({ msg: 'Vui lòng chọn bãi trung chuyển!' });
+			return toastWarn({msg: 'Vui lòng chọn bãi trung chuyển!'});
 		}
 		if (!form.toUuid) {
-			return toastWarn({ msg: 'Vui lòng chọn khách hàng xuất!' });
+			return toastWarn({msg: 'Vui lòng chọn khách hàng xuất!'});
 		}
 
 		if (!form.weightIntent) {
-			return toastWarn({ msg: 'Vui lòng nhập khối lượng cân' });
+			return toastWarn({msg: 'Vui lòng nhập khối lượng cân'});
 		}
-		if (today < timeStart) {
-			return toastWarn({ msg: 'Ngày xuất hàng không hợp lệ!' });
+		if (tomorrow < timeStart) {
+			return toastWarn({msg: 'Ngày bắt đầu không hợp lệ!'});
 		}
 
-		if (today < timeEnd) {
-			return toastWarn({ msg: 'Ngày kết thúc không hợp lệ!' });
+		if (tomorrow < timeEnd) {
+			return toastWarn({msg: 'Ngày kết thúc không hợp lệ!'});
 		}
 
 		if (timeStart > timeEnd) {
-			return toastWarn({ msg: 'Ngày kết thúc không hợp lệ!' });
+			return toastWarn({msg: 'Ngày bắt đầu không được nhỏ hơn!'});
 		}
 		const currentImage = images.filter((item) => !!item.img).map((v) => v.img);
 
@@ -353,7 +355,7 @@ function MainUpdateDirect({ }: PropsMainUpdateDirect) {
 					paths: [...currentImage, ...dataImage.items],
 				});
 			} else {
-				return toastWarn({ msg: 'Upload ảnh thất bại!' });
+				return toastWarn({msg: 'Upload ảnh thất bại!'});
 			}
 		} else {
 			return funcUpdateBatchBillNoScale.mutate({
@@ -376,7 +378,7 @@ function MainUpdateDirect({ }: PropsMainUpdateDirect) {
 							Hủy bỏ
 						</Button>
 						<FormContext.Consumer>
-							{({ isDone }) => (
+							{({isDone}) => (
 								<Button disable={!isDone} p_10_24 rounded_2 primary>
 									Lưu lại
 								</Button>
@@ -389,7 +391,7 @@ function MainUpdateDirect({ }: PropsMainUpdateDirect) {
 					<div className={clsx('mt', 'col_2')}>
 						<div className={styles.item}>
 							<label className={styles.label}>
-								Hình thức vận chuyển <span style={{ color: 'red' }}>*</span>
+								Hình thức vận chuyển <span style={{color: 'red'}}>*</span>
 							</label>
 							<div className={styles.group_radio}>
 								{/* <div className={styles.item_radio}>
@@ -435,7 +437,7 @@ function MainUpdateDirect({ }: PropsMainUpdateDirect) {
 							value={form?.fromUuid}
 							label={
 								<span>
-									Nhà cung cấp<span style={{ color: 'red' }}>*</span>
+									Nhà cung cấp<span style={{color: 'red'}}>*</span>
 								</span>
 							}
 						>
@@ -466,7 +468,7 @@ function MainUpdateDirect({ }: PropsMainUpdateDirect) {
 								label={
 									<span>
 										Từ tàu
-										<span style={{ color: 'red' }}>*</span>
+										<span style={{color: 'red'}}>*</span>
 									</span>
 								}
 							>
@@ -497,7 +499,7 @@ function MainUpdateDirect({ }: PropsMainUpdateDirect) {
 							value={form?.productTypeUuid}
 							label={
 								<span>
-									Loại hàng<span style={{ color: 'red' }}>*</span>
+									Loại hàng<span style={{color: 'red'}}>*</span>
 								</span>
 							}
 						>
@@ -525,7 +527,7 @@ function MainUpdateDirect({ }: PropsMainUpdateDirect) {
 								value={form?.specificationsUuid}
 								label={
 									<span>
-										Quy cách <span style={{ color: 'red' }}>*</span>
+										Quy cách <span style={{color: 'red'}}>*</span>
 									</span>
 								}
 							>
@@ -556,7 +558,7 @@ function MainUpdateDirect({ }: PropsMainUpdateDirect) {
 							value={form?.warehouseUuid}
 							label={
 								<span>
-									Kho hàng <span style={{ color: 'red' }}>*</span>
+									Kho hàng <span style={{color: 'red'}}>*</span>
 								</span>
 							}
 						>
@@ -585,7 +587,7 @@ function MainUpdateDirect({ }: PropsMainUpdateDirect) {
 								readOnly={!form.warehouseUuid || !form.productTypeUuid || !form.specificationsUuid}
 								label={
 									<span>
-										Bãi trung chuyển <span style={{ color: 'red' }}>*</span>
+										Bãi trung chuyển <span style={{color: 'red'}}>*</span>
 									</span>
 								}
 							>
@@ -614,7 +616,7 @@ function MainUpdateDirect({ }: PropsMainUpdateDirect) {
 							value={form?.toUuid}
 							label={
 								<span>
-									Khách hàng xuất<span style={{ color: 'red' }}>*</span>
+									Khách hàng xuất<span style={{color: 'red'}}>*</span>
 								</span>
 							}
 						>
@@ -642,7 +644,7 @@ function MainUpdateDirect({ }: PropsMainUpdateDirect) {
 								readOnly={form.transportType == TYPE_TRANSPORT.DUONG_BO}
 								label={
 									<span>
-										Đến tàu <span style={{ color: 'red' }}>*</span>
+										Đến tàu <span style={{color: 'red'}}>*</span>
 									</span>
 								}
 							>
@@ -675,7 +677,7 @@ function MainUpdateDirect({ }: PropsMainUpdateDirect) {
 							placeholder='Nhập khối lượng cân'
 							label={
 								<span>
-									Khối lượng cân <span style={{ color: 'red' }}>*</span>
+									Khối lượng cân <span style={{color: 'red'}}>*</span>
 								</span>
 							}
 						/>
@@ -700,7 +702,7 @@ function MainUpdateDirect({ }: PropsMainUpdateDirect) {
 							blur={true}
 							label={
 								<span>
-									Ngày bắt đầu <span style={{ color: 'red' }}>*</span>
+									Ngày bắt đầu <span style={{color: 'red'}}>*</span>
 								</span>
 							}
 							placeholder='Chọn ngày bắt đầu'
@@ -714,7 +716,7 @@ function MainUpdateDirect({ }: PropsMainUpdateDirect) {
 								blur={true}
 								label={
 									<span>
-										Ngày kết thúc <span style={{ color: 'red' }}>*</span>
+										Ngày kết thúc <span style={{color: 'red'}}>*</span>
 									</span>
 								}
 								placeholder='Chọn ngày kết thúc'

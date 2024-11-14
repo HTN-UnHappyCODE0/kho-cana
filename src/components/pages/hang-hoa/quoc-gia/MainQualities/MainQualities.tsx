@@ -174,9 +174,8 @@ function MainQualities({}: PropsMainQualities) {
 							},
 							{
 								title: 'Thời gian tạo',
-								render: (data: IQualities) => {
-									data?.created ? <Moment date={data?.created} format='HH:mm - DD/MM/YYYY' /> : '---';
-								},
+								render: (data: IQualities) =>
+									data?.created ? <Moment date={data?.created} format='HH:mm - DD/MM/YYYY' /> : '---',
 							},
 							{
 								title: 'Trạng thái',

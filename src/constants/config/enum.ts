@@ -39,6 +39,8 @@ export enum QUERY_KEY {
 	dropdown_nha_cung_cap_nhap,
 	dropdown_nha_cung_cap_dich_vu,
 	dropdown_quan_ly_nhap_hang,
+	dropdown_nguoi_quan_ly_nhap_hang,
+	dropdown_kho_hang_chinh,
 
 	table_xe_hang,
 	table_lenh_can_tat_ca,

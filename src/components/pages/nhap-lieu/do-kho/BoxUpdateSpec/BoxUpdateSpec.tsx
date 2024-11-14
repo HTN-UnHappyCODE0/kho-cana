@@ -127,6 +127,7 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 	};
 
 	const handleSubmitWarning = async () => {
+		setOpenWarning(false);
 		return funcUpdateSpecWeightSession.mutate();
 	};
 

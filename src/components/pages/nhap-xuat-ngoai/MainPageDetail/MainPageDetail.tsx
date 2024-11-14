@@ -209,12 +209,6 @@ function MainPageDetail({}: PropsMainPageDetail) {
 									stateActive={detailBatchBill?.status!}
 									listState={[
 										{
-											state: STATUS_BILL.DANG_CAN,
-											text: 'Đang cân',
-											textColor: '#9757D7',
-											backgroundColor: 'rgba(151, 87, 215, 0.10)',
-										},
-										{
 											state: STATUS_BILL.TAM_DUNG,
 											text: 'Tạm dừng',
 											textColor: '#F95B5B',
@@ -222,7 +216,7 @@ function MainPageDetail({}: PropsMainPageDetail) {
 										},
 										{
 											state: STATUS_BILL.DA_CAN_CHUA_KCS,
-											text: 'Đã cân chưa KCS',
+											text: 'Chưa KCS',
 											textColor: '#2D74FF',
 											backgroundColor: 'rgba(45, 116, 255, 0.10)',
 										},

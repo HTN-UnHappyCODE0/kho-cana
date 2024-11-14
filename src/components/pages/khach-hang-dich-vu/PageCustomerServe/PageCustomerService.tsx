@@ -25,6 +25,11 @@ import partnerServices from '~/services/partnerServices';
 import IconCustom from '~/components/common/IconCustom';
 import {Eye} from 'iconsax-react';
 import Link from 'next/link';
+import {LuPencil} from 'react-icons/lu';
+import Button from '~/components/common/Button';
+import {PATH} from '~/constants/config';
+import Image from 'next/image';
+import icons from '~/constants/images/icons';
 
 function PageCustomerService({}: PropsPageCustomerService) {
 	const router = useRouter();
@@ -96,6 +101,16 @@ function PageCustomerService({}: PropsPageCustomerService) {
 						/>
 					</div>
 				</div>
+				<div className={styles.btn}>
+					<Button
+						href={PATH.ThemMoiKhachHangDichVu}
+						p_8_16
+						rounded_2
+						icon={<Image alt='icon add' src={icons.add} width={20} height={20} />}
+					>
+						Thêm mới
+					</Button>
+				</div>
 			</div>
 
 			<div className={styles.table}>
@@ -154,13 +169,22 @@ function PageCustomerService({}: PropsPageCustomerService) {
 								title: 'Tác vụ',
 								fixedRight: true,
 								render: (data: ICustomer) => (
-									<IconCustom
-										edit
-										icon={<Eye fontSize={20} fontWeight={600} />}
-										tooltip='Xem chi tiết'
-										color='#777E90'
-										href={`/khach-hang-dich-vu/${data.customerUu.uuid}`}
-									/>
+									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
+										<IconCustom
+											edit
+											icon={<LuPencil fontSize={20} fontWeight={600} />}
+											tooltip='Chỉnh sửa'
+											color='#777E90'
+											href={`/khach-hang-dich-vu/chinh-sua?_id=${data?.customerUu.uuid}`}
+										/>
+										<IconCustom
+											edit
+											icon={<Eye fontSize={20} fontWeight={600} />}
+											tooltip='Xem chi tiết'
+											color='#777E90'
+											href={`/khach-hang-dich-vu/${data.customerUu.uuid}`}
+										/>
+									</div>
 								),
 							},
 						]}

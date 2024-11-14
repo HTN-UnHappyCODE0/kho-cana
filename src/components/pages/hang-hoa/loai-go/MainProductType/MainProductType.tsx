@@ -180,9 +180,8 @@ function MainProductType({}: PropsMainProductType) {
 
 							{
 								title: 'Thời gian tạo',
-								render: (data: IProductType) => {
-									data?.created ? <Moment date={data?.created} format='HH:mm - DD/MM/YYYY' /> : '---';
-								},
+								render: (data: IProductType) =>
+									data?.created ? <Moment date={data?.created} format='HH:mm - DD/MM/YYYY' /> : '---',
 							},
 							{
 								title: 'Trạng thái',

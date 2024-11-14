@@ -87,9 +87,8 @@ function TableCustomer({setTotalCustomer}: PropsTableCustomer) {
 						},
 						{
 							title: 'Thay đổi gần nhất',
-							render: (data: IDataTableCustomerStorage) => {
-								data?.dayChange ? <Moment date={data?.dayChange} format='HH:mm, DD/MM/YYYY' /> : '---';
-							},
+							render: (data: IDataTableCustomerStorage) =>
+								data?.dayChange ? <Moment date={data?.dayChange} format='HH:mm, DD/MM/YYYY' /> : '---',
 						},
 						{
 							title: 'Tác vụ',

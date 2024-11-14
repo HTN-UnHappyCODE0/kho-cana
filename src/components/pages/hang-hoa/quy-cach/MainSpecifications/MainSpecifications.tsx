@@ -212,9 +212,8 @@ function MainSpecifications({}: PropsMainSpecifications) {
 							},
 							{
 								title: 'Thời gian tạo',
-								render: (data: ISpecifications) => {
-									data?.created ? <Moment date={data?.created} format='HH:mm - DD/MM/YYYY' /> : '---';
-								},
+								render: (data: ISpecifications) =>
+									data?.created ? <Moment date={data?.created} format='HH:mm - DD/MM/YYYY' /> : '---',
 							},
 							{
 								title: 'Trạng thái',

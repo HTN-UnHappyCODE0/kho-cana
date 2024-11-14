@@ -457,7 +457,7 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 							// 	),
 							// },
 							{
-								title: 'Từ(tàu/xe)',
+								title: 'Từ(Tàu/Xe)',
 								render: (data: IDataBill) => (
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>

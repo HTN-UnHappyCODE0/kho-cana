@@ -10,11 +10,11 @@ import Table from '~/components/common/Table';
 import Pagination from '~/components/common/Pagination';
 import Link from 'next/link';
 import styles from './TableHistoryInventory.module.scss';
-import Moment from 'react-moment';
 import Noti from '~/components/common/DataWrapper/components/Noti';
 import Popup from '~/components/common/Popup';
 import PopupTableHistoryInventory from '../PopupTableHistoryInventory';
 import {convertWeight} from '~/common/funcs/optionConvert';
+import Moment from 'react-moment';
 
 function TableHistoryInventory({}: PropsTableHistoryInventory) {
 	const router = useRouter();
@@ -68,12 +68,11 @@ function TableHistoryInventory({}: PropsTableHistoryInventory) {
 							title: 'Tổng lượng quy khô còn lại (Tấn)',
 							render: (data: IInventory) => <span>{convertWeight(data?.totalAmountAfter) || 0}</span>,
 						},
-
 						{
 							title: 'Thời gian thay đổi',
-							render: (data: IInventory) => {
-								data?.created ? <Moment date={data?.created} format='HH:mm,DD/MM/YYYY' /> : '---';
-							},
+							render: (data: IInventory) => (
+								<p>{data?.created ? <Moment date={data?.created} format='HH:mm - DD/MM/YYYY' /> : '---'}</p>
+							),
 						},
 						{
 							title: 'Người thay đổi ',
