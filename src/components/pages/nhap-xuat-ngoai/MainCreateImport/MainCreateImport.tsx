@@ -251,13 +251,13 @@ function MainCreateImport({ }: PropsMainCreateImport) {
 			return toastWarn({ msg: 'Vui lòng chọn bãi!' });
 		}
 
-		// if (today > timeStart) {
-		// 	return toastWarn({msg: 'Ngày xuất hàng không hợp lệ!'});
-		// }
+		if (today < timeStart) {
+			return toastWarn({ msg: 'Ngày xuất hàng không hợp lệ!' });
+		}
 
-		// if (today > timeEnd) {
-		// 	return toastWarn({msg: 'Ngày kết thúc không hợp lệ!'});
-		// }
+		if (today < timeEnd) {
+			return toastWarn({ msg: 'Ngày kết thúc không hợp lệ!' });
+		}
 
 		if (timeStart > timeEnd) {
 			return toastWarn({ msg: 'Ngày kết thúc không hợp lệ!' });

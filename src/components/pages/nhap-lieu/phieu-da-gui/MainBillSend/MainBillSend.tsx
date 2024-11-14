@@ -46,6 +46,7 @@ import {PATH} from '~/constants/config';
 import batchBillServices from '~/services/batchBillServices';
 import scalesStationServices from '~/services/scalesStationServices';
 import storageServices from '~/services/storageServices';
+import {convertCoin} from '~/common/funcs/convertCoin';
 
 function MainBillSend({}: PropsMainBillSend) {
 	const router = useRouter();
@@ -391,8 +392,8 @@ function MainBillSend({}: PropsMainBillSend) {
 								render: (data: IBillSend) => <>{convertWeight(data?.weightBdmt) || 0}</>,
 							},
 							{
-								title: 'Tổng số phiếu',
-								render: (data: IBillSend) => <>{'---'}</>,
+								title: 'Số lượt',
+								render: (data: IBillSend) => <>{convertCoin(data?.countWs) || 0}</>,
 							},
 							{
 								title: 'Khách hàng',
