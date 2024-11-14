@@ -80,8 +80,8 @@ function MainUpdateExport({ }: PropsMainUpdateExport) {
 					specificationsUuid: data?.specificationsUu?.uuid,
 					warehouseUuid: data?.fromUu?.parentUu?.uuid || '',
 					weightIntent: convertCoin(data?.batchsUu?.weightIntent),
-					timeStart: data?.timeStart,
-					timeEnd: data?.timeEnd,
+					timeStart: moment(data.timeStart).format('yyyy-MM-DD'),
+					timeEnd: moment(data.timeEnd).format('yyyy-MM-DD'),
 					description: data?.description,
 					transportType: data?.transportType,
 					documentId: data?.documentId || '',
@@ -287,6 +287,7 @@ function MainUpdateExport({ }: PropsMainUpdateExport) {
 	});
 
 	const handleSubmit = async () => {
+		const today = new Date(timeSubmit(new Date())!);
 		const timeStart = new Date(form.timeStart!);
 		const timeEnd = new Date(form.timeEnd!);
 
@@ -307,6 +308,13 @@ function MainUpdateExport({ }: PropsMainUpdateExport) {
 		}
 		if (!form.weightIntent) {
 			return toastWarn({ msg: 'Vui lòng nhập khối lượng cân' });
+		}
+		if (today < timeStart) {
+			return toastWarn({ msg: 'Ngày xuất hàng không hợp lệ!' });
+		}
+
+		if (today < timeEnd) {
+			return toastWarn({ msg: 'Ngày kết thúc không hợp lệ!' });
 		}
 		if (timeStart > timeEnd) {
 			return toastWarn({ msg: 'Ngày kết thúc không hợp lệ!' });
@@ -604,34 +612,30 @@ function MainUpdateExport({ }: PropsMainUpdateExport) {
 						</div>
 					</div>
 					<div className={clsx('mt', 'col_2')}>
-						<DatePicker
+						<Input
+							type='date'
+							name='timeStart'
+							value={form.timeStart || ''}
+							isRequired={true}
+							blur={true}
 							label={
 								<span>
 									Ngày bắt đầu <span style={{ color: 'red' }}>*</span>
 								</span>
 							}
-							value={form.timeStart}
-							onSetValue={(date) =>
-								setForm((prev: any) => ({
-									...prev,
-									timeStart: date,
-								}))
-							}
 							placeholder='Chọn ngày bắt đầu'
 						/>
 						<div>
-							<DatePicker
+							<Input
+								type='date'
+								name='timeEnd'
+								value={form.timeEnd || ''}
+								isRequired={true}
+								blur={true}
 								label={
 									<span>
 										Ngày kết thúc <span style={{ color: 'red' }}>*</span>
 									</span>
-								}
-								value={form.timeEnd}
-								onSetValue={(date) =>
-									setForm((prev: any) => ({
-										...prev,
-										timeEnd: date,
-									}))
 								}
 								placeholder='Chọn ngày kết thúc'
 							/>

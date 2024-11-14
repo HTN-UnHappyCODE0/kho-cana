@@ -69,6 +69,7 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 	const [dataWeightSessionSubmit, setDataWeightSessionSubmit] = useState<any[]>([]);
 	const [openSentData, setOpenSentData] = useState<boolean>(false);
 
+	const [loading, setLoading] = useState<boolean>(false);
 	const [weightSessions, setWeightSessions] = useState<any[]>([]);
 	const [total, setTotal] = useState<number>(0);
 
@@ -167,6 +168,7 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 			queryFn: () =>
 				httpRequest({
 					isList: true,
+					setLoading: setLoading,
 					http: weightSessionServices.listWeightsession({
 						page: Number(_page) || 1,
 						pageSize: Number(_pageSize) || 50,
@@ -395,7 +397,7 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 			<div className={styles.table}>
 				<DataWrapper
 					data={weightSessions || []}
-					loading={queryWeightsession.isFetching}
+					loading={loading}
 					noti={<Noti des='Hiện tại chưa có danh sách nhập liệu nào!' disableButton />}
 				>
 					<Table
@@ -493,7 +495,7 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 						]}
 					/>
 				</DataWrapper>
-				{!queryWeightsession.isFetching && (
+				{!loading && (
 					<Pagination
 						currentPage={Number(_page) || 1}
 						pageSize={Number(_pageSize) || 50}

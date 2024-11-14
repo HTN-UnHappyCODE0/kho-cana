@@ -413,6 +413,10 @@ function MainWeightSessionImport({}: PropsMainWeightSessionImport) {
 										id: TYPE_BATCH.CAN_LE,
 										name: 'Cân lẻ',
 									},
+									{
+										id: TYPE_BATCH.KHONG_CAN,
+										name: 'Không qua cân',
+									},
 								]}
 							/>
 						</div>
