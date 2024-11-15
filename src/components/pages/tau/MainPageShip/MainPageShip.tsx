@@ -41,7 +41,7 @@ function MainPageShip({}: PropsMainPageShip) {
 				isList: true,
 				http: shipServices.listShip({
 					page: Number(_page) || 1,
-					pageSize: Number(_pageSize) || 50,
+					pageSize: Number(_pageSize) || 200,
 					keyword: (_keyword as string) || '',
 					status: !!_status ? Number(_status) : null,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -217,7 +217,7 @@ function MainPageShip({}: PropsMainPageShip) {
 				<Pagination
 					currentPage={Number(_page) || 1}
 					total={listShip?.data?.pagination?.totalCount}
-					pageSize={Number(_pageSize) || 50}
+					pageSize={Number(_pageSize) || 200}
 					dependencies={[_pageSize, _keyword, _status]}
 				/>
 			</div>

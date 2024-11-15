@@ -102,7 +102,7 @@ function TableUpdateBillHistory({}: PropsTableUpdateBillHistory) {
 				</DataWrapper>
 				{/* <Pagination
 					currentPage={Number(_page) || 1}
-					pageSize={Number(_pageSize) || 50}
+					pageSize={Number(_pageSize) || 200}
 					total={detailBatchBillAudit?.data?.pagination?.totalCount}
 					dependencies={[_id, _keyword, _pageSize]}
 				/> */}

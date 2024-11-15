@@ -37,7 +37,7 @@ function MainHistoryBillSend({}: PropsMainHistoryBillSend) {
 	// 				isList: true,
 	// 				http: weightSessionServices.({
 	// 					page: Number(_page) || 1,
-	// 					pageSize: Number(_pageSize) || 50,
+	// 					pageSize: Number(_pageSize) || 200,
 	// 					keyword: '',
 	// 					isPaging: CONFIG_PAGING.IS_PAGING,
 	// 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -147,7 +147,7 @@ function MainHistoryBillSend({}: PropsMainHistoryBillSend) {
 				<Pagination
 					currentPage={Number(_page) || 1}
 					total={historyBillSend?.data?.pagination?.totalCount}
-					pageSize={Number(_pageSize) || 50}
+					pageSize={Number(_pageSize) || 200}
 					dependencies={[_pageSize, _BillSendUuid]}
 				/>
 			</div> */}

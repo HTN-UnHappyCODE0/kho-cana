@@ -200,7 +200,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 					isList: true,
 					http: batchBillServices.getListBill({
 						page: Number(_page) || 1,
-						pageSize: Number(_pageSize) || 50,
+						pageSize: Number(_pageSize) || 200,
 						keyword: (_keyword as string) || '',
 						isPaging: CONFIG_PAGING.IS_PAGING,
 						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -306,7 +306,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 			return httpRequest({
 				http: batchBillServices.exportExcel({
 					page: Number(_page) || 1,
-					pageSize: Number(_pageSize) || 50,
+					pageSize: Number(_pageSize) || 200,
 					keyword: (_keyword as string) || '',
 					isPaging: CONFIG_PAGING.IS_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -779,7 +779,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 				{!getListBatch.isFetching && (
 					<Pagination
 						currentPage={Number(_page) || 1}
-						pageSize={Number(_pageSize) || 50}
+						pageSize={Number(_pageSize) || 200}
 						total={total}
 						dependencies={[
 							_pageSize,

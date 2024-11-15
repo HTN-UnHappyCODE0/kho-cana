@@ -62,7 +62,7 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 				isList: true,
 				http: truckServices.listTruck({
 					page: Number(_page) || 1,
-					pageSize: Number(_pageSize) || 50,
+					pageSize: Number(_pageSize) || 200,
 					keyword: '',
 					isPaging: CONFIG_PAGING.IS_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -463,7 +463,7 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 				<Pagination
 					currentPage={Number(_page) || 1}
 					total={listTruck?.data?.pagination?.totalCount}
-					pageSize={Number(_pageSize) || 50}
+					pageSize={Number(_pageSize) || 200}
 					dependencies={[_pageSize, _id]}
 				/>
 			</div>

@@ -64,7 +64,7 @@ function PageCustomerService({}: PropsPageCustomerService) {
 				isList: true,
 				http: customerServices.listCustomerStorage({
 					page: Number(_page) || 1,
-					pageSize: Number(_pageSize) || 50,
+					pageSize: Number(_pageSize) || 200,
 					keyword: (_keyword as string) || '',
 					specUuid: '',
 					userUuid: '',
@@ -193,7 +193,7 @@ function PageCustomerService({}: PropsPageCustomerService) {
 				<Pagination
 					currentPage={Number(_page) || 1}
 					total={listCustomerStorage?.data?.pagination?.totalCount}
-					pageSize={Number(_pageSize) || 50}
+					pageSize={Number(_pageSize) || 200}
 					dependencies={[_pageSize, _keyword, _partnerUuid]}
 				/>
 			</div>
