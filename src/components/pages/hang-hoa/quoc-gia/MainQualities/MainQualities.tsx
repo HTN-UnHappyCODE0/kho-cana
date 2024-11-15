@@ -45,7 +45,7 @@ function MainQualities({}: PropsMainQualities) {
 				isList: true,
 				http: wareServices.listQuality({
 					page: Number(_page) || 1,
-					pageSize: Number(_pageSize) || 50,
+					pageSize: Number(_pageSize) || 200,
 					keyword: (_keyword as string) || '',
 					isPaging: CONFIG_PAGING.IS_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -211,7 +211,7 @@ function MainQualities({}: PropsMainQualities) {
 				<Pagination
 					currentPage={Number(_page) || 1}
 					total={listQualities?.data?.pagination?.totalCount}
-					pageSize={Number(_pageSize) || 50}
+					pageSize={Number(_pageSize) || 200}
 					dependencies={[_pageSize, _keyword, _status]}
 				/>
 			</div>

@@ -42,7 +42,7 @@ function MainSpecifications({}: PropsMainSpecifications) {
 				isList: true,
 				http: wareServices.listSpecification({
 					page: Number(_page) || 1,
-					pageSize: Number(_pageSize) || 50,
+					pageSize: Number(_pageSize) || 200,
 					keyword: (_keyword as string) || '',
 					isPaging: CONFIG_PAGING.IS_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
@@ -248,7 +248,7 @@ function MainSpecifications({}: PropsMainSpecifications) {
 				</DataWrapper>
 				<Pagination
 					currentPage={Number(_page) || 1}
-					pageSize={Number(_pageSize) || 50}
+					pageSize={Number(_pageSize) || 200}
 					total={listSpecifications?.data?.pagination?.totalCount}
 					dependencies={[_pageSize, _keyword, _status]}
 				/>

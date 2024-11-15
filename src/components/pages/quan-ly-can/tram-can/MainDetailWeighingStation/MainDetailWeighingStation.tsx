@@ -60,7 +60,7 @@ function MainDetailWeighingStation({}: PropsMainDetailWeighingStation) {
 				isList: true,
 				http: scalesMachineServices.listScalesMachine({
 					page: Number(_page) || 1,
-					pageSize: Number(_pageSize) || 50,
+					pageSize: Number(_pageSize) || 200,
 					keyword: '',
 					isPaging: CONFIG_PAGING.IS_PAGING,
 					isDescending: CONFIG_DESCENDING.IS_DESCENDING,
@@ -275,7 +275,7 @@ function MainDetailWeighingStation({}: PropsMainDetailWeighingStation) {
 					<Pagination
 						currentPage={Number(_page) || 1}
 						total={listScalesMachine?.data?.pagination?.totalCount}
-						pageSize={Number(_pageSize) || 50}
+						pageSize={Number(_pageSize) || 200}
 						dependencies={[_pageSize, _id]}
 					/>
 				</div>

@@ -60,7 +60,7 @@ function MainWeighingStation({}: PropsMainWeighingStation) {
 				isList: true,
 				http: scalesStationServices.listScalesStation({
 					page: Number(_page) || 1,
-					pageSize: Number(_pageSize) || 50,
+					pageSize: Number(_pageSize) || 200,
 					keyword: (_keyword as string) || '',
 					companyUuid: (_companyUuid as string) || '',
 					isPaging: CONFIG_PAGING.IS_PAGING,
@@ -254,7 +254,7 @@ function MainWeighingStation({}: PropsMainWeighingStation) {
 
 				<Pagination
 					currentPage={Number(_page) || 1}
-					pageSize={Number(_pageSize) || 50}
+					pageSize={Number(_pageSize) || 200}
 					total={listScalesStation?.data?.pagination?.totalCount}
 					dependencies={[_pageSize, _keyword, _status, _companyUuid]}
 				/>
