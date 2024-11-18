@@ -389,7 +389,12 @@ function MainSpecification({}: PropsMainSpecification) {
 							},
 							{
 								title: 'Khách hàng',
-								render: (data: IWeightSession) => <>{data?.fromUu?.name || '---'}</>,
+								render: (data: IWeightSession) => (
+									<>
+										{data?.fromUu?.name || '---'}{' '}
+										<p style={{fontWeight: 500, color: '#3772FF'}}>{data?.batchUu?.name || '---'}</p>
+									</>
+								),
 							},
 							{
 								title: 'Kho hàng',

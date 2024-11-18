@@ -46,6 +46,7 @@ export interface IWeightSession {
 		uuid: string;
 	};
 	batchUu: {
+		name: string;
 		uuid: string;
 		shipUu: any;
 		shipOutUu: any;

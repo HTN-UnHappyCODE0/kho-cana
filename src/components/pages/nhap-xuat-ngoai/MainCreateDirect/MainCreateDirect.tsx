@@ -287,7 +287,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 		}
 
 		if (timeStart > timeEnd) {
-			return toastWarn({msg: 'Ngày bắt đầu không được nhỏ hơn!'});
+			return toastWarn({msg: 'Ngày kết thúc phải lớn hơn ngày bắt đầu!'});
 		}
 		if (imgs.length > 0) {
 			const dataImage = await httpRequest({
