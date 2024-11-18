@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import TippyHeadless from '@tippyjs/react/headless';
 
 import {IBillSend, PropsMainBillSend} from './interfaces';
 import styles from './MainBillSend.module.scss';
@@ -12,7 +11,6 @@ import {
 	CONFIG_TYPE_FIND,
 	QUERY_KEY,
 	STATUS_BILL,
-	STATUS_WEIGHT_SESSION,
 	TYPE_BATCH,
 	TYPE_CUSTOMER,
 	TYPE_DATE,
@@ -22,7 +20,6 @@ import {
 import {httpRequest} from '~/services';
 import customerServices from '~/services/customerServices';
 import wareServices from '~/services/wareServices';
-import weightSessionServices from '~/services/weightSessionServices';
 import Search from '~/components/common/Search';
 import FilterCustom from '~/components/common/FilterCustom';
 import DateRangerCustom from '~/components/common/DateRangerCustom';
@@ -31,18 +28,14 @@ import Noti from '~/components/common/DataWrapper/components/Noti';
 import Table from '~/components/common/Table';
 
 import Pagination from '~/components/common/Pagination';
-import Tippy from '@tippyjs/react';
-import clsx from 'clsx';
-import BoxViewSpec from '../BoxViewSpec';
 import Moment from 'react-moment';
 import Link from 'next/link';
 import {convertWeight, formatDrynessAvg} from '~/common/funcs/optionConvert';
 import IconCustom from '~/components/common/IconCustom';
-import {DocumentText, Edit, Eye} from 'iconsax-react';
+import {Edit} from 'iconsax-react';
 import Popup from '~/components/common/Popup';
 import PopupChangeDryness from '../PopupChangeDryness';
 import Button from '~/components/common/Button';
-import {PATH} from '~/constants/config';
 import batchBillServices from '~/services/batchBillServices';
 import scalesStationServices from '~/services/scalesStationServices';
 import storageServices from '~/services/storageServices';

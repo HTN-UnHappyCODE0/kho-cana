@@ -338,7 +338,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 		}
 
 		if (timeStart > timeEnd) {
-			return toastWarn({msg: 'Ngày bắt đầu không được nhỏ hơn!'});
+			return toastWarn({msg: 'Ngày kết thúc phải lớn hơn ngày bắt đầu!'});
 		}
 		const currentImage = images.filter((item) => !!item.img).map((v) => v.img);
 
