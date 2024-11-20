@@ -188,13 +188,17 @@ function MainDryness({}: PropsMainDryness) {
 	});
 
 	useEffect(() => {
-		router.push({
-			pathname: '/nhap-lieu/do-kho',
-			query: {
-				...router.query,
-				_status: STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
+		router.replace(
+			{
+				pathname: router.pathname,
+				query: {
+					...router.query,
+					_status: STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
+				},
 			},
-		});
+			undefined,
+			{shallow: true, scroll: false}
+		);
 	}, []);
 
 	const queryWeightsession = useQuery(
