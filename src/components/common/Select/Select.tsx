@@ -10,6 +10,7 @@ export const ContextSelect = createContext<any>({});
 
 function Select(props: PropsSelector) {
 	const ref = useRef<any>(null);
+	const inputSearchRef = useRef<HTMLInputElement>(null);
 
 	const [width, setWidth] = useState<number>(0);
 	const [show, setShow] = useState<boolean>(false);
@@ -28,6 +29,14 @@ function Select(props: PropsSelector) {
 
 		props.onChange && props.onChange(e);
 		setValue(data);
+	};
+
+	const handleSelectClick = () => {
+		if (props.isSearch && inputSearchRef.current) {
+			setTimeout(() => {
+				inputSearchRef.current?.focus();
+			}, 0);
+		}
 	};
 
 	useEffect(() => {
@@ -73,12 +82,12 @@ function Select(props: PropsSelector) {
 							{props.isSearch ? (
 								<div>
 									<input
+										ref={inputSearchRef}
 										className={styles.input_search}
 										type='text'
 										placeholder='Tìm kiếm...'
 										onChange={(e) => setKeyword(e.target.value)}
 										value={keyword}
-										autoFocus={show}
 									/>
 								</div>
 							) : null}
@@ -96,6 +105,7 @@ function Select(props: PropsSelector) {
 									return null;
 								} else {
 									setShow(!show);
+									handleSelectClick();
 								}
 							}}
 						>
