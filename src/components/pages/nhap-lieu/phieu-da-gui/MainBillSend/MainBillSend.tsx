@@ -200,7 +200,7 @@ function MainBillSend({}: PropsMainBillSend) {
 						pageSize: Number(_pageSize) || 200,
 						keyword: (_keyword as string) || '',
 						isPaging: CONFIG_PAGING.IS_PAGING,
-						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+						isDescending: CONFIG_DESCENDING.IS_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
 						scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_TRUC_TIEP],

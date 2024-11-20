@@ -9,7 +9,7 @@ import {TYPE_DATE} from '~/constants/config/enum';
 import RangeDatePicker from '~/components/common/RangeDatePicker';
 import {getDateRange} from '~/common/funcs/selectDate';
 
-function FilterDateOption({date, setDate, typeDate, setTypeDate, show, setShow}: PropsFilterDateOption) {
+function FilterDateOption({date, setDate, typeDate, setTypeDate, show, setShow, isOptionDateAll}: PropsFilterDateOption) {
 	return (
 		<TippyHeadless
 			maxWidth={'100%'}
@@ -28,18 +28,20 @@ function FilterDateOption({date, setDate, typeDate, setTypeDate, show, setShow}:
 			)}
 		>
 			<div className={styles.mainOption}>
-				<div
-					className={clsx(styles.option, {
-						[styles.option_active]: typeDate == null,
-					})}
-					onClick={() => {
-						setShow(false);
-						setTypeDate(null);
-						setDate(null);
-					}}
-				>
-					<p>{'Tất cả'}</p>
-				</div>
+				{isOptionDateAll && (
+					<div
+						className={clsx(styles.option, {
+							[styles.option_active]: typeDate == null,
+						})}
+						onClick={() => {
+							setShow(false);
+							setTypeDate(null);
+							setDate(null);
+						}}
+					>
+						<p>{'Tất cả'}</p>
+					</div>
+				)}
 				{ListOptionTimePicker.map((v, i) => (
 					<div
 						key={i}
