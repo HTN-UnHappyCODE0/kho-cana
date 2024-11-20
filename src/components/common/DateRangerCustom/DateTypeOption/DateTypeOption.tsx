@@ -28,6 +28,7 @@ function DateTypeOption({date, show, setDate, setShow, keyTypeDate, keyDateForm,
 		} else {
 			if (!value) {
 				const {[keyTypeDate]: typeDate, [keyDateForm]: dateForm, [keyDateTo]: dateTo, ...rest} = router.query;
+
 				router.replace(
 					{
 						pathname: router.pathname,
@@ -60,7 +61,7 @@ function DateTypeOption({date, show, setDate, setShow, keyTypeDate, keyDateForm,
 			)}
 		>
 			<div className={styles.mainOption}>
-				<div
+				{/* <div
 					className={clsx(styles.option, {
 						[styles.option_active]: typeDate == null,
 					})}
@@ -70,7 +71,7 @@ function DateTypeOption({date, show, setDate, setShow, keyTypeDate, keyDateForm,
 					}}
 				>
 					<p>{'Tất cả'}</p>
-				</div>
+				</div> */}
 				{ListOptionTimePicker.map((v, i) => (
 					<div
 						key={i}

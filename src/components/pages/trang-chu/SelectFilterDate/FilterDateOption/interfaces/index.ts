@@ -8,4 +8,5 @@ export interface PropsFilterDateOption {
 	setTypeDate: (any: any) => void;
 	show: boolean;
 	setShow: (any: any) => void;
+	isOptionDateAll?: boolean;
 }

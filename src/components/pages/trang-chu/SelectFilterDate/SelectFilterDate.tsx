@@ -11,7 +11,7 @@ import {getDateRange, getTextDateRange} from '~/common/funcs/selectDate';
 import Moment from 'react-moment';
 import {TYPE_DATE} from '~/constants/config/enum';
 
-function SelectFilterDate({date, setDate, setTypeDate, typeDate, isOptionDateAll}: PropsSelectFilterDate) {
+function SelectFilterDate({date, setDate, typeDate, setTypeDate, isOptionDateAll}: PropsSelectFilterDate) {
 	const [openDate, setOpenDate] = useState<boolean>(false);
 
 	useEffect(() => {
@@ -28,8 +28,8 @@ function SelectFilterDate({date, setDate, setTypeDate, typeDate, isOptionDateAll
 	}, [typeDate]);
 
 	useEffect(() => {
-		if (isOptionDateAll && !typeDate) {
-			setDate(() => getDateRange(TYPE_DATE.THIS_MONTH));
+		if (!isOptionDateAll && !typeDate) {
+			setTypeDate(TYPE_DATE.THIS_WEEK);
 		}
 	}, [isOptionDateAll, typeDate]);
 
@@ -48,6 +48,7 @@ function SelectFilterDate({date, setDate, setTypeDate, typeDate, isOptionDateAll
 					setTypeDate={setTypeDate}
 					show={openDate}
 					setShow={setOpenDate}
+					isOptionDateAll={isOptionDateAll}
 				/>
 			)}
 		>

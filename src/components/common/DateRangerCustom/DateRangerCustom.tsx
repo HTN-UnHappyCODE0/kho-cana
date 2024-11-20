@@ -4,7 +4,7 @@ import styles from './DateRangerCustom.module.scss';
 import {ArrowDown2} from 'iconsax-react';
 import {useEffect, useState} from 'react';
 import TippyHeadless from '@tippyjs/react/headless';
-import DateTypeOption from './components/DateTypeOption';
+import DateTypeOption from './DateTypeOption';
 import {TYPE_DATE} from '~/constants/config/enum';
 import {useRouter} from 'next/router';
 import {PropsDateRangerCustom} from './interfaces';
@@ -18,7 +18,7 @@ function DateRangerCustom({
 	keyTypeDate = '_typeDate',
 	keyDateForm = '_dateFrom',
 	keyDateTo = '_dateTo',
-	typeDateDefault,
+	typeDateDefault = TYPE_DATE.THIS_WEEK,
 }: PropsDateRangerCustom) {
 	const router = useRouter();
 
@@ -61,7 +61,6 @@ function DateRangerCustom({
 		}
 	}, [date?.from, date?.to]);
 
-	// Mặc định sẽ là ngày hôm nay
 	useEffect(() => {
 		if (!!typeDateDefault) {
 			router.replace(
