@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import TippyHeadless from '@tippyjs/react/headless';
 
 import {PropsSelectFilterOption} from './interfaces';
@@ -11,6 +11,15 @@ import {ArrowDown2} from 'iconsax-react';
 function SelectFilterOption({uuid, setUuid, listData, placeholder, isShowAll = true}: PropsSelectFilterOption) {
 	const [keyword, setKeyword] = useState<string>('');
 	const [openPartner, setOpenPartner] = useState<boolean>(false);
+	const inputSearchRef = useRef<HTMLInputElement>(null);
+
+	const handleSelectClick = () => {
+		if (inputSearchRef?.current) {
+			setTimeout(() => {
+				inputSearchRef.current?.focus();
+			}, 0);
+		}
+	};
 
 	return (
 		<TippyHeadless
@@ -22,6 +31,7 @@ function SelectFilterOption({uuid, setUuid, listData, placeholder, isShowAll = t
 			render={() => (
 				<div className={styles.main_option}>
 					<input
+						ref={inputSearchRef}
 						placeholder='Tìm kiếm...'
 						className={styles.inputSearch}
 						value={keyword}
@@ -71,7 +81,13 @@ function SelectFilterOption({uuid, setUuid, listData, placeholder, isShowAll = t
 				</div>
 			)}
 		>
-			<div className={clsx(styles.btn_filter, {[styles.active]: openPartner})} onClick={() => setOpenPartner(!openPartner)}>
+			<div
+				className={clsx(styles.btn_filter, {[styles.active]: openPartner})}
+				onClick={() => {
+					setOpenPartner(!openPartner);
+					handleSelectClick();
+				}}
+			>
 				<p>{uuid == '' ? placeholder : listData?.find((v: any) => v?.uuid == uuid)?.name}</p>
 				<div className={styles.arrow}>
 					<ArrowDown2 size={16} />
