@@ -547,6 +547,17 @@ function UpdateCustomerService({}: PropsUpdateCustomerService) {
 						</Select>
 					</div>
 
+					<div className={clsx('mt')}>
+						<Input
+							name='address'
+							value={form.address || ''}
+							type='text'
+							max={255}
+							label={<span>Địa chỉ chi tiết</span>}
+							placeholder='Nhập địa chỉ chi tiết'
+						/>
+					</div>
+
 					<div className={clsx('mt', 'col_2')}>
 						<div>
 							<Select
@@ -592,17 +603,6 @@ function UpdateCustomerService({}: PropsUpdateCustomerService) {
 								/>
 							))}
 						</Select>
-					</div>
-
-					<div className={clsx('mt')}>
-						<Input
-							name='address'
-							value={form.address || ''}
-							type='text'
-							max={255}
-							label={<span>Địa chỉ chi tiết</span>}
-							placeholder='Nhập địa chỉ chi tiết'
-						/>
 					</div>
 
 					<div className={clsx('mt')}>

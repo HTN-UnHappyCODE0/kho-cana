@@ -5,12 +5,13 @@ import TippyHeadless from '@tippyjs/react/headless';
 import clsx from 'clsx';
 import styles from './FilterCustom.module.scss';
 import {useRouter} from 'next/router';
-import {useState} from 'react';
+import {useRef, useState} from 'react';
 import {removeVietnameseTones} from '~/common/funcs/optionConvert';
 
 function FilterCustom({listFilter, name, query, isSearch, disabled = false}: PropsFilterCustom) {
 	const router = useRouter();
 	const {[query]: queryStr, ...rest} = router.query;
+	const inputSearchRef = useRef<HTMLInputElement>(null);
 
 	const [open, setOpen] = useState<boolean>(false);
 	const [keyword, setKeyword] = useState<string>('');
@@ -19,6 +20,14 @@ function FilterCustom({listFilter, name, query, isSearch, disabled = false}: Pro
 		const item = arr?.find((v) => v.id == id) || null;
 		return item?.name || 'Tất cả';
 	}
+
+	const handleSelectClick = () => {
+		if (isSearch && inputSearchRef?.current) {
+			setTimeout(() => {
+				inputSearchRef.current?.focus();
+			}, 0);
+		}
+	};
 
 	return (
 		<TippyHeadless
@@ -31,6 +40,7 @@ function FilterCustom({listFilter, name, query, isSearch, disabled = false}: Pro
 				<div className={styles.mainOption}>
 					{isSearch ? (
 						<input
+							ref={inputSearchRef}
 							placeholder='Tìm kiếm...'
 							className={styles.inputSearch}
 							value={keyword}
@@ -107,6 +117,7 @@ function FilterCustom({listFilter, name, query, isSearch, disabled = false}: Pro
 						return;
 					} else {
 						setOpen(!open);
+						handleSelectClick();
 					}
 				}}
 			>

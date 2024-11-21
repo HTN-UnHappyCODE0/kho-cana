@@ -379,7 +379,7 @@ function MainPageAll({}: PropsMainPageAll) {
 							},
 							{
 								id: STATUS_BILL.DA_CAN_CHUA_KCS,
-								name: 'chưa KCS',
+								name: 'Chưa KCS',
 							},
 							{
 								id: STATUS_BILL.DA_KCS,

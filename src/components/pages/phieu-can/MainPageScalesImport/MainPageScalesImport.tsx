@@ -713,7 +713,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 													},
 													{
 														state: STATUS_BILL.DA_CAN_CHUA_KCS,
-														text: 'chưa KCS',
+														text: 'Chưa KCS',
 														textColor: '#2D74FF',
 														backgroundColor: 'rgba(45, 116, 255, 0.10)',
 													},
