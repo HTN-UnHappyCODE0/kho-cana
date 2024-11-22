@@ -81,16 +81,17 @@ function Table({data, column, onSetData}: PropsTable) {
 								})}
 								key={i}
 							>
-								{v.checkBox ? (
-									<input
-										className={clsx(styles.checkbox, styles.checkbox_head)}
-										onChange={handleCheckAll}
-										checked={!isCheckedAll || false}
-										type='checkbox'
-									/>
-								) : null}
-
-								{v.title}
+								<div className={styles.title_check_box}>
+									{v.checkBox ? (
+										<input
+											className={clsx(styles.checkbox, styles.checkbox_head)}
+											onChange={handleCheckAll}
+											checked={!isCheckedAll || false}
+											type='checkbox'
+										/>
+									) : null}
+									{v.title}
+								</div>
 							</th>
 						))}
 					</tr>

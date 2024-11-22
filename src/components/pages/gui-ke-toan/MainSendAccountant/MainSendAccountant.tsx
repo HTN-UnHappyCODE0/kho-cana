@@ -43,6 +43,7 @@ import {IWeightSession} from '../../nhap-lieu/quy-cach/MainSpecification/interfa
 import Moment from 'react-moment';
 import storageServices from '~/services/storageServices';
 import scalesStationServices from '~/services/scalesStationServices';
+import clsx from 'clsx';
 
 function MainSendAccountant({}: PropsMainSendAccountant) {
 	const router = useRouter();
@@ -393,6 +394,26 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 					</div>
 				</div>
 			</div>
+			{/* <div className={clsx('mt')}>
+				<div className={styles.parameter}>
+					<div>
+						TỔNG LƯỢNG HÀNG TƯƠI:
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertCoin(getListBatch?.data?.amountMt) || 0} </span>(Tấn)
+					</div>
+					<div>
+						TỔNG LƯỢNG HÀNG QUY KHÔ:
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertCoin(getListBatch?.data?.amountBdmt) || 0} </span>(Tấn)
+					</div>
+					<div>
+						TỔNG LƯỢNG QUY KHÔ TẠM TÍNH:
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getListBatch?.data?.amountDemo) || 0} </span>(Tấn)
+					</div>
+					<div>
+						TỔNG LƯỢNG QUY KHÔ CHUẨN:
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getListBatch?.data?.amountKCS) || 0} </span>(Tấn)
+					</div>
+				</div>
+			</div> */}
 
 			<div className={styles.table}>
 				<DataWrapper
