@@ -44,6 +44,7 @@ import Moment from 'react-moment';
 import storageServices from '~/services/storageServices';
 import scalesStationServices from '~/services/scalesStationServices';
 import clsx from 'clsx';
+import {convertCoin} from '~/common/funcs/convertCoin';
 
 function MainSendAccountant({}: PropsMainSendAccountant) {
 	const router = useRouter();
@@ -171,6 +172,67 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 					isList: true,
 					setLoading: setLoading,
 					http: weightSessionServices.listWeightsession({
+						page: Number(_page) || 1,
+						pageSize: Number(_pageSize) || 200,
+						keyword: (_keyword as string) || '',
+						isPaging: CONFIG_PAGING.IS_PAGING,
+						isDescending: CONFIG_DESCENDING.IS_DESCENDING,
+						typeFind: CONFIG_TYPE_FIND.TABLE,
+						billUuid: '',
+						codeEnd: null,
+						codeStart: null,
+						isBatch: !!_isBatch ? Number(_isBatch) : null,
+						scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_TRUC_TIEP],
+						specUuid: !!_specUuid ? (_specUuid as string) : null,
+						status: [STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE],
+						truckUuid: '',
+						timeStart: _dateFrom ? (_dateFrom as string) : null,
+						timeEnd: _dateTo ? (_dateTo as string) : null,
+						customerUuid: _customerUuid ? (_customerUuid as string) : '',
+						productTypeUuid: _productTypeUuid ? (_productTypeUuid as string) : '',
+						shift: !!_isShift ? Number(_isShift) : null,
+						scalesStationUuid: (_scalesStationUuid as string) || '',
+						storageUuid: (_storageUuid as string) || '',
+					}),
+				}),
+			onSuccess(data) {
+				if (data) {
+					setWeightSessions(
+						data?.items?.map((v: any, index: number) => ({
+							...v,
+							index: index,
+							isChecked: false,
+						}))
+					);
+					setTotal(data?.pagination?.totalCount);
+				}
+			},
+		}
+	);
+
+	const totalWeightsession = useQuery(
+		[
+			QUERY_KEY.table_nhap_lieu_do_kho_tong,
+			_page,
+			_pageSize,
+			_keyword,
+			_isBatch,
+			_customerUuid,
+			_productTypeUuid,
+			_specUuid,
+			_dateFrom,
+			_dateTo,
+			_isShift,
+			_status,
+			_storageUuid,
+			_scalesStationUuid,
+		],
+		{
+			queryFn: () =>
+				httpRequest({
+					isList: true,
+					setLoading: setLoading,
+					http: weightSessionServices.listTotalWeightsession({
 						page: Number(_page) || 1,
 						pageSize: Number(_pageSize) || 200,
 						keyword: (_keyword as string) || '',
@@ -394,26 +456,24 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 					</div>
 				</div>
 			</div>
-			{/* <div className={clsx('mt')}>
+			<div className={clsx('mt')}>
 				<div className={styles.parameter}>
 					<div>
 						TỔNG LƯỢNG HÀNG TƯƠI:
-						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertCoin(getListBatch?.data?.amountMt) || 0} </span>(Tấn)
+						<span style={{color: '#2D74FF', marginLeft: 4}}>
+							{convertCoin(totalWeightsession?.data?.totalWeightReal) || 0}{' '}
+						</span>
+						(Tấn)
 					</div>
 					<div>
 						TỔNG LƯỢNG HÀNG QUY KHÔ:
-						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertCoin(getListBatch?.data?.amountBdmt) || 0} </span>(Tấn)
-					</div>
-					<div>
-						TỔNG LƯỢNG QUY KHÔ TẠM TÍNH:
-						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getListBatch?.data?.amountDemo) || 0} </span>(Tấn)
-					</div>
-					<div>
-						TỔNG LƯỢNG QUY KHÔ CHUẨN:
-						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getListBatch?.data?.amountKCS) || 0} </span>(Tấn)
+						<span style={{color: '#2D74FF', marginLeft: 4}}>
+							{convertCoin(totalWeightsession?.data?.totalWeightBdmt) || 0}{' '}
+						</span>
+						(Tấn)
 					</div>
 				</div>
-			</div> */}
+			</div>
 
 			<div className={styles.table}>
 				<DataWrapper
