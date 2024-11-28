@@ -105,6 +105,11 @@ export enum PATH {
 	NhapXuatNgoaiNhapHang = '/nhap-xuat-ngoai/nhap-hang',
 	NhapXuatNgoaiXuatHang = '/nhap-xuat-ngoai/xuat-hang',
 	NhapXuatNgoaiXuatThang = '/nhap-xuat-ngoai/xuat-thang',
+
+	// cập nhật mớn tàu
+	MonTau = '/mon-tau',
+	CapNhatMonTau = '/mon-tau/cap-nhat-mon-tau',
+	PhieuDaCapNhat = '/mon-tau/phieu-da-cap-nhat',
 }
 
 export const Menu: {
@@ -140,6 +145,7 @@ export const Menu: {
 		group: [
 			{title: 'Nhập liệu', icon: icons.nhaplieu, path: PATH.NhapLieuQuyCach, pathActive: PATH.NhapLieu},
 			{title: 'Duyệt phiếu', icon: icons.duyetphieu, path: PATH.PhieuChuaDuyet, pathActive: PATH.DuyetPhieu},
+			{title: 'Cập nhật mớn tàu', icon: icons.montau, path: PATH.CapNhatMonTau, pathActive: PATH.MonTau},
 		],
 	},
 	{
