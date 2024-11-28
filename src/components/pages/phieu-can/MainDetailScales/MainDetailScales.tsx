@@ -8,8 +8,20 @@ import Link from 'next/link';
 import {IoArrowBackOutline} from 'react-icons/io5';
 import clsx from 'clsx';
 import TableListTruck from './components/TableListTruck';
-import {useQuery} from '@tanstack/react-query';
-import {QUERY_KEY, STATE_BILL, STATUS_BILL, TYPE_BATCH, TYPE_SCALES, TYPE_SIFT, TYPE_TRANSPORT} from '~/constants/config/enum';
+import {useMutation, useQuery} from '@tanstack/react-query';
+import {
+	CONFIG_DESCENDING,
+	CONFIG_PAGING,
+	CONFIG_TYPE_FIND,
+	QUERY_KEY,
+	STATE_BILL,
+	STATUS_BILL,
+	STATUS_WEIGHT_SESSION,
+	TYPE_BATCH,
+	TYPE_SCALES,
+	TYPE_SIFT,
+	TYPE_TRANSPORT,
+} from '~/constants/config/enum';
 import {httpRequest} from '~/services';
 import batchBillServices from '~/services/batchBillServices';
 import Button from '~/components/common/Button';
@@ -20,6 +32,8 @@ import {convertWeight} from '~/common/funcs/optionConvert';
 import TableUpdateBillHistory from './components/TableUpdateBillHistory';
 import StateActive from '~/components/common/StateActive';
 import Moment from 'react-moment';
+import weightSessionServices from '~/services/weightSessionServices';
+import Loading from '~/components/common/Loading';
 
 function MainDetailScales({}: PropsMainDetailScales) {
 	const router = useRouter();
@@ -73,8 +87,55 @@ function MainDetailScales({}: PropsMainDetailScales) {
 		return '---';
 	};
 
+	const exportExcel = useMutation({
+		mutationFn: () => {
+			return httpRequest({
+				http: weightSessionServices.exportExcelWs({
+					page: 1,
+					pageSize: 200,
+					keyword: '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.TABLE,
+					scalesType: [],
+					customerUuid: '',
+					isBatch: null,
+					productTypeUuid: '',
+					status: [
+						STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
+						STATUS_WEIGHT_SESSION.CAN_LAN_2,
+						STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
+						STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
+						STATUS_WEIGHT_SESSION.KCS_XONG,
+					],
+					timeStart: null,
+					timeEnd: null,
+					shipUuid: '',
+					scalesStationUuid: '',
+					storageUuid: '',
+					billUuid: _id as string,
+					codeStart: null,
+					codeEnd: null,
+					specUuid: null,
+					truckUuid: '',
+					shift: null,
+				}),
+			});
+		},
+		onSuccess(data) {
+			if (data) {
+				window.open(`${process.env.NEXT_PUBLIC_PATH_EXPORT}/${data}`, '_blank');
+			}
+		},
+	});
+
+	const handleExportExcel = () => {
+		return exportExcel.mutate();
+	};
+
 	return (
 		<div className={styles.container}>
+			<Loading loading={exportExcel.isLoading} />
 			<div className={styles.header}>
 				<Link
 					href='#'
@@ -88,6 +149,10 @@ function MainDetailScales({}: PropsMainDetailScales) {
 					<p>Chi tiết phiếu cân #{detailBatchBill?.code}</p>
 				</Link>
 				<div className={styles.list_btn}>
+					<Button rounded_2 w_fit p_8_16 green bold onClick={handleExportExcel}>
+						Xuất excel
+					</Button>
+
 					<Button
 						rounded_2
 						w_fit

@@ -120,7 +120,7 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 		}
 
 		if (dataRules?.some((v) => v?.amountSample > price(form?.totalSample!))) {
-			return setOpenWarning(true);
+			return toastWarn({msg: 'Đang có chí tiêu lớn hơn khối lượng cân mẫu!'});
 		} else {
 			return funcUpdateSpecWeightSession.mutate();
 		}
