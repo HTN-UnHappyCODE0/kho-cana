@@ -321,3 +321,7 @@ export enum TYPE_LOGIN {
 	KE_TOAN,
 	NHAP_HANG,
 }
+
+export enum TYPE_ACTION_AUDIT {
+	HAVE_DRY = 1,
+}

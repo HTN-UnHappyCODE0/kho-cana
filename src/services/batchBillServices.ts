@@ -27,6 +27,7 @@ const batchBillServices = {
 			typeCheckDay: number | 0;
 			scalesStationUuid: string | null;
 			storageUuid: string | null;
+			isHaveDryness?: number | null;
 		},
 		tokenAxios?: any
 	) => {
@@ -287,6 +288,16 @@ const batchBillServices = {
 		tokenAxios?: any
 	) => {
 		return axiosClient.post(`/BatchBill/upsert-bill-no-scale`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	kcsDoneBill: (
+		data: {
+			uuid: string[];
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/BatchBill/kcs-done-bill`, data, {
 			cancelToken: tokenAxios,
 		});
 	},

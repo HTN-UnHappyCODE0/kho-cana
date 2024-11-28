@@ -169,7 +169,7 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 		}
 
 		if (dataRules?.some((v) => v?.amountSample > price(form?.totalSample))) {
-			return setOpenWarning(true);
+			return toastWarn({msg: 'Đang có chí tiêu lớn hơn khối lượng cân mẫu!'});
 		} else {
 			return funcUpdateSpecWeightSession.mutate();
 		}
@@ -272,25 +272,12 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 										<div className={styles.unit}>gr</div>
 									</div>
 									{/* <div className={styles.percent}>{!isNaN(percentage) ? `${percentage.toFixed(2)}%` : ''}</div> */}
-									<div className={styles.percent}>{!isNaN(percentage) ? `${percentage.toFixed(2)}%` : '0.00 %'}</div>
+									<div className={styles.percent}>{!isNaN(percentage) ? `${percentage.toFixed(2)}%` : '0.00%'}</div>
 								</div>
 							</div>
 						);
 					})}
 				</div>
-
-				{/* <div className={styles.btn}>
-					<div>
-						<Button p_10_24 rounded_2 grey_outline onClick={onClose}>
-							Hủy bỏ
-						</Button>
-					</div>
-					<div>
-						<Button p_10_24 rounded_2 primary onClick={handleSubmit}>
-							Xác nhận
-						</Button>
-					</div>
-				</div> */}
 
 				<div className={styles.btn}>
 					<div>
