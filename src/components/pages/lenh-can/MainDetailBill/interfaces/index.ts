@@ -126,4 +126,5 @@ export interface IDetailBatchBill {
 		name: string;
 	};
 	path: string[];
+	weightMon: number;
 }

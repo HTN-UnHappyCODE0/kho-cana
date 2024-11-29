@@ -11,6 +11,7 @@ import {
 	CONFIG_TYPE_FIND,
 	QUERY_KEY,
 	STATUS_BILL,
+	TYPE_ACTION_AUDIT,
 	TYPE_BATCH,
 	TYPE_DATE,
 	TYPE_PRODUCT,
@@ -126,6 +127,7 @@ function PageUpdatePort({}: PropsPageUpdatePort) {
 						typeCheckDay: 0,
 						scalesStationUuid: '',
 						storageUuid: '',
+						isHaveDryness: TYPE_ACTION_AUDIT.NO_DRY,
 					}),
 				}),
 			onSuccess(data) {

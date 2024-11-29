@@ -90,6 +90,7 @@ export enum QUERY_KEY {
 	table_lich_su_thay_doi_do_kho,
 	table_nhap_lieu_do_kho_tong,
 	table_cap_nhat_mon_tau,
+	table_cap_nhat_phieu_da_cap_nhat,
 
 	chi_tiet_lenh_can,
 	chi_tiet_phieu_can,
@@ -324,5 +325,11 @@ export enum TYPE_LOGIN {
 }
 
 export enum TYPE_ACTION_AUDIT {
+	NO_DRY,
 	HAVE_DRY = 1,
+}
+
+export enum TYPE_STORE {
+	ADMIN_KHO,
+	NHAP_HANG,
 }

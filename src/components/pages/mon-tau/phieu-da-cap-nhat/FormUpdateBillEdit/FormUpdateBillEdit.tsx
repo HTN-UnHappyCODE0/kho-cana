@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 
-import {PropsFormUpdateDraftShip} from './interfaces';
-import styles from './FormUpdateDraftShip.module.scss';
+import {PropsFormUpdateBillEdit} from './interfaces';
+import styles from './FormUpdateBillEdit.module.scss';
 import Form, {FormContext, Input} from '~/components/common/Form';
 import Button from '~/components/common/Button';
 import {IoClose} from 'react-icons/io5';
@@ -16,18 +16,20 @@ import criteriaServices from '~/services/criteriaServices';
 import {toastWarn} from '~/common/funcs/toast';
 import clsx from 'clsx';
 import Popup from '~/components/common/Popup';
-import {price} from '~/common/funcs/convertCoin';
+import {convertCoin, price} from '~/common/funcs/convertCoin';
 import FormReasonUpdateSpec from '~/components/pages/nhap-lieu/quy-cach/FormReasonUpdateSpec';
 import UploadMultipleFile from '~/components/common/UploadMultipleFile';
 import uploadImageService from '~/services/uploadService';
 import batchBillServices from '~/services/batchBillServices';
 
-function FormUpdateDraftShip({dataUpdate, onClose}: PropsFormUpdateDraftShip) {
+function FormUpdateBillEdit({dataUpdate, onClose}: PropsFormUpdateBillEdit) {
 	const queryClient = useQueryClient();
 
 	const [loading, setLoading] = useState<boolean>(false);
 	const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 	const [images, setImages] = useState<any[]>([]);
+
+	console.log({dataUpdate});
 
 	const handleKeyEnter = (event: React.KeyboardEvent<HTMLInputElement>, index: number) => {
 		if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
@@ -52,7 +54,7 @@ function FormUpdateDraftShip({dataUpdate, onClose}: PropsFormUpdateDraftShip) {
 		}
 	};
 
-	const [form, setForm] = useState<{codeBill: string; amountDraft: number; totalSample: number | string; dryness: number}>({
+	const [form, setForm] = useState<{codeBill: string; amountDraft: number | string; totalSample: number | string; dryness: number}>({
 		codeBill: '',
 		amountDraft: 0,
 		totalSample: 0,
@@ -62,6 +64,8 @@ function FormUpdateDraftShip({dataUpdate, onClose}: PropsFormUpdateDraftShip) {
 	useEffect(() => {
 		setForm({
 			...form,
+			dryness: dataUpdate?.drynessAvg || 0,
+			amountDraft: convertCoin(dataUpdate?.weightMon) || 0,
 			codeBill: dataUpdate?.code || '',
 		});
 	}, [dataUpdate]);
@@ -144,7 +148,7 @@ function FormUpdateDraftShip({dataUpdate, onClose}: PropsFormUpdateDraftShip) {
 					<Input
 						name='amountDraft'
 						value={form.amountDraft || ''}
-						type='number'
+						type='text'
 						unit='Kg'
 						isMoney
 						blur={true}
@@ -223,4 +227,4 @@ function FormUpdateDraftShip({dataUpdate, onClose}: PropsFormUpdateDraftShip) {
 	);
 }
 
-export default FormUpdateDraftShip;
+export default FormUpdateBillEdit;

@@ -12,6 +12,7 @@ import {
 	QUERY_KEY,
 	STATE_BILL,
 	STATUS_BILL,
+	TYPE_ACTION_AUDIT,
 	TYPE_BATCH,
 	TYPE_CHECK_DAY_BILL,
 	TYPE_DATE,
@@ -201,6 +202,7 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 						typeCheckDay: TYPE_CHECK_DAY_BILL.THOI_GIAN_QLK_DUYET,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
+						isHaveDryness: TYPE_ACTION_AUDIT.NO_DRY,
 					}),
 				}),
 			onSuccess(data) {

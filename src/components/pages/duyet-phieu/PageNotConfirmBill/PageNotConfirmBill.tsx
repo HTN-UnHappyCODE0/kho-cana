@@ -12,6 +12,7 @@ import {
 	QUERY_KEY,
 	STATE_BILL,
 	STATUS_BILL,
+	TYPE_ACTION_AUDIT,
 	TYPE_BATCH,
 	TYPE_DATE,
 	TYPE_PRODUCT,
@@ -197,6 +198,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 						typeCheckDay: 0,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
+						isHaveDryness: TYPE_ACTION_AUDIT.NO_DRY,
 					}),
 				}),
 			onSuccess(data) {
