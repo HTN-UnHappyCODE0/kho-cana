@@ -50,6 +50,8 @@ import {DocumentText, Edit, Edit2, Eye, TickCircle} from 'iconsax-react';
 import Popup from '~/components/common/Popup';
 import FormUpdateDraftShip from '../../cap-nhat-mon-tau/FormUpdateDraftShip';
 import IconCustom from '~/components/common/IconCustom';
+import {ITableBillScale} from '~/components/pages/duyet-phieu/PageConfirmBill/interfaces';
+import FormUpdateBillEdit from '../FormUpdateBillEdit';
 
 function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 	const router = useRouter();
@@ -76,9 +78,9 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 
 	const [dataWeightSessionSubmit, setDataWeightSessionSubmit] = useState<any>();
 
-	const [loading, setLoading] = useState<boolean>(false);
-	const [weightSessions, setWeightSessions] = useState<any[]>([]);
-	const [total, setTotal] = useState<number>(0);
+	// const [loading, setLoading] = useState<boolean>(false);
+	// const [weightSessions, setWeightSessions] = useState<any[]>([]);
+	// const [total, setTotal] = useState<number>(0);
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
@@ -144,9 +146,9 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 		},
 	});
 
-	const getListBatch = useQuery(
+	const getListBill = useQuery(
 		[
-			QUERY_KEY.table_cap_nhat_mon_tau,
+			QUERY_KEY.table_cap_nhat_phieu_da_cap_nhat,
 			_page,
 			_pageSize,
 			_keyword,
@@ -170,13 +172,13 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 						isPaging: CONFIG_PAGING.IS_PAGING,
 						isDescending: CONFIG_DESCENDING.IS_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
-						scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_TRUC_TIEP],
+						scalesType: [TYPE_SCALES.CAN_XUAT],
 						customerUuid: (_customerUuid as string) || '',
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
 						isCreateBatch: null,
 						productTypeUuid: (_productTypeUuid as string) || '',
 						specificationsUuid: '',
-						status: [STATUS_BILL.DA_CAN_CHUA_KCS],
+						status: [STATUS_BILL.CHOT_KE_TOAN],
 						state: !!_state ? [Number(_state)] : [],
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
@@ -186,21 +188,21 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 						typeCheckDay: 0,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
-						isHaveDryness: TYPE_ACTION_AUDIT.HAVE_DRY,
+						isHaveDryness: TYPE_ACTION_AUDIT.NO_DRY,
 					}),
 				}),
-			onSuccess(data) {
-				if (data) {
-					setWeightSessions(
-						data?.items?.map((v: any, index: number) => ({
-							...v,
-							index: index,
-							isChecked: false,
-						}))
-					);
-					setTotal(data?.pagination?.totalCount);
-				}
-			},
+			// onSuccess(data) {
+			// 	if (data) {
+			// 		setWeightSessions(
+			// 			data?.items?.map((v: any, index: number) => ({
+			// 				...v,
+			// 				index: index,
+			// 				isChecked: false,
+			// 			}))
+			// 		);
+			// 		setTotal(data?.pagination?.totalCount);
+			// 	}
+			// },
 			select(data) {
 				if (data) {
 					return data;
@@ -254,50 +256,42 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 		},
 	});
 
-	const funcUpdateKCSWeightSession = useMutation({
-		mutationFn: () =>
-			httpRequest({
-				showMessageFailed: true,
-				showMessageSuccess: true,
-				msgSuccess: 'Gửi kế toán thành công!',
-				http: batchBillServices.kcsDoneBill({
-					uuid: dataWeightSessionSubmit?.map((v: any) => v?.uuid),
-				}),
-			}),
-		onSuccess(data) {
-			if (data) {
-				queryClient.invalidateQueries([QUERY_KEY.table_nhap_lieu_do_kho]);
-				setDataWeightSessionSubmit([]);
-			}
-		},
-		onError(error) {
-			console.log({error});
-			return;
-		},
-	});
+	// const funcUpdateKCSWeightSession = useMutation({
+	// 	mutationFn: () =>
+	// 		httpRequest({
+	// 			showMessageFailed: true,
+	// 			showMessageSuccess: true,
+	// 			msgSuccess: 'Gửi kế toán thành công!',
+	// 			http: batchBillServices.kcsDoneBill({
+	// 				uuid: dataWeightSessionSubmit?.map((v: any) => v?.uuid),
+	// 			}),
+	// 		}),
+	// 	onSuccess(data) {
+	// 		if (data) {
+	// 			queryClient.invalidateQueries([QUERY_KEY.table_nhap_lieu_do_kho]);
+	// 			setDataWeightSessionSubmit([]);
+	// 		}
+	// 	},
+	// 	onError(error) {
+	// 		console.log({error});
+	// 		return;
+	// 	},
+	// });
 
-	useEffect(() => {
-		if (weightSessions.length > 0) {
-			inputRefs.current = Array(weightSessions.length)
-				.fill(null)
-				.map((_, i) => inputRefs.current[i] || null);
-		}
-	}, [weightSessions]);
-
-	// const handleSubmitSentData = async () => {
-	// 	if (dataWeightSessionSubmit.some((v) => v.drynessAvg == null)) {
-	// 		return toastWarn({msg: 'Nhập độ khô trước khi gửi kể toán!'});
+	// useEffect(() => {
+	// 	if (weightSessions.length > 0) {
+	// 		inputRefs.current = Array(weightSessions.length)
+	// 			.fill(null)
+	// 			.map((_, i) => inputRefs.current[i] || null);
 	// 	}
-
-	// 	return funcUpdateKCSWeightSession.mutate();
-	// };
+	// }, [weightSessions]);
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={funcUpdateKCSWeightSession.isLoading} />
+			{/* <Loading loading={funcUpdateKCSWeightSession.isLoading} /> */}
 			<div className={styles.header}>
 				<div className={styles.main_search}>
-					{weightSessions?.some((x) => x.isChecked !== false) && (
+					{/* {weightSessions?.some((x) => x.isChecked !== false) && (
 						<div style={{height: 40}}>
 							<Button
 								className={styles.btn}
@@ -313,7 +307,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 								CN mớn tàu
 							</Button>
 						</div>
-					)}
+					)} */}
 
 					<div className={styles.search}>
 						<Search keyName='_keyword' placeholder='Tìm kiếm theo số phiếu và mã lô hàng' />
@@ -409,23 +403,23 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 
 			<div className={styles.table}>
 				<DataWrapper
-					data={weightSessions || []}
-					loading={loading}
-					noti={<Noti des='Hiện tại chưa có danh sách nhập liệu nào!' disableButton />}
+					data={getListBill?.data?.items || []}
+					loading={getListBill?.isLoading}
+					noti={<Noti des='Hiện tại chưa có dữ liệu nào!' disableButton />}
 				>
 					<Table
-						data={weightSessions || []}
-						onSetData={setWeightSessions}
+						data={getListBill?.data?.items || []}
+						// onSetData={setWeightSessions}
 						column={[
 							{
 								title: 'STT',
 								// checkBox: true,
-								render: (data: any, index: number) => <>{index + 1}</>,
+								render: (data: ITableBillScale, index: number) => <>{index + 1}</>,
 							},
 							{
-								title: 'Mã lô/Số phiếu',
+								title: 'Mã lô',
 								fixedLeft: true,
-								render: (data: any) => (
+								render: (data: ITableBillScale) => (
 									<>
 										{data?.isBatch == TYPE_BATCH.KHONG_CAN ? (
 											<Link href={`/nhap-xuat-ngoai/${data.uuid}`} className={styles.link}>
@@ -442,7 +436,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 							},
 							{
 								title: 'Loại cân/ Thời gian kết thúc',
-								render: (data: any) => (
+								render: (data: ITableBillScale) => (
 									<>
 										<p style={{fontWeight: 600}}>
 											{data?.scalesType == TYPE_SCALES.CAN_NHAP && 'Cân nhập'}
@@ -451,15 +445,15 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 											{data?.scalesType == TYPE_SCALES.CAN_CHUYEN_KHO && 'Cân chuyển kho'}
 											{data?.scalesType == TYPE_SCALES.CAN_TRUC_TIEP && 'Cân xuất thẳng'}
 										</p>
-										<p style={{fontWeight: 500, color: '#3772FF'}}>
+										{/* <p style={{fontWeight: 500, color: '#3772FF'}}>
 											<Moment date={data?.timeEnd} format='HH:mm - DD/MM/YYYY' />
-										</p>
+										</p> */}
 									</>
 								),
 							},
 							{
 								title: 'Từ (Tàu/Xe)',
-								render: (data: any) => (
+								render: (data: ITableBillScale) => (
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>
 										{data?.isBatch == TYPE_BATCH.CAN_LO && (
@@ -476,69 +470,39 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 								),
 							},
 							{
-								title: 'Loại hàng',
-								render: (data: any) => <>{data?.productTypeUu?.name || '---'}</>,
-							},
-							{
-								title: 'Kho trung chuyển',
-								render: (data: any) => <>{'---'}</>,
-							},
-							{
-								title: 'KL hàng cũ (Tấn)',
-								render: (data: any) => <>{0}</>,
-							},
-							{
-								title: 'KL tươi (Tấn)',
-								render: (data: any) => <>{convertWeight(data?.weightTotal) || 0}</>,
-							},
-							{
-								title: 'Độ khô (%)',
-								render: (data: any) => <>{data?.drynessAvg?.toFixed(2) || 0}</>,
-							},
-							{
-								title: 'KL quy khô (Tấn)',
-								render: (data: any) => <>{convertWeight(data?.weightBdmt) || 0}</>,
-							},
-							{
-								title: 'Quy cách',
-								render: (data: any) => <>{data?.specificationsUu?.name || '---'}</>,
-							},
-							{
-								title: 'Lượng tươi theo mớn (Tấn)',
-								render: (data: any) => <>{0}</>,
-							},
-							{
-								title: 'Tổng lượng khô (Tấn)',
-								render: (data: any) => <>{convertWeight(data?.weigth2)}</>,
-							},
-
-							{
 								title: 'Đến',
-								render: (data: any) => (
+								render: (data: ITableBillScale) => (
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.toUu?.name || '---'}</p>
-										<p style={{fontWeight: 600, color: '#3772FF'}}>
+										{/* <p style={{fontWeight: 600, color: '#3772FF'}}>
 											{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
-										</p>
+										</p> */}
 									</>
 								),
 							},
-							// {
-							// 	title: 'Phân loại',
-							// 	render: (data: any) => (
-							// 		<>
-							// 			{data?.isSift == TYPE_SIFT.CAN_SANG && 'Cần sàng'}
-							// 			{data?.isSift == TYPE_SIFT.KHONG_CAN_SANG && 'Không cần sàng'}
-							// 		</>
-							// 	),
-							// },
 							{
-								title: 'Độ khô',
-								render: (data: any) => <>{data?.documentId || '---'}</>,
+								title: 'Loại hàng',
+								render: (data: ITableBillScale) => <>{data?.productTypeUu?.name || '---'}</>,
 							},
 							{
-								title: 'File đính kèm',
-								render: (data: any) => <>{'---'}</>,
+								title: 'Lượng tươi theo mớn (Tấn)',
+								render: (data: ITableBillScale) => <>{convertWeight(data?.weightMon) || 0}</>,
+							},
+							{
+								title: 'Độ khô (%)',
+								render: (data: ITableBillScale) => <>{data?.drynessAvg?.toFixed(2) || 0}</>,
+							},
+							{
+								title: 'KL quy khô (Tấn)',
+								render: (data: ITableBillScale) => <>{convertWeight(data?.weightBdmt) || 0}</>,
+							},
+							{
+								title: 'Quy cách',
+								render: (data: ITableBillScale) => <>{data?.specificationsUu?.name || '---'}</>,
+							},
+							{
+								title: 'Tổng số lượt',
+								render: (data: ITableBillScale) => <>{convertCoin(data?.countWs)}</>,
 							},
 
 							// {
@@ -636,9 +600,11 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 										<IconCustom
 											edit
 											icon={<Edit size={22} fontWeight={600} />}
-											tooltip='Cập nhật cảng'
+											tooltip='Cập nhật'
 											color='#777E90'
-											// onClick={() => setListBatchBillSubmit([data])}
+											onClick={() => {
+												setDataWeightSessionSubmit(data);
+											}}
 										/>
 										<IconCustom
 											icon={<Eye size={22} fontWeight={600} />}
@@ -646,40 +612,40 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 											color='#777E90'
 											href={`/phieu-can/${data.uuid}`}
 										/>
-										<IconCustom
+										{/* <IconCustom
 											icon={<DocumentText size={22} fontWeight={600} />}
 											tooltip='Xem lịch sử'
 											color='#777E90'
 											href={`/mon-tau/lich-su?_billUuid=${data?.uuid}}`}
-										/>
+										/> */}
 									</div>
 								),
 							},
 						]}
 					/>
 				</DataWrapper>
-				{!loading && (
-					<Pagination
-						currentPage={Number(_page) || 1}
-						pageSize={Number(_pageSize) || 200}
-						total={total}
-						dependencies={[
-							_pageSize,
-							_keyword,
-							_isBatch,
-							_customerUuid,
-							_productTypeUuid,
-							_specUuid,
-							_dateFrom,
-							_dateTo,
-							_isShift,
-							_status,
-							_storageUuid,
-							_scalesStationUuid,
-							_state,
-						]}
-					/>
-				)}
+				{/* {!loading && ( */}
+				<Pagination
+					currentPage={Number(_page) || 1}
+					pageSize={Number(_pageSize) || 200}
+					total={getListBill?.data?.pagination?.totalCount}
+					dependencies={[
+						_pageSize,
+						_keyword,
+						_isBatch,
+						_customerUuid,
+						_productTypeUuid,
+						_specUuid,
+						_dateFrom,
+						_dateTo,
+						_isShift,
+						_status,
+						_storageUuid,
+						_scalesStationUuid,
+						_state,
+					]}
+				/>
+				{/* )} */}
 			</div>
 
 			{/* <Dialog
@@ -694,7 +660,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 			/> */}
 
 			<Popup open={!!dataWeightSessionSubmit} onClose={() => setDataWeightSessionSubmit(null)}>
-				<FormUpdateDraftShip dataUpdate={dataWeightSessionSubmit} onClose={() => setDataWeightSessionSubmit(null)} />
+				<FormUpdateBillEdit dataUpdate={dataWeightSessionSubmit} onClose={() => setDataWeightSessionSubmit(null)} />
 			</Popup>
 		</div>
 	);

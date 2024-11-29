@@ -15,6 +15,7 @@ import {
 	QUERY_KEY,
 	STATUS_BILL,
 	STATUS_CUSTOMER,
+	TYPE_ACTION_AUDIT,
 	TYPE_DATE,
 	TYPE_PRODUCT,
 	TYPE_SCALES,
@@ -219,6 +220,7 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 						typeCheckDay: 0,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
+						isHaveDryness: TYPE_ACTION_AUDIT.NO_DRY,
 					}),
 				}),
 			select(data) {

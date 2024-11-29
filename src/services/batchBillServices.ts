@@ -301,6 +301,19 @@ const batchBillServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	updateWeightBillOut: (
+		data: {
+			billUuid: string;
+			weightMon: number;
+			drynessAvg: number;
+			paths: string[];
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/BatchBill/update-weight-bill-out`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 };
 
 export default batchBillServices;

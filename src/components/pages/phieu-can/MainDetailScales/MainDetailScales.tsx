@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {use, useState} from 'react';
 import {PropsMainDetailScales} from './interfaces';
 import styles from './MainDetailScales.module.scss';
 import TabNavLink from '~/components/common/TabNavLink';
 import {useRouter} from 'next/router';
 import TableDetail from './components/TableDetail';
 import Link from 'next/link';
-import {IoArrowBackOutline} from 'react-icons/io5';
+import {IoArrowBackOutline, IoClose} from 'react-icons/io5';
 import clsx from 'clsx';
 import TableListTruck from './components/TableListTruck';
 import {useMutation, useQuery} from '@tanstack/react-query';
@@ -34,10 +34,14 @@ import StateActive from '~/components/common/StateActive';
 import Moment from 'react-moment';
 import weightSessionServices from '~/services/weightSessionServices';
 import Loading from '~/components/common/Loading';
+import Popup from '~/components/common/Popup';
+import SliderImage from '~/components/common/SliderImage';
 
 function MainDetailScales({}: PropsMainDetailScales) {
 	const router = useRouter();
 	const {_type, _id} = router.query;
+
+	const [open, setOpen] = useState<boolean>(false);
 
 	const {data: detailBatchBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_phieu_can, _id], {
 		queryFn: () =>
@@ -312,9 +316,16 @@ function MainDetailScales({}: PropsMainDetailScales) {
 								/>
 							</span>
 						</td>
-						<td rowSpan={3} className={styles.description}>
-							<span>{detailBatchBill?.state == STATE_BILL.QLK_REJECTED ? 'Lý do' : 'Mô tả'} :</span>
-							<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.description || '---'}</span>
+						<td>
+							<span>Lượng tươi theo mớn:</span>
+							{detailBatchBill?.weightMon ? (
+								<span style={{marginLeft: '6px', fontWeight: 600}}>
+									{convertWeight(detailBatchBill?.weightMon!)}
+									<span style={{marginLeft: '6px', fontWeight: 600}}>(Tấn)</span>
+								</span>
+							) : (
+								'---'
+							)}
 						</td>
 					</tr>
 					<tr>
@@ -323,6 +334,10 @@ function MainDetailScales({}: PropsMainDetailScales) {
 								<span>Trạm cân: </span>
 								<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.scalesStationUu?.name || '---'}</span>
 							</div>
+						</td>
+						<td rowSpan={3} className={styles.description}>
+							<span>{detailBatchBill?.state == STATE_BILL.QLK_REJECTED ? 'Lý do' : 'Mô tả'} :</span>
+							<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.description || '---'}</span>
 						</td>
 					</tr>
 
@@ -385,6 +400,22 @@ function MainDetailScales({}: PropsMainDetailScales) {
 							</span>
 						</td>
 					</tr>
+					<tr>
+						<td>
+							<span className={styles.state_action}>
+								<span style={{marginRight: '6px'}}>File ảnh: </span>
+								{detailBatchBill?.weightMon ? (
+									<span>
+										<Button rounded_8 w_fit p_6_12 green bold onClick={() => setOpen(true)}>
+											Chi tiết
+										</Button>
+									</span>
+								) : (
+									'---'
+								)}
+							</span>
+						</td>
+					</tr>
 				</table>
 			</div>
 			<div className={clsx('mt')}>
@@ -416,6 +447,15 @@ function MainDetailScales({}: PropsMainDetailScales) {
 				{_type == 'xe-hang' && <TableListTruck />}
 				{_type == 'lich-su' && <TableUpdateBillHistory />}
 			</div>
+
+			<Popup open={open} onClose={() => setOpen(false)}>
+				<div className={styles.main_form}>
+					<SliderImage listImage={detailBatchBill?.path! || []} />
+					<div className={styles.icon_close} onClick={() => setOpen(false)}>
+						<IoClose size={24} color='#23262F' />
+					</div>
+				</div>
+			</Popup>
 		</div>
 	);
 }

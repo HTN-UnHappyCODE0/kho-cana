@@ -4,7 +4,7 @@ import {PropsMainDashboard} from './interfaces';
 import styles from './MainDashboard.module.scss';
 import DashboardWarehouse from '../DashboardWarehouse';
 import {useQuery} from '@tanstack/react-query';
-import {QUERY_KEY} from '~/constants/config/enum';
+import {QUERY_KEY, TYPE_STORE} from '~/constants/config/enum';
 import {httpRequest} from '~/services';
 import warehouseServices from '~/services/warehouseServices';
 
@@ -13,7 +13,9 @@ function MainDashboard({}: PropsMainDashboard) {
 		queryFn: () =>
 			httpRequest({
 				isData: true,
-				http: warehouseServices.dashbroadWarehouse({}),
+				http: warehouseServices.dashbroadWarehouse({
+					typeProduct: TYPE_STORE.ADMIN_KHO,
+				}),
 			}),
 		select(data) {
 			if (data) {

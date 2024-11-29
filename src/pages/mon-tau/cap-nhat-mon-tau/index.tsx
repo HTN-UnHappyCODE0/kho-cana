@@ -17,7 +17,7 @@ export default function Page() {
 			<LayoutPages
 				listPages={[
 					{
-						title: 'Cập nhật mớn tàu',
+						title: 'Cập nhật khối lượng theo mớn tàu',
 						url: PATH.CapNhatMonTau,
 					},
 					{

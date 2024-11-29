@@ -125,4 +125,5 @@ export interface ITableBillScale {
 	};
 	weigth1: number;
 	weigth2: number;
+	weightMon: number;
 }
