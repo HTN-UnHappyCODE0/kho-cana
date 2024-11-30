@@ -29,8 +29,6 @@ function FormUpdateBillEdit({dataUpdate, onClose}: PropsFormUpdateBillEdit) {
 	const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 	const [images, setImages] = useState<any[]>([]);
 
-	console.log({dataUpdate});
-
 	const handleKeyEnter = (event: React.KeyboardEvent<HTMLInputElement>, index: number) => {
 		if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
 			event.preventDefault();
@@ -68,6 +66,13 @@ function FormUpdateBillEdit({dataUpdate, onClose}: PropsFormUpdateBillEdit) {
 			amountDraft: convertCoin(dataUpdate?.weightMon) || 0,
 			codeBill: dataUpdate?.code || '',
 		});
+		setImages(
+			dataUpdate?.path?.map((v: any) => ({
+				file: null,
+				img: v,
+				path: `${process.env.NEXT_PUBLIC_IMAGE}/${v}`,
+			})) || []
+		);
 	}, [dataUpdate]);
 
 	const funcUpdateDraftShip = useMutation({
@@ -126,7 +131,7 @@ function FormUpdateBillEdit({dataUpdate, onClose}: PropsFormUpdateBillEdit) {
 		const totalSample = Math.round((price(form.amountDraft) * form.dryness) / 100);
 		setForm((prev) => ({
 			...prev,
-			totalSample: isNaN(totalSample) ? 0 : totalSample,
+			totalSample: isNaN(totalSample) ? 0 : convertCoin(totalSample),
 		}));
 	}, [form.amountDraft, form.dryness]);
 

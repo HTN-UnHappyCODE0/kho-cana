@@ -16,7 +16,7 @@ import criteriaServices from '~/services/criteriaServices';
 import {toastWarn} from '~/common/funcs/toast';
 import clsx from 'clsx';
 import Popup from '~/components/common/Popup';
-import {price} from '~/common/funcs/convertCoin';
+import {convertCoin, price} from '~/common/funcs/convertCoin';
 import FormReasonUpdateSpec from '~/components/pages/nhap-lieu/quy-cach/FormReasonUpdateSpec';
 import UploadMultipleFile from '~/components/common/UploadMultipleFile';
 import uploadImageService from '~/services/uploadService';
@@ -122,7 +122,7 @@ function FormUpdateDraftShip({dataUpdate, onClose}: PropsFormUpdateDraftShip) {
 		const totalSample = Math.round((price(form.amountDraft) * form.dryness) / 100);
 		setForm((prev) => ({
 			...prev,
-			totalSample: isNaN(totalSample) ? 0 : totalSample,
+			totalSample: isNaN(totalSample) ? 0 : convertCoin(totalSample),
 		}));
 	}, [form.amountDraft, form.dryness]);
 
