@@ -75,7 +75,7 @@ function FormUpdateBillEdit({dataUpdate, onClose}: PropsFormUpdateBillEdit) {
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
-				msgSuccess: 'Cập nhật mớn tàu thành công!',
+				msgSuccess: 'Chỉnh sửa cập nhật mớn tàu thành công!',
 				http: batchBillServices.updateWeightBillOut({
 					billUuid: dataUpdate?.uuid || '',
 					drynessAvg: form.dryness,
@@ -86,7 +86,7 @@ function FormUpdateBillEdit({dataUpdate, onClose}: PropsFormUpdateBillEdit) {
 		onSuccess(data) {
 			if (data) {
 				onClose();
-				queryClient.invalidateQueries([QUERY_KEY.table_cap_nhat_mon_tau]);
+				queryClient.invalidateQueries([QUERY_KEY.table_cap_nhat_phieu_da_cap_nhat]);
 			}
 		},
 		onError(error) {
@@ -133,7 +133,7 @@ function FormUpdateBillEdit({dataUpdate, onClose}: PropsFormUpdateBillEdit) {
 	return (
 		<div className={styles.container}>
 			<Loading loading={loading || funcUpdateDraftShip.isLoading} />
-			<h4>Cập nhật mớn tàu</h4>
+			<h4>Chỉnh sửa cập nhật mớn tàu</h4>
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<Input
 					name='codeBill'
