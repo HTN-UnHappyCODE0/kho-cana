@@ -172,7 +172,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 						isCreateBatch: null,
 						productTypeUuid: (_productTypeUuid as string) || '',
 						specificationsUuid: '',
-						status: [STATUS_BILL.DA_CAN_CHUA_KCS],
+						status: [STATUS_BILL.DA_CAN_CHUA_KCS, STATUS_BILL.DA_KCS],
 						state: !!_state ? [Number(_state)] : [],
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
