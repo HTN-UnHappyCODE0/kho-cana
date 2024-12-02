@@ -75,6 +75,8 @@ function FormUpdateBillEdit({dataUpdate, onClose}: PropsFormUpdateBillEdit) {
 		);
 	}, [dataUpdate]);
 
+	console.log(images);
+
 	const funcUpdateDraftShip = useMutation({
 		mutationFn: (body: {paths: string[]}) =>
 			httpRequest({
@@ -100,7 +102,7 @@ function FormUpdateBillEdit({dataUpdate, onClose}: PropsFormUpdateBillEdit) {
 	});
 
 	const handleSubmit = async () => {
-		const imgs = images?.map((v: any) => v?.file);
+		const imgs = images?.filter((v: any) => v?.file);
 
 		if (form.dryness < 0 || form.dryness > 100) {
 			return toastWarn({msg: 'Độ khô không hợp lệ!'});
@@ -110,20 +112,19 @@ function FormUpdateBillEdit({dataUpdate, onClose}: PropsFormUpdateBillEdit) {
 			const dataImage = await httpRequest({
 				setLoading,
 				isData: true,
-				http: uploadImageService.uploadMutilImage(imgs),
+				http: uploadImageService.uploadMutilImage(images?.map((v: any) => v?.file)),
 			});
 			if (dataImage?.error?.code == 0) {
 				return funcUpdateDraftShip.mutate({
-					paths: dataImage.items,
+					paths: [...images?.filter((x) => !x.file).map((v: any) => v?.img), ...dataImage?.items],
 				});
 			} else {
 				return toastWarn({msg: 'Upload ảnh thất bại!'});
 			}
 		} else {
-			// return funcUpdateDraftShip.mutate({
-			// 	paths: [],
-			// });
-			return toastWarn({msg: 'Chưa cập nhật ảnh!'});
+			return funcUpdateDraftShip.mutate({
+				paths: images.map((v: any) => v?.img),
+			});
 		}
 	};
 
@@ -204,7 +205,7 @@ function FormUpdateBillEdit({dataUpdate, onClose}: PropsFormUpdateBillEdit) {
 					<div className={styles.image_upload}>
 						Chọn ảnh <span style={{color: 'red'}}>*</span>
 					</div>
-					<UploadMultipleFile images={images} setImages={setImages} />
+					<UploadMultipleFile isDisableDelete={true} images={images} setImages={setImages} />
 				</div>
 
 				<div className={styles.btn}>

@@ -8,7 +8,7 @@ import {useRouter} from 'next/router';
 import {useRef, useState} from 'react';
 import {removeVietnameseTones} from '~/common/funcs/optionConvert';
 
-function FilterCustom({listFilter, name, query, isSearch, disabled = false}: PropsFilterCustom) {
+function FilterCustom({listFilter, name, query, isSearch, disabled = false, all = true}: PropsFilterCustom) {
 	const router = useRouter();
 	const {[query]: queryStr, ...rest} = router.query;
 	const inputSearchRef = useRef<HTMLInputElement>(null);
@@ -38,7 +38,7 @@ function FilterCustom({listFilter, name, query, isSearch, disabled = false}: Pro
 			placement='bottom-start'
 			render={(attrs: any) => (
 				<div className={styles.mainOption}>
-					{isSearch ? (
+					{isSearch && (
 						<input
 							ref={inputSearchRef}
 							placeholder='Tìm kiếm...'
@@ -46,34 +46,38 @@ function FilterCustom({listFilter, name, query, isSearch, disabled = false}: Pro
 							value={keyword}
 							onChange={(e) => setKeyword(e.target.value)}
 						/>
-					) : null}
+					)}
 					<div className={styles.overflow}>
-						<div
-							className={clsx(styles.option, {
-								[styles.option_active]: !queryStr,
-							})}
-							onClick={() => {
-								setOpen(false);
-								router.replace(
-									{
-										query: {
-											...rest,
+						{/* Chỉ hiển thị tùy chọn "Tất cả" khi `all` là true */}
+						{all && (
+							<div
+								className={clsx(styles.option, {
+									[styles.option_active]: !queryStr,
+								})}
+								onClick={() => {
+									setOpen(false);
+									router.replace(
+										{
+											query: {
+												...rest,
+											},
 										},
-									},
-									undefined,
-									{
-										scroll: false,
-									}
-								);
-							}}
-						>
-							<p>{'Tất cả'}</p>
-							{!queryStr && (
-								<div className={styles.icon_check}>
-									<BiCheck fontSize={18} color='#5755FF' fontWeight={600} />
-								</div>
-							)}
-						</div>
+										undefined,
+										{
+											scroll: false,
+										}
+									);
+								}}
+							>
+								<p>{'Tất cả'}</p>
+								{!queryStr && (
+									<div className={styles.icon_check}>
+										<BiCheck fontSize={18} color='#5755FF' fontWeight={600} />
+									</div>
+								)}
+							</div>
+						)}
+
 						{listFilter
 							?.filter((v) => removeVietnameseTones(v.name)?.includes(keyword ? removeVietnameseTones(keyword) : ''))
 							?.map((v, i) => (
@@ -110,7 +114,10 @@ function FilterCustom({listFilter, name, query, isSearch, disabled = false}: Pro
 			)}
 		>
 			<div
-				className={clsx(styles.dealer, {[styles.active]: open, [styles.disabled]: disabled})}
+				className={clsx(styles.dealer, {
+					[styles.active]: open,
+					[styles.disabled]: disabled,
+				})}
 				onClick={() => {
 					if (disabled) {
 						setOpen(false);

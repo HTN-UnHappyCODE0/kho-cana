@@ -7,7 +7,7 @@ import {IoClose} from 'react-icons/io5';
 import {AddCircle} from 'iconsax-react';
 import clsx from 'clsx';
 
-function UploadMultipleFile({images = [], setImages, disnable}: PropsUploadMultipleFile) {
+function UploadMultipleFile({images = [], setImages, isDisableDelete = false}: PropsUploadMultipleFile) {
 	const handleFileChange = (event: any) => {
 		const files = event.target.files;
 		const newImages: any = [];
@@ -34,7 +34,7 @@ function UploadMultipleFile({images = [], setImages, disnable}: PropsUploadMulti
 					{images.map((image, index) => (
 						<div className={styles.box_image} key={index}>
 							<Image className={styles.image} src={image?.url || image?.path} alt='image' objectFit='cover' layout='fill' />
-							{!disnable && (
+							{isDisableDelete && !image?.file && !!image?.img ? null : (
 								<div className={clsx(styles.delete)} onClick={() => handleDelete(index)}>
 									<IoClose size={14} color='#8496AC' />
 								</div>
@@ -43,28 +43,26 @@ function UploadMultipleFile({images = [], setImages, disnable}: PropsUploadMulti
 					))}
 				</div>
 			)}
-			{!disnable && (
-				<div className={styles.upload}>
-					<label className={styles.input_upload}>
-						<AddCircle color='rgba(198, 201, 206, 1)' />
-						<input
-							hidden
-							type='file'
-							multiple
-							accept='image/png, image/gif, image/jpeg'
-							onClick={(e: any) => {
-								e.target.value = null;
-							}}
-							onChange={handleFileChange}
-						/>
-					</label>
+			<div className={styles.upload}>
+				<label className={styles.input_upload}>
+					<AddCircle color='rgba(198, 201, 206, 1)' />
+					<input
+						hidden
+						type='file'
+						multiple
+						accept='image/png, image/gif, image/jpeg'
+						onClick={(e: any) => {
+							e.target.value = null;
+						}}
+						onChange={handleFileChange}
+					/>
+				</label>
 
-					<div className={styles.note_upload}>
-						<p>Upload file</p>
-						<p>File không vượt quá 50MB</p>
-					</div>
+				<div className={styles.note_upload}>
+					<p>Upload file</p>
+					<p>File không vượt quá 50MB</p>
 				</div>
-			)}
+			</div>
 		</div>
 	);
 }

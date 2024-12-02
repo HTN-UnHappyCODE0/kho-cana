@@ -356,47 +356,51 @@ function MainDetailScales({}: PropsMainDetailScales) {
 							</div> */}
 							<span className={styles.state_action}>
 								<span style={{marginRight: '6px'}}>Xác nhận SL: </span>
-								<StateActive
-									stateActive={detailBatchBill?.state!}
-									listState={[
-										{
-											state: STATE_BILL.NOT_CHECK,
-											text: 'Chưa duyệt',
-											textColor: '#fff',
-											backgroundColor: '#FF5C5C',
-										},
-										{
-											state: STATE_BILL.QLK_REJECTED,
-											text: 'QLK duyệt lại',
-											textColor: '#fff',
-											backgroundColor: '#FB923C',
-										},
-										{
-											state: STATE_BILL.QLK_CHECKED,
-											text: 'QLK đã duyệt',
-											textColor: '#fff',
-											backgroundColor: '#0EA5E9',
-										},
-										{
-											state: STATE_BILL.KTK_REJECTED,
-											text: 'KTK duyệt lại',
-											textColor: '#fff',
-											backgroundColor: '#FF6838',
-										},
-										{
-											state: STATE_BILL.KTK_CHECKED,
-											text: 'KTK đã duyệt',
-											textColor: '#fff',
-											backgroundColor: '#2A85FF',
-										},
-										{
-											state: STATE_BILL.END,
-											text: 'Kết thúc',
-											textColor: '#fff',
-											backgroundColor: '#9757D7',
-										},
-									]}
-								/>
+								{detailBatchBill?.scalesType != TYPE_SCALES.CAN_XUAT ? (
+									<StateActive
+										stateActive={detailBatchBill?.state!}
+										listState={[
+											{
+												state: STATE_BILL.NOT_CHECK,
+												text: 'Chưa duyệt',
+												textColor: '#fff',
+												backgroundColor: '#FF5C5C',
+											},
+											{
+												state: STATE_BILL.QLK_REJECTED,
+												text: 'QLK duyệt lại',
+												textColor: '#fff',
+												backgroundColor: '#FB923C',
+											},
+											{
+												state: STATE_BILL.QLK_CHECKED,
+												text: 'QLK đã duyệt',
+												textColor: '#fff',
+												backgroundColor: '#0EA5E9',
+											},
+											{
+												state: STATE_BILL.KTK_REJECTED,
+												text: 'KTK duyệt lại',
+												textColor: '#fff',
+												backgroundColor: '#FF6838',
+											},
+											{
+												state: STATE_BILL.KTK_CHECKED,
+												text: 'KTK đã duyệt',
+												textColor: '#fff',
+												backgroundColor: '#2A85FF',
+											},
+											{
+												state: STATE_BILL.END,
+												text: 'Kết thúc',
+												textColor: '#fff',
+												backgroundColor: '#9757D7',
+											},
+										]}
+									/>
+								) : (
+									'---'
+								)}
 							</span>
 						</td>
 					</tr>
