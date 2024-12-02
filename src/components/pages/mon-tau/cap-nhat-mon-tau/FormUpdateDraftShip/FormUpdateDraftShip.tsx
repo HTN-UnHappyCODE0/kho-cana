@@ -144,7 +144,7 @@ function FormUpdateDraftShip({dataUpdate, onClose}: PropsFormUpdateDraftShip) {
 					<Input
 						name='amountDraft'
 						value={form.amountDraft || ''}
-						type='number'
+						type='text'
 						unit='Kg'
 						isMoney
 						blur={true}

@@ -33,5 +33,5 @@ export default function Page() {
 }
 
 Page.getLayout = function (Page: ReactElement) {
-	return <BaseLayout title='Quản lý mớn tàu>'>{Page}</BaseLayout>;
+	return <BaseLayout title='Quản lý mớn tàu'>{Page}</BaseLayout>;
 };
