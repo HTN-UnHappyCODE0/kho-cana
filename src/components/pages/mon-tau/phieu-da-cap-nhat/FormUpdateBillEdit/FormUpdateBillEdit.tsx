@@ -75,8 +75,6 @@ function FormUpdateBillEdit({dataUpdate, onClose}: PropsFormUpdateBillEdit) {
 		);
 	}, [dataUpdate]);
 
-	console.log(images);
-
 	const funcUpdateDraftShip = useMutation({
 		mutationFn: (body: {paths: string[]}) =>
 			httpRequest({
