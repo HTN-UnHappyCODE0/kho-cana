@@ -4,4 +4,5 @@ export interface PropsFilterCustom {
 	query: string;
 	isSearch?: boolean;
 	disabled?: boolean;
+	all?: boolean;
 }

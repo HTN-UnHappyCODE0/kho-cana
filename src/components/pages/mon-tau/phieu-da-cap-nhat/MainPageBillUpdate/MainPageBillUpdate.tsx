@@ -96,7 +96,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 					partnerUUid: '',
 					userUuid: '',
 					status: null,
-					typeCus: TYPE_CUSTOMER.NHA_CUNG_CAP,
+					typeCus: TYPE_CUSTOMER.KH_XUAT,
 					provinceId: '',
 					specUuid: '',
 				}),
@@ -191,18 +191,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 						isHaveDryness: TYPE_ACTION_AUDIT.NO_DRY,
 					}),
 				}),
-			// onSuccess(data) {
-			// 	if (data) {
-			// 		setWeightSessions(
-			// 			data?.items?.map((v: any, index: number) => ({
-			// 				...v,
-			// 				index: index,
-			// 				isChecked: false,
-			// 			}))
-			// 		);
-			// 		setTotal(data?.pagination?.totalCount);
-			// 	}
-			// },
+
 			select(data) {
 				if (data) {
 					return data;
@@ -255,36 +244,6 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 			return data;
 		},
 	});
-
-	// const funcUpdateKCSWeightSession = useMutation({
-	// 	mutationFn: () =>
-	// 		httpRequest({
-	// 			showMessageFailed: true,
-	// 			showMessageSuccess: true,
-	// 			msgSuccess: 'Gửi kế toán thành công!',
-	// 			http: batchBillServices.kcsDoneBill({
-	// 				uuid: dataWeightSessionSubmit?.map((v: any) => v?.uuid),
-	// 			}),
-	// 		}),
-	// 	onSuccess(data) {
-	// 		if (data) {
-	// 			queryClient.invalidateQueries([QUERY_KEY.table_nhap_lieu_do_kho]);
-	// 			setDataWeightSessionSubmit([]);
-	// 		}
-	// 	},
-	// 	onError(error) {
-	// 		console.log({error});
-	// 		return;
-	// 	},
-	// });
-
-	// useEffect(() => {
-	// 	if (weightSessions.length > 0) {
-	// 		inputRefs.current = Array(weightSessions.length)
-	// 			.fill(null)
-	// 			.map((_, i) => inputRefs.current[i] || null);
-	// 	}
-	// }, [weightSessions]);
 
 	return (
 		<div className={styles.container}>
@@ -435,7 +394,11 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 								),
 							},
 							{
-								title: 'Loại cân/ Thời gian kết thúc',
+								title: (
+									<span className={styles.unit}>
+										Loại cân <br /> Thời gian kết thúc
+									</span>
+								),
 								render: (data: ITableBillScale) => (
 									<>
 										<p style={{fontWeight: 600}}>
@@ -445,14 +408,18 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 											{data?.scalesType == TYPE_SCALES.CAN_CHUYEN_KHO && 'Cân chuyển kho'}
 											{data?.scalesType == TYPE_SCALES.CAN_TRUC_TIEP && 'Cân xuất thẳng'}
 										</p>
-										{/* <p style={{fontWeight: 500, color: '#3772FF'}}>
+										<p style={{fontWeight: 500, color: '#3772FF'}}>
 											<Moment date={data?.timeEnd} format='HH:mm - DD/MM/YYYY' />
-										</p> */}
+										</p>
 									</>
 								),
 							},
 							{
-								title: 'Từ (Tàu/Xe)',
+								title: (
+									<span className={styles.unit}>
+										Từ <br /> (Tàu/Xe)
+									</span>
+								),
 								render: (data: ITableBillScale) => (
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>
@@ -485,7 +452,11 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 								render: (data: ITableBillScale) => <>{data?.productTypeUu?.name || '---'}</>,
 							},
 							{
-								title: 'Lượng tươi theo mớn (Tấn)',
+								title: (
+									<span className={styles.unit}>
+										Lượng tươi theo mớn <br /> (Tấn)
+									</span>
+								),
 								render: (data: ITableBillScale) => <>{convertWeight(data?.weightMon) || 0}</>,
 							},
 							{
@@ -504,93 +475,6 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 								title: 'Tổng số lượt',
 								render: (data: ITableBillScale) => <>{convertCoin(data?.countWs)}</>,
 							},
-
-							// {
-							// 	title: 'Xác nhận SL',
-							// 	render: (data: any) => (
-							// 		<StateActive
-							// 			stateActive={data?.state}
-							// 			listState={[
-							// 				{
-							// 					state: STATE_BILL.NOT_CHECK,
-							// 					text: 'Chưa duyệt',
-							// 					textColor: '#fff',
-							// 					backgroundColor: '#FF5C5C',
-							// 				},
-							// 				{
-							// 					state: STATE_BILL.QLK_REJECTED,
-							// 					text: 'QLK duyệt lại',
-							// 					textColor: '#fff',
-							// 					backgroundColor: '#FB923C',
-							// 				},
-							// 				{
-							// 					state: STATE_BILL.QLK_CHECKED,
-							// 					text: 'QLK đã duyệt',
-							// 					textColor: '#fff',
-							// 					backgroundColor: '#0EA5E9',
-							// 				},
-							// 				{
-							// 					state: STATE_BILL.KTK_REJECTED,
-							// 					text: 'KTK duyệt lại',
-							// 					textColor: '#fff',
-							// 					backgroundColor: '#FF6838',
-							// 				},
-							// 				{
-							// 					state: STATE_BILL.KTK_CHECKED,
-							// 					text: 'KTK đã duyệt',
-							// 					textColor: '#fff',
-							// 					backgroundColor: '#2A85FF',
-							// 				},
-							// 				{
-							// 					state: STATE_BILL.END,
-							// 					text: 'Kết thúc',
-							// 					textColor: '#fff',
-							// 					backgroundColor: '#9757D7',
-							// 				},
-							// 			]}
-							// 		/>
-							// 	),
-							// },
-							// {
-							// 	title: 'Trạng thái',
-							// 	render: (data: any) => (
-							// 		<StateActive
-							// 			stateActive={data?.status}
-							// 			listState={[
-							// 				{
-							// 					state: STATUS_BILL.DANG_CAN,
-							// 					text: 'Đang cân',
-							// 					textColor: '#9757D7',
-							// 					backgroundColor: 'rgba(151, 87, 215, 0.10)',
-							// 				},
-							// 				{
-							// 					state: STATUS_BILL.TAM_DUNG,
-							// 					text: 'Tạm dừng',
-							// 					textColor: '#F95B5B',
-							// 					backgroundColor: 'rgba(249, 91, 91, 0.10)',
-							// 				},
-							// 				{
-							// 					state: STATUS_BILL.DA_CAN_CHUA_KCS,
-							// 					text: 'Đã cân chưa KCS',
-							// 					textColor: '#2D74FF',
-							// 					backgroundColor: 'rgba(45, 116, 255, 0.10)',
-							// 				},
-							// 				{
-							// 					state: STATUS_BILL.DA_KCS,
-							// 					text: 'Đã KCS',
-							// 					textColor: '#41CD4F',
-							// 					backgroundColor: 'rgba(65, 205, 79, 0.1)',
-							// 				},
-							// 				{
-							// 					state: STATUS_BILL.CHOT_KE_TOAN,
-							// 					text: 'Chốt kế toán',
-							// 					textColor: '#0EA5E9',
-							// 					backgroundColor: 'rgba(14, 165, 233, 0.1)',
-							// 				},
-							// 			]}
-							// 		/>
-							// 	),
-							// },
 
 							{
 								title: 'Tác vụ',
