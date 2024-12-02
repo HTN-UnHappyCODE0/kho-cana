@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 
 import {PropsMainPageDraftShip} from './interfaces';
 import styles from './MainPageDraftShip.module.scss';
@@ -19,33 +19,22 @@ import {
 	TYPE_PRODUCT,
 	TYPE_SCALES,
 } from '~/constants/config/enum';
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
+import {useQuery, useQueryClient} from '@tanstack/react-query';
 import customerServices from '~/services/customerServices';
 import {httpRequest} from '~/services';
 import wareServices from '~/services/wareServices';
 import {useRouter} from 'next/router';
-
 import DataWrapper from '~/components/common/DataWrapper';
 import Pagination from '~/components/common/Pagination';
 import Noti from '~/components/common/DataWrapper/components/Noti';
 import Table from '~/components/common/Table';
-
-import {AiOutlineFileAdd} from 'react-icons/ai';
 import Button from '~/components/common/Button';
-import {toastWarn} from '~/common/funcs/toast';
-import Loading from '~/components/common/Loading';
-import {LuFileSymlink} from 'react-icons/lu';
-import Dialog from '~/components/common/Dialog';
-
 import Link from 'next/link';
 import {convertWeight} from '~/common/funcs/optionConvert';
 import Moment from 'react-moment';
 import storageServices from '~/services/storageServices';
 import scalesStationServices from '~/services/scalesStationServices';
-import clsx from 'clsx';
-import {convertCoin} from '~/common/funcs/convertCoin';
 import batchBillServices from '~/services/batchBillServices';
-import StateActive from '~/components/common/StateActive';
 import {TickCircle} from 'iconsax-react';
 import Popup from '~/components/common/Popup';
 import FormUpdateDraftShip from '../FormUpdateDraftShip';
@@ -53,9 +42,6 @@ import {ITableBillScale} from '~/components/pages/duyet-phieu/PageConfirmBill/in
 
 function MainPageDraftShip({}: PropsMainPageDraftShip) {
 	const router = useRouter();
-	const queryClient = useQueryClient();
-
-	const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
 	const {
 		_page,
@@ -238,20 +224,6 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 			return data;
 		},
 	});
-
-	// useEffect(() => {
-	// 	router.replace(
-	// 		{
-	// 			pathname: router.pathname,
-	// 			query: {
-	// 				...router.query,
-	// 				_isBatch: TYPE_BATCH.CAN_LO,
-	// 			},
-	// 		},
-	// 		undefined,
-	// 		{shallow: true, scroll: false}
-	// 	);
-	// }, []);
 
 	return (
 		<div className={styles.container}>
@@ -493,7 +465,6 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 						]}
 					/>
 				</DataWrapper>
-				{/* {!loading && ( */}
 				<Pagination
 					currentPage={Number(_page) || 1}
 					pageSize={Number(_pageSize) || 200}
@@ -514,7 +485,6 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 						_state,
 					]}
 				/>
-				{/* )} */}
 			</div>
 
 			<Popup open={!!dataWeightSessionSubmit} onClose={() => setDataWeightSessionSubmit(null)}>

@@ -250,24 +250,6 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 			{/* <Loading loading={funcUpdateKCSWeightSession.isLoading} /> */}
 			<div className={styles.header}>
 				<div className={styles.main_search}>
-					{/* {weightSessions?.some((x) => x.isChecked !== false) && (
-						<div style={{height: 40}}>
-							<Button
-								className={styles.btn}
-								rounded_2
-								maxHeight
-								primary
-								p_4_12
-								icon={<LuFileSymlink size={18} />}
-								onClick={() => {
-									setDataWeightSessionSubmit(weightSessions?.filter((v) => v.isChecked !== false));
-								}}
-							>
-								CN mớn tàu
-							</Button>
-						</div>
-					)} */}
-
 					<div className={styles.search}>
 						<Search keyName='_keyword' placeholder='Tìm kiếm theo số phiếu và mã lô hàng' />
 					</div>

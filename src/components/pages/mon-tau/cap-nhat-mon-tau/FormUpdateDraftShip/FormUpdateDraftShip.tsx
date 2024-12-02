@@ -5,19 +5,13 @@ import styles from './FormUpdateDraftShip.module.scss';
 import Form, {FormContext, Input} from '~/components/common/Form';
 import Button from '~/components/common/Button';
 import {IoClose} from 'react-icons/io5';
-import Select, {Option} from '~/components/common/Select';
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {CONFIG_DESCENDING, CONFIG_PAGING, CONFIG_STATUS, CONFIG_TYPE_FIND, QUERY_KEY} from '~/constants/config/enum';
-import wareServices from '~/services/wareServices';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
+import {QUERY_KEY} from '~/constants/config/enum';
 import {httpRequest} from '~/services';
-import weightSessionServices from '~/services/weightSessionServices';
 import Loading from '~/components/common/Loading';
-import criteriaServices from '~/services/criteriaServices';
 import {toastWarn} from '~/common/funcs/toast';
 import clsx from 'clsx';
-import Popup from '~/components/common/Popup';
 import {convertCoin, price} from '~/common/funcs/convertCoin';
-import FormReasonUpdateSpec from '~/components/pages/nhap-lieu/quy-cach/FormReasonUpdateSpec';
 import UploadMultipleFile from '~/components/common/UploadMultipleFile';
 import uploadImageService from '~/services/uploadService';
 import batchBillServices from '~/services/batchBillServices';
@@ -111,9 +105,6 @@ function FormUpdateDraftShip({dataUpdate, onClose}: PropsFormUpdateDraftShip) {
 				return toastWarn({msg: 'Upload ảnh thất bại!'});
 			}
 		} else {
-			// return funcUpdateDraftShip.mutate({
-			// 	paths: [],
-			// });
 			return toastWarn({msg: 'Chưa cập nhật ảnh!'});
 		}
 	};
