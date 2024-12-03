@@ -189,6 +189,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
 						isHaveDryness: TYPE_ACTION_AUDIT.NO_DRY,
+						typeProduct: TYPE_PRODUCT.CONG_TY,
 					}),
 				}),
 
