@@ -58,6 +58,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 		_storageUuid,
 		_scalesStationUuid,
 		_state,
+		_typeProduct,
 	} = router.query;
 
 	const [dataWeightSessionSubmit, setDataWeightSessionSubmit] = useState<any>();
@@ -140,6 +141,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 			_dateTo,
 			_scalesStationUuid,
 			_storageUuid,
+			_typeProduct,
 		],
 		{
 			queryFn: () =>
@@ -169,6 +171,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
 						isHaveDryness: TYPE_ACTION_AUDIT.NO_DRY,
+						typeProduct: TYPE_PRODUCT.CONG_TY,
 					}),
 				}),
 
@@ -483,6 +486,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 						_storageUuid,
 						_scalesStationUuid,
 						_state,
+						_typeProduct,
 					]}
 				/>
 			</div>

@@ -28,6 +28,7 @@ const batchBillServices = {
 			scalesStationUuid: string | null;
 			storageUuid: string | null;
 			isHaveDryness?: number | null;
+			typeProduct?: number;
 		},
 		tokenAxios?: any
 	) => {
