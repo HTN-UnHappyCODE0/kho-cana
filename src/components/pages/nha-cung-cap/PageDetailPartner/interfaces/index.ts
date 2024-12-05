@@ -79,6 +79,12 @@ export interface IDetailCustomer {
 	name: string;
 	status: number;
 	typeCus: number;
+	companyUu: {
+		code: string;
+		name: string;
+		status: number;
+		uuid: string;
+	};
 	uuid: string;
 }
 
