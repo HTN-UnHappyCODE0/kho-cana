@@ -242,6 +242,7 @@ function UpdateCustomerService({}: PropsUpdateCustomerService) {
 					email: form?.email,
 					partnerUuid: form?.partnerUuid,
 					typeCus: form?.typeCus,
+					companyUuid: '',
 				}),
 			}),
 		onSuccess(data) {

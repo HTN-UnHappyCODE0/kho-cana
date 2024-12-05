@@ -76,6 +76,7 @@ const warehouseServices = {
 			dictrictId: string;
 			townId: string;
 			description: string;
+			companyUuid: string;
 		},
 		tokenAxios?: any
 	) => {
