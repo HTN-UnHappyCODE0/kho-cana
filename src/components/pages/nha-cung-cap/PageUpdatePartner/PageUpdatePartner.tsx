@@ -29,6 +29,7 @@ import Form, {FormContext, Input} from '~/components/common/Form';
 import Button from '~/components/common/Button';
 import Loading from '~/components/common/Loading';
 import partnerServices from '~/services/partnerServices';
+import companyServices from '~/services/companyServices';
 
 function PageUpdatePartner({}: PropsPageUpdatePartner) {
 	const router = useRouter();
@@ -51,6 +52,7 @@ function PageUpdatePartner({}: PropsPageUpdatePartner) {
 		warehouseUuid: '',
 		partnerUuid: '',
 		typeCus: 0,
+		companyUuid: '',
 	});
 
 	const {data: detailCustomer, isSuccess} = useQuery([QUERY_KEY.chi_tiet_khach_hang, _customerUuid], {
@@ -78,6 +80,7 @@ function PageUpdatePartner({}: PropsPageUpdatePartner) {
 					warehouseUuid: data?.warehouseUu?.uuid || '',
 					partnerUuid: data?.partnerUu?.uuid || '',
 					typeCus: data?.typeCus,
+					companyUuid: data?.companyUu?.uuid || '',
 				});
 			}
 		},
@@ -105,6 +108,25 @@ function PageUpdatePartner({}: PropsPageUpdatePartner) {
 			return data;
 		},
 		enabled: isSuccess,
+	});
+
+	const listCompany = useQuery([QUERY_KEY.dropdown_cong_ty], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: companyServices.listCompany({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
 	});
 
 	const listRegency = useQuery([QUERY_KEY.dropdown_chuc_vu], {
@@ -242,6 +264,7 @@ function PageUpdatePartner({}: PropsPageUpdatePartner) {
 					email: form?.email,
 					partnerUuid: _partnerUuid ? String(_partnerUuid) : form?.partnerUuid,
 					typeCus: form.typeCus,
+					companyUuid: form.companyUuid,
 				}),
 			}),
 		onSuccess(data) {
@@ -270,6 +293,9 @@ function PageUpdatePartner({}: PropsPageUpdatePartner) {
 		}
 		if (!form.townId) {
 			return toastWarn({msg: 'Vui lòng chọn xã/phường!'});
+		}
+		if (!form.companyUuid) {
+			return toastWarn({msg: 'Vui lòng chọn KV cảng xuất khẩu!'});
 		}
 
 		return funcUpdateCustomer.mutate();
@@ -433,7 +459,7 @@ function PageUpdatePartner({}: PropsPageUpdatePartner) {
 						</div>
 					</div>
 
-					<div className={clsx('mt', 'col_2')}>
+					<div className={clsx('mt', 'col_3')}>
 						<Input
 							name='email'
 							value={form.email || ''}
@@ -460,6 +486,27 @@ function PageUpdatePartner({}: PropsPageUpdatePartner) {
 								placeholder='Nhập số điện thoại'
 							/>
 						</div>
+						<Select
+							isSearch
+							name='companyUuid'
+							value={form.companyUuid}
+							placeholder='Chọn KV cảng xuất khẩu'
+							onChange={(e) =>
+								setForm((prev: any) => ({
+									...prev,
+									companyUuid: e.target.value,
+								}))
+							}
+							label={
+								<span>
+									Thuộc KV cảng xuất khẩu <span style={{color: 'red'}}>*</span>
+								</span>
+							}
+						>
+							{listCompany?.data?.map((v: any) => (
+								<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
+							))}
+						</Select>
 					</div>
 
 					<div className={clsx('mt', 'col_2')}>

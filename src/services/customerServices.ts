@@ -96,6 +96,7 @@ const customerServices = {
 			partnerUuid: string;
 			userUuid: string;
 			warehouseUuid: string;
+			companyUuid: string;
 		},
 		tokenAxios?: any
 	) => {

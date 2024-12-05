@@ -118,7 +118,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 					status: CONFIG_STATUS.HOAT_DONG,
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-					typeFind: CONFIG_TYPE_FIND.TABLE,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
 					customerUuid: '',
 					timeEnd: null,
 					timeStart: null,

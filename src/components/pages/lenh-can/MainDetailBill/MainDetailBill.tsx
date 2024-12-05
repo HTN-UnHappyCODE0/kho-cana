@@ -324,7 +324,7 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 						</div>
 
 						{/* PHIẾU HỦY */}
-						{detailBatchBill?.status == STATUS_BILL.DA_HUY && (
+						{/* {detailBatchBill?.status == STATUS_BILL.DA_HUY && (
 							<>
 								<div className={styles.item_table}>
 									<p>Người hủy:</p>
@@ -338,10 +338,10 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 								</div>
 								<div className={styles.item_table}>
 									<p>Lý do hủy:</p>
-									<span>{detailBatchBill?.description?.split('|')?.[1]}</span>
+									<span>{detailBatchBill?.description?.split('|')?.[1] || '---'}</span>
 								</div>
 							</>
-						)}
+						)} */}
 
 						{detailBatchBill?.status != STATUS_BILL.DA_HUY && (
 							<>
@@ -364,7 +364,8 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 
 						<div className={styles.item_table}>
 							<p>Mô tả:</p>
-							<span>{detailBatchBill?.description?.split('|')?.[0] || '---'}</span>
+							{/* <span>{detailBatchBill?.description?.split('|')?.[0] || '---'}</span> */}
+							<span>{detailBatchBill?.description || '---'}</span>
 						</div>
 					</div>
 				</div>

@@ -153,9 +153,9 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 									: '---'}
 							</span>
 						</td>
-						<td rowSpan={3} className={styles.description}>
-							<span>Mô tả:</span>
-							<span style={{marginLeft: '6px'}}>{detailCustomer?.description || '---'}</span>
+						<td>
+							<span>KV cảng xuất khẩu:</span>
+							<span style={{marginLeft: '6px', color: '#2A85FF'}}>{detailCustomer?.companyUu?.name || '---'}</span>
 						</td>
 					</tr>
 					<tr>
@@ -166,6 +166,10 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 									<TagStatus status={detailCustomer?.status!} />
 								</span>
 							</div>
+						</td>
+						<td rowSpan={2} className={styles.description}>
+							<span>Mô tả:</span>
+							<span style={{marginLeft: '6px'}}>{detailCustomer?.description || '---'}</span>
 						</td>
 					</tr>
 					<tr>

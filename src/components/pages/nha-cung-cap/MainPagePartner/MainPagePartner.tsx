@@ -266,13 +266,13 @@ function MainPagePartner({}: PropsMainPagePartner) {
 								fixedRight: true,
 								render: (data: ICustomer) => (
 									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
-										<IconCustom
+										{/* <IconCustom
 											edit
 											icon={<LuPencil fontSize={20} fontWeight={600} />}
 											tooltip='Chỉnh sửa'
 											color='#777E90'
 											href={`/nha-cung-cap/chinh-sua?_customerUuid=${data?.customerUu?.uuid}`}
-										/>
+										/> */}
 										<IconCustom
 											edit
 											icon={<Eye fontSize={20} fontWeight={600} />}
