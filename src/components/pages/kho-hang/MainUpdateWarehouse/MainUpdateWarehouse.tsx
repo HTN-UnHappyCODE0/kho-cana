@@ -16,6 +16,7 @@ import scalesStationServices from '~/services/scalesStationServices';
 import warehouseServices from '~/services/warehouseServices';
 import styles from './MainUpdateWarehouse.module.scss';
 import {IFormUpdateWarehouse, PropsMainUpdateWarehouse} from './interfaces';
+import companyServices from '~/services/companyServices';
 
 function MainUpdateWarehouse({}: PropsMainUpdateWarehouse) {
 	const router = useRouter();
@@ -31,6 +32,7 @@ function MainUpdateWarehouse({}: PropsMainUpdateWarehouse) {
 		dictrictId: '',
 		townId: '',
 		description: '',
+		companyUuid: '',
 	});
 
 	useQuery([QUERY_KEY.chi_tiet_kho_hang, _id], {
@@ -48,10 +50,30 @@ function MainUpdateWarehouse({}: PropsMainUpdateWarehouse) {
 					provinceId: data?.detailAddress?.province?.uuid,
 					dictrictId: data?.detailAddress?.district?.uuid,
 					townId: data?.detailAddress?.town?.uuid,
+					companyUuid: data?.companyUu?.uuid || '',
 				});
 			}
 		},
 		enabled: !!_id,
+	});
+
+	const listCompany = useQuery([QUERY_KEY.dropdown_cong_ty], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: companyServices.listCompany({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
 	});
 
 	const listScaleStation = useQuery([QUERY_KEY.dropdown_tram_can], {
@@ -135,6 +157,7 @@ function MainUpdateWarehouse({}: PropsMainUpdateWarehouse) {
 					address: form.address,
 					description: form.description,
 					scaleStationUuid: form.scaleStationUuid,
+					companyUuid: form.companyUuid,
 				}),
 			}),
 		onSuccess(data) {
@@ -157,6 +180,9 @@ function MainUpdateWarehouse({}: PropsMainUpdateWarehouse) {
 		}
 		if (!form.townId) {
 			return toastWarn({msg: 'Vui lòng chọn xã/phường!'});
+		}
+		if (!form.companyUuid) {
+			return toastWarn({msg: 'Vui lòng chọn KV cảng xuất khẩu!'});
 		}
 
 		return funcUpdateWarehouse.mutate();
@@ -199,7 +225,7 @@ function MainUpdateWarehouse({}: PropsMainUpdateWarehouse) {
 						}
 						placeholder='Nhập tên kho hàng'
 					/>
-					<div className='mt'>
+					<div className={clsx('mt', 'col_2')}>
 						<Select
 							isSearch
 							name='scaleStationUuid'
@@ -221,6 +247,29 @@ function MainUpdateWarehouse({}: PropsMainUpdateWarehouse) {
 								/>
 							))}
 						</Select>
+						<div>
+							<Select
+								isSearch
+								name='companyUuid'
+								value={form.companyUuid}
+								placeholder='Chọn KV cảng xuất khẩu'
+								onChange={(e) =>
+									setForm((prev: any) => ({
+										...prev,
+										companyUuid: e.target.value,
+									}))
+								}
+								label={
+									<span>
+										Thuộc KV cảng xuất khẩu <span style={{color: 'red'}}>*</span>
+									</span>
+								}
+							>
+								{listCompany?.data?.map((v: any) => (
+									<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
+								))}
+							</Select>
+						</div>
 					</div>
 					<div className={clsx('mt', 'col_3')}>
 						<Select

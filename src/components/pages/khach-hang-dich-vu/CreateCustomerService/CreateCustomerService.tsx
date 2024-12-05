@@ -208,6 +208,7 @@ function CreateCustomerService({}: PropsCreateCustomerService) {
 					email: form?.email,
 					partnerUuid: form?.partnerUuid,
 					typeCus: TYPE_CUSTOMER.DICH_VU,
+					companyUuid: '',
 				}),
 			}),
 		onSuccess(data) {

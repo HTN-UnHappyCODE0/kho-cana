@@ -9,4 +9,5 @@ export interface IFormUpdateWarehouse {
 	dictrictId: string;
 	townId: string;
 	description: string;
+	companyUuid: string;
 }
