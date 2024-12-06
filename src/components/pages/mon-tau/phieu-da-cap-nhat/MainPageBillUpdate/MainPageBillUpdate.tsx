@@ -332,12 +332,12 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 				<div className={styles.parameter}>
 					<div>
 						TỔNG LƯỢNG HÀNG TƯƠI:
-						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertCoin(getListBatch?.data?.amountMt) || 0} </span>
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getListBatch?.data?.amountMt) || 0} </span>
 						(Tấn)
 					</div>
 					<div>
 						TỔNG LƯỢNG HÀNG QUY KHÔ:
-						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertCoin(getListBatch?.data?.amountBdmt) || 0} </span>
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getListBatch?.data?.amountBdmt) || 0} </span>
 						(Tấn)
 					</div>
 				</div>

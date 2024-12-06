@@ -38,6 +38,8 @@ import {convertWeight} from '~/common/funcs/optionConvert';
 import Moment from 'react-moment';
 import scalesStationServices from '~/services/scalesStationServices';
 import storageServices from '~/services/storageServices';
+import PositionContainer from '~/components/common/PositionContainer';
+import FormUpdateWeigh from '../FormUpdateWeigh';
 
 function MainSpecification({}: PropsMainSpecification) {
 	const router = useRouter();
@@ -58,6 +60,7 @@ function MainSpecification({}: PropsMainSpecification) {
 	} = router.query;
 
 	const [weightSessionSubmits, setWeightSessionSubmits] = useState<any[]>([]);
+	const [dataWeight, setDataWeight] = useState<any[]>([]);
 	const [weightSessions, setWeightSessions] = useState<any[]>([]);
 	const [total, setTotal] = useState<number>(0);
 	const [loading, setLoading] = useState<boolean>(false);
@@ -257,6 +260,22 @@ function MainSpecification({}: PropsMainSpecification) {
 								onClick={handleUpdateAll}
 							>
 								Cập nhật quy cách
+							</Button>
+						</div>
+					)}
+					{weightSessions?.some((x) => x.isChecked !== false) && (
+						<div style={{height: 40}}>
+							<Button
+								className={styles.btn}
+								rounded_2
+								maxHeight
+								p_4_12
+								icon={<AiOutlineFileAdd size={20} />}
+								onClick={() => {
+									setDataWeight(weightSessions?.filter((v) => v.isChecked !== false));
+								}}
+							>
+								Cập nhật theo cân mẫu
 							</Button>
 						</div>
 					)}
@@ -499,6 +518,36 @@ function MainSpecification({}: PropsMainSpecification) {
 			<Popup open={weightSessionSubmits.length > 0} onClose={() => setWeightSessionSubmits([])}>
 				<FormUpdateSpecWS dataUpdateSpecWS={weightSessionSubmits} onClose={() => setWeightSessionSubmits([])} />
 			</Popup>
+
+			<PositionContainer
+				open={dataWeight.length > 0}
+				onClose={() => {
+					setDataWeight([]);
+					const {_customerWeighUuid, _dateFormWeigh, _dateToWeigh, _time, ...rest} = router.query;
+
+					router.replace({
+						pathname: router.pathname,
+						query: {
+							...rest,
+						},
+					});
+				}}
+			>
+				<FormUpdateWeigh
+					dataUpdateWeigh={dataWeight}
+					onClose={() => {
+						setDataWeight([]);
+						const {_customerWeighUuid, _dateFromWeigh, _dateToWeigh, _time, ...rest} = router.query;
+
+						router.replace({
+							pathname: router.pathname,
+							query: {
+								...rest,
+							},
+						});
+					}}
+				/>
+			</PositionContainer>
 		</div>
 	);
 }
