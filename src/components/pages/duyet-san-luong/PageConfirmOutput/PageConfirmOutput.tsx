@@ -418,11 +418,11 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 				<div className={styles.parameter}>
 					<div>
 						TỔNG LƯỢNG HÀNG TƯƠI:
-						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertCoin(getListBatch?.data?.amountMt) || 0} </span>(Tấn)
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getListBatch?.data?.amountMt) || 0} </span>(Tấn)
 					</div>
 					<div>
 						TỔNG LƯỢNG HÀNG QUY KHÔ:
-						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertCoin(getListBatch?.data?.amountBdmt) || 0} </span>(Tấn)
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getListBatch?.data?.amountBdmt) || 0} </span>(Tấn)
 					</div>
 					<div>
 						TỔNG LƯỢNG QUY KHÔ TẠM TÍNH:
@@ -535,10 +535,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 								title: 'Quy cách',
 								render: (data: ITableBillScale) => <>{data?.specificationsUu?.name || '---'}</>,
 							},
-							{
-								title: 'KL hàng (Tấn)',
-								render: (data: ITableBillScale) => <>{convertWeight(data?.weightTotal) || 0}</>,
-							},
+
 							{
 								title: 'KL 1 (Tấn)',
 								render: (data: ITableBillScale) => <>{convertWeight(data?.weigth1)}</>,
