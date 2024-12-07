@@ -1,5 +1,6 @@
 export interface PropsDashboardWarehouse {
 	isTotal?: boolean;
+	setUuidCompany?: (uuid: string) => void;
 	total?: {
 		amountMT: number;
 		amountBDMTDemo: number;

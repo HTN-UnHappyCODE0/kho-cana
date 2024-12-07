@@ -91,6 +91,8 @@ export enum QUERY_KEY {
 	table_nhap_lieu_do_kho_tong,
 	table_cap_nhat_mon_tau,
 	table_cap_nhat_phieu_da_cap_nhat,
+	table_du_lieu_mau,
+	table_ds_can_mau,
 
 	chi_tiet_lenh_can,
 	chi_tiet_phieu_can,
@@ -332,4 +334,17 @@ export enum TYPE_ACTION_AUDIT {
 export enum TYPE_STORE {
 	ADMIN_KHO,
 	NHAP_HANG,
+}
+
+export enum TYPE_SAMPLE_SESSION {
+	QUY_CACH = 1,
+	DO_KHO,
+}
+
+export enum STATUS_SAMPLE_SESSION {
+	DELETE = -1,
+	INIT,
+	USING,
+	FINISH,
+	ACCEPT,
 }

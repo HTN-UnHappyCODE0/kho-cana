@@ -48,6 +48,8 @@ import Moment from 'react-moment';
 import Dialog from '~/components/common/Dialog';
 import storageServices from '~/services/storageServices';
 import scalesStationServices from '~/services/scalesStationServices';
+import PositionContainer from '~/components/common/PositionContainer';
+import FormUpdateWeighDryness from '../FormUpdateWeighDryness';
 
 function MainDryness({}: PropsMainDryness) {
 	const router = useRouter();
@@ -75,6 +77,7 @@ function MainDryness({}: PropsMainDryness) {
 	const [dataUpdateSpec, setDataUpdateSpec] = useState<IWeightSession | null>(null);
 	const [dataWeightSessionSubmit, setDataWeightSessionSubmit] = useState<any[]>([]);
 	const [dataWeightSessionSpec, setDataWeightSessionSpec] = useState<any[]>([]);
+	const [dataWeight, setDataWeight] = useState<any[]>([]);
 
 	const [weightSessions, setWeightSessions] = useState<any[]>([]);
 
@@ -443,6 +446,23 @@ function MainDryness({}: PropsMainDryness) {
 							</Button>
 						</div>
 					)}
+					{weightSessions?.some((x) => x.isChecked !== false) && (
+						<div style={{height: 40}}>
+							<Button
+								className={styles.btn}
+								rounded_2
+								maxHeight
+								orange
+								p_4_12
+								icon={<AiOutlineFileAdd size={20} />}
+								onClick={() => {
+									setDataWeight(weightSessions?.filter((v) => v.isChecked !== false));
+								}}
+							>
+								Cập nhật theo cân mẫu
+							</Button>
+						</div>
+					)}
 
 					<div className={styles.search}>
 						<Search keyName='_keyword' placeholder='Tìm kiếm theo số phiếu và mã lô hàng' />
@@ -692,6 +712,36 @@ function MainDryness({}: PropsMainDryness) {
 			<Popup open={dataWeightSessionSpec.length > 0} onClose={() => setDataWeightSessionSpec([])}>
 				<FormUpdateSpecWS dataUpdateSpecWS={dataWeightSessionSpec} onClose={() => setDataWeightSessionSpec([])} />
 			</Popup>
+
+			<PositionContainer
+				open={dataWeight.length > 0}
+				onClose={() => {
+					setDataWeight([]);
+					const {_customerWeighUuid, _dateFormWeigh, _dateToWeigh, _time, ...rest} = router.query;
+
+					router.replace({
+						pathname: router.pathname,
+						query: {
+							...rest,
+						},
+					});
+				}}
+			>
+				<FormUpdateWeighDryness
+					dataUpdateWeigh={dataWeight}
+					onClose={() => {
+						setDataWeight([]);
+						const {_customerWeighUuid, _dateFromWeigh, _dateToWeigh, _time, ...rest} = router.query;
+
+						router.replace({
+							pathname: router.pathname,
+							query: {
+								...rest,
+							},
+						});
+					}}
+				/>
+			</PositionContainer>
 
 			<Dialog
 				danger

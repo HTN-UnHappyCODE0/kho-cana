@@ -110,6 +110,9 @@ export enum PATH {
 	MonTau = '/mon-tau',
 	CapNhatMonTau = '/mon-tau/cap-nhat-mon-tau',
 	PhieuDaCapNhat = '/mon-tau/phieu-da-cap-nhat',
+
+	// cân mẫu
+	CanMau = '/can-mau',
 }
 
 export const Menu: {
@@ -138,6 +141,7 @@ export const Menu: {
 			{title: 'Lệnh cân', icon: icons.phieudukien, path: PATH.PhieuDuKienTatCa, pathActive: PATH.PhieuDuKien},
 			{title: 'Phiếu cân', icon: icons.phieudacan, path: PATH.PhieuCanTatCa, pathActive: PATH.PhieuCan},
 			{title: 'Lượt cân', icon: icons.luotcan, path: PATH.LuotCanTatCa, pathActive: PATH.LuotCan},
+			{title: 'Cân mẫu', icon: icons.luotcan, path: PATH.CanMau, pathActive: PATH.CanMau},
 		],
 	},
 	{

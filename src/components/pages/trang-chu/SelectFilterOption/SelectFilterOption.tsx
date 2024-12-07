@@ -7,8 +7,9 @@ import clsx from 'clsx';
 import {BiCheck} from 'react-icons/bi';
 import {removeVietnameseTones} from '~/common/funcs/optionConvert';
 import {ArrowDown2} from 'iconsax-react';
+import {set} from 'nprogress';
 
-function SelectFilterOption({uuid, setUuid, listData, placeholder, isShowAll = true}: PropsSelectFilterOption) {
+function SelectFilterOption({uuid, setUuid, listData, placeholder, isShowAll = true, setName}: PropsSelectFilterOption) {
 	const [keyword, setKeyword] = useState<string>('');
 	const [openPartner, setOpenPartner] = useState<boolean>(false);
 	const inputSearchRef = useRef<HTMLInputElement>(null);
@@ -46,6 +47,7 @@ function SelectFilterOption({uuid, setUuid, listData, placeholder, isShowAll = t
 								onClick={() => {
 									setOpenPartner(false);
 									setUuid('');
+									setName && setName('');
 								}}
 							>
 								<p>{'Tất cả'}</p>
@@ -67,6 +69,7 @@ function SelectFilterOption({uuid, setUuid, listData, placeholder, isShowAll = t
 									onClick={() => {
 										setOpenPartner(false);
 										setUuid(v?.uuid);
+										setName && setName(v?.name);
 									}}
 								>
 									<p>{v.name}</p>

@@ -21,7 +21,7 @@ const warehouseServices = {
 			cancelToken: tokenAxios,
 		});
 	},
-	dashbroadWarehouse: (data: {typeProduct: number | null}, tokenAxios?: any) => {
+	dashbroadWarehouse: (data: {typeProduct: number | null; companyUuid: string}, tokenAxios?: any) => {
 		return axiosClient.post(`/Warehouse/dashbroad-warehouse`, data, {
 			cancelToken: tokenAxios,
 		});

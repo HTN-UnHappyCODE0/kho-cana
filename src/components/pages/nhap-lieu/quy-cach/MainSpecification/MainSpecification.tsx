@@ -270,6 +270,7 @@ function MainSpecification({}: PropsMainSpecification) {
 								rounded_2
 								maxHeight
 								p_4_12
+								orange
 								icon={<AiOutlineFileAdd size={20} />}
 								onClick={() => {
 									setDataWeight(weightSessions?.filter((v) => v.isChecked !== false));

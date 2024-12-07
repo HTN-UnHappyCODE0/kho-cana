@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import {PropsMainDashboard} from './interfaces';
 import styles from './MainDashboard.module.scss';
@@ -9,12 +9,14 @@ import {httpRequest} from '~/services';
 import warehouseServices from '~/services/warehouseServices';
 
 function MainDashboard({}: PropsMainDashboard) {
-	const {data: dataWarehouse} = useQuery([QUERY_KEY.thong_ke_kho_hang], {
+	const [uuidCompany, setUuidCompany] = useState<string | null>(null);
+	const {data: dataWarehouse} = useQuery([QUERY_KEY.thong_ke_kho_hang, uuidCompany], {
 		queryFn: () =>
 			httpRequest({
 				isData: true,
 				http: warehouseServices.dashbroadWarehouse({
 					typeProduct: TYPE_STORE.ADMIN_KHO,
+					companyUuid: (uuidCompany as string) || '',
 				}),
 			}),
 		select(data) {
@@ -32,6 +34,7 @@ function MainDashboard({}: PropsMainDashboard) {
 				productTotal={dataWarehouse?.productTotal}
 				qualityTotal={dataWarehouse?.qualityTotal}
 				specTotal={dataWarehouse?.specTotal}
+				setUuidCompany={setUuidCompany}
 			/>
 			{dataWarehouse?.detailWarehouseSpec?.map((v: any) => (
 				<DashboardWarehouse dataWarehouse={v} key={v?.uuid} isTotal={false} />
