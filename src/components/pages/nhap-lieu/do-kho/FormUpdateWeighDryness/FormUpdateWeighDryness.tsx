@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
-import {ISampleData, PropsFormUpdateWeigh} from './interfaces';
-import styles from './FormUpdateWeigh.module.scss';
+import {ISampleData, PropsFormUpdateWeighDryness} from './interfaces';
+import styles from './FormUpdateWeighDryness.module.scss';
 import Button from '~/components/common/Button';
 import Search from '~/components/common/Search';
 import FilterCustom from '~/components/common/FilterCustom';
@@ -12,6 +12,7 @@ import {
 	CONFIG_TYPE_FIND,
 	QUERY_KEY,
 	STATUS_SAMPLE_SESSION,
+	TYPE_BATCH,
 	TYPE_DATE,
 	TYPE_SAMPLE_SESSION,
 } from '~/constants/config/enum';
@@ -26,13 +27,12 @@ import wareServices from '~/services/wareServices';
 import shipServices from '~/services/shipServices';
 import Select, {Option} from '~/components/common/Select';
 import clsx from 'clsx';
-import {convertWeight} from '~/common/funcs/optionConvert';
 import weightSessionServices from '~/services/weightSessionServices';
 import {toastWarn} from '~/common/funcs/toast';
 import DataWrapper from '~/components/common/DataWrapper';
 import Noti from '~/components/common/DataWrapper/components/Noti';
 
-function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
+function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeighDryness) {
 	const queryClient = useQueryClient();
 	const router = useRouter();
 	const {_keywordForm, _customerWeighUuid, _dateFromWeigh, _dateToWeigh, _time, _page, _type, _pageSize, _shipUuid, _specUuid, _status} =
@@ -41,13 +41,8 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 	const [dataCheckWeigh, setDataCheckWeigh] = useState<string | null>();
 	const [uuidSampleSession, setUuidSampleSession] = useState<string | null>();
 	const [statusSampleData, setStatusSampleData] = useState<any>('1');
-	const [dataRules, setDataRules] = useState<
-		{
-			uuid: string;
-			amountSample: number;
-		}[]
-	>([]);
-	const [totalSample, setTotalSample] = useState<number>(0);
+
+	const [finalDryness, setFinalDryness] = useState<number>(0);
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
@@ -171,25 +166,20 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 		}
 	);
 
-	const funcUpdateSpecWeightSession = useMutation({
-		mutationFn: () =>
+	const funcUpdateDrynessWeightSession = useMutation({
+		mutationFn: (body: {uuids: string[]; dryness: number}) =>
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
-				msgSuccess: 'Cập nhật quy cách cân mẫu thành công!',
-				http: weightSessionServices.updateSpecWeightSession({
-					wsUuids: dataUpdateWeigh?.map((v: any) => v?.uuid),
-					lstValueSpec: dataRules?.map((v) => ({
-						uuid: v?.uuid,
-						amountSample: Number(v?.amountSample),
-					})),
-					totalSample: totalSample,
+				msgSuccess: 'Cập nhật độ khô thành công!',
+				http: weightSessionServices.updateDrynessWeightSession({
+					wsUuids: body.uuids,
+					dryness: body.dryness,
 				}),
 			}),
 		onSuccess(data) {
 			if (data) {
 				onClose();
-				queryClient.invalidateQueries([QUERY_KEY.table_nhap_lieu_quy_cach]);
 				queryClient.invalidateQueries([QUERY_KEY.table_nhap_lieu_do_kho]);
 			}
 		},
@@ -198,7 +188,6 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 			return;
 		},
 	});
-
 	useEffect(() => {
 		setUuidSampleSession(null);
 	}, [_customerWeighUuid, _shipUuid, _specUuid, _status, _type, _dateFromWeigh, _dateToWeigh, _time, _keywordForm]);
@@ -207,13 +196,16 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 		if (!dataCheckWeigh) {
 			return toastWarn({msg: 'Vui lòng chọn cân mẫu!'});
 		}
-		funcUpdateSpecWeightSession.mutate();
+		return funcUpdateDrynessWeightSession.mutate({
+			uuids: dataUpdateWeigh?.map((v: any) => v?.uuid),
+			dryness: finalDryness,
+		});
 	};
 
 	return (
 		<div className={styles.container}>
 			<div className={styles.header}>
-				<h4 className={styles.title}>Cập nhật quy cách theo cân mẫu</h4>
+				<h4 className={styles.title}>Cập nhật độ khô theo cân mẫu</h4>
 				<div className={styles.btn}>
 					<Button rounded_8 w_fit p_8_16 light_outline bold onClick={onClose}>
 						Hủy bỏ
@@ -379,16 +371,7 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 									type='radio'
 									name='check_weigh'
 									value={v?.uuid}
-									onChange={() => (
-										setDataCheckWeigh(v?.uuid),
-										setDataRules(
-											v?.sampleCriterial?.map((t: any) => ({
-												uuid: t?.uuid,
-												amountSample: t?.weight,
-											}))
-										),
-										setTotalSample(v?.totalWeight)
-									)}
+									onChange={() => (setDataCheckWeigh(v?.uuid), setFinalDryness(v?.finalDryness))}
 								/>
 								<label htmlFor={v?.uuid} className={styles.infor_check}>
 									<GridColumn col_2>
@@ -413,29 +396,9 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 											<p style={{color: '#2D74FF'}}>{v?.orderNumber}</p>
 										</div>
 										<div className={styles.item}>
-											<p>Tổng khối lượng:</p>
-											{v?.totalWeight ? (
-												<>
-													<span>{convertWeight(v?.totalWeight)}</span>
-													<span style={{color: 'red'}}>(100%)</span>
-												</>
-											) : (
-												'0'
-											)}
+											<p>Độ khô:</p>
+											<p style={{color: 'red'}}>{v?.finalDryness} %</p>
 										</div>
-										{v?.sampleCriterial?.map((x, i) => (
-											<div key={x?.uuid} className={styles.item}>
-												<p>{x?.title || '---'}:</p>
-												{x?.weight ? (
-													<>
-														<span>{convertWeight(x?.weight)}</span>
-														<span style={{color: 'red'}}>({x?.percentage}%)</span>
-													</>
-												) : (
-													'0'
-												)}
-											</div>
-										))}
 									</GridColumn>
 								</label>
 							</label>
@@ -447,4 +410,4 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 	);
 }
 
-export default FormUpdateWeigh;
+export default FormUpdateWeighDryness;

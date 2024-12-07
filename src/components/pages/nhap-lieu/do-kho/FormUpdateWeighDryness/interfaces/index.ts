@@ -1,6 +1,6 @@
-import {IWeightSession} from '../../MainSpecification/interfaces';
+import {IWeightSession} from '../../../quy-cach/MainSpecification/interfaces';
 
-export interface PropsFormUpdateWeigh {
+export interface PropsFormUpdateWeighDryness {
 	onClose: () => void;
 	dataUpdateWeigh: IWeightSession[];
 }
