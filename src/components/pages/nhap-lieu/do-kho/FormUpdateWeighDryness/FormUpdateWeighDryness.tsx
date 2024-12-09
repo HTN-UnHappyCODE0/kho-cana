@@ -4,7 +4,6 @@ import {ISampleData, PropsFormUpdateWeighDryness} from './interfaces';
 import styles from './FormUpdateWeighDryness.module.scss';
 import Button from '~/components/common/Button';
 import Search from '~/components/common/Search';
-import FilterCustom from '~/components/common/FilterCustom';
 import {
 	CONFIG_DESCENDING,
 	CONFIG_PAGING,
@@ -12,11 +11,9 @@ import {
 	CONFIG_TYPE_FIND,
 	QUERY_KEY,
 	STATUS_SAMPLE_SESSION,
-	TYPE_BATCH,
 	TYPE_DATE,
 	TYPE_SAMPLE_SESSION,
 } from '~/constants/config/enum';
-import DateRangerCustom from '~/components/common/DateRangerCustom';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {httpRequest} from '~/services';
 import customerServices from '~/services/customerServices';

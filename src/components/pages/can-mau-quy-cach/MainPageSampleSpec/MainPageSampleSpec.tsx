@@ -344,28 +344,12 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 				open={!!uuidDetail}
 				onClose={() => {
 					setUuidDetail('');
-					const {...rest} = router.query;
-
-					router.replace({
-						pathname: router.pathname,
-						query: {
-							...rest,
-						},
-					});
 				}}
 			>
 				<FormDetailSampleSpec
 					dataUuidDetail={uuidDetail}
 					onClose={() => {
 						setUuidDetail('');
-						const {...rest} = router.query;
-
-						router.replace({
-							pathname: router.pathname,
-							query: {
-								...rest,
-							},
-						});
 					}}
 				/>
 			</PositionContainer>

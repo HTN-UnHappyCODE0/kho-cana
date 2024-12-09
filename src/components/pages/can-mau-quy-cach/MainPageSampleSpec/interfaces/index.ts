@@ -37,4 +37,5 @@ export interface ISampleSession {
 	type: number;
 	status: number;
 	uuid: string;
+	drynessAvg: number;
 }
