@@ -40,6 +40,7 @@ import khoiluonghangchuyenkho from '../../../public/static/images/khoiluonghangc
 import khoiluonghangxuatthang from '../../../public/static/images/khoiluonghangxuatthang.png';
 import nhapxuatngoai from '../../../public/static/images/nhapxuatngoai.svg';
 import montau from '../../../public/static/images/document-forward.svg';
+import canmau from '../../../public/static/images/can_mau.svg';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -85,4 +86,5 @@ export default {
 	khoiluonghangxuatthang,
 	nhapxuatngoai,
 	montau,
+	canmau,
 };

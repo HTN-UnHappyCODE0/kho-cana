@@ -35,8 +35,19 @@ import Noti from '~/components/common/DataWrapper/components/Noti';
 function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeighDryness) {
 	const queryClient = useQueryClient();
 	const router = useRouter();
-	const {_keywordForm, _customerWeighUuid, _dateFromWeigh, _dateToWeigh, _time, _page, _type, _pageSize, _shipUuid, _specUuid, _status} =
-		router.query;
+	const {
+		_keywordForm,
+		_customerWeighUuidSample,
+		_dateFromWeigh,
+		_dateToWeigh,
+		_time,
+		_pageSample,
+		_typeSample,
+		_pageSampleSize,
+		_shipUuidSample,
+		_specUuidSample,
+		_statusSample,
+	} = router.query;
 
 	const [dataCheckWeigh, setDataCheckWeigh] = useState<string | null>();
 	const [uuidSampleSession, setUuidSampleSession] = useState<string | null>();
@@ -128,36 +139,36 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 	const listSampleSession = useQuery(
 		[
 			QUERY_KEY.table_ds_can_mau,
-			_page,
-			_type,
-			_pageSize,
-			_shipUuid,
+			_pageSample,
+			_typeSample,
+			_pageSampleSize,
+			_shipUuidSample,
 			_keywordForm,
-			_customerWeighUuid,
+			_customerWeighUuidSample,
 			_dateFromWeigh,
 			_dateToWeigh,
 			_time,
-			_specUuid,
-			_status,
+			_specUuidSample,
+			_statusSample,
 		],
 		{
 			queryFn: () =>
 				httpRequest({
 					isList: true,
 					http: sampleSessionServices.getListSampleSession({
-						page: Number(_page) || 1,
-						pageSize: Number(_pageSize) || 200,
+						page: Number(_pageSample) || 1,
+						pageSize: Number(_pageSampleSize) || 200,
 						keyword: (_keywordForm as string) || '',
 						isPaging: CONFIG_PAGING.IS_PAGING,
 						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
-						customerUuid: (_customerWeighUuid as string) || '',
+						customerUuid: (_customerWeighUuidSample as string) || '',
 						fromDate: _dateFromWeigh ? (_dateFromWeigh as string) : null,
-						specUuid: !!_specUuid ? (_specUuid as string) : '',
-						status: !!_status ? Number(_status) : null,
+						specUuid: !!_specUuidSample ? (_specUuidSample as string) : '',
+						status: !!_statusSample ? Number(_statusSample) : null,
 						toDate: _dateToWeigh ? (_dateToWeigh as string) : null,
-						type: !!_type ? Number(_type) : null,
-						shipUuid: !!_shipUuid ? (_shipUuid as string) : '',
+						type: !!_typeSample ? Number(_typeSample) : null,
+						shipUuid: !!_shipUuidSample ? (_shipUuidSample as string) : '',
 					}),
 				}),
 			select(data) {
@@ -190,7 +201,17 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 	});
 	useEffect(() => {
 		setUuidSampleSession(null);
-	}, [_customerWeighUuid, _shipUuid, _specUuid, _status, _type, _dateFromWeigh, _dateToWeigh, _time, _keywordForm]);
+	}, [
+		_customerWeighUuidSample,
+		_shipUuidSample,
+		_specUuidSample,
+		_statusSample,
+		_typeSample,
+		_dateFromWeigh,
+		_dateToWeigh,
+		_time,
+		_keywordForm,
+	]);
 
 	const handleSubmit = async () => {
 		if (!dataCheckWeigh) {
@@ -227,7 +248,7 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 						<FilterCustom
 							isSearch
 							name='Khách hàng'
-							query='_customerWeighUuid'
+							query='_customerWeighUuidSample'
 							listFilter={listCustomer?.data?.map((v: any) => ({
 								id: v?.uuid,
 								name: v?.name,
@@ -238,7 +259,7 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 							<FilterCustom
 								isSearch
 								name='Loại'
-								query='_type'
+								query='_typeSample'
 								listFilter={[
 									{
 										id: TYPE_SAMPLE_SESSION.QUY_CACH,
@@ -251,20 +272,11 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 								]}
 							/>
 						</div>
-						<FilterCustom
-							isSearch
-							name='Khách hàng'
-							query='_customerUuid'
-							listFilter={listCustomer?.data?.map((v: any) => ({
-								id: v?.uuid,
-								name: v?.name,
-							}))}
-						/>
 
 						<FilterCustom
 							isSearch
 							name='Mã tàu'
-							query='_shipUuid'
+							query='_shipUuidSample'
 							listFilter={listShip?.data?.map((v: any) => ({
 								id: v?.uuid,
 								name: v?.licensePalate,
@@ -274,7 +286,7 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 							<FilterCustom
 								isSearch
 								name='Trạng thái'
-								query='_status'
+								query='_statusSample'
 								listFilter={[
 									{
 										id: STATUS_SAMPLE_SESSION.DELETE,
@@ -303,7 +315,7 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 							<FilterCustom
 								isSearch
 								name='Quy cách'
-								query='_specUuid'
+								query='_specUuidSample'
 								listFilter={listSpecification?.data?.map((v: any) => ({
 									id: v?.uuid,
 									name: v?.name,
