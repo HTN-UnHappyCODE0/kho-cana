@@ -32,6 +32,7 @@ import {Eye} from 'iconsax-react';
 import IconCustom from '~/components/common/IconCustom';
 import PositionContainer from '~/components/common/PositionContainer';
 import {ISampleSession} from '../../can-mau-quy-cach/MainPageSampleSpec/interfaces';
+import FormDetailSampleDryness from '../FormDetailSampleDryness';
 
 function MainPageSampleDryness({}: PropsMainPageSampleDryness) {
 	const router = useRouter();
@@ -241,6 +242,10 @@ function MainPageSampleDryness({}: PropsMainPageSampleDryness) {
 								),
 							},
 							{
+								title: 'Độ khô trung bình (%)',
+								render: (data: ISampleSession) => <>{data?.shipUu ? data?.drynessAvg?.toFixed(2) || 0 : '---'}</>,
+							},
+							{
 								title: 'Ngày phân tích',
 								render: (data: ISampleSession) => (
 									<>{data?.analysisDate ? <Moment date={data?.analysisDate} format='DD/MM/YYYY' /> : '---'}</>
@@ -339,35 +344,19 @@ function MainPageSampleDryness({}: PropsMainPageSampleDryness) {
 				/>
 			</div>
 
-			{/* <PositionContainer
+			<PositionContainer
 				open={!!uuidDetail}
 				onClose={() => {
 					setUuidDetail('');
-					const {...rest} = router.query;
-
-					router.replace({
-						pathname: router.pathname,
-						query: {
-							...rest,
-						},
-					});
 				}}
 			>
-				<FormDetailSampleSpec
+				<FormDetailSampleDryness
 					dataUuidDetail={uuidDetail}
 					onClose={() => {
 						setUuidDetail('');
-						const {...rest} = router.query;
-
-						router.replace({
-							pathname: router.pathname,
-							query: {
-								...rest,
-							},
-						});
 					}}
 				/>
-			</PositionContainer> */}
+			</PositionContainer>
 		</div>
 	);
 }
