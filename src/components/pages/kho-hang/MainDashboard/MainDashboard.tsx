@@ -9,14 +9,14 @@ import {httpRequest} from '~/services';
 import warehouseServices from '~/services/warehouseServices';
 
 function MainDashboard({}: PropsMainDashboard) {
-	const [uuidCompany, setUuidCompany] = useState<string | null>(null);
+	const [uuidCompany, setUuidCompany] = useState<string>('');
 	const {data: dataWarehouse} = useQuery([QUERY_KEY.thong_ke_kho_hang, uuidCompany], {
 		queryFn: () =>
 			httpRequest({
 				isData: true,
 				http: warehouseServices.dashbroadWarehouse({
 					typeProduct: TYPE_STORE.ADMIN_KHO,
-					companyUuid: (uuidCompany as string) || '',
+					companyUuid: uuidCompany as string,
 				}),
 			}),
 		select(data) {

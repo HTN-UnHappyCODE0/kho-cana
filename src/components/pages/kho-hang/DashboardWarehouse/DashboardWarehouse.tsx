@@ -13,6 +13,7 @@ import {useQuery} from '@tanstack/react-query';
 import {httpRequest} from '~/services';
 import companyServices from '~/services/companyServices';
 import SelectFilterOption from '../../trang-chu/SelectFilterOption';
+import {set} from 'nprogress';
 
 function DashboardWarehouse({
 	isTotal,
@@ -33,7 +34,7 @@ function DashboardWarehouse({
 		}
 	};
 
-	const [uuidCompany, setUuidCompanyFilter] = useState<string>('622f5955-5add-4490-8868-7d9ed1fa3e72');
+	const [uuidCompany, setUuidCompanyFilter] = useState<string>('');
 	const [nameCompany, setNameCompanyFilter] = useState<string>('');
 
 	const listCompany = useQuery([QUERY_KEY.dropdown_cong_ty], {
@@ -56,10 +57,19 @@ function DashboardWarehouse({
 	});
 
 	useEffect(() => {
-		if (uuidCompany && setUuidCompany) {
+		if (setUuidCompany) {
 			setUuidCompany(uuidCompany);
 		}
-	}, [uuidCompany, setUuidCompany]);
+	}, [uuidCompany]);
+
+	const uuidCompanyDefault = '622f5955-5add-4490-8868-7d9ed1fa3e72';
+	useEffect(() => {
+		if (uuidCompanyDefault) {
+			setUuidCompanyFilter(uuidCompanyDefault);
+			const name = listCompany?.data?.find((v: any) => v?.uuid == uuidCompanyDefault)?.name;
+			setNameCompanyFilter(name);
+		}
+	}, [uuidCompanyDefault]);
 
 	return (
 		<div className={clsx(styles.container, {[styles.isTotal]: isTotal})}>
