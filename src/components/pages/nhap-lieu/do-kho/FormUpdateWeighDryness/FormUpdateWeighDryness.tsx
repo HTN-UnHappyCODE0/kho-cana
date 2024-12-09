@@ -31,29 +31,31 @@ import weightSessionServices from '~/services/weightSessionServices';
 import {toastWarn} from '~/common/funcs/toast';
 import DataWrapper from '~/components/common/DataWrapper';
 import Noti from '~/components/common/DataWrapper/components/Noti';
+import {timeSubmit} from '~/common/funcs/optionConvert';
+import SelectFilterDate from '~/components/pages/trang-chu/SelectFilterDate';
+import SelectFilterOption from '~/components/pages/trang-chu/SelectFilterOption';
 
 function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeighDryness) {
 	const queryClient = useQueryClient();
 	const router = useRouter();
-	const {
-		_keywordForm,
-		_customerWeighUuidSample,
-		_dateFromWeigh,
-		_dateToWeigh,
-		_time,
-		_pageSample,
-		_typeSample,
-		_pageSampleSize,
-		_shipUuidSample,
-		_specUuidSample,
-		_statusSample,
-	} = router.query;
+	const {_keywordForm, _pageSample, _pageSampleSize} = router.query;
 
 	const [dataCheckWeigh, setDataCheckWeigh] = useState<string | null>();
 	const [uuidSampleSession, setUuidSampleSession] = useState<string | null>();
 	const [statusSampleData, setStatusSampleData] = useState<any>('1');
 
 	const [finalDryness, setFinalDryness] = useState<number>(0);
+	const [totalSample, setTotalSample] = useState<number>(0);
+	const [customerUuid, setCustomerUuid] = useState<string>('');
+	const [type, setType] = useState<string>(String(TYPE_SAMPLE_SESSION.DO_KHO));
+	const [shipUuid, setShipUuid] = useState<string>('');
+	const [specUuid, setSpecUuid] = useState<string>('');
+	const [statusSample, setStatusSample] = useState<string>(String(STATUS_SAMPLE_SESSION.USING));
+	const [typeDate, setTypeDate] = useState<number | null>(TYPE_DATE.LAST_7_DAYS);
+	const [date, setDate] = useState<{
+		from: Date | null;
+		to: Date | null;
+	} | null>(null);
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
@@ -140,16 +142,14 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 		[
 			QUERY_KEY.table_ds_can_mau,
 			_pageSample,
-			_typeSample,
 			_pageSampleSize,
-			_shipUuidSample,
 			_keywordForm,
-			_customerWeighUuidSample,
-			_dateFromWeigh,
-			_dateToWeigh,
-			_time,
-			_specUuidSample,
-			_statusSample,
+			customerUuid,
+			specUuid,
+			statusSample,
+			shipUuid,
+			type,
+			date,
 		],
 		{
 			queryFn: () =>
@@ -162,13 +162,13 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 						isPaging: CONFIG_PAGING.IS_PAGING,
 						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
-						customerUuid: (_customerWeighUuidSample as string) || '',
-						fromDate: _dateFromWeigh ? (_dateFromWeigh as string) : null,
-						specUuid: !!_specUuidSample ? (_specUuidSample as string) : '',
-						status: !!_statusSample ? Number(_statusSample) : null,
-						toDate: _dateToWeigh ? (_dateToWeigh as string) : null,
-						type: !!_typeSample ? Number(_typeSample) : null,
-						shipUuid: !!_shipUuidSample ? (_shipUuidSample as string) : '',
+						customerUuid: customerUuid,
+						fromDate: timeSubmit(date?.from)!,
+						specUuid: specUuid,
+						status: Number(statusSample),
+						toDate: timeSubmit(date?.to, true)!,
+						type: Number(type),
+						shipUuid: shipUuid,
 					}),
 				}),
 			select(data) {
@@ -199,19 +199,10 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 			return;
 		},
 	});
+
 	useEffect(() => {
 		setUuidSampleSession(null);
-	}, [
-		_customerWeighUuidSample,
-		_shipUuidSample,
-		_specUuidSample,
-		_statusSample,
-		_typeSample,
-		_dateFromWeigh,
-		_dateToWeigh,
-		_time,
-		_keywordForm,
-	]);
+	}, [customerUuid, _keywordForm, specUuid, statusSample, shipUuid, type, date]);
 
 	const handleSubmit = async () => {
 		if (!dataCheckWeigh) {
@@ -242,96 +233,92 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 				<div className={styles.header_form}>
 					<div className={styles.main_search}>
 						<div className={styles.search}>
-							<Search keyName='_keywordForm' placeholder='Tìm kiếm theo phiên làm việc' />
+							<Search keyName='_keywordForm' placeholder='Tìm kiếm ' />
 						</div>
 
-						<FilterCustom
-							isSearch
-							name='Khách hàng'
-							query='_customerWeighUuidSample'
-							listFilter={listCustomer?.data?.map((v: any) => ({
-								id: v?.uuid,
+						<SelectFilterOption
+							uuid={customerUuid}
+							setUuid={setCustomerUuid}
+							listData={listCustomer?.data?.map((v: any) => ({
+								uuid: v?.uuid,
 								name: v?.name,
 							}))}
+							placeholder='Tất cả khách hàng'
 						/>
 
-						<div className={styles.filter}>
-							<FilterCustom
-								isSearch
-								name='Loại'
-								query='_typeSample'
-								listFilter={[
-									{
-										id: TYPE_SAMPLE_SESSION.QUY_CACH,
-										name: 'Quy cách',
-									},
-									{
-										id: TYPE_SAMPLE_SESSION.DO_KHO,
-										name: 'Độ khô',
-									},
-								]}
-							/>
-						</div>
+						<SelectFilterOption
+							isShowAll={false}
+							uuid={type}
+							setUuid={setType}
+							listData={[
+								{
+									uuid: String(TYPE_SAMPLE_SESSION.QUY_CACH),
+									name: 'Quy cách',
+								},
+								{
+									uuid: String(TYPE_SAMPLE_SESSION.DO_KHO),
+									name: 'Độ khô',
+								},
+							]}
+							placeholder='Loại'
+						/>
 
-						<FilterCustom
-							isSearch
-							name='Mã tàu'
-							query='_shipUuidSample'
-							listFilter={listShip?.data?.map((v: any) => ({
-								id: v?.uuid,
+						<SelectFilterOption
+							uuid={shipUuid}
+							setUuid={setShipUuid}
+							listData={listShip?.data?.map((v: any) => ({
+								uuid: v?.uuid,
 								name: v?.licensePalate,
 							}))}
+							placeholder='Tất cả tàu'
 						/>
-						<div className={styles.filter}>
-							<FilterCustom
-								isSearch
-								name='Trạng thái'
-								query='_statusSample'
-								listFilter={[
-									{
-										id: STATUS_SAMPLE_SESSION.DELETE,
-										name: 'Đã xóa',
-									},
-									{
-										id: STATUS_SAMPLE_SESSION.INIT,
-										name: 'Khởi tạo',
-									},
-									{
-										id: STATUS_SAMPLE_SESSION.USING,
-										name: 'Đang cân',
-									},
-									{
-										id: STATUS_SAMPLE_SESSION.FINISH,
-										name: 'Hoàn thành',
-									},
-									{
-										id: STATUS_SAMPLE_SESSION.ACCEPT,
-										name: 'Xác nhận',
-									},
-								]}
-							/>
-						</div>
-						<div className={styles.filter}>
-							<FilterCustom
-								isSearch
-								name='Quy cách'
-								query='_specUuidSample'
-								listFilter={listSpecification?.data?.map((v: any) => ({
-									id: v?.uuid,
-									name: v?.name,
-								}))}
-							/>
-						</div>
 
-						<div className={styles.filter}>
-							<DateRangerCustom
-								titleTime='Thời gian'
-								typeDateDefault={TYPE_DATE.TODAY}
-								keyDateForm='_dateFromWeigh'
-								keyDateTo='_dateToWeigh'
-								keyTypeDate='_time'
-							/>
-						</div>
+						<SelectFilterOption
+							isShowAll={false}
+							uuid={statusSample}
+							setUuid={setStatusSample}
+							listData={[
+								{
+									uuid: String(STATUS_SAMPLE_SESSION.DELETE),
+									name: 'Đã xóa',
+								},
+								{
+									uuid: String(STATUS_SAMPLE_SESSION.INIT),
+									name: 'Khởi tạo',
+								},
+								{
+									uuid: String(STATUS_SAMPLE_SESSION.USING),
+									name: 'Đang cân',
+								},
+								{
+									uuid: String(STATUS_SAMPLE_SESSION.FINISH),
+									name: 'Hoàn thành',
+								},
+								{
+									uuid: String(STATUS_SAMPLE_SESSION.ACCEPT),
+									name: 'Xác nhận',
+								},
+							]}
+							placeholder='Tất cả trạng thái'
+						/>
+
+						<SelectFilterOption
+							uuid={specUuid}
+							setUuid={setSpecUuid}
+							listData={listSpecification?.data?.map((v: any) => ({
+								uuid: v?.uuid,
+								name: v?.name,
+							}))}
+							placeholder='Tất cả quy cách'
+						/>
+
+						<SelectFilterDate
+							isOptionDateAll={false}
+							date={date}
+							setDate={setDate}
+							typeDate={typeDate}
+							setTypeDate={setTypeDate}
+						/>
 					</div>
 				</div>
 				<div className={clsx('mt', styles.filter_option)}>

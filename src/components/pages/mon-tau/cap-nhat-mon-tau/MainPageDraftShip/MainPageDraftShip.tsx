@@ -39,6 +39,7 @@ import {TickCircle} from 'iconsax-react';
 import Popup from '~/components/common/Popup';
 import FormUpdateDraftShip from '../FormUpdateDraftShip';
 import {ITableBillScale} from '~/components/pages/duyet-phieu/PageConfirmBill/interfaces';
+import clsx from 'clsx';
 
 function MainPageDraftShip({}: PropsMainPageDraftShip) {
 	const router = useRouter();
@@ -311,20 +312,20 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 					</div>
 				</div>
 			</div>
-			{/* <div className={clsx('mt')}>
+			<div className={clsx('mt')}>
 				<div className={styles.parameter}>
 					<div>
 						TỔNG LƯỢNG HÀNG TƯƠI:
-						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getListBatch?.data?.amountMt) || 0} </span>
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getListBill?.data?.amountMt) || 0} </span>
 						(Tấn)
 					</div>
 					<div>
 						TỔNG LƯỢNG HÀNG QUY KHÔ:
-						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getListBatch?.data?.amountBdmt) || 0} </span>
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getListBill?.data?.amountBdmt) || 0} </span>
 						(Tấn)
 					</div>
 				</div>
-			</div> */}
+			</div>
 
 			<div className={styles.table}>
 				<DataWrapper

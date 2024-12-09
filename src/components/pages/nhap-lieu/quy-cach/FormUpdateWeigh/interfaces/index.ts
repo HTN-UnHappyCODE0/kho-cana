@@ -14,7 +14,7 @@ export interface ISampleData {
 	customerUu: any;
 	rootUu: any;
 	sampleCriterial: {
-		title: string;
+		criteriaName: string;
 		sampleDataUuid: string;
 		criteriaUuid: string;
 		weight: number;
