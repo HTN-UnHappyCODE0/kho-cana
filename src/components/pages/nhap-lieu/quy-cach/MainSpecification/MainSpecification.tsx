@@ -524,7 +524,7 @@ function MainSpecification({}: PropsMainSpecification) {
 				open={dataWeight.length > 0}
 				onClose={() => {
 					setDataWeight([]);
-					const {_customerWeighUuid, _dateFormWeigh, _dateToWeigh, _time, ...rest} = router.query;
+					const {_keywordForm, _pageSample, _pageSampleSize, ...rest} = router.query;
 
 					router.replace({
 						pathname: router.pathname,
@@ -538,7 +538,7 @@ function MainSpecification({}: PropsMainSpecification) {
 					dataUpdateWeigh={dataWeight}
 					onClose={() => {
 						setDataWeight([]);
-						const {_customerWeighUuid, _dateFromWeigh, _dateToWeigh, _time, ...rest} = router.query;
+						const {_keywordForm, _pageSample, _pageSampleSize, ...rest} = router.query;
 
 						router.replace({
 							pathname: router.pathname,
