@@ -58,7 +58,7 @@ function FormDetailSampleDryness({onClose, dataUuidDetail}: PropsFormDetailSampl
 								},
 								{
 									id: '1',
-									name: 'Đang cân',
+									name: 'Sử dụng',
 								},
 							].map((v) => (
 								<Option key={v?.id} value={v?.id} title={v?.name} onClick={() => setStatusSampleData(v?.id)} />
@@ -66,24 +66,53 @@ function FormDetailSampleDryness({onClose, dataUuidDetail}: PropsFormDetailSampl
 						</Select>
 					</div>
 				</div>
-				<DataWrapper
-					data={listSampleData?.data?.items || []}
-					loading={listSampleData.isFetching}
-					noti={<Noti des='Hiện tại chưa có dữ liệu nào!' disableButton />}
-				>
-					<div className={clsx('mt', styles.table_dropdow)}>
-						<div className={styles.table_head}>
-							<div style={{width: '44px', paddingRight: '16px'}}></div>
-							<p style={{width: '44px', paddingRight: '16px'}}>STT</p>
-							<p style={{width: '180px', paddingRight: '16px'}}>Độ khô(%)</p>
+				<div className={clsx('mt', styles.table_srcoll)}>
+					<DataWrapper
+						data={listSampleData?.data?.items || []}
+						loading={listSampleData.isFetching}
+						noti={<Noti des='Hiện tại chưa có dữ liệu nào!' disableButton />}
+					>
+						<div className={clsx('mt', styles.table_dropdow)}>
+							<div className={styles.table_head}>
+								<div style={{width: '44px', paddingRight: '16px'}}></div>
+								<p style={{width: '44px', paddingRight: '16px'}}>STT</p>
+								<p style={{width: '120px', paddingRight: '16px'}}>Mã khay</p>
+								<p style={{width: '120px', paddingRight: '16px'}}>Khối lượng khay</p>
+								<p style={{width: '120px', paddingRight: '16px'}}>Khối lượng dăm</p>
+								<p style={{width: '120px', paddingRight: '16px'}}>
+									<span className={styles.unit}>
+										Khối lượng khay <br /> dăm 4h
+									</span>
+								</p>
+								<p style={{width: '120px', paddingRight: '16px'}}>
+									<span className={styles.unit}>
+										Khối lượng khay <br /> dăm 8h
+									</span>
+								</p>
+								<p style={{width: '120px', paddingRight: '16px'}}>
+									<span className={styles.unit}>
+										Khối lượng khay <br /> dăm 12h
+									</span>
+								</p>
+								<p style={{width: '90px', paddingRight: '16px'}}>Độ khô(%)</p>
+								<p style={{width: '180px', paddingRight: '16px'}}>Ghi chú</p>
+								<p style={{width: '90px', paddingRight: '16px'}}>Trạng thái</p>
+							</div>
+							<div className={styles.main_table_dropdow}>
+								{listSampleData?.data?.items?.map((v: any, i: number) => (
+									<ItemTable
+										key={v?.uuid}
+										order={i + 1}
+										listData={v}
+										isParent={true}
+										uuidParent={v?.uuid}
+										header={true}
+									/>
+								))}
+							</div>
 						</div>
-						<div className={styles.main_table_dropdow}>
-							{listSampleData?.data?.items?.map((v: any, i: number) => (
-								<ItemTable key={v?.uuid} order={i + 1} listData={v} isParent={true} uuidParent={v?.uuid} />
-							))}
-						</div>
-					</div>
-				</DataWrapper>
+					</DataWrapper>
+				</div>
 			</div>
 		</div>
 	);

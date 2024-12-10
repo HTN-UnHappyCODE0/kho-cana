@@ -6,8 +6,9 @@ import {useQueryClient} from '@tanstack/react-query';
 import {useRouter} from 'next/router';
 import {clsx} from 'clsx';
 import {IoIosArrowDown} from 'react-icons/io';
+import StateActive from '~/components/common/StateActive';
 
-function ItemTable({order, listData, isParent = true, uuidParent = ''}: PropsItemTable) {
+function ItemTable({order, listData, isParent = true, uuidParent = '', header = false}: PropsItemTable) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 
@@ -25,8 +26,70 @@ function ItemTable({order, listData, isParent = true, uuidParent = ''}: PropsIte
 						/>
 					)}
 				</div>
-				<p style={{width: '44px', paddingRight: '16px'}}>{order}</p>
-				<p style={{width: '120px', paddingRight: '16px'}}>{listData?.finalDryness?.toFixed(2) || '---'}</p>
+				{header ? (
+					<>
+						<p style={{width: '44px', paddingRight: '16px'}}>{order}</p>
+						<p style={{width: '240px', paddingRight: '16px'}}>Mã lô: {listData?.billCode || '---'}</p>
+						<p style={{width: '120px', paddingRight: '16px'}}>Khách hàng: </p>
+						<p style={{width: '360px', paddingRight: '16px'}}>{listData?.customerUu?.name || '---'}</p>
+						<p style={{width: '90px', paddingRight: '16px'}}>{listData?.finalDryness?.toFixed(2)}</p>
+						<p style={{width: '180px', paddingRight: '16px'}}>{listData?.description}</p>
+						<p style={{width: '90px', paddingRight: '16px'}}>
+							{listData?.status ? (
+								<StateActive
+									stateActive={listData?.status}
+									listState={[
+										{
+											state: 0,
+											text: 'Đã hủy',
+											textColor: '#F95B5B',
+											backgroundColor: 'rgba(249, 91, 91, 0.10)',
+										},
+										{
+											state: 1,
+											text: 'Sử dụng',
+											textColor: '#2D74FF',
+											backgroundColor: 'rgba(45, 116, 255, 0.10)',
+										},
+									]}
+								/>
+							) : (
+								'---'
+							)}
+						</p>
+					</>
+				) : (
+					<>
+						<p style={{width: '44px', paddingRight: '16px'}}>{order}</p>
+						<p style={{width: '120px', paddingRight: '16px'}}>{listData?.trayCode || '---'}</p>
+						<p style={{width: '120px', paddingRight: '16px'}}>{listData?.trayWeight || '---'}</p>
+						<p style={{width: '120px', paddingRight: '16px'}}>{listData?.woodWeight || '---'}</p>
+						<p style={{width: '120px', paddingRight: '16px'}}>{listData?.trayWoodWeight1 || 0}</p>
+						<p style={{width: '120px', paddingRight: '16px'}}>{listData?.trayWoodWeight2 || 0}</p>
+						<p style={{width: '120px', paddingRight: '16px'}}>{listData?.trayWoodWeight3 || 0}</p>
+						<p style={{width: '90px', paddingRight: '16px'}}>{listData?.finalDryness?.toFixed(2) || '---'}</p>
+						<p style={{width: '180px', paddingRight: '16px'}}>{listData?.description || '---'}</p>
+						<p style={{width: '90px', paddingRight: '16px'}}>
+							<StateActive
+								stateActive={listData?.status}
+								listState={[
+									{
+										state: 0,
+										text: 'Đã hủy',
+										textColor: '#F95B5B',
+										backgroundColor: 'rgba(249, 91, 91, 0.10)',
+									},
+									{
+										state: 1,
+										text: 'Sử dụng',
+										textColor: '#2D74FF',
+										backgroundColor: 'rgba(45, 116, 255, 0.10)',
+									},
+								]}
+							/>
+						</p>
+					</>
+				)}
 			</div>
 
 			{openArrow && !!listData?.sampleDryness ? (
