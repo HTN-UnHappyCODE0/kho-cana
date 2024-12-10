@@ -149,7 +149,7 @@ export const Menu: {
 		title: 'Quản lý cân mẫu',
 		group: [
 			{title: 'Quy cách', icon: icons.canmau, path: PATH.CanMauQuyCach, pathActive: PATH.CanMauQuyCach},
-			{title: 'Độ khô', icon: icons.canmau, path: PATH.CanMauDoKho, pathActive: PATH.CanMauDoKho},
+			{title: 'Độ khô', icon: icons.canmauquycach, path: PATH.CanMauDoKho, pathActive: PATH.CanMauDoKho},
 		],
 	},
 	{
