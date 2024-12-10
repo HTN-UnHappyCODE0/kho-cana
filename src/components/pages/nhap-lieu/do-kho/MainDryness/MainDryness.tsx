@@ -50,6 +50,7 @@ import storageServices from '~/services/storageServices';
 import scalesStationServices from '~/services/scalesStationServices';
 import PositionContainer from '~/components/common/PositionContainer';
 import FormUpdateWeighDryness from '../FormUpdateWeighDryness';
+import FormUpdateWeigh from '../../quy-cach/FormUpdateWeigh';
 
 function MainDryness({}: PropsMainDryness) {
 	const router = useRouter();
@@ -80,6 +81,9 @@ function MainDryness({}: PropsMainDryness) {
 	const [dataWeight, setDataWeight] = useState<any[]>([]);
 
 	const [weightSessions, setWeightSessions] = useState<any[]>([]);
+
+	const [openDryness, setOpenDryness] = useState<boolean>(false);
+	const [openSpec, setOpenSpec] = useState<boolean>(false);
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
@@ -452,14 +456,33 @@ function MainDryness({}: PropsMainDryness) {
 								className={styles.btn}
 								rounded_2
 								maxHeight
+								p_4_12
 								orange
+								icon={<AiOutlineFileAdd size={20} />}
+								onClick={() => {
+									setDataWeight(weightSessions?.filter((v) => v.isChecked !== false));
+									setOpenSpec(true);
+								}}
+							>
+								Cập nhật quy cách theo cân mẫu
+							</Button>
+						</div>
+					)}
+					{weightSessions?.some((x) => x.isChecked !== false) && (
+						<div style={{height: 40}}>
+							<Button
+								className={styles.btn}
+								rounded_2
+								maxHeight
+								neutral
 								p_4_12
 								icon={<AiOutlineFileAdd size={20} />}
 								onClick={() => {
 									setDataWeight(weightSessions?.filter((v) => v.isChecked !== false));
+									setOpenDryness(true);
 								}}
 							>
-								Cập nhật theo cân mẫu
+								Cập nhật độ khô theo cân mẫu
 							</Button>
 						</div>
 					)}
@@ -714,10 +737,11 @@ function MainDryness({}: PropsMainDryness) {
 			</Popup>
 
 			<PositionContainer
-				open={dataWeight.length > 0}
+				open={dataWeight.length > 0 && openDryness}
 				onClose={() => {
 					setDataWeight([]);
-					const {_customerWeighUuid, _dateFormWeigh, _dateToWeigh, _time, ...rest} = router.query;
+					setOpenDryness(false);
+					const {_keywordForm, _pageSample, _pageSampleSize, ...rest} = router.query;
 
 					router.replace({
 						pathname: router.pathname,
@@ -731,7 +755,40 @@ function MainDryness({}: PropsMainDryness) {
 					dataUpdateWeigh={dataWeight}
 					onClose={() => {
 						setDataWeight([]);
-						const {_customerWeighUuid, _dateFromWeigh, _dateToWeigh, _time, ...rest} = router.query;
+						setOpenDryness(false);
+						const {_keywordForm, _pageSample, _pageSampleSize, ...rest} = router.query;
+
+						router.replace({
+							pathname: router.pathname,
+							query: {
+								...rest,
+							},
+						});
+					}}
+				/>
+			</PositionContainer>
+
+			<PositionContainer
+				open={dataWeight.length > 0 && openSpec}
+				onClose={() => {
+					setDataWeight([]);
+					setOpenSpec(false);
+					const {_keywordForm, _pageSample, _pageSampleSize, ...rest} = router.query;
+
+					router.replace({
+						pathname: router.pathname,
+						query: {
+							...rest,
+						},
+					});
+				}}
+			>
+				<FormUpdateWeigh
+					dataUpdateWeigh={dataWeight}
+					onClose={() => {
+						setDataWeight([]);
+						setOpenSpec(false);
+						const {_keywordForm, _pageSample, _pageSampleSize, ...rest} = router.query;
 
 						router.replace({
 							pathname: router.pathname,

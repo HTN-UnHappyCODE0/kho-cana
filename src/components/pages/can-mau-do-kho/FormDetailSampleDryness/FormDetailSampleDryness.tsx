@@ -77,8 +77,8 @@ function FormDetailSampleDryness({onClose, dataUuidDetail}: PropsFormDetailSampl
 								<div style={{width: '44px', paddingRight: '16px'}}></div>
 								<p style={{width: '44px', paddingRight: '16px'}}>STT</p>
 								<p style={{width: '120px', paddingRight: '16px'}}>Mã khay</p>
-								<p style={{width: '120px', paddingRight: '16px'}}>Khối lượng khay</p>
-								<p style={{width: '120px', paddingRight: '16px'}}>Khối lượng dăm</p>
+								<p style={{width: '120px', paddingRight: '16px'}}>KL khay</p>
+								<p style={{width: '120px', paddingRight: '16px'}}>KL dăm</p>
 								<p style={{width: '120px', paddingRight: '16px'}}>
 									<span className={styles.unit}>
 										Khối lượng khay <br /> dăm 4h
