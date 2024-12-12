@@ -159,7 +159,7 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
-				msgSuccess: 'QLK duyệt sản lượng thành công!',
+				msgSuccess: 'Xác nhận thành công!',
 				http: sampleSessionServices.confirmSample({
 					uuid: uuidConfirm,
 				}),
@@ -182,8 +182,6 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 		onAfterPrint: () => console.log('after printing...'),
 		removeAfterPrint: true,
 	});
-
-	console.log({uuidConfirm});
 
 	return (
 		<div className={styles.container}>
@@ -399,7 +397,7 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 								fixedRight: true,
 								render: (data: ISampleSession) => (
 									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
-										{data?.status >= STATUS_SAMPLE_SESSION.FINISH ? (
+										{data?.status == STATUS_SAMPLE_SESSION.FINISH ? (
 											<IconCustom
 												edit
 												icon={<TickCircle size={22} fontWeight={600} />}
