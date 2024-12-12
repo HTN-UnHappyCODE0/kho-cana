@@ -156,7 +156,6 @@ function MainPageSampleDryness({}: PropsMainPageSampleDryness) {
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
-				msgSuccess: 'Xác nhận thành công!',
 				http: sampleSessionServices.confirmSample({
 					uuid: uuidConfirm,
 				}),
@@ -239,7 +238,7 @@ function MainPageSampleDryness({}: PropsMainPageSampleDryness) {
 								},
 								{
 									id: STATUS_SAMPLE_SESSION.ACCEPT,
-									name: 'Xác nhận',
+									name: 'Đã xác nhận',
 								},
 							]}
 						/>
@@ -336,7 +335,7 @@ function MainPageSampleDryness({}: PropsMainPageSampleDryness) {
 											},
 											{
 												state: STATUS_SAMPLE_SESSION.ACCEPT,
-												text: 'Xác nhận',
+												text: 'Đã xác nhận',
 												textColor: '#41CD4F',
 												backgroundColor: 'rgba(65, 205, 79, 0.1)',
 											},

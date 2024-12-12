@@ -55,29 +55,17 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 		to: Date | null;
 	} | null>(null);
 
-	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
-		queryFn: () =>
-			httpRequest({
-				isDropdown: true,
-				http: customerServices.listCustomer({
-					page: 1,
-					pageSize: 50,
-					keyword: '',
-					isPaging: CONFIG_PAGING.NO_PAGING,
-					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
-					partnerUUid: '',
-					userUuid: '',
-					status: null,
-					typeCus: null,
-					provinceId: '',
-					specUuid: '',
-				}),
-			}),
-		select(data) {
-			return data;
-		},
-	});
+	const [listCustomer, setListCustomer] = useState<any[]>([]);
+
+	useEffect(() => {
+		if (Array.isArray(dataUpdateWeigh)) {
+			const customers = dataUpdateWeigh
+				.flatMap((item) => (item?.fromUu ? [{name: item?.fromUu?.name, uuid: item?.fromUu?.uuid}] : []))
+				.filter((customer, index, self) => index === self.findIndex((c) => c.uuid === customer.uuid));
+
+			setListCustomer(customers);
+		}
+	}, [dataUpdateWeigh]);
 
 	const listSampleData = useQuery([QUERY_KEY.table_du_lieu_mau, uuidSampleSession, statusSampleData], {
 		queryFn: () =>
@@ -165,7 +153,7 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 						specUuid: specUuid,
 						status: Number(statusSample),
 						toDate: timeSubmit(date?.to, true)!,
-						type: Number(type),
+						type: TYPE_SAMPLE_SESSION.DO_KHO,
 						shipUuid: shipUuid,
 					}),
 				}),
@@ -238,14 +226,14 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 						<SelectFilterOption
 							uuid={customerUuid}
 							setUuid={setCustomerUuid}
-							listData={listCustomer?.data?.map((v: any) => ({
+							listData={listCustomer?.map((v: any) => ({
 								uuid: v?.uuid,
 								name: v?.name,
 							}))}
 							placeholder='Tất cả khách hàng'
 						/>
 
-						<SelectFilterOption
+						{/* <SelectFilterOption
 							isShowAll={false}
 							uuid={type}
 							setUuid={setType}
@@ -260,7 +248,7 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 								},
 							]}
 							placeholder='Loại'
-						/>
+						/> */}
 
 						<SelectFilterOption
 							uuid={shipUuid}
@@ -379,8 +367,8 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 										</div>
 
 										<div className={styles.item}>
-											<p>Khách hàng:</p>
-											<p>{v?.customerUu?.name || '---'}</p>
+											<p>Mã lô:</p>
+											<p>{v?.billCode || '---'}</p>
 										</div>
 										<div className={styles.item}>
 											<p>Ghi chú:</p>
