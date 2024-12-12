@@ -30,22 +30,32 @@ const TemplateSampleSpec = forwardRef<HTMLDivElement, PropsTemplateSampleSpec>((
 			</div>
 			<div className={styles.content}>
 				<h3>Chứng nhận giám định về độ khô</h3>
-
-				<p>
-					Tên khách hàng: <span>Bình An</span>
-				</p>
-				<p>
-					Tên hàng: <span>Dăm gỗ</span>
-				</p>
-				<p>
-					Khối lượng tươi: <span>121.34</span> (tấn)
-				</p>
-				<p>
-					Khối lượng khô: <span>60.86</span> (tấn)
-				</p>
-				<p>
-					Số lượng mẫu: <span>3</span> (mẫu)
-				</p>
+				<div className={styles.item}>
+					<p>Tên khách hàng:</p>
+					<p>Bình An</p>
+				</div>
+				<div className={styles.item}>
+					<p>Tên hàng:</p>
+					<p>Dăm gỗ</p>
+				</div>
+				<div className={styles.item}>
+					<p>Khối lượng tươi:</p>
+					<p>
+						121.34 <span>(tấn)</span>
+					</p>
+				</div>
+				<div className={styles.item}>
+					<p>Khối lượng khô:</p>
+					<p>
+						60.86 <span>(tấn)</span>
+					</p>
+				</div>
+				<div className={styles.item}>
+					<p>Số lượng mẫu:</p>
+					<p>
+						3 <span>(mẫu)</span>
+					</p>
+				</div>
 
 				<h3 style={{marginTop: '24px'}}>Kết quả phân tích</h3>
 				<p>
