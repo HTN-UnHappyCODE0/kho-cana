@@ -76,7 +76,10 @@
 		font-size: 14px;
 		font-weight: 500;
 		border-bottom: 1px solid var(--border-color);
-		background-color: var(--bg-light);
+		// background-color: var(--bg-light);
+		.selectedRow {
+			background-color: #e7ff61;
+		}
 
 		.checkBox {
 			display: flex;
@@ -90,6 +93,10 @@
 		.fixedLeft,
 		.fixedRight {
 			background: #fff;
+		}
+
+		.selectedRow {
+			background-color: #e7ff61;
 		}
 
 		.fixedLeft {

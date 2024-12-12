@@ -81,3 +81,17 @@
 		background-color: #2d74ff;
 	}
 }
+
+.parameter {
+	display: flex;
+	align-items: center;
+	gap: 24px;
+	color: #777e90;
+	font-size: 13px;
+	font-style: normal;
+	font-weight: 600;
+	text-transform: uppercase;
+	span {
+		color: #171832;
+	}
+}

@@ -113,14 +113,11 @@ function FormDetailSampleSpec({onClose, dataUuidDetail}: PropsFormDetailSampleSp
 										{v?.sampleCriterial?.map((x, i) => (
 											<div key={x?.uuid} className={styles.item}>
 												<p>{x?.criteriaName || '---'}:</p>
-												{x?.weight ? (
-													<>
-														<span>{convertWeight(x?.weight)}</span>
-														<span style={{color: 'red'}}>({x?.percentage}%)</span>
-													</>
-												) : (
-													'0'
-												)}
+
+												<>
+													<span>{convertWeight(x?.weight)}</span>
+													<span style={{color: 'red'}}>({x?.percentage}%)</span>
+												</>
 											</div>
 										))}
 									</GridColumn>

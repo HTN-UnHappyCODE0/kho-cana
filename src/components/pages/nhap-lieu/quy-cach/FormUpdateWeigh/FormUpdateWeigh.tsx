@@ -31,6 +31,7 @@ import DataWrapper from '~/components/common/DataWrapper';
 import Noti from '~/components/common/DataWrapper/components/Noti';
 import SelectFilterOption from '~/components/pages/trang-chu/SelectFilterOption';
 import SelectFilterDate from '~/components/pages/trang-chu/SelectFilterDate';
+import {convertCoin} from '~/common/funcs/convertCoin';
 
 function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 	const queryClient = useQueryClient();
@@ -48,7 +49,6 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 	>([]);
 	const [totalSample, setTotalSample] = useState<number>(0);
 	const [customerUuid, setCustomerUuid] = useState<string>('');
-	const [type, setType] = useState<string>(String(TYPE_SAMPLE_SESSION.QUY_CACH));
 	const [shipUuid, setShipUuid] = useState<string>('');
 	const [specUuid, setSpecUuid] = useState<string>('');
 	const [statusSample, setStatusSample] = useState<string>(String(STATUS_SAMPLE_SESSION.USING));
@@ -58,29 +58,41 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 		to: Date | null;
 	} | null>(null);
 
-	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
-		queryFn: () =>
-			httpRequest({
-				isDropdown: true,
-				http: customerServices.listCustomer({
-					page: 1,
-					pageSize: 50,
-					keyword: '',
-					isPaging: CONFIG_PAGING.NO_PAGING,
-					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
-					partnerUUid: '',
-					userUuid: '',
-					status: null,
-					typeCus: null,
-					provinceId: '',
-					specUuid: '',
-				}),
-			}),
-		select(data) {
-			return data;
-		},
-	});
+	const [listCustomer, setListCustomer] = useState<any[]>([]);
+
+	useEffect(() => {
+		if (Array.isArray(dataUpdateWeigh)) {
+			const customers = dataUpdateWeigh
+				.flatMap((item) => (item?.fromUu ? [{name: item?.fromUu?.name, uuid: item?.fromUu?.uuid}] : []))
+				.filter((customer, index, self) => index === self.findIndex((c) => c.uuid === customer.uuid));
+
+			setListCustomer(customers);
+		}
+	}, [dataUpdateWeigh]);
+
+	// const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
+	// 	queryFn: () =>
+	// 		httpRequest({
+	// 			isDropdown: true,
+	// 			http: customerServices.listCustomer({
+	// 				page: 1,
+	// 				pageSize: 50,
+	// 				keyword: '',
+	// 				isPaging: CONFIG_PAGING.NO_PAGING,
+	// 				isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+	// 				typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+	// 				partnerUUid: '',
+	// 				userUuid: '',
+	// 				status: null,
+	// 				typeCus: null,
+	// 				provinceId: '',
+	// 				specUuid: '',
+	// 			}),
+	// 		}),
+	// 	select(data) {
+	// 		return data;
+	// 	},
+	// });
 
 	const listSampleData = useQuery([QUERY_KEY.table_du_lieu_mau, uuidSampleSession, statusSampleData], {
 		queryFn: () =>
@@ -140,18 +152,7 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 	});
 
 	const listSampleSession = useQuery(
-		[
-			QUERY_KEY.table_ds_can_mau,
-			_pageSample,
-			_pageSampleSize,
-			_keywordForm,
-			customerUuid,
-			specUuid,
-			statusSample,
-			shipUuid,
-			type,
-			date,
-		],
+		[QUERY_KEY.table_ds_can_mau, _pageSample, _pageSampleSize, _keywordForm, customerUuid, specUuid, statusSample, shipUuid, date],
 		{
 			queryFn: () =>
 				httpRequest({
@@ -168,7 +169,7 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 						specUuid: specUuid,
 						status: Number(statusSample),
 						toDate: timeSubmit(date?.to, true)!,
-						type: Number(type),
+						type: TYPE_SAMPLE_SESSION.QUY_CACH,
 						shipUuid: shipUuid,
 					}),
 				}),
@@ -195,9 +196,9 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 			}),
 		onSuccess(data) {
 			if (data) {
-				onClose();
 				queryClient.invalidateQueries([QUERY_KEY.table_nhap_lieu_quy_cach]);
 				queryClient.invalidateQueries([QUERY_KEY.table_nhap_lieu_do_kho]);
+				onClose();
 			}
 		},
 		onError(error) {
@@ -208,7 +209,7 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 
 	useEffect(() => {
 		setUuidSampleSession(null);
-	}, [customerUuid, _keywordForm, specUuid, statusSample, shipUuid, type, date]);
+	}, [customerUuid, _keywordForm, specUuid, statusSample, shipUuid, date]);
 
 	const handleSubmit = async () => {
 		if (!dataCheckWeigh) {
@@ -242,14 +243,14 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 						<SelectFilterOption
 							uuid={customerUuid}
 							setUuid={setCustomerUuid}
-							listData={listCustomer?.data?.map((v: any) => ({
+							listData={listCustomer?.map((v: any) => ({
 								uuid: v?.uuid,
 								name: v?.name,
 							}))}
 							placeholder='Tất cả khách hàng'
 						/>
 
-						<SelectFilterOption
+						{/* <SelectFilterOption
 							isShowAll={false}
 							uuid={type}
 							setUuid={setType}
@@ -264,7 +265,7 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 								},
 							]}
 							placeholder='Loại'
-						/>
+						/> */}
 
 						<SelectFilterOption
 							uuid={shipUuid}
@@ -408,26 +409,17 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 										</div>
 										<div className={styles.item}>
 											<p>Tổng khối lượng:</p>
-											{v?.totalWeight ? (
-												<>
-													<span>{convertWeight(v?.totalWeight)}</span>
-													<span style={{color: 'red'}}>(100%)</span>
-												</>
-											) : (
-												'0'
-											)}
+											<span>{convertCoin(v?.sampleCriterial?.reduce((total, x) => total + x.weight, 0))} gr</span>
+											<span style={{color: 'red'}}>(100%)</span>
 										</div>
 										{v?.sampleCriterial?.map((x, i) => (
 											<div key={x?.uuid} className={styles.item}>
-												<p>{x?.criteriaName || '---'}:</p>
-												{x?.weight ? (
-													<>
-														<span>{convertWeight(x?.weight)}</span>
-														<span style={{color: 'red'}}>({x?.percentage}%)</span>
-													</>
-												) : (
-													'0'
-												)}
+												<span>{x?.criteriaName || '---'} (gr):</span>
+
+												<>
+													<span>{convertCoin(x?.weight)}</span>
+													<span style={{color: 'red'}}>({x?.percentage}%)</span>
+												</>
 											</div>
 										))}
 									</GridColumn>
