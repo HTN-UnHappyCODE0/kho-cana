@@ -40,6 +40,7 @@ import scalesStationServices from '~/services/scalesStationServices';
 import storageServices from '~/services/storageServices';
 import PositionContainer from '~/components/common/PositionContainer';
 import FormUpdateWeigh from '../FormUpdateWeigh';
+import clsx from 'clsx';
 
 function MainSpecification({}: PropsMainSpecification) {
 	const router = useRouter();
@@ -244,6 +245,21 @@ function MainSpecification({}: PropsMainSpecification) {
 		}
 	};
 
+	// tính tổng lượng hàng đã chọn
+	const getTotal = weightSessions
+		?.filter((v) => v.isChecked !== false)
+		.reduce(
+			(acc, item) => {
+				return {
+					...acc,
+					data: {
+						amountMt: acc.data.amountMt + item.weightReal,
+					},
+				};
+			},
+			{data: {amountMt: 0}}
+		);
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.header}>
@@ -355,6 +371,16 @@ function MainSpecification({}: PropsMainSpecification) {
 					</div>
 				</div>
 			</div>
+			{weightSessions?.some((x) => x.isChecked !== false) && (
+				<div className={clsx('mt')}>
+					<div className={styles.parameter}>
+						<div>
+							TỔNG LƯỢNG KL HÀNG ĐÃ CHỌN:
+							<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getTotal?.data?.amountMt) || 0} </span>(Tấn)
+						</div>
+					</div>
+				</div>
+			)}
 
 			<div className={styles.table}>
 				<DataWrapper

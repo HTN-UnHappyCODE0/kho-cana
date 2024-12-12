@@ -7,7 +7,7 @@ import DataWrapper from '~/components/common/DataWrapper';
 import Pagination from '~/components/common/Pagination';
 import {useRouter} from 'next/router';
 import Table from '~/components/common/Table';
-import {useQuery, useQueryClient} from '@tanstack/react-query';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {
 	CONFIG_DESCENDING,
 	CONFIG_PAGING,
@@ -28,16 +28,22 @@ import customerServices from '~/services/customerServices';
 import StateActive from '~/components/common/StateActive';
 import wareServices from '~/services/wareServices';
 import shipServices from '~/services/shipServices';
-import {Eye} from 'iconsax-react';
+import {Eye, TickCircle} from 'iconsax-react';
 import IconCustom from '~/components/common/IconCustom';
 import PositionContainer from '~/components/common/PositionContainer';
 import FormDetailSampleSpec from '../FormDetailSampleSpec';
 
 function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 	const router = useRouter();
+	const queryClient = useQueryClient();
 
 	const {_page, _pageSize, _keyword, _status, _specUuid, _shipUuid, _dateFrom, _dateTo, _customerUuid} = router.query;
 	const [uuidDetail, setUuidDetail] = useState<string>('');
+
+	const [uuidConfirm, setUuidConfirm] = useState<string[]>([]);
+
+	const [getListSampleSession, setListSampleWession] = useState<any[]>([]);
+	const [total, setTotal] = useState<number>(0);
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
@@ -124,11 +130,44 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 						shipUuid: !!_shipUuid ? (_shipUuid as string) : '',
 					}),
 				}),
+			onSuccess(data) {
+				if (data) {
+					setListSampleWession(
+						data?.items?.map((v: any, index: number) => ({
+							...v,
+							index: index,
+							isChecked: false,
+						}))
+					);
+					setTotal(data?.pagination?.totalCount);
+				}
+			},
 			select(data) {
 				return data;
 			},
 		}
 	);
+
+	const funcConfirm = useMutation({
+		mutationFn: () =>
+			httpRequest({
+				showMessageFailed: true,
+				showMessageSuccess: true,
+				msgSuccess: 'QLK duyệt sản lượng thành công!',
+				http: sampleSessionServices.confirmSample({
+					uuid: uuidConfirm,
+				}),
+			}),
+		onSuccess(data) {
+			if (data) {
+				setUuidConfirm([]);
+				queryClient.invalidateQueries([QUERY_KEY.table_ds_can_mau]);
+			}
+		},
+		onError(error) {
+			console.log({error});
+		},
+	});
 
 	return (
 		<div className={styles.container}>
@@ -317,6 +356,15 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 								fixedRight: true,
 								render: (data: ISampleSession) => (
 									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
+										{data?.status >= STATUS_SAMPLE_SESSION.FINISH ? (
+											<IconCustom
+												edit
+												icon={<TickCircle size={22} fontWeight={600} />}
+												tooltip='Xác nhận'
+												color='#2CAE39'
+												onClick={() => setUuidConfirm([data?.uuid])}
+											/>
+										) : null}
 										<div>
 											<IconCustom
 												edit

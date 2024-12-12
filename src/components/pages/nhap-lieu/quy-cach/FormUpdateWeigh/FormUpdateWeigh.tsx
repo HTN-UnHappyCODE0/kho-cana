@@ -31,6 +31,7 @@ import DataWrapper from '~/components/common/DataWrapper';
 import Noti from '~/components/common/DataWrapper/components/Noti';
 import SelectFilterOption from '~/components/pages/trang-chu/SelectFilterOption';
 import SelectFilterDate from '~/components/pages/trang-chu/SelectFilterDate';
+import {convertCoin} from '~/common/funcs/convertCoin';
 
 function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 	const queryClient = useQueryClient();
@@ -195,9 +196,9 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 			}),
 		onSuccess(data) {
 			if (data) {
-				onClose();
 				queryClient.invalidateQueries([QUERY_KEY.table_nhap_lieu_quy_cach]);
 				queryClient.invalidateQueries([QUERY_KEY.table_nhap_lieu_do_kho]);
+				onClose();
 			}
 		},
 		onError(error) {
@@ -408,21 +409,15 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 										</div>
 										<div className={styles.item}>
 											<p>Tổng khối lượng:</p>
-											{v?.totalWeight ? (
-												<>
-													<span>{convertWeight(v?.totalWeight)}</span>
-													<span style={{color: 'red'}}>(100%)</span>
-												</>
-											) : (
-												'0'
-											)}
+											<span>{convertCoin(v?.sampleCriterial?.reduce((total, x) => total + x.weight, 0))} gr</span>
+											<span style={{color: 'red'}}>(100%)</span>
 										</div>
 										{v?.sampleCriterial?.map((x, i) => (
 											<div key={x?.uuid} className={styles.item}>
-												<p>{x?.criteriaName || '---'}:</p>
+												<span>{x?.criteriaName || '---'} (gr):</span>
 												{x?.weight ? (
 													<>
-														<span>{convertWeight(x?.weight)}</span>
+														<span>{convertCoin(x?.weight)}</span>
 														<span style={{color: 'red'}}>({x?.percentage}%)</span>
 													</>
 												) : (

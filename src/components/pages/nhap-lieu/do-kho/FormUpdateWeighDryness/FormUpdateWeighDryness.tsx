@@ -31,6 +31,7 @@ import Noti from '~/components/common/DataWrapper/components/Noti';
 import {timeSubmit} from '~/common/funcs/optionConvert';
 import SelectFilterDate from '~/components/pages/trang-chu/SelectFilterDate';
 import SelectFilterOption from '~/components/pages/trang-chu/SelectFilterOption';
+import Loading from '~/components/common/Loading';
 
 function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeighDryness) {
 	const queryClient = useQueryClient();
@@ -213,6 +214,7 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 
 	return (
 		<div className={styles.container}>
+			{/* <Loading loading={funcUpdateDrynessWeightSession.isLoading} /> */}
 			<div className={styles.header}>
 				<h4 className={styles.title}>Cập nhật độ khô theo cân mẫu</h4>
 				<div className={styles.btn}>

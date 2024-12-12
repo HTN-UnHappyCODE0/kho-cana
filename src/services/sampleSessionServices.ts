@@ -148,6 +148,16 @@ const sampleSessionServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	confirmSample: (
+		data: {
+			uuid: string[];
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/SampleSession/confirm-sample-session`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 };
 
 export default sampleSessionServices;
