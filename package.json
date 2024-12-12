@@ -39,7 +39,8 @@
 		"recharts": "^2.12.7",
 		"sass": "^1.72.0",
 		"slick-carousel": "^1.8.1",
-		"typescript": "5.4.2"
+		"typescript": "5.4.2",
+		"react-to-print": "^2.15.1"
 	},
 	"devDependencies": {
 		"@types/md5": "^2.3.5",

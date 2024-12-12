@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 
 import {ISampleSession, PropsMainPageSampleSpec} from './interfaces';
 import styles from './MainPageSampleSpec.module.scss';
@@ -7,7 +7,7 @@ import DataWrapper from '~/components/common/DataWrapper';
 import Pagination from '~/components/common/Pagination';
 import {useRouter} from 'next/router';
 import Table from '~/components/common/Table';
-import {useQuery, useQueryClient} from '@tanstack/react-query';
+import {useQuery} from '@tanstack/react-query';
 import {
 	CONFIG_DESCENDING,
 	CONFIG_PAGING,
@@ -32,9 +32,13 @@ import {Eye} from 'iconsax-react';
 import IconCustom from '~/components/common/IconCustom';
 import PositionContainer from '~/components/common/PositionContainer';
 import FormDetailSampleSpec from '../FormDetailSampleSpec';
+import Button from '~/components/common/Button';
+import {useReactToPrint} from 'react-to-print';
+import TemplateSampleSpec from '~/components/pdf-template/TemplateSampleSpec';
 
 function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 	const router = useRouter();
+	const contentToPrint = useRef<HTMLDivElement>(null);
 
 	const {_page, _pageSize, _keyword, _status, _specUuid, _shipUuid, _dateFrom, _dateTo, _customerUuid} = router.query;
 	const [uuidDetail, setUuidDetail] = useState<string>('');
@@ -130,6 +134,14 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 		}
 	);
 
+	const handlePrint = useReactToPrint({
+		content: () => contentToPrint.current,
+		documentTitle: 'Can_mau_test',
+		onBeforePrint: () => console.log('before printing...'),
+		onAfterPrint: () => console.log('after printing...'),
+		removeAfterPrint: true,
+	});
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.header}>
@@ -137,7 +149,6 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 					<div className={styles.search}>
 						<Search keyName='_keyword' placeholder='Tìm kiếm theo mã cân mẫu' />
 					</div>
-
 					<FilterCustom
 						isSearch
 						name='Khách hàng'
@@ -147,7 +158,6 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 							name: v?.name,
 						}))}
 					/>
-
 					<FilterCustom
 						isSearch
 						name='Mã tàu'
@@ -201,6 +211,17 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
 					</div>
 				</div>
+
+				<div className={styles.btn}>
+					<Button rounded_2 w_fit p_8_16 green bold onClick={handlePrint}>
+						In + xuất pdf
+					</Button>
+				</div>
+			</div>
+
+			{/* Template */}
+			<div style={{display: 'none'}}>
+				<TemplateSampleSpec ref={contentToPrint} />
 			</div>
 
 			<div className={styles.table}>
