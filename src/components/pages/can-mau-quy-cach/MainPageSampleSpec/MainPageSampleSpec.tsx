@@ -244,7 +244,7 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 
 			<div className={styles.table}>
 				<DataWrapper
-					data={listSampleSession?.data?.items || []}
+					data={getListSampleSession || []}
 					loading={listSampleSession?.isLoading}
 					noti={<Noti des='Hiện tại chưa có cân mẫu!' disableButton />}
 				>
