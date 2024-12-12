@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 
 import {ISampleSession, PropsMainPageSampleSpec} from './interfaces';
 import styles from './MainPageSampleSpec.module.scss';
@@ -8,6 +8,7 @@ import Pagination from '~/components/common/Pagination';
 import {useRouter} from 'next/router';
 import Table from '~/components/common/Table';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
+
 import {
 	CONFIG_DESCENDING,
 	CONFIG_PAGING,
@@ -32,10 +33,15 @@ import {Eye, TickCircle} from 'iconsax-react';
 import IconCustom from '~/components/common/IconCustom';
 import PositionContainer from '~/components/common/PositionContainer';
 import FormDetailSampleSpec from '../FormDetailSampleSpec';
+import Button from '~/components/common/Button';
+import {useReactToPrint} from 'react-to-print';
+import TemplateSampleSpec from '~/components/pdf-template/TemplateSampleSpec';
+import Dialog from '~/components/common/Dialog';
 
 function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
+	const contentToPrint = useRef<HTMLDivElement>(null);
 
 	const {_page, _pageSize, _keyword, _status, _specUuid, _shipUuid, _dateFrom, _dateTo, _customerUuid} = router.query;
 	const [uuidDetail, setUuidDetail] = useState<string>('');
@@ -169,14 +175,39 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 		},
 	});
 
+	const handlePrint = useReactToPrint({
+		content: () => contentToPrint.current,
+		documentTitle: 'Can_mau_test',
+		onBeforePrint: () => console.log('before printing...'),
+		onAfterPrint: () => console.log('after printing...'),
+		removeAfterPrint: true,
+	});
+
+	console.log({uuidConfirm});
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.header}>
 				<div className={styles.main_search}>
+					{getListSampleSession?.some((x) => x.isChecked !== false) && (
+						<div style={{height: 40}}>
+							<Button
+								className={styles.btn}
+								rounded_2
+								maxHeight
+								primary
+								p_4_12
+								onClick={() => {
+									setUuidConfirm(getListSampleSession?.filter((v) => v.isChecked !== false)?.map((x: any) => x.uuid));
+								}}
+							>
+								Xác nhận
+							</Button>
+						</div>
+					)}
 					<div className={styles.search}>
 						<Search keyName='_keyword' placeholder='Tìm kiếm theo mã cân mẫu' />
 					</div>
-
 					<FilterCustom
 						isSearch
 						name='Khách hàng'
@@ -186,7 +217,6 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 							name: v?.name,
 						}))}
 					/>
-
 					<FilterCustom
 						isSearch
 						name='Mã tàu'
@@ -240,19 +270,32 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
 					</div>
 				</div>
+
+				{/* <div className={styles.btn}>
+					<Button rounded_2 w_fit p_8_16 green bold onClick={handlePrint}>
+						In + xuất pdf
+					</Button>
+				</div> */}
+			</div>
+
+			{/* Template */}
+			<div style={{display: 'none'}}>
+				<TemplateSampleSpec ref={contentToPrint} />
 			</div>
 
 			<div className={styles.table}>
 				<DataWrapper
 					data={getListSampleSession || []}
-					loading={listSampleSession?.isLoading}
+					loading={listSampleSession?.isFetching}
 					noti={<Noti des='Hiện tại chưa có cân mẫu!' disableButton />}
 				>
 					<Table
-						data={listSampleSession?.data?.items || []}
+						data={getListSampleSession || []}
+						onSetData={setListSampleWession}
 						column={[
 							{
 								title: 'STT',
+								checkBox: true,
 								render: (data: ISampleSession, index: number) => <>{index + 1} </>,
 							},
 							{
@@ -380,12 +423,14 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 						]}
 					/>
 				</DataWrapper>
-				<Pagination
-					currentPage={Number(_page) || 1}
-					total={listSampleSession?.data?.pagination?.totalCount}
-					pageSize={Number(_pageSize) || 200}
-					dependencies={[_pageSize, _keyword, _status, _specUuid, _shipUuid, _customerUuid, _dateTo, _dateFrom]}
-				/>
+				{!listSampleSession.isFetching && (
+					<Pagination
+						currentPage={Number(_page) || 1}
+						total={total}
+						pageSize={Number(_pageSize) || 200}
+						dependencies={[_pageSize, _keyword, _status, _specUuid, _shipUuid, _customerUuid, _dateTo, _dateFrom]}
+					/>
+				)}
 			</div>
 
 			<PositionContainer
@@ -401,6 +446,15 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 					}}
 				/>
 			</PositionContainer>
+
+			<Dialog
+				danger
+				open={uuidConfirm.length > 0}
+				title='Xác nhận'
+				note='Bạn có muốn thực hiện thao tác xác nhận này không?'
+				onClose={() => setUuidConfirm([])}
+				onSubmit={funcConfirm.mutate}
+			/>
 		</div>
 	);
 }

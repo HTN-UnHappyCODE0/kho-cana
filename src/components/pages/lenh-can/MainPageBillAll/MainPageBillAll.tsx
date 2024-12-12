@@ -45,7 +45,6 @@ import shipServices from '~/services/shipServices';
 import {convertCoin} from '~/common/funcs/convertCoin';
 import {convertWeight} from '~/common/funcs/optionConvert';
 import storageServices from '~/services/storageServices';
-import StateActive from '~/components/common/StateActive';
 import scalesStationServices from '~/services/scalesStationServices';
 
 function MainPageBillAll({}: PropsMainPageBillAll) {
