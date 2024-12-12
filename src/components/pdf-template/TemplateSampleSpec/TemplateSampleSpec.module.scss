@@ -65,6 +65,28 @@
 		margin-bottom: 12px;
 	}
 
+	.item {
+		display: grid;
+		grid-template-columns: 140px 1fr;
+
+		p:nth-child(1) {
+			font-size: 16px;
+			font-weight: 500;
+		}
+
+		p:nth-child(2) {
+			font-weight: 600;
+
+			& > span {
+				font-weight: 500;
+			}
+		}
+
+		& + .item {
+			margin-top: 2px;
+		}
+	}
+
 	& > p {
 		font-size: 16px;
 		font-weight: 500;
