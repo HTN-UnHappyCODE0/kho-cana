@@ -51,7 +51,7 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 	const [customerUuid, setCustomerUuid] = useState<string>('');
 	const [shipUuid, setShipUuid] = useState<string>('');
 	const [specUuid, setSpecUuid] = useState<string>('');
-	const [statusSample, setStatusSample] = useState<string>(String(STATUS_SAMPLE_SESSION.USING));
+	// const [statusSample, setStatusSample] = useState<string>(String(STATUS_SAMPLE_SESSION.USING));
 	const [typeDate, setTypeDate] = useState<number | null>(TYPE_DATE.LAST_7_DAYS);
 	const [date, setDate] = useState<{
 		from: Date | null;
@@ -152,7 +152,7 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 	});
 
 	const listSampleSession = useQuery(
-		[QUERY_KEY.table_ds_can_mau, _pageSample, _pageSampleSize, _keywordForm, customerUuid, specUuid, statusSample, shipUuid, date],
+		[QUERY_KEY.table_ds_can_mau, _pageSample, _pageSampleSize, _keywordForm, customerUuid, specUuid, shipUuid, date],
 		{
 			queryFn: () =>
 				httpRequest({
@@ -167,7 +167,7 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 						customerUuid: customerUuid,
 						fromDate: timeSubmit(date?.from)!,
 						specUuid: specUuid,
-						status: Number(statusSample),
+						status: STATUS_SAMPLE_SESSION.ACCEPT,
 						toDate: timeSubmit(date?.to, true)!,
 						type: TYPE_SAMPLE_SESSION.QUY_CACH,
 						shipUuid: shipUuid,
@@ -209,7 +209,7 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 
 	useEffect(() => {
 		setUuidSampleSession(null);
-	}, [customerUuid, _keywordForm, specUuid, statusSample, shipUuid, date]);
+	}, [customerUuid, _keywordForm, specUuid, shipUuid, date]);
 
 	const handleSubmit = async () => {
 		if (!dataCheckWeigh) {
@@ -277,7 +277,7 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 							placeholder='Tất cả tàu'
 						/>
 
-						<SelectFilterOption
+						{/* <SelectFilterOption
 							isShowAll={false}
 							uuid={statusSample}
 							setUuid={setStatusSample}
@@ -304,7 +304,7 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 								},
 							]}
 							placeholder='Tất cả trạng thái'
-						/>
+						/> */}
 
 						<SelectFilterOption
 							uuid={specUuid}

@@ -151,7 +151,7 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 						customerUuid: customerUuid,
 						fromDate: timeSubmit(date?.from)!,
 						specUuid: specUuid,
-						status: Number(statusSample),
+						status: STATUS_SAMPLE_SESSION.ACCEPT,
 						toDate: timeSubmit(date?.to, true)!,
 						type: TYPE_SAMPLE_SESSION.DO_KHO,
 						shipUuid: shipUuid,
@@ -260,7 +260,7 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 							placeholder='Tất cả tàu'
 						/>
 
-						<SelectFilterOption
+						{/* <SelectFilterOption
 							isShowAll={false}
 							uuid={statusSample}
 							setUuid={setStatusSample}
@@ -287,7 +287,7 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 								},
 							]}
 							placeholder='Tất cả trạng thái'
-						/>
+						/> */}
 
 						<SelectFilterOption
 							uuid={specUuid}
