@@ -123,13 +123,20 @@
 		align-items: center;
 		gap: 12px;
 		padding: 8px;
+
+		.root_false {
+			background: #f6faff;
+		}
+
+		.root_true {
+			background: #ffebe0;
+		}
 	}
 
 	.infor_check {
 		width: 100%;
 		border-radius: 6px;
 		border: 1px solid #e8e8e8;
-		background: #f6faff;
 		padding: 12px 16px;
 
 		.item {

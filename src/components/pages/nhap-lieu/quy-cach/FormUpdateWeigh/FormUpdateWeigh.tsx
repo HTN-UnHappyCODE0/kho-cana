@@ -59,6 +59,7 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 	} | null>(null);
 
 	const [listCustomer, setListCustomer] = useState<any[]>([]);
+	const [SampleData, setSampleData] = useState<any[]>([]);
 
 	useEffect(() => {
 		if (Array.isArray(dataUpdateWeigh)) {
@@ -218,6 +219,15 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 		funcUpdateSpecWeightSession.mutate();
 	};
 
+	useEffect(() => {
+		if (listSampleData?.data?.items) {
+			const root = listSampleData?.data?.items?.filter((v: ISampleData) => v?.isRoot == true);
+			const notRoot = listSampleData?.data?.items?.filter((v: ISampleData) => v?.isRoot != true);
+			const data = [...root, ...notRoot];
+			setSampleData(data);
+		}
+	}, [listSampleData]);
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.header}>
@@ -361,12 +371,12 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 					</div>
 				</div>
 				<DataWrapper
-					data={listSampleData?.data?.items || []}
+					data={SampleData || []}
 					loading={listSampleData.isFetching}
 					noti={<Noti des='Hiện tại chưa có dữ liệu nào!' disableButton />}
 				>
 					<div className={styles.table_option}>
-						{listSampleData?.data?.items?.map((v: ISampleData) => (
+						{SampleData?.map((v: ISampleData) => (
 							<label key={v?.uuid} className={styles.option}>
 								<input
 									id={v?.uuid}
@@ -385,7 +395,13 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 										setTotalSample(v?.totalWeight)
 									)}
 								/>
-								<label htmlFor={v?.uuid} className={styles.infor_check}>
+								<label
+									htmlFor={v?.uuid}
+									className={clsx(styles.infor_check, {
+										[styles.root_false]: v?.isRoot != true,
+										[styles.root_true]: v?.isRoot == true,
+									})}
+								>
 									<GridColumn col_2>
 										<div className={styles.item}>
 											<p>Mẫu làm việc:</p>

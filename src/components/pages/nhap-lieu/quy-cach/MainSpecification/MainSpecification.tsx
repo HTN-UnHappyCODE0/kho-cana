@@ -430,10 +430,6 @@ function MainSpecification({}: PropsMainSpecification) {
 								render: (data: IWeightSession) => <>{convertWeight(data?.weightReal)}</>,
 							},
 							{
-								title: 'KL quy khô (Tấn)',
-								render: (data: IWeightSession) => <>{convertWeight(data?.weightBdmt)}</>,
-							},
-							{
 								title: 'Khách hàng',
 								render: (data: IWeightSession) => (
 									<>
@@ -442,6 +438,11 @@ function MainSpecification({}: PropsMainSpecification) {
 									</>
 								),
 							},
+							{
+								title: 'KL quy khô (Tấn)',
+								render: (data: IWeightSession) => <>{convertWeight(data?.weightBdmt)}</>,
+							},
+
 							{
 								title: 'Kho hàng',
 								render: (data: IWeightSession) => <>{data?.toUu?.name || '---'}</>,

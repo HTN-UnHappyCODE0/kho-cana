@@ -659,6 +659,15 @@ function MainDryness({}: PropsMainDryness) {
 								render: (data: IWeightSession) => <>{convertWeight(data?.weightReal)}</>,
 							},
 							{
+								title: 'Khách hàng',
+								render: (data: IWeightSession) => (
+									<>
+										{data?.fromUu?.name || '---'}
+										<p style={{fontWeight: 500, color: '#3772FF'}}>{data?.batchUu?.name || '---'}</p>
+									</>
+								),
+							},
+							{
 								title: 'Độ khô',
 								render: (data: IWeightSession, index: number) => (
 									<div className={styles.valueDryness}>
@@ -682,15 +691,7 @@ function MainDryness({}: PropsMainDryness) {
 								title: 'KL quy khô (Tấn)',
 								render: (data: IWeightSession) => <>{convertWeight(data?.weightBdmt) || '---'}</>,
 							},
-							{
-								title: 'Khách hàng',
-								render: (data: IWeightSession) => (
-									<>
-										{data?.fromUu?.name || '---'}
-										<p style={{fontWeight: 500, color: '#3772FF'}}>{data?.batchUu?.name || '---'}</p>
-									</>
-								),
-							},
+
 							{
 								title: 'Kho hàng',
 								render: (data: IWeightSession) => <>{data?.toUu?.name || '---'}</>,

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {PropsFormDetailSampleSpec} from './interfaces';
 import styles from './FormDetailSampleSpec.module.scss';
@@ -14,9 +14,12 @@ import DataWrapper from '~/components/common/DataWrapper';
 import Noti from '~/components/common/DataWrapper/components/Noti';
 import {ISampleData} from '../../nhap-lieu/quy-cach/FormUpdateWeigh/interfaces';
 import {IoClose} from 'react-icons/io5';
+import {convertCoin} from '~/common/funcs/convertCoin';
+import {set} from 'nprogress';
 
 function FormDetailSampleSpec({onClose, dataUuidDetail}: PropsFormDetailSampleSpec) {
 	const [statusSampleData, setStatusSampleData] = useState<any>('1');
+	const [SampleData, setSampleData] = useState<any[]>([]);
 
 	const listSampleData = useQuery([QUERY_KEY.table_du_lieu_mau, dataUuidDetail, statusSampleData], {
 		queryFn: () =>
@@ -32,6 +35,15 @@ function FormDetailSampleSpec({onClose, dataUuidDetail}: PropsFormDetailSampleSp
 		},
 		enabled: !!dataUuidDetail && !!statusSampleData,
 	});
+
+	useEffect(() => {
+		if (listSampleData?.data?.items) {
+			const root = listSampleData?.data?.items?.filter((v: ISampleData) => v?.isRoot == true);
+			const notRoot = listSampleData?.data?.items?.filter((v: ISampleData) => v?.isRoot != true);
+			const data = [...root, ...notRoot];
+			setSampleData(data);
+		}
+	}, [listSampleData]);
 
 	return (
 		<div className={styles.container}>
@@ -70,14 +82,20 @@ function FormDetailSampleSpec({onClose, dataUuidDetail}: PropsFormDetailSampleSp
 					</div>
 				</div>
 				<DataWrapper
-					data={listSampleData?.data?.items || []}
+					data={SampleData || []}
 					loading={listSampleData.isFetching}
 					noti={<Noti des='Hiện tại chưa có dữ liệu nào!' disableButton />}
 				>
 					<div className={styles.table_option}>
-						{listSampleData?.data?.items?.map((v: ISampleData) => (
+						{SampleData?.map((v: ISampleData) => (
 							<label key={v?.uuid} className={styles.option}>
-								<label htmlFor={v?.uuid} className={styles.infor_check}>
+								<label
+									htmlFor={v?.uuid}
+									className={clsx(styles.infor_check, {
+										[styles.root_false]: v?.isRoot != true,
+										[styles.root_true]: v?.isRoot == true,
+									})}
+								>
 									<GridColumn col_2>
 										<div className={styles.item}>
 											<p>Mẫu làm việc:</p>
@@ -101,21 +119,15 @@ function FormDetailSampleSpec({onClose, dataUuidDetail}: PropsFormDetailSampleSp
 										</div>
 										<div className={styles.item}>
 											<p>Tổng khối lượng:</p>
-											{v?.totalWeight ? (
-												<>
-													<span>{convertWeight(v?.totalWeight)}</span>
-													<span style={{color: 'red'}}>(100%)</span>
-												</>
-											) : (
-												'0'
-											)}
+											<span>{convertCoin(v?.sampleCriterial?.reduce((total, x) => total + x.weight, 0))} gr</span>
+											<span style={{color: 'red'}}>(100%)</span>
 										</div>
 										{v?.sampleCriterial?.map((x, i) => (
 											<div key={x?.uuid} className={styles.item}>
-												<p>{x?.criteriaName || '---'}:</p>
+												<span>{x?.criteriaName || '---'} (gr):</span>
 
 												<>
-													<span>{convertWeight(x?.weight)}</span>
+													<span>{convertCoin(x?.weight)}</span>
 													<span style={{color: 'red'}}>({x?.percentage}%)</span>
 												</>
 											</div>
