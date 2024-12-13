@@ -6,6 +6,7 @@ export interface PropsFormUpdateWeigh {
 }
 
 export interface ISampleData {
+	isRoot: boolean;
 	totalWeight: number;
 	finalDryness: number;
 	wsUuid: any;
