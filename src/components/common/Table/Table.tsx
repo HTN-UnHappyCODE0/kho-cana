@@ -64,12 +64,10 @@ function Table({data, column, onSetData}: PropsTable) {
 		return data.length > 0 ? data.some((item: any) => item?.isChecked === false) : false;
 	}, [data]);
 
-	const [selectedRows, setSelectedRows] = useState<number[]>([]);
+	const [selectedRow, setSelectedRow] = useState<number | null>(null);
 
 	const handleRowClick = (index: number) => {
-		setSelectedRows((prevSelected) =>
-			prevSelected.includes(index) ? prevSelected.filter((i) => i !== index) : [...prevSelected, index]
-		);
+		setSelectedRow(index);
 	};
 	return (
 		<div ref={myElementRef} className={styles.container}>
@@ -105,12 +103,13 @@ function Table({data, column, onSetData}: PropsTable) {
 				</thead>
 				<tbody>
 					{data.map((v: any, i: number) => (
-						<tr key={i} onClick={() => handleRowClick(i)}>
+						<tr key={i}>
 							{column.map((y: any, j: number) => (
 								<td
 									key={j}
+									onClick={() => handleRowClick(i)}
 									className={clsx({
-										[styles.selectedRow]: selectedRows.includes(i),
+										[styles.selectedRow]: selectedRow === i,
 										[styles.fixedLeft]: y.fixedLeft && isShowScroll,
 										[styles.fixedRight]: y.fixedRight && isShowScroll,
 									})}
