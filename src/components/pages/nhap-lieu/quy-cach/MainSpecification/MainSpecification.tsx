@@ -58,6 +58,7 @@ function MainSpecification({}: PropsMainSpecification) {
 		_dateFrom,
 		_dateTo,
 		_isShift,
+		_status,
 	} = router.query;
 
 	const [weightSessionSubmits, setWeightSessionSubmits] = useState<any[]>([]);
@@ -190,6 +191,7 @@ function MainSpecification({}: PropsMainSpecification) {
 			_isShift,
 			_storageUuid,
 			_scalesStationUuid,
+			_status,
 		],
 		{
 			queryFn: () =>
@@ -209,7 +211,23 @@ function MainSpecification({}: PropsMainSpecification) {
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
 						scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_TRUC_TIEP],
 						specUuid: !!_specUuid ? (_specUuid as string) : null,
-						status: [STATUS_WEIGHT_SESSION.CAN_LAN_2],
+						status:
+							_status == '1'
+								? [STATUS_WEIGHT_SESSION.CAN_LAN_2]
+								: _status == '2'
+								? [
+										STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
+										STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
+										STATUS_WEIGHT_SESSION.KCS_XONG,
+										STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
+								  ]
+								: [
+										STATUS_WEIGHT_SESSION.CAN_LAN_2,
+										STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
+										STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
+										STATUS_WEIGHT_SESSION.KCS_XONG,
+										STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
+								  ],
 						truckUuid: '',
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
@@ -320,6 +338,23 @@ function MainSpecification({}: PropsMainSpecification) {
 							]}
 						/>
 					</div>
+					<div className={styles.filter}>
+						<FilterCustom
+							isSearch
+							name='Trạng thái'
+							query='_status'
+							listFilter={[
+								{
+									id: '1',
+									name: 'Chưa cập nhật',
+								},
+								{
+									id: '2',
+									name: 'Đã cập nhật',
+								},
+							]}
+						/>
+					</div>
 					<FilterCustom
 						isSearch
 						name='Khách hàng'
@@ -371,16 +406,14 @@ function MainSpecification({}: PropsMainSpecification) {
 					</div>
 				</div>
 			</div>
-			{weightSessions?.some((x) => x.isChecked !== false) && (
-				<div className={clsx('mt')}>
-					<div className={styles.parameter}>
-						<div>
-							TỔNG LƯỢNG KL HÀNG ĐÃ CHỌN:
-							<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getTotal?.data?.amountMt) || 0} </span>(Tấn)
-						</div>
+			<div className={clsx('mt')}>
+				<div className={styles.parameter}>
+					<div>
+						TỔNG LƯỢNG KL HÀNG ĐÃ CHỌN:
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getTotal?.data?.amountMt) || 0} </span>(Tấn)
 					</div>
 				</div>
-			)}
+			</div>
 
 			<div className={styles.table}>
 				<DataWrapper
@@ -538,6 +571,7 @@ function MainSpecification({}: PropsMainSpecification) {
 							_isShift,
 							_storageUuid,
 							_scalesStationUuid,
+							_status,
 						]}
 					/>
 				)}

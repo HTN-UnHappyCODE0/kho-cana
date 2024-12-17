@@ -1,5 +1,5 @@
 export interface PropsFilterCustom {
-	listFilter: {id: number | string; name: string}[];
+	listFilter: {id: number | string | any; name: string}[];
 	name: string;
 	query: string;
 	isSearch?: boolean;
