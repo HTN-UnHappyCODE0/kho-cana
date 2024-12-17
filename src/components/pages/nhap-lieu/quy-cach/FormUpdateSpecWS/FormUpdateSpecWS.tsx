@@ -54,6 +54,8 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 		totalSample: 0,
 	});
 
+	console.log(dataUpdateSpecWS);
+
 	const [dataRules, setDataRules] = useState<
 		{
 			uuid: string;
@@ -63,11 +65,26 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 	>([]);
 
 	useEffect(() => {
-		setForm({
-			totalSample: 0,
-			numberChecked: dataUpdateSpecWS?.length,
-			specificationsUuid: dataUpdateSpecWS?.[0]?.specificationsUu?.uuid,
-		});
+		if (dataUpdateSpecWS?.length == 1) {
+			setForm({
+				totalSample: dataUpdateSpecWS?.[0]?.specStyleUu?.[0]?.totalSample,
+				numberChecked: dataUpdateSpecWS?.length,
+				specificationsUuid: dataUpdateSpecWS?.[0]?.specificationsUu?.uuid,
+			});
+			setDataRules(
+				dataUpdateSpecWS?.[0]?.specStyleUu?.map((v) => ({
+					uuid: v?.criteriaUu?.uuid!,
+					title: v?.criteriaUu?.title!,
+					amountSample: v?.amountSample! || 0,
+				}))!
+			);
+		} else {
+			setForm({
+				totalSample: 0,
+				numberChecked: dataUpdateSpecWS?.length,
+				specificationsUuid: dataUpdateSpecWS?.[0]?.specificationsUu?.uuid,
+			});
+		}
 	}, [dataUpdateSpecWS]);
 
 	const listSpecification = useQuery([QUERY_KEY.dropdown_quy_cach], {
@@ -106,7 +123,7 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 				}),
 			}),
 		onSuccess(data) {
-			if (data) {
+			if (data && dataUpdateSpecWS?.length != 1) {
 				setDataRules(
 					data?.map((v: any) => ({
 						uuid: v?.uuid,
