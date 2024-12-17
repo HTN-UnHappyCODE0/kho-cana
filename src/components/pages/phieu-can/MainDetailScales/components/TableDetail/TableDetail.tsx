@@ -34,6 +34,7 @@ import storageServices from '~/services/storageServices';
 import customerServices from '~/services/customerServices';
 import useDebounce from '~/common/hooks/useDebounce';
 import scalesStationServices from '~/services/scalesStationServices';
+import StateActive from '~/components/common/StateActive';
 
 function TableDetail({}: PropsTableDetail) {
 	const router = useRouter();
@@ -563,6 +564,52 @@ function TableDetail({}: PropsTableDetail) {
 											'---'
 										)}
 									</>
+								),
+							},
+							{
+								title: 'Trạng thái',
+								render: (data: IWeightSession) => (
+									<StateActive
+										stateActive={data?.status}
+										listState={[
+											{
+												state: STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
+												text: 'Đã cập nhật quy cách',
+												textColor: '#9757D7',
+												backgroundColor: 'rgba(151, 87, 215, 0.10)',
+											},
+											{
+												state: STATUS_WEIGHT_SESSION.DA_HUY,
+												text: 'Đã hủy',
+												textColor: '#F95B5B',
+												backgroundColor: 'rgba(249, 91, 91, 0.10)',
+											},
+											{
+												state: STATUS_WEIGHT_SESSION.CAN_LAN_2,
+												text: 'Đã cân xong',
+												textColor: '#2D74FF',
+												backgroundColor: 'rgba(45, 116, 255, 0.10)',
+											},
+											{
+												state: STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
+												text: 'Đã cập nhật độ khô',
+												textColor: '#FDAD73',
+												backgroundColor: 'rgba(253, 173, 115, 0.10)',
+											},
+											{
+												state: STATUS_WEIGHT_SESSION.KCS_XONG,
+												text: 'Đã KCS',
+												textColor: '#41CD4F',
+												backgroundColor: 'rgba(65, 205, 79, 0.1)',
+											},
+											{
+												state: STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
+												text: 'Kết thúc',
+												textColor: '#0EA5E9',
+												backgroundColor: 'rgba(14, 165, 233, 0.1)',
+											},
+										]}
+									/>
 								),
 							},
 							{

@@ -244,7 +244,11 @@ function MainDryness({}: PropsMainDryness) {
 						specUuid: !!_specUuid ? (_specUuid as string) : null,
 						status: !!_status
 							? [Number(_status)]
-							: [STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE, STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE],
+							: [
+									STATUS_WEIGHT_SESSION.CAN_LAN_2,
+									STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
+									STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
+							  ],
 						truckUuid: '',
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
