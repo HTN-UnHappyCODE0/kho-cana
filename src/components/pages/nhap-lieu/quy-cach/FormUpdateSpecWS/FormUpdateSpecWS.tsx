@@ -54,7 +54,8 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 		totalSample: 0,
 	});
 
-	console.log(dataUpdateSpecWS);
+	console.log(dataUpdateSpecWS?.length);
+	console.log(dataUpdateSpecWS?.[0]?.specStyleUu);
 
 	const [dataRules, setDataRules] = useState<
 		{
@@ -65,12 +66,13 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 	>([]);
 
 	useEffect(() => {
-		if (dataUpdateSpecWS?.length == 1) {
+		if (dataUpdateSpecWS?.length === 1) {
 			setForm({
 				totalSample: dataUpdateSpecWS?.[0]?.specStyleUu?.[0]?.totalSample,
 				numberChecked: dataUpdateSpecWS?.length,
 				specificationsUuid: dataUpdateSpecWS?.[0]?.specificationsUu?.uuid,
 			});
+
 			setDataRules(
 				dataUpdateSpecWS?.[0]?.specStyleUu?.map((v) => ({
 					uuid: v?.criteriaUu?.uuid!,
@@ -78,7 +80,8 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 					amountSample: v?.amountSample! || 0,
 				}))!
 			);
-		} else {
+		}
+		if (dataUpdateSpecWS?.length !== 1) {
 			setForm({
 				totalSample: 0,
 				numberChecked: dataUpdateSpecWS?.length,
@@ -123,7 +126,10 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 				}),
 			}),
 		onSuccess(data) {
-			if (data && dataUpdateSpecWS?.length != 1) {
+			if (
+				(data && dataUpdateSpecWS?.[0]?.specStyleUu?.length == 0 && dataUpdateSpecWS?.length == 1) ||
+				(data && dataUpdateSpecWS?.length != 1)
+			) {
 				setDataRules(
 					data?.map((v: any) => ({
 						uuid: v?.uuid,
