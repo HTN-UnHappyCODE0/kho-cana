@@ -600,20 +600,18 @@ function MainDryness({}: PropsMainDryness) {
 				</div>
 			</div>
 
-			{weightSessions?.some((x) => x.isChecked !== false) && (
-				<div className={clsx('mt')}>
-					<div className={styles.parameter}>
-						<div>
-							TỔNG LƯỢNG KL HÀNG ĐÃ CHỌN:
-							<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getTotal?.data?.amountMtWeb) || 0} </span>(Tấn)
-						</div>
-						<div>
-							TỔNG LƯỢNG KL QUY KHÔ ĐÃ CHỌN:
-							<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getTotal?.data?.amountBDmtWeb) || 0}</span> (Tấn)
-						</div>
+			<div className={clsx('mt')}>
+				<div className={styles.parameter}>
+					<div>
+						TỔNG LƯỢNG KL HÀNG ĐÃ CHỌN:
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getTotal?.data?.amountMtWeb) || 0} </span>(Tấn)
+					</div>
+					<div>
+						TỔNG LƯỢNG KL QUY KHÔ ĐÃ CHỌN:
+						<span style={{color: '#2D74FF', marginLeft: 4}}>{convertWeight(getTotal?.data?.amountBDmtWeb) || 0}</span> (Tấn)
 					</div>
 				</div>
-			)}
+			</div>
 
 			<div className={styles.table}>
 				<DataWrapper
