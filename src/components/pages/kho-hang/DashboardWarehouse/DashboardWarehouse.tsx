@@ -14,6 +14,8 @@ import {httpRequest} from '~/services';
 import companyServices from '~/services/companyServices';
 import SelectFilterOption from '../../trang-chu/SelectFilterOption';
 import {set} from 'nprogress';
+import {useSelector} from 'react-redux';
+import {RootState} from '~/redux/store';
 
 function DashboardWarehouse({
 	isTotal,
@@ -25,6 +27,8 @@ function DashboardWarehouse({
 	setUuidCompany,
 }: PropsDashboardWarehouse) {
 	const [arrayTypeAction, setArrayTypeAction] = useState<('product' | 'quality' | 'spec')[]>(['product', 'quality', 'spec']);
+
+	const {infoUser} = useSelector((state: RootState) => state.user);
 
 	const handleAction = (key: 'product' | 'quality' | 'spec') => {
 		if (arrayTypeAction.some((v) => v == key)) {
@@ -64,9 +68,14 @@ function DashboardWarehouse({
 
 	const uuidCompanyDefault = '622f5955-5add-4490-8868-7d9ed1fa3e72';
 	useEffect(() => {
-		if (uuidCompanyDefault) {
+		if (uuidCompanyDefault && infoUser?.companyUuid == null) {
 			setUuidCompanyFilter(uuidCompanyDefault);
 			const name = listCompany?.data?.find((v: any) => v?.uuid == uuidCompanyDefault)?.name;
+			setNameCompanyFilter(name);
+		}
+		if (uuidCompanyDefault && infoUser?.companyUuid != null) {
+			setUuidCompanyFilter(infoUser?.companyUuid);
+			const name = listCompany?.data?.find((v: any) => v?.uuid == infoUser?.companyUuid)?.name;
 			setNameCompanyFilter(name);
 		}
 	}, [uuidCompanyDefault]);
@@ -83,7 +92,7 @@ function DashboardWarehouse({
 					<h4 className={styles.title}>{isTotal ? `Tổng kho ${nameCompany} ` : dataWarehouse?.name}</h4>
 				</div>
 
-				{isTotal && (
+				{isTotal && infoUser?.companyUuid == null && (
 					<div className={styles.filter}>
 						<SelectFilterOption
 							uuid={uuidCompany}

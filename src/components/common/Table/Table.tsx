@@ -107,7 +107,7 @@ function Table({data, column, onSetData}: PropsTable) {
 							{column.map((y: any, j: number) => (
 								<td
 									key={j}
-									onClick={() => handleRowClick(i)}
+									onClick={!y.selectRow ? () => handleRowClick(i) : (e) => e.stopPropagation()}
 									className={clsx({
 										[styles.selectedRow]: selectedRow === i,
 										[styles.fixedLeft]: y.fixedLeft && isShowScroll,
