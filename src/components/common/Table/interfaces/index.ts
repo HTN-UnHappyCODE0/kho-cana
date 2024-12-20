@@ -8,6 +8,7 @@ export interface PropsTable {
 		textAlign?: string;
 		fixedLeft?: boolean;
 		fixedRight?: boolean;
+		selectRow?: boolean;
 	}[];
 	onSetData?: (any: any) => void;
 	isChild?: boolean;
