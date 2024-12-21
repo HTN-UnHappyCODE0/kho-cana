@@ -258,7 +258,7 @@ function MainDetailWeighingStation({}: PropsMainDetailWeighingStation) {
 								{
 									title: 'Tác vụ',
 									render: (data: IScalesMachine) => (
-										<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
+										<div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px'}}>
 											<IconCustom
 												delete
 												icon={<Trash fontSize={20} fontWeight={600} />}

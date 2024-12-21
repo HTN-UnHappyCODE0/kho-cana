@@ -34,6 +34,7 @@ import Popup from '~/components/common/Popup';
 import PopupDeleteBill from '../PopupDeleteBill';
 import batchBillServices from '~/services/batchBillServices';
 import truckServices from '~/services/truckServices';
+import FormUpdateShipBill from '../FormUpdateShipBill';
 
 const MainDetailBill = ({}: PropsMainDetailBill) => {
 	const router = useRouter();
@@ -42,6 +43,7 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 
 	const [uuidTruck, setUuidTruck] = useState<string>('');
 	const [openCancel, setOpenCancel] = useState<boolean>(false);
+	const [openUpdateShip, setOpenUpdateShip] = useState<boolean>(false);
 
 	const {data: detailBatchBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
 		queryFn: () =>
@@ -125,6 +127,10 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 							Hủy phiếu
 						</Button>
 					)}
+
+					<Button rounded_2 w_fit primary p_8_16 bold onClick={() => setOpenUpdateShip(true)}>
+						Cập nhật tàu trung chuyển
+					</Button>
 
 					{detailBatchBill?.status! < STATUS_BILL.DA_CAN_CHUA_KCS && detailBatchBill?.status != STATUS_BILL.DA_HUY ? (
 						<Button
@@ -289,6 +295,10 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 							<span>{detailBatchBill?.port || '---'}</span>
 						</div>
 						<div className={styles.item_table}>
+							<p>Tàu trung chuyển:</p>
+							<span>{detailBatchBill?.shipTempUu?.licensePalate || '---'}</span>
+						</div>
+						<div className={styles.item_table}>
 							<p>Ngày dự kiến :</p>
 							<span>
 								<Moment date={detailBatchBill?.batchsUu?.timeIntend} format='DD/MM/YYYY' />
@@ -322,27 +332,6 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 								<Moment date={detailBatchBill?.created} format='HH:mm, DD/MM/YYYY' />
 							</span>
 						</div>
-
-						{/* PHIẾU HỦY */}
-						{/* {detailBatchBill?.status == STATUS_BILL.DA_HUY && (
-							<>
-								<div className={styles.item_table}>
-									<p>Người hủy:</p>
-									<span>{detailBatchBill?.accountUpdateUu?.username || '---'}</span>
-								</div>
-								<div className={styles.item_table}>
-									<p>Thời gian hủy:</p>
-									<span>
-										<Moment date={detailBatchBill?.updatedTime} format='HH:mm, DD/MM/YYYY' />
-									</span>
-								</div>
-								<div className={styles.item_table}>
-									<p>Lý do hủy:</p>
-									<span>{detailBatchBill?.description?.split('|')?.[1] || '---'}</span>
-								</div>
-							</>
-						)} */}
-
 						{detailBatchBill?.status != STATUS_BILL.DA_HUY && (
 							<>
 								<div className={styles.item_table}>
@@ -364,7 +353,6 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 
 						<div className={styles.item_table}>
 							<p>Mô tả:</p>
-							{/* <span>{detailBatchBill?.description?.split('|')?.[0] || '---'}</span> */}
 							<span>{detailBatchBill?.description || '---'}</span>
 						</div>
 					</div>
@@ -471,6 +459,10 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 
 			<Popup open={openCancel} onClose={() => setOpenCancel(false)}>
 				<PopupDeleteBill uuid={detailBatchBill?.uuid!} onClose={() => setOpenCancel(false)} />
+			</Popup>
+
+			<Popup open={openUpdateShip} onClose={() => setOpenUpdateShip(false)}>
+				<FormUpdateShipBill uuid={detailBatchBill?.uuid!} onClose={() => setOpenUpdateShip(false)} />
 			</Popup>
 		</Fragment>
 	);

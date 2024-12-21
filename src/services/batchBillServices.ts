@@ -315,6 +315,17 @@ const batchBillServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	updateShipTemp: (
+		data: {
+			uuid: string;
+			shipUuid: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/BatchBill/update-ship-temp`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 };
 
 export default batchBillServices;

@@ -31,7 +31,7 @@ import {useRouter} from 'next/router';
 import Moment from 'react-moment';
 import IconCustom from '~/components/common/IconCustom';
 import {LuPencil} from 'react-icons/lu';
-import {Eye, Play, Trash} from 'iconsax-react';
+import {Eye, Play, SaveAdd, Trash} from 'iconsax-react';
 import {IDataBill} from '../MainPageBillAll/interfaces';
 import Link from 'next/link';
 import Popup from '~/components/common/Popup';
@@ -46,11 +46,13 @@ import {convertCoin} from '~/common/funcs/convertCoin';
 import {convertWeight} from '~/common/funcs/optionConvert';
 import storageServices from '~/services/storageServices';
 import scalesStationServices from '~/services/scalesStationServices';
+import FormUpdateShipBill from '../FormUpdateShipBill';
 
 function MainPageBillTransfer({}: PropsMainPageBillTransfer) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 	const [uuidPlay, setUuidPlay] = useState<string>('');
+	const [billUuidUpdateShip, setBillUuidUpdateShip] = useState<string | null>(null);
 
 	const {
 		_page,
@@ -372,26 +374,11 @@ function MainPageBillTransfer({}: PropsMainPageBillTransfer) {
 									</Link>
 								),
 							},
-
-							// {
-							// 	title: 'Mã tàu',
-							// 	render: (data: IDataBill) => (
-							// 		<p style={{fontWeight: 600}}>{data?.batchsUu?.shipUu?.licensePalate || '---'}</p>
-							// 	),
-							// },
-							// {
-							// 	title: 'Mã tàu xuất',
-							// 	render: (data: IDataBill) => (
-							// 		<p style={{fontWeight: 600}}>{data?.batchsUu?.shipOutUu?.licensePalate || '---'}</p>
-							// 	),
-							// },
 							{
 								title: 'Từ(Tàu/Xe)',
 								render: (data: IDataBill) => (
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>
-										{/* <p>({data?.fromUu?.parentUu?.name || '---'})</p> */}
-										{/* <p style={{fontWeight: 400, color: '#3772FF'}}>{data?.batchsUu?.shipUu?.licensePalate || '---'}</p> */}
 										{data?.scalesType == TYPE_SCALES.CAN_XUAT && (
 											<p style={{fontWeight: 400, color: '#3772FF'}}>{'---'}</p>
 										)}
@@ -418,8 +405,6 @@ function MainPageBillTransfer({}: PropsMainPageBillTransfer) {
 												{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
 											</p>
 										)}
-
-										{/* <p>({data?.toUu?.parentUu?.name || '---'})</p> */}
 									</>
 								),
 							},
@@ -468,6 +453,10 @@ function MainPageBillTransfer({}: PropsMainPageBillTransfer) {
 								),
 							},
 							{
+								title: 'Tàu trung chuyển',
+								render: (data: IDataBill) => <>{data?.shipTempUu?.licensePalate || '---'}</>,
+							},
+							{
 								title: 'Ngày dự kiến',
 								render: (data: IDataBill) => (
 									<>
@@ -498,7 +487,7 @@ function MainPageBillTransfer({}: PropsMainPageBillTransfer) {
 								title: 'Tác vụ',
 								fixedRight: true,
 								render: (data: IDataBill) => (
-									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
+									<div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px'}}>
 										{data?.status == STATUS_BILL.CHUA_CAN || data?.status == STATUS_BILL.TAM_DUNG ? (
 											<IconCustom
 												edit
@@ -526,7 +515,13 @@ function MainPageBillTransfer({}: PropsMainPageBillTransfer) {
 												onClick={() => setBilldUuid(data.uuid)}
 											/>
 										)}
-
+										<IconCustom
+											edit
+											icon={<SaveAdd fontSize={20} fontWeight={600} />}
+											tooltip='Cập nhật tàu trung chuyển'
+											color='#777E90'
+											onClick={() => setBillUuidUpdateShip(data.uuid)}
+										/>
 										<IconCustom
 											edit
 											icon={<Eye fontSize={20} fontWeight={600} />}
@@ -567,6 +562,9 @@ function MainPageBillTransfer({}: PropsMainPageBillTransfer) {
 			/>
 			<Popup open={!!billUuid} onClose={() => setBilldUuid(null)}>
 				<PopupDeleteBill uuid={billUuid} onClose={() => setBilldUuid(null)} />
+			</Popup>
+			<Popup open={!!billUuidUpdateShip} onClose={() => setBillUuidUpdateShip(null)}>
+				<FormUpdateShipBill uuid={billUuidUpdateShip} onClose={() => setBillUuidUpdateShip(null)} />
 			</Popup>
 		</div>
 	);

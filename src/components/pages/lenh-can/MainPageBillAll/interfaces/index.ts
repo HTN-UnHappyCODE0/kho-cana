@@ -103,4 +103,9 @@ export interface IDataBill {
 	port: string;
 	weigth1: number;
 	weigth2: number;
+	shipTempUu: {
+		code: string;
+		licensePalate: string;
+		uuid: string;
+	};
 }

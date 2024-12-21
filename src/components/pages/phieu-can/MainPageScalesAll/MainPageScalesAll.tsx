@@ -31,7 +31,7 @@ import Pagination from '~/components/common/Pagination';
 import {useRouter} from 'next/router';
 import batchBillServices from '~/services/batchBillServices';
 import IconCustom from '~/components/common/IconCustom';
-import {Eye, Play, StopCircle} from 'iconsax-react';
+import {Eye, Play, SaveAdd, StopCircle} from 'iconsax-react';
 import Dialog from '~/components/common/Dialog';
 import Loading from '~/components/common/Loading';
 import Link from 'next/link';
@@ -43,6 +43,8 @@ import Button from '~/components/common/Button';
 import storageServices from '~/services/storageServices';
 import StateActive from '~/components/common/StateActive';
 import scalesStationServices from '~/services/scalesStationServices';
+import Popup from '~/components/common/Popup';
+import FormUpdateShipBill from '../../lenh-can/FormUpdateShipBill';
 
 function MainPageScalesAll({}: PropsMainPageScalesAll) {
 	const router = useRouter();
@@ -66,6 +68,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 
 	const [uuidPlay, setUuidPlay] = useState<string>('');
 	const [uuidStop, setUuidStop] = useState<string>('');
+	const [billUuidUpdateShip, setBillUuidUpdateShip] = useState<string | null>(null);
 
 	const [listBatchBill, setListBatchBill] = useState<any[]>([]);
 	const [total, setTotal] = useState<number>(0);
@@ -678,16 +681,12 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 								),
 							},
 							{
+								title: 'Tàu trung chuyển',
+								render: (data: ITableBillScale) => <>{data?.shipTempUu?.licensePalate || '---'}</>,
+							},
+							{
 								title: 'Xác nhận SL',
 								render: (data: ITableBillScale) => (
-									// <p style={{fontWeight: 600, color: ''}}>
-									// 	{data?.state == STATE_BILL.NOT_CHECK && <span style={{color: '#FF6838'}}>Chưa duyệt</span>}
-									// 	{data?.state == STATE_BILL.QLK_REJECTED && <span style={{color: '#6170E3'}}>QLK duyệt lại</span>}
-									// 	{data?.state == STATE_BILL.QLK_CHECKED && <span style={{color: '#6FD195'}}>QLK đã duyệt</span>}
-									// 	{data?.state == STATE_BILL.KTK_REJECTED && <span style={{color: '#FFAE4C'}}>KTK duyệt lại</span>}
-									// 	{data?.state == STATE_BILL.KTK_CHECKED && <span style={{color: '#3CC3DF'}}>KTK đã duyệt</span>}
-									// 	{data?.state == STATE_BILL.END && <span style={{color: '#D95656'}}>Kết thúc</span>}
-									// </p>
 									<StateActive
 										stateActive={data?.state}
 										listState={[
@@ -734,15 +733,6 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 							{
 								title: 'Trạng thái',
 								render: (data: ITableBillScale) => (
-									// <>
-									// 	{data?.status == STATUS_BILL.DANG_CAN && <span style={{color: '#9757D7'}}>Đang cân</span>}
-									// 	{data?.status == STATUS_BILL.TAM_DUNG && <span style={{color: '#353945'}}>Tạm dừng</span>}
-									// 	{data?.status == STATUS_BILL.DA_CAN_CHUA_KCS && (
-									// 		<span style={{color: '#D94212'}}>Đã cân chưa KCS</span>
-									// 	)}
-									// 	{data?.status == STATUS_BILL.DA_KCS && <span style={{color: '#3772FF'}}>Đã KCS</span>}
-									// 	{data?.status == STATUS_BILL.CHOT_KE_TOAN && <span style={{color: '#2CAE39'}}>Chốt kế toán</span>}
-									// </>
 									<>
 										{data?.isBatch == TYPE_BATCH.KHONG_CAN ? (
 											<StateActive
@@ -841,6 +831,15 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 											/>
 										) : null}
 
+										{/* Cập nhật tàu trung chuyển */}
+										<IconCustom
+											edit
+											icon={<SaveAdd fontSize={20} fontWeight={600} />}
+											tooltip='Cập nhật tàu trung chuyển'
+											color='#777E90'
+											onClick={() => setBillUuidUpdateShip(data.uuid)}
+										/>
+
 										{/* Chỉnh sửa phiếu */}
 										<IconCustom
 											edit
@@ -911,6 +910,11 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 				onClose={() => setUuidStop('')}
 				onSubmit={funcStopBatchBill.mutate}
 			/>
+
+			{/* Cập nhật tàu trung chuyển */}
+			<Popup open={!!billUuidUpdateShip} onClose={() => setBillUuidUpdateShip(null)}>
+				<FormUpdateShipBill uuid={billUuidUpdateShip} onClose={() => setBillUuidUpdateShip(null)} />
+			</Popup>
 		</div>
 	);
 }

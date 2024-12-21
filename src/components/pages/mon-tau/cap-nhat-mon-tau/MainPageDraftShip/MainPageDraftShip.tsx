@@ -447,7 +447,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 								title: 'Tác vụ',
 								fixedRight: true,
 								render: (data: ITableBillScale) => (
-									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
+									<div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px'}}>
 										<div>
 											<Button
 												className={styles.btn}

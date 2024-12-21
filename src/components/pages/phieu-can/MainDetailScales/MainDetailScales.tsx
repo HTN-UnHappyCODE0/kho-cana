@@ -26,7 +26,6 @@ import {httpRequest} from '~/services';
 import batchBillServices from '~/services/batchBillServices';
 import Button from '~/components/common/Button';
 import {LuPencil} from 'react-icons/lu';
-import {convertCoin} from '~/common/funcs/convertCoin';
 import {IDetailBatchBill} from '../../lenh-can/MainDetailBill/interfaces';
 import {convertWeight} from '~/common/funcs/optionConvert';
 import TableUpdateBillHistory from './components/TableUpdateBillHistory';
@@ -36,12 +35,14 @@ import weightSessionServices from '~/services/weightSessionServices';
 import Loading from '~/components/common/Loading';
 import Popup from '~/components/common/Popup';
 import SliderImage from '~/components/common/SliderImage';
+import FormUpdateShipBill from '../../lenh-can/FormUpdateShipBill';
 
 function MainDetailScales({}: PropsMainDetailScales) {
 	const router = useRouter();
 	const {_type, _id} = router.query;
 
 	const [open, setOpen] = useState<boolean>(false);
+	const [openUpdateShip, setOpenUpdateShip] = useState<boolean>(false);
 
 	const {data: detailBatchBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_phieu_can, _id], {
 		queryFn: () =>
@@ -156,7 +157,9 @@ function MainDetailScales({}: PropsMainDetailScales) {
 					<Button rounded_2 w_fit p_8_16 green bold onClick={handleExportExcel}>
 						Xuất excel
 					</Button>
-
+					<Button rounded_2 w_fit primary p_8_16 bold onClick={() => setOpenUpdateShip(true)}>
+						Cập nhật tàu trung chuyển
+					</Button>
 					<Button
 						rounded_2
 						w_fit
@@ -223,16 +226,7 @@ function MainDetailScales({}: PropsMainDetailScales) {
 					<tr>
 						<td>
 							<span>Vận chuyển:</span>
-							<span style={{marginLeft: '6px', fontWeight: 600}}>
-								{/* {detailBatchBill?.transportType == TYPE_TRANSPORT.DUONG_BO
-									? `Đường bộ (${detailBatchBill?.weightSessionUu?.truckUu?.licensePalate || '---'})`
-									: detailBatchBill?.transportType == TYPE_TRANSPORT.DUONG_THUY
-									? `Đường thủy (${detailBatchBill?.batchsUu?.shipUu?.licensePalate || '---'} - ${
-											detailBatchBill?.batchsUu?.shipOutUu?.licensePalate || '---'
-									  })`
-									: '---'} */}
-								{getlicensePalate()}
-							</span>
+							<span style={{marginLeft: '6px', fontWeight: 600}}>{getlicensePalate()}</span>
 						</td>
 						<td>
 							<span>Tổng khối lượng:</span>
@@ -265,7 +259,6 @@ function MainDetailScales({}: PropsMainDetailScales) {
 								<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.port || '---'}</span>
 							</div>
 						</td>
-
 						<td>
 							<span>Kiểu cân:</span>
 							<span style={{marginLeft: '6px', fontWeight: 600}}>
@@ -273,6 +266,39 @@ function MainDetailScales({}: PropsMainDetailScales) {
 								{detailBatchBill?.isBatch == TYPE_BATCH.CAN_LE && 'Cân lẻ'}
 								{detailBatchBill?.isBatch == TYPE_BATCH.KHONG_CAN && 'Không qua cân'}
 							</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
+								<span>Tàu trung chuyển: </span>
+								<span style={{marginLeft: '6px', fontWeight: 600}}>
+									{detailBatchBill?.shipTempUu?.licensePalate || '---'}
+								</span>
+							</div>
+						</td>
+						<td>
+							<span>Lượng tươi theo mớn:</span>
+							{detailBatchBill?.weightMon ? (
+								<span style={{marginLeft: '6px', fontWeight: 600}}>
+									{convertWeight(detailBatchBill?.weightMon!)}
+									<span style={{marginLeft: '6px', fontWeight: 600}}>(Tấn)</span>
+								</span>
+							) : (
+								'---'
+							)}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
+								<span>Trạm cân: </span>
+								<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.scalesStationUu?.name || '---'}</span>
+							</div>
+						</td>
+						<td rowSpan={4} className={styles.description}>
+							<span>{detailBatchBill?.state == STATE_BILL.QLK_REJECTED ? 'Lý do' : 'Mô tả'} :</span>
+							<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.description || '---'}</span>
 						</td>
 					</tr>
 					<tr>
@@ -316,44 +342,9 @@ function MainDetailScales({}: PropsMainDetailScales) {
 								/>
 							</span>
 						</td>
-						<td>
-							<span>Lượng tươi theo mớn:</span>
-							{detailBatchBill?.weightMon ? (
-								<span style={{marginLeft: '6px', fontWeight: 600}}>
-									{convertWeight(detailBatchBill?.weightMon!)}
-									<span style={{marginLeft: '6px', fontWeight: 600}}>(Tấn)</span>
-								</span>
-							) : (
-								'---'
-							)}
-						</td>
 					</tr>
 					<tr>
 						<td>
-							<div style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
-								<span>Trạm cân: </span>
-								<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.scalesStationUu?.name || '---'}</span>
-							</div>
-						</td>
-						<td rowSpan={3} className={styles.description}>
-							<span>{detailBatchBill?.state == STATE_BILL.QLK_REJECTED ? 'Lý do' : 'Mô tả'} :</span>
-							<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.description || '---'}</span>
-						</td>
-					</tr>
-
-					<tr>
-						<td>
-							{/* <div style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
-								<span>Xác nhận SL: </span>
-								<span style={{marginLeft: '6px', fontWeight: 600}}>
-									{detailBatchBill?.state == STATE_BILL.NOT_CHECK && 'Chưa duyệt'}
-									{detailBatchBill?.state == STATE_BILL.QLK_REJECTED && 'QLK duyệt lại'}
-									{detailBatchBill?.state == STATE_BILL.QLK_CHECKED && 'QLK đã duyệt'}
-									{detailBatchBill?.state == STATE_BILL.KTK_REJECTED && 'KTK duyệt lại'}
-									{detailBatchBill?.state == STATE_BILL.KTK_CHECKED && 'KTK đã duyệt'}
-									{detailBatchBill?.state == STATE_BILL.END && 'Kết thúc'}
-								</span>
-							</div> */}
 							<span className={styles.state_action}>
 								<span style={{marginRight: '6px'}}>Xác nhận SL: </span>
 								{detailBatchBill?.scalesType != TYPE_SCALES.CAN_XUAT ? (
@@ -459,6 +450,10 @@ function MainDetailScales({}: PropsMainDetailScales) {
 						<IoClose size={24} color='#23262F' />
 					</div>
 				</div>
+			</Popup>
+
+			<Popup open={openUpdateShip} onClose={() => setOpenUpdateShip(false)}>
+				<FormUpdateShipBill uuid={detailBatchBill?.uuid!} onClose={() => setOpenUpdateShip(false)} />
 			</Popup>
 		</div>
 	);

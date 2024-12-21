@@ -32,7 +32,7 @@ import {useRouter} from 'next/router';
 import batchBillServices from '~/services/batchBillServices';
 import {ITableBillScale} from '../MainPageScalesAll/interfaces';
 import IconCustom from '~/components/common/IconCustom';
-import {Eye, Play, StopCircle} from 'iconsax-react';
+import {Eye, Play, SaveAdd, StopCircle} from 'iconsax-react';
 import Dialog from '~/components/common/Dialog';
 import Loading from '~/components/common/Loading';
 import Link from 'next/link';
@@ -44,6 +44,8 @@ import Button from '~/components/common/Button';
 import storageServices from '~/services/storageServices';
 import StateActive from '~/components/common/StateActive';
 import scalesStationServices from '~/services/scalesStationServices';
+import Popup from '~/components/common/Popup';
+import FormUpdateShipBill from '../../lenh-can/FormUpdateShipBill';
 
 function MainPageScalesImport({}: PropsMainPageScalesImport) {
 	const router = useRouter();
@@ -67,6 +69,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 
 	const [uuidPlay, setUuidPlay] = useState<string>('');
 	const [uuidStop, setUuidStop] = useState<string>('');
+	const [billUuidUpdateShip, setBillUuidUpdateShip] = useState<string | null>(null);
 
 	const [listBatchBill, setListBatchBill] = useState<any[]>([]);
 	const [total, setTotal] = useState<number>(0);
@@ -654,6 +657,10 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 								),
 							},
 							{
+								title: 'Tàu trung chuyển',
+								render: (data: ITableBillScale) => <>{data?.shipTempUu?.licensePalate || '---'}</>,
+							},
+							{
 								title: 'Xác nhận SL',
 								render: (data: ITableBillScale) => (
 									<StateActive
@@ -800,6 +807,15 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 											/>
 										) : null}
 
+										{/* Cập nhật tàu trung chuyển */}
+										<IconCustom
+											edit
+											icon={<SaveAdd fontSize={20} fontWeight={600} />}
+											tooltip='Cập nhật tàu trung chuyển'
+											color='#777E90'
+											onClick={() => setBillUuidUpdateShip(data.uuid)}
+										/>
+
 										{/* Chỉnh sửa phiếu */}
 										<IconCustom
 											edit
@@ -868,6 +884,11 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 				onClose={() => setUuidStop('')}
 				onSubmit={funcStopBatchBill.mutate}
 			/>
+
+			{/* Cập nhật tàu trung chuyển */}
+			<Popup open={!!billUuidUpdateShip} onClose={() => setBillUuidUpdateShip(null)}>
+				<FormUpdateShipBill uuid={billUuidUpdateShip} onClose={() => setBillUuidUpdateShip(null)} />
+			</Popup>
 		</div>
 	);
 }

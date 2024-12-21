@@ -217,6 +217,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 						userUuid: infoUser?.userUuid || '',
 						uuid: infoUser?.uuid || '',
 						userName: infoUser?.userName || '',
+						companyUuid: infoUser?.companyUuid || '',
 						fullname: form.fullName || '',
 					})
 				);

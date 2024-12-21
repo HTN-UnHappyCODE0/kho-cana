@@ -338,7 +338,7 @@ function MainSpecification({}: PropsMainSpecification) {
 							]}
 						/>
 					</div>
-					<div className={styles.filter}>
+					{/* <div className={styles.filter}>
 						<FilterCustom
 							isSearch
 							name='Trạng thái'
@@ -354,7 +354,7 @@ function MainSpecification({}: PropsMainSpecification) {
 								},
 							]}
 						/>
-					</div>
+					</div> */}
 					<FilterCustom
 						isSearch
 						name='Khách hàng'
@@ -534,7 +534,7 @@ function MainSpecification({}: PropsMainSpecification) {
 								title: 'Tác vụ',
 								fixedRight: true,
 								render: (data: IWeightSession) => (
-									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
+									<div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px'}}>
 										<div>
 											<Button
 												className={styles.btn}

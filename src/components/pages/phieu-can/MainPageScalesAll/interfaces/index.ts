@@ -124,4 +124,9 @@ export interface ITableBillScale {
 	weigth1: number;
 	weigth2: number;
 	port: string;
+	shipTempUu: {
+		code: string;
+		licensePalate: string;
+		uuid: string;
+	};
 }

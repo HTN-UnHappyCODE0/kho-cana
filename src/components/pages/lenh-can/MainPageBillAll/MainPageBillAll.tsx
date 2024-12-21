@@ -31,7 +31,7 @@ import {useRouter} from 'next/router';
 import Moment from 'react-moment';
 import IconCustom from '~/components/common/IconCustom';
 import {LuPencil} from 'react-icons/lu';
-import {AddSquare, Eye, Play, Trash} from 'iconsax-react';
+import {AddSquare, Eye, Play, SaveAdd, Trash} from 'iconsax-react';
 import TippyHeadless from '@tippyjs/react/headless';
 import Link from 'next/link';
 import Popup from '~/components/common/Popup';
@@ -46,6 +46,7 @@ import {convertCoin} from '~/common/funcs/convertCoin';
 import {convertWeight} from '~/common/funcs/optionConvert';
 import storageServices from '~/services/storageServices';
 import scalesStationServices from '~/services/scalesStationServices';
+import FormUpdateShipBill from '../FormUpdateShipBill';
 
 function MainPageBillAll({}: PropsMainPageBillAll) {
 	const router = useRouter();
@@ -68,7 +69,8 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 	} = router.query;
 
 	const [openCreate, setOpenCreate] = useState<boolean>(false);
-	const [billUuid, setBilldUuid] = useState<string | null>(null);
+	const [billUuid, setBillUuid] = useState<string | null>(null);
+	const [billUuidUpdateShip, setBillUuidUpdateShip] = useState<string | null>(null);
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
@@ -443,27 +445,11 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 									</p>
 								),
 							},
-							// {
-							// 	title: 'Mã tàu',
-							// 	render: (data: IDataBill) => (
-							// 		<p style={{fontWeight: 600}}>{data?.batchsUu?.shipUu?.licensePalate || '---'}</p>
-							// 	),
-							// },
-							// {
-							// 	title: 'Mã tàu xuất',
-							// 	render: (data: IDataBill) => (
-							// 		<>
-							// 			<p style={{fontWeight: 600}}>{data?.batchsUu?.shipOutUu?.licensePalate || '---'}</p>
-							// 		</>
-							// 	),
-							// },
 							{
 								title: 'Từ(Tàu/Xe)',
 								render: (data: IDataBill) => (
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>
-										{/* <p>({data?.fromUu?.parentUu?.name || '---'})</p> */}
-										{/* <p style={{fontWeight: 400, color: '#3772FF'}}>{data?.batchsUu?.shipUu?.licensePalate || '---'}</p> */}
 										{data?.scalesType == TYPE_SCALES.CAN_XUAT && (
 											<p style={{fontWeight: 400, color: '#3772FF'}}>{'---'}</p>
 										)}
@@ -490,8 +476,6 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 												{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
 											</p>
 										)}
-
-										{/* <p>({data?.toUu?.parentUu?.name || '---'})</p> */}
 									</>
 								),
 							},
@@ -529,6 +513,10 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 								render: (data: IDataBill) => <>{data?.scalesStationUu?.name || '---'}</>,
 							},
 							{
+								title: 'Tàu trung chuyển',
+								render: (data: IDataBill) => <>{data?.shipTempUu?.licensePalate || '---'}</>,
+							},
+							{
 								title: 'Ngày dự kiến',
 								render: (data: IDataBill) => (
 									<>
@@ -553,42 +541,13 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 											<span style={{color: '#2CAE39'}}>Đã hoàn thành</span>
 										)}
 									</>
-									// <StateActive
-									// 	stateActive={data?.status}
-									// 	listState={[
-									// 		{
-									// 			state: STATUS_BILL.DANG_CAN || STATUS_BILL.TAM_DUNG,
-									// 			text: 'Đang xử lý',
-									// 			textColor: '#9757D7',
-									// 			backgroundColor: 'rgba(151, 87, 215, 0.10)',
-									// 		},
-									// 		{
-									// 			state: STATUS_BILL.DA_HUY,
-									// 			text: 'Đã hủy bỏ',
-									// 			textColor: '#F95B5B',
-									// 			backgroundColor: 'rgba(249, 91, 91, 0.10)',
-									// 		},
-									// 		{
-									// 			state: STATUS_BILL.CHUA_CAN,
-									// 			text: 'Chưa xử lý',
-									// 			textColor: '#2D74FF',
-									// 			backgroundColor: 'rgba(45, 116, 255, 0.10)',
-									// 		},
-									// 		{
-									// 			state: STATUS_BILL.DA_CAN_CHUA_KCS || STATUS_BILL.DA_KCS || STATUS_BILL.CHOT_KE_TOAN,
-									// 			text: 'Đã hoàn thành',
-									// 			textColor: '#41CD4F',
-									// 			backgroundColor: 'rgba(65, 205, 79, 0.1)',
-									// 		},
-									// 	]}
-									// />
 								),
 							},
 							{
 								title: 'Tác vụ',
 								fixedRight: true,
 								render: (data: IDataBill) => (
-									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
+									<div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px'}}>
 										{data?.status == STATUS_BILL.CHUA_CAN || data?.status == STATUS_BILL.TAM_DUNG ? (
 											<IconCustom
 												edit
@@ -611,12 +570,18 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 											<IconCustom
 												lock
 												icon={<Trash size='22' />}
-												tooltip={'Hủy phiếu'}
+												tooltip='Hủy phiếu'
 												color='#777E90'
-												onClick={() => setBilldUuid(data.uuid)}
+												onClick={() => setBillUuid(data.uuid)}
 											/>
 										)}
-
+										<IconCustom
+											edit
+											icon={<SaveAdd fontSize={20} fontWeight={600} />}
+											tooltip='Cập nhật tàu trung chuyển'
+											color='#777E90'
+											onClick={() => setBillUuidUpdateShip(data.uuid)}
+										/>
 										<IconCustom
 											edit
 											icon={<Eye fontSize={20} fontWeight={600} />}
@@ -658,8 +623,11 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 			/>
 
 			{/* POPUP */}
-			<Popup open={!!billUuid} onClose={() => setBilldUuid(null)}>
-				<PopupDeleteBill uuid={billUuid} onClose={() => setBilldUuid(null)} />
+			<Popup open={!!billUuid} onClose={() => setBillUuid(null)}>
+				<PopupDeleteBill uuid={billUuid} onClose={() => setBillUuid(null)} />
+			</Popup>
+			<Popup open={!!billUuidUpdateShip} onClose={() => setBillUuidUpdateShip(null)}>
+				<FormUpdateShipBill uuid={billUuidUpdateShip} onClose={() => setBillUuidUpdateShip(null)} />
 			</Popup>
 		</div>
 	);
