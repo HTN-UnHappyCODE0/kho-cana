@@ -486,7 +486,7 @@ function MainDetailScales({}: PropsMainDetailScales) {
 			<Popup open={openExportExcel} onClose={() => setOpenExportExcel(false)}>
 				<div className={styles.main_export}>
 					<h4 className={styles.title_export}>Lựa chọn</h4>
-					<p className={styles.des_export}>Xuất quy cách không ?</p>
+					<p className={styles.des_export}>bạn có muốn xuất quy cách không ?</p>
 
 					<div className={styles.control_export}>
 						<div>
