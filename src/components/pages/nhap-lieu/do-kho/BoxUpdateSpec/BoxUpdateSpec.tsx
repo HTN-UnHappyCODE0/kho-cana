@@ -3,16 +3,17 @@ import React, {useEffect, useRef, useState} from 'react';
 import {PropsBoxUpdateSpec} from './interfaces';
 import styles from './BoxUpdateSpec.module.scss';
 import Button from '~/components/common/Button';
-import {useMutation, useQueryClient} from '@tanstack/react-query';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import weightSessionServices from '~/services/weightSessionServices';
 import {httpRequest} from '~/services';
-import {QUERY_KEY} from '~/constants/config/enum';
+import {CONFIG_DESCENDING, CONFIG_PAGING, CONFIG_STATUS, CONFIG_TYPE_FIND, QUERY_KEY} from '~/constants/config/enum';
 import {toastWarn} from '~/common/funcs/toast';
 import Loading from '~/components/common/Loading';
 import Form from '~/components/common/Form';
 import Popup from '~/components/common/Popup';
 import FormReasonUpdateSpec from '../../quy-cach/FormReasonUpdateSpec';
 import {price} from '~/common/funcs/convertCoin';
+import criteriaServices from '~/services/criteriaServices';
 
 function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 	const queryClient = useQueryClient();
@@ -59,19 +60,26 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 	>([]);
 
 	useEffect(() => {
-		setDataRules(
-			dataUpdateSpec?.specStyleUu?.map((v) => ({
-				uuid: v?.criteriaUu?.uuid!,
-				title: v?.criteriaUu?.title!,
-				amountSample: v?.amountSample! || 0,
-				ruler: v?.criteriaUu?.ruler!,
-				valuecriteria: v?.criteriaUu.value!,
-				value: v?.value!,
-			}))!
-		);
-		setForm({
-			totalSample: dataUpdateSpec?.specStyleUu?.[0]?.totalSample?.toFixed(2) || 0,
-		});
+		if (dataUpdateSpec?.specStyleUu?.length != 0) {
+			setDataRules(
+				dataUpdateSpec?.specStyleUu?.map((v) => ({
+					uuid: v?.criteriaUu?.uuid!,
+					title: v?.criteriaUu?.title!,
+					amountSample: v?.amountSample! || 0,
+					ruler: v?.criteriaUu?.ruler!,
+					valuecriteria: v?.criteriaUu.value!,
+					value: v?.value!,
+				}))!
+			);
+			setForm({
+				totalSample: dataUpdateSpec?.specStyleUu?.[0]?.totalSample?.toFixed(2) || 0,
+			});
+		}
+		if (dataUpdateSpec?.specStyleUu?.length == 0) {
+			setForm({
+				totalSample: 0,
+			});
+		}
 	}, [dataUpdateSpec]);
 
 	const handleChange = (rule: {uuid: string; title: string; amountSample: number}, value: any) => {
@@ -86,6 +94,35 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 			)
 		);
 	};
+
+	useQuery([QUERY_KEY.danh_sach_tieu_chi_nhap_lieu, dataUpdateSpec?.specificationsUu?.uuid], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: criteriaServices.listCriteriaSpec({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+					specificationUuid: dataUpdateSpec?.specificationsUu?.uuid || '',
+				}),
+			}),
+		onSuccess(data) {
+			if (data && dataUpdateSpec?.specStyleUu?.length == 0) {
+				setDataRules(
+					data?.map((v: any) => ({
+						uuid: v?.uuid,
+						title: v?.title,
+						amountSample: 0,
+					}))
+				);
+			}
+		},
+		enabled: !!dataUpdateSpec?.specificationsUu?.uuid,
+	});
 
 	const funcUpdateSpecWeightSession = useMutation({
 		mutationFn: () =>
@@ -166,7 +203,6 @@ function BoxUpdateSpec({dataUpdateSpec, onClose}: PropsBoxUpdateSpec) {
 							const percentage = price(form?.totalSample)
 								? (v?.amountSample / Number(form?.totalSample)) * 100
 								: (v?.amountSample / totalGr) * 100;
-							// console.log(Number(form?.totalSample));
 
 							return (
 								<div key={i} className={styles.item}>

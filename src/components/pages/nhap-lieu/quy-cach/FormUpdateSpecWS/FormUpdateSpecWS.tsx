@@ -54,9 +54,6 @@ function FormUpdateSpecWS({dataUpdateSpecWS, onClose}: PropsFormUpdateSpecWS) {
 		totalSample: 0,
 	});
 
-	console.log(dataUpdateSpecWS?.length);
-	console.log(dataUpdateSpecWS?.[0]?.specStyleUu);
-
 	const [dataRules, setDataRules] = useState<
 		{
 			uuid: string;

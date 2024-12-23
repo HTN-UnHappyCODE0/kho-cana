@@ -255,6 +255,7 @@ function TableDetail({}: PropsTableDetail) {
 						shipUuid: (_shipUuid as string) || '',
 						shift: !!_shift ? Number(_shift) : null,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
+						isHaveSpec: null,
 					}),
 				}),
 			select(data) {
