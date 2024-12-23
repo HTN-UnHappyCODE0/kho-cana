@@ -26,6 +26,7 @@ const weightSessionServices = {
 			shift?: number | null;
 			shipUuid?: string;
 			scalesStationUuid?: string;
+			isHaveSpec?: number | null;
 		},
 		tokenAxios?: any
 	) => {
@@ -198,6 +199,7 @@ const weightSessionServices = {
 			shift?: number | null;
 			shipUuid?: string;
 			scalesStationUuid?: string;
+			isHaveSpec?: number | null;
 		},
 		tokenAxios?: any
 	) => {

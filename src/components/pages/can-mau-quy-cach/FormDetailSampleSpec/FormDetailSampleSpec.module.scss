@@ -1,10 +1,11 @@
+@import '../../../../styles/variables';
+
 .container {
 	position: relative;
 	max-width: 800px;
 	min-width: 660px;
 	height: 100vh;
 	background: #fff;
-
 	display: flex;
 	flex-direction: column;
 }
@@ -48,8 +49,6 @@
 	padding: 0 24px;
 	display: flex;
 	flex-direction: column;
-	flex: 1;
-	overflow: hidden;
 }
 
 .main_search {
@@ -114,8 +113,6 @@
 }
 
 .table_option {
-	flex: 1;
-	overflow-y: auto;
 	max-height: calc(100vh - 160px);
 	margin-top: 16px;
 
@@ -194,5 +191,17 @@
 
 	&:active {
 		transform: scale(0.9);
+	}
+}
+
+@media (max-width: $widthTablet) {
+	.container {
+		min-width: 100vw;
+	}
+}
+
+@media (max-width: $widthMobile) {
+	.container {
+		min-width: 100vw;
 	}
 }

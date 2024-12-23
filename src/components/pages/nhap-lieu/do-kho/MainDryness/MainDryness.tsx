@@ -257,6 +257,7 @@ function MainDryness({}: PropsMainDryness) {
 						shift: !!_isShift ? Number(_isShift) : null,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
+						isHaveSpec: null,
 					}),
 				}),
 			onSuccess(data) {

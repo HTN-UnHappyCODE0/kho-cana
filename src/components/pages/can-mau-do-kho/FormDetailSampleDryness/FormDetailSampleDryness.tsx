@@ -66,7 +66,7 @@ function FormDetailSampleDryness({onClose, dataUuidDetail}: PropsFormDetailSampl
 						</Select>
 					</div>
 				</div>
-				<div className={clsx('mt', styles.table_srcoll)}>
+				<div className={clsx('mt')}>
 					<DataWrapper
 						data={listSampleData?.data?.items || []}
 						loading={listSampleData.isFetching}

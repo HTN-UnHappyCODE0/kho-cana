@@ -264,7 +264,7 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 						/>
 					</div>
 					<div className={styles.filter}>
-						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
+						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.LAST_7_DAYS} />
 					</div>
 				</div>
 

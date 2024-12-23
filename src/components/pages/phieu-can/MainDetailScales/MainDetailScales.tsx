@@ -36,12 +36,14 @@ import Loading from '~/components/common/Loading';
 import Popup from '~/components/common/Popup';
 import SliderImage from '~/components/common/SliderImage';
 import FormUpdateShipBill from '../../lenh-can/FormUpdateShipBill';
+import Dialog from '~/components/common/Dialog';
 
 function MainDetailScales({}: PropsMainDetailScales) {
 	const router = useRouter();
 	const {_type, _id} = router.query;
 
 	const [open, setOpen] = useState<boolean>(false);
+	const [openExportExcel, setOpenExportExcel] = useState<boolean>(false);
 	const [openUpdateShip, setOpenUpdateShip] = useState<boolean>(false);
 
 	const {data: detailBatchBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_phieu_can, _id], {
@@ -93,7 +95,7 @@ function MainDetailScales({}: PropsMainDetailScales) {
 	};
 
 	const exportExcel = useMutation({
-		mutationFn: () => {
+		mutationFn: (isHaveSpec: number) => {
 			return httpRequest({
 				http: weightSessionServices.exportExcelWs({
 					page: 1,
@@ -124,18 +126,20 @@ function MainDetailScales({}: PropsMainDetailScales) {
 					specUuid: null,
 					truckUuid: '',
 					shift: null,
+					isHaveSpec: isHaveSpec,
 				}),
 			});
 		},
 		onSuccess(data) {
 			if (data) {
 				window.open(`${process.env.NEXT_PUBLIC_PATH_EXPORT}/${data}`, '_blank');
+				setOpenExportExcel(false);
 			}
 		},
 	});
 
-	const handleExportExcel = () => {
-		return exportExcel.mutate();
+	const handleExportExcel = (isHaveSpec: number) => {
+		return exportExcel.mutate(isHaveSpec);
 	};
 
 	return (
@@ -154,7 +158,16 @@ function MainDetailScales({}: PropsMainDetailScales) {
 					<p>Chi tiết phiếu cân #{detailBatchBill?.code}</p>
 				</Link>
 				<div className={styles.list_btn}>
-					<Button rounded_2 w_fit p_8_16 green bold onClick={handleExportExcel}>
+					<Button
+						rounded_2
+						w_fit
+						p_8_16
+						green
+						bold
+						onClick={() => {
+							setOpenExportExcel(true);
+						}}
+					>
 						Xuất excel
 					</Button>
 					<Button rounded_2 w_fit primary p_8_16 bold onClick={() => setOpenUpdateShip(true)}>
@@ -454,6 +467,63 @@ function MainDetailScales({}: PropsMainDetailScales) {
 
 			<Popup open={openUpdateShip} onClose={() => setOpenUpdateShip(false)}>
 				<FormUpdateShipBill uuid={detailBatchBill?.uuid!} onClose={() => setOpenUpdateShip(false)} />
+			</Popup>
+
+			{/* <Dialog
+				open={openExportExcel}
+				onClose={() => {
+					setOpenExportExcel(false);
+					handleExportExcel(0);
+				}}
+				title='Lựa chọn xuất quy cách!'
+				note={`Bạn muốn xuất quy cách không ?`}
+				onSubmit={() => {
+					setOpenExportExcel(false);
+					handleExportExcel(1);
+				}}
+			/> */}
+
+			<Popup open={openExportExcel} onClose={() => setOpenExportExcel(false)}>
+				<div className={styles.main_export}>
+					<h4 className={styles.title_export}>Lựa chọn</h4>
+					<p className={styles.des_export}>Xuất quy cách không ?</p>
+
+					<div className={styles.control_export}>
+						<div>
+							<Button
+								p_10_24
+								rounded_2
+								grey_outline
+								onClick={() => {
+									handleExportExcel(0);
+								}}
+							>
+								Không
+							</Button>
+						</div>
+						<div>
+							<Button
+								p_10_24
+								rounded_2
+								primary
+								onClick={() => {
+									handleExportExcel(1);
+								}}
+							>
+								Có
+							</Button>
+						</div>
+					</div>
+
+					<div
+						className={styles.icon_close_export}
+						onClick={() => {
+							setOpenExportExcel(false);
+						}}
+					>
+						<IoClose size={24} color='#23262F' />
+					</div>
+				</div>
 			</Popup>
 		</div>
 	);

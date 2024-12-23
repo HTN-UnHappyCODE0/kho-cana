@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {IWeightSession, PropsMainSpecification} from './interfaces';
 import styles from './MainSpecification.module.scss';
@@ -11,6 +11,7 @@ import {
 	CONFIG_TYPE_FIND,
 	QUERY_KEY,
 	STATUS_WEIGHT_SESSION,
+	TYPE_ACTION_AUDIT,
 	TYPE_BATCH,
 	TYPE_CUSTOMER,
 	TYPE_DATE,
@@ -59,6 +60,7 @@ function MainSpecification({}: PropsMainSpecification) {
 		_dateTo,
 		_isShift,
 		_status,
+		_isHaveSpec,
 	} = router.query;
 
 	const [weightSessionSubmits, setWeightSessionSubmits] = useState<any[]>([]);
@@ -90,6 +92,20 @@ function MainSpecification({}: PropsMainSpecification) {
 			return data;
 		},
 	});
+
+	useEffect(() => {
+		router.replace(
+			{
+				pathname: router.pathname,
+				query: {
+					...router.query,
+					_isHaveSpec: TYPE_ACTION_AUDIT.NO_DRY,
+				},
+			},
+			undefined,
+			{shallow: true, scroll: false}
+		);
+	}, []);
 
 	const listScalesStation = useQuery([QUERY_KEY.table_tram_can], {
 		queryFn: () =>
@@ -192,6 +208,7 @@ function MainSpecification({}: PropsMainSpecification) {
 			_storageUuid,
 			_scalesStationUuid,
 			_status,
+			_isHaveSpec,
 		],
 		{
 			queryFn: () =>
@@ -211,23 +228,14 @@ function MainSpecification({}: PropsMainSpecification) {
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
 						scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_TRUC_TIEP],
 						specUuid: !!_specUuid ? (_specUuid as string) : null,
-						status:
-							_status == '1'
-								? [STATUS_WEIGHT_SESSION.CAN_LAN_2]
-								: _status == '2'
-								? [
-										STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
-										STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
-										STATUS_WEIGHT_SESSION.KCS_XONG,
-										STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
-								  ]
-								: [
-										STATUS_WEIGHT_SESSION.CAN_LAN_2,
-										STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
-										STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
-										STATUS_WEIGHT_SESSION.KCS_XONG,
-										STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
-								  ],
+						status: [
+							STATUS_WEIGHT_SESSION.CAN_LAN_2,
+							STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
+							STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
+							STATUS_WEIGHT_SESSION.KCS_XONG,
+							STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
+						],
+						isHaveSpec: !!_isHaveSpec ? Number(_isHaveSpec) : null,
 						truckUuid: '',
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
@@ -338,23 +346,23 @@ function MainSpecification({}: PropsMainSpecification) {
 							]}
 						/>
 					</div>
-					{/* <div className={styles.filter}>
+					<div className={styles.filter}>
 						<FilterCustom
 							isSearch
 							name='Trạng thái'
-							query='_status'
+							query='_isHaveSpec'
 							listFilter={[
 								{
-									id: '1',
+									id: TYPE_ACTION_AUDIT.NO_DRY,
 									name: 'Chưa cập nhật',
 								},
 								{
-									id: '2',
+									id: TYPE_ACTION_AUDIT.HAVE_DRY,
 									name: 'Đã cập nhật',
 								},
 							]}
 						/>
-					</div> */}
+					</div>
 					<FilterCustom
 						isSearch
 						name='Khách hàng'
@@ -572,6 +580,7 @@ function MainSpecification({}: PropsMainSpecification) {
 							_storageUuid,
 							_scalesStationUuid,
 							_status,
+							_isHaveSpec,
 						]}
 					/>
 				)}
