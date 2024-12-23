@@ -78,7 +78,7 @@ function DashboardWarehouse({
 			const name = listCompany?.data?.find((v: any) => v?.uuid == infoUser?.companyUuid)?.name;
 			setNameCompanyFilter(name);
 		}
-	}, [uuidCompanyDefault, infoUser]);
+	}, [uuidCompanyDefault, infoUser?.companyUuid]);
 
 	return (
 		<div className={clsx(styles.container, {[styles.isTotal]: isTotal})}>
