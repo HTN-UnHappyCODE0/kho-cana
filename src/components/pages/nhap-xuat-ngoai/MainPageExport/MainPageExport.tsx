@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import {PropsMainPageExport} from './interfaces';
 import styles from './MainPageExport.module.scss';
@@ -44,9 +44,12 @@ import storageServices from '~/services/storageServices';
 import customerServices from '~/services/customerServices';
 import clsx from 'clsx';
 import StateActive from '~/components/common/StateActive';
+import Popup from '~/components/common/Popup';
+import FormAccessSpecExcel from '../../phieu-can/MainDetailScales/components/FormAccessSpecExcel';
 
 function MainPageExport({}: PropsMainPageExport) {
 	const router = useRouter();
+	const [openExportExcel, setOpenExportExcel] = useState<boolean>(false);
 
 	const {
 		_page,
@@ -224,7 +227,7 @@ function MainPageExport({}: PropsMainPageExport) {
 	});
 
 	const exportExcel = useMutation({
-		mutationFn: () => {
+		mutationFn: (isHaveSpec: number) => {
 			return httpRequest({
 				http: batchBillServices.exportExcel({
 					page: Number(_page) || 1,
@@ -262,20 +265,21 @@ function MainPageExport({}: PropsMainPageExport) {
 					scalesStationUuid: (_scalesStationUuid as string) || '',
 					storageUuid: (_storageUuid as string) || '',
 					documentId: '',
+					isExportSpec: isHaveSpec,
 				}),
 			});
 		},
 		onSuccess(data) {
 			if (data) {
 				window.open(`${process.env.NEXT_PUBLIC_PATH_EXPORT}/${data}`, '_blank');
+				setOpenExportExcel(false);
 			}
 		},
 	});
 
-	const handleExportExcel = () => {
-		return exportExcel.mutate();
+	const handleExportExcel = (isHaveSpec: number) => {
+		return exportExcel.mutate(isHaveSpec);
 	};
-
 	return (
 		<div className={styles.container}>
 			<div className={styles.header}>
@@ -384,7 +388,16 @@ function MainPageExport({}: PropsMainPageExport) {
 				</div>
 
 				<div className={styles.btn}>
-					<Button rounded_2 w_fit p_8_16 green bold onClick={handleExportExcel}>
+					<Button
+						rounded_2
+						w_fit
+						p_8_16
+						green
+						bold
+						onClick={() => {
+							setOpenExportExcel(true);
+						}}
+					>
 						Xuất excel
 					</Button>
 					<div>
@@ -646,6 +659,19 @@ function MainPageExport({}: PropsMainPageExport) {
 					]}
 				/>
 			</div>
+			<Popup open={openExportExcel} onClose={() => setOpenExportExcel(false)}>
+				<FormAccessSpecExcel
+					onAccess={() => {
+						handleExportExcel(1);
+					}}
+					onClose={() => {
+						setOpenExportExcel(false);
+					}}
+					onDeny={() => {
+						handleExportExcel(0);
+					}}
+				/>
+			</Popup>
 		</div>
 	);
 }

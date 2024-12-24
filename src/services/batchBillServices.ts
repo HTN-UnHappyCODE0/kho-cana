@@ -235,6 +235,7 @@ const batchBillServices = {
 			typeCheckDay: number;
 			scalesStationUuid: string;
 			documentId: string;
+			isExportSpec?: number | null;
 		},
 		tokenAxios?: any
 	) => {

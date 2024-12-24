@@ -37,6 +37,7 @@ import Popup from '~/components/common/Popup';
 import SliderImage from '~/components/common/SliderImage';
 import FormUpdateShipBill from '../../lenh-can/FormUpdateShipBill';
 import Dialog from '~/components/common/Dialog';
+import FormAccessSpecExcel from './components/FormAccessSpecExcel';
 
 function MainDetailScales({}: PropsMainDetailScales) {
 	const router = useRouter();
@@ -469,61 +470,18 @@ function MainDetailScales({}: PropsMainDetailScales) {
 				<FormUpdateShipBill uuid={detailBatchBill?.uuid!} onClose={() => setOpenUpdateShip(false)} />
 			</Popup>
 
-			{/* <Dialog
-				open={openExportExcel}
-				onClose={() => {
-					setOpenExportExcel(false);
-					handleExportExcel(0);
-				}}
-				title='Lựa chọn xuất quy cách!'
-				note={`Bạn muốn xuất quy cách không ?`}
-				onSubmit={() => {
-					setOpenExportExcel(false);
-					handleExportExcel(1);
-				}}
-			/> */}
-
 			<Popup open={openExportExcel} onClose={() => setOpenExportExcel(false)}>
-				<div className={styles.main_export}>
-					<h4 className={styles.title_export}>Lựa chọn</h4>
-					<p className={styles.des_export}>bạn có muốn xuất quy cách không ?</p>
-
-					<div className={styles.control_export}>
-						<div>
-							<Button
-								p_10_24
-								rounded_2
-								grey_outline
-								onClick={() => {
-									handleExportExcel(0);
-								}}
-							>
-								Không
-							</Button>
-						</div>
-						<div>
-							<Button
-								p_10_24
-								rounded_2
-								primary
-								onClick={() => {
-									handleExportExcel(1);
-								}}
-							>
-								Có
-							</Button>
-						</div>
-					</div>
-
-					<div
-						className={styles.icon_close_export}
-						onClick={() => {
-							setOpenExportExcel(false);
-						}}
-					>
-						<IoClose size={24} color='#23262F' />
-					</div>
-				</div>
+				<FormAccessSpecExcel
+					onAccess={() => {
+						handleExportExcel(1);
+					}}
+					onClose={() => {
+						setOpenExportExcel(false);
+					}}
+					onDeny={() => {
+						handleExportExcel(0);
+					}}
+				/>
 			</Popup>
 		</div>
 	);

@@ -46,6 +46,7 @@ import scalesStationServices from '~/services/scalesStationServices';
 import storageServices from '~/services/storageServices';
 import StateActive from '~/components/common/StateActive';
 import Moment from 'react-moment';
+import FormAccessSpecExcel from '../../phieu-can/MainDetailScales/components/FormAccessSpecExcel';
 
 function PageConfirmOutput({}: PropsPageConfirmOutput) {
 	const router = useRouter();
@@ -67,7 +68,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 
 	const [uuidKTKConfirm, setUuidKTKConfirm] = useState<string[]>([]);
 	const [uuidKTKReject, setUuidKTKReject] = useState<string[]>([]);
-
+	const [openExportExcel, setOpenExportExcel] = useState<boolean>(false);
 	const [listBatchBill, setListBatchBill] = useState<any[]>([]);
 	const [total, setTotal] = useState<number>(0);
 
@@ -247,7 +248,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 	});
 
 	const exportExcel = useMutation({
-		mutationFn: () => {
+		mutationFn: (isHaveSpec: number) => {
 			return httpRequest({
 				http: batchBillServices.exportExcel({
 					page: Number(_page) || 1,
@@ -274,18 +275,20 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 					documentId: '',
 					shipUuid: '',
 					storageUuid: (_storageUuid as string) || '',
+					isExportSpec: isHaveSpec,
 				}),
 			});
 		},
 		onSuccess(data) {
 			if (data) {
 				window.open(`${process.env.NEXT_PUBLIC_PATH_EXPORT}/${data}`, '_blank');
+				setOpenExportExcel(false);
 			}
 		},
 	});
 
-	const handleExportExcel = () => {
-		return exportExcel.mutate();
+	const handleExportExcel = (isHaveSpec: number) => {
+		return exportExcel.mutate(isHaveSpec);
 	};
 
 	return (
@@ -409,7 +412,16 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 					</div>
 				</div>
 				<div className={styles.btn}>
-					<Button rounded_2 w_fit p_8_16 green bold onClick={handleExportExcel}>
+					<Button
+						rounded_2
+						w_fit
+						p_8_16
+						green
+						bold
+						onClick={() => {
+							setOpenExportExcel(true);
+						}}
+					>
 						Xuất excel
 					</Button>
 				</div>
@@ -736,6 +748,20 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 			{/* Quản lý kho từ chối */}
 			<Popup open={uuidKTKReject.length > 0} onClose={() => setUuidKTKReject([])}>
 				<PopupRejectBatchBill uuids={uuidKTKReject} onClose={() => setUuidKTKReject([])} />
+			</Popup>
+
+			<Popup open={openExportExcel} onClose={() => setOpenExportExcel(false)}>
+				<FormAccessSpecExcel
+					onAccess={() => {
+						handleExportExcel(1);
+					}}
+					onClose={() => {
+						setOpenExportExcel(false);
+					}}
+					onDeny={() => {
+						handleExportExcel(0);
+					}}
+				/>
 			</Popup>
 		</div>
 	);
