@@ -66,7 +66,7 @@ function FormDetailSampleDryness({onClose, dataUuidDetail}: PropsFormDetailSampl
 						</Select>
 					</div>
 				</div>
-				<div className={clsx('mt')}>
+				<div className={clsx('mt', styles.table_srcoll)}>
 					<DataWrapper
 						data={listSampleData?.data?.items || []}
 						loading={listSampleData.isFetching}
@@ -81,17 +81,17 @@ function FormDetailSampleDryness({onClose, dataUuidDetail}: PropsFormDetailSampl
 								<p style={{width: '120px', paddingRight: '16px'}}>KL dăm</p>
 								<p style={{width: '120px', paddingRight: '16px'}}>
 									<span className={styles.unit}>
-										Khối lượng khay <br /> dăm 4h
+										Khối lượng khay <br /> dăm 16h
 									</span>
 								</p>
 								<p style={{width: '120px', paddingRight: '16px'}}>
 									<span className={styles.unit}>
-										Khối lượng khay <br /> dăm 8h
+										Khối lượng khay <br /> dăm 18h
 									</span>
 								</p>
 								<p style={{width: '120px', paddingRight: '16px'}}>
 									<span className={styles.unit}>
-										Khối lượng khay <br /> dăm 12h
+										Khối lượng khay <br /> dăm 20h
 									</span>
 								</p>
 								<p style={{width: '90px', paddingRight: '16px'}}>Độ khô(%)</p>

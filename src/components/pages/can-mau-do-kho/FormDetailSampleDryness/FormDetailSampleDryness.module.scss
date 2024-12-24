@@ -40,11 +40,12 @@
 	padding: 0 24px;
 	display: flex;
 	flex-direction: column;
-	// flex: 1;
-	// overflow: hidden;
+	flex: 1;
+	overflow: hidden;
 }
 
 .table_srcoll {
+	overflow-y: auto;
 	max-height: calc(100vh - 160px);
 	margin-top: 16px;
 }
@@ -96,16 +97,4 @@
 	.container {
 		min-width: 100vw;
 	}
-}
-
-.test_1 {
-	display: flex;
-	white-space: nowrap;
-	overflow-x: auto;
-}
-
-.test_2 {
-	width: 1000px;
-	height: 200px;
-	background: #f0f0f0;
 }
