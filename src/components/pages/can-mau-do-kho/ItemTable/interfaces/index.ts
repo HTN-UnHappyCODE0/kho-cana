@@ -3,5 +3,4 @@ export interface PropsItemTable {
 	listData: any;
 	isParent?: boolean;
 	uuidParent?: string | null;
-	header?: boolean;
 }

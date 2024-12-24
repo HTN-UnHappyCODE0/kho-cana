@@ -12,8 +12,15 @@ import DataWrapper from '~/components/common/DataWrapper';
 import Noti from '~/components/common/DataWrapper/components/Noti';
 import {IoClose} from 'react-icons/io5';
 import ItemTable from '../ItemTable';
+import {ISampleData} from '../../nhap-lieu/quy-cach/FormUpdateWeigh/interfaces';
+import GridColumn from '~/components/layouts/GridColumn';
+import {convertCoin} from '~/common/funcs/convertCoin';
+import StateActive from '~/components/common/StateActive';
+import {IoIosArrowDown} from 'react-icons/io';
+import {ArrowRight2} from 'iconsax-react';
 function FormDetailSampleDryness({onClose, dataUuidDetail}: PropsFormDetailSampleDryness) {
 	const [statusSampleData, setStatusSampleData] = useState<any>('1');
+	const [openArrow, setOpenArrow] = useState<boolean>(true);
 
 	const listSampleData = useQuery([QUERY_KEY.table_du_lieu_mau, dataUuidDetail, statusSampleData], {
 		queryFn: () =>
@@ -72,44 +79,10 @@ function FormDetailSampleDryness({onClose, dataUuidDetail}: PropsFormDetailSampl
 						loading={listSampleData.isFetching}
 						noti={<Noti des='Hiện tại chưa có dữ liệu nào!' disableButton />}
 					>
-						<div className={clsx('mt', styles.table_dropdow)}>
-							<div className={styles.table_head}>
-								<div style={{width: '44px', paddingRight: '16px'}}></div>
-								<p style={{width: '44px', paddingRight: '16px'}}>STT</p>
-								<p style={{width: '120px', paddingRight: '16px'}}>Mã khay</p>
-								<p style={{width: '120px', paddingRight: '16px'}}>KL khay</p>
-								<p style={{width: '120px', paddingRight: '16px'}}>KL dăm</p>
-								<p style={{width: '120px', paddingRight: '16px'}}>
-									<span className={styles.unit}>
-										Khối lượng khay <br /> dăm 16h
-									</span>
-								</p>
-								<p style={{width: '120px', paddingRight: '16px'}}>
-									<span className={styles.unit}>
-										Khối lượng khay <br /> dăm 18h
-									</span>
-								</p>
-								<p style={{width: '120px', paddingRight: '16px'}}>
-									<span className={styles.unit}>
-										Khối lượng khay <br /> dăm 20h
-									</span>
-								</p>
-								<p style={{width: '90px', paddingRight: '16px'}}>Độ khô(%)</p>
-								<p style={{width: '180px', paddingRight: '16px'}}>Ghi chú</p>
-								<p style={{width: '90px', paddingRight: '16px'}}>Trạng thái</p>
-							</div>
-							<div className={styles.main_table_dropdow}>
-								{listSampleData?.data?.items?.map((v: any, i: number) => (
-									<ItemTable
-										key={v?.uuid}
-										order={i + 1}
-										listData={v}
-										isParent={true}
-										uuidParent={v?.uuid}
-										header={true}
-									/>
-								))}
-							</div>
+						<div className={styles.table_option}>
+							{listSampleData?.data?.items?.map((v: ISampleData, index: number) => (
+								<ItemTable key={v?.uuid} order={index + 1} listData={v} isParent={true} uuidParent={v?.uuid} />
+							))}
 						</div>
 					</DataWrapper>
 				</div>
