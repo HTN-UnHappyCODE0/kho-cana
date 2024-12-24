@@ -14,9 +14,8 @@ function ItemTable({listData, isParent = true, uuidParent = '', order}: PropsIte
 		<Fragment>
 			{isParent && (
 				<div className={styles.table_option}>
-					<label key={listData?.uuid} className={styles.option}>
-						<label
-							htmlFor={listData?.uuid}
+					<div key={listData?.uuid} className={styles.option}>
+						<div
 							className={clsx(styles.infor_check, {
 								[styles.root_false]: listData?.isRoot != true,
 								[styles.root_true]: listData?.isRoot == true,
@@ -45,7 +44,7 @@ function ItemTable({listData, isParent = true, uuidParent = '', order}: PropsIte
 								</div>
 							</div>
 							<div className={styles.line_stroke}></div>
-							<GridColumn col_1>
+							<GridColumn col_1 className={styles.grid_column}>
 								<div className={styles.item}>
 									<p>Mã lô:</p>
 									<p style={{color: '#2D74FF'}}>{listData?.billCode || '---'}</p>
@@ -132,8 +131,8 @@ function ItemTable({listData, isParent = true, uuidParent = '', order}: PropsIte
 								)}
 								{/* <ArrowRight2 className={clsx(styles.arrow, {[styles.activeArrow]: openArrow})} size={18} /> */}
 							</div>
-						</label>
-					</label>
+						</div>
+					</div>
 				</div>
 			)}
 
