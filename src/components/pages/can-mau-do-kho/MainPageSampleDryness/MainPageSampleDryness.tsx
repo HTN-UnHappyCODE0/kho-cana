@@ -46,7 +46,6 @@ function MainPageSampleDryness({}: PropsMainPageSampleDryness) {
 	const [uuidConfirm, setUuidConfirm] = useState<string[]>([]);
 
 	const [getListSampleSession, setListSampleWession] = useState<any[]>([]);
-	const [total, setTotal] = useState<number>(0);
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
@@ -142,7 +141,6 @@ function MainPageSampleDryness({}: PropsMainPageSampleDryness) {
 							isChecked: false,
 						}))
 					);
-					setTotal(data?.pagination?.totalCount);
 				}
 			},
 			select(data) {
@@ -405,7 +403,7 @@ function MainPageSampleDryness({}: PropsMainPageSampleDryness) {
 				</DataWrapper>
 				<Pagination
 					currentPage={Number(_page) || 1}
-					total={listSampleSession?.data?.pagination?.totalCount}
+					total={listSampleSession?.data?.pagination?.totalCount || 0}
 					pageSize={Number(_pageSize) || 200}
 					dependencies={[_pageSize, _keyword, _status, _specUuid, _shipUuid, _customerUuid, _dateTo, _dateFrom]}
 				/>

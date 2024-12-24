@@ -2,18 +2,13 @@ import React, {Fragment, useState} from 'react';
 
 import {PropsItemTablePC} from './interfaces';
 import styles from './ItemTablePC.module.scss';
-import {useQueryClient} from '@tanstack/react-query';
-import {useRouter} from 'next/router';
 import {clsx} from 'clsx';
 import {IoIosArrowDown} from 'react-icons/io';
 import StateActive from '~/components/common/StateActive';
 
-function ItemTablePC({order, listData, isParent = true, uuidParent = '', header = false}: PropsItemTablePC) {
-	const router = useRouter();
-	const queryClient = useQueryClient();
-
+function ItemTablePC({order, sampleData, isParent = true, uuidParent = '', header = false}: PropsItemTablePC) {
 	const [openArrow, setOpenArrow] = useState<boolean>(true);
-	const [dataStatus, setDataStatus] = useState<any | null>(null);
+
 	return (
 		<Fragment>
 			<div className={clsx(styles.container, {[styles.isChild]: !isParent})}>
@@ -29,15 +24,15 @@ function ItemTablePC({order, listData, isParent = true, uuidParent = '', header 
 				{header ? (
 					<>
 						<p style={{width: '44px', paddingRight: '16px'}}>{order}</p>
-						<p style={{width: '240px', paddingRight: '16px'}}>Mã lô: {listData?.billCode || '---'}</p>
+						<p style={{width: '240px', paddingRight: '16px'}}>Mã lô: {sampleData?.billCode || '---'}</p>
 						<p style={{width: '120px', paddingRight: '16px'}}>Khách hàng: </p>
-						<p style={{width: '360px', paddingRight: '16px'}}>{listData?.customerUu?.name || '---'}</p>
-						<p style={{width: '90px', paddingRight: '16px'}}>{listData?.finalDryness?.toFixed(2)}</p>
-						<p style={{width: '180px', paddingRight: '16px'}}>{listData?.description}</p>
+						<p style={{width: '360px', paddingRight: '16px'}}>{sampleData?.customerUu?.name || '---'}</p>
+						<p style={{width: '90px', paddingRight: '16px'}}>{sampleData?.finalDryness?.toFixed(2)}</p>
+						<p style={{width: '180px', paddingRight: '16px'}}>{sampleData?.description}</p>
 						<p style={{width: '90px', paddingRight: '16px'}}>
-							{listData?.status ? (
+							{sampleData?.status ? (
 								<StateActive
-									stateActive={listData?.status}
+									stateActive={sampleData?.status}
 									listState={[
 										{
 											state: 0,
@@ -61,17 +56,17 @@ function ItemTablePC({order, listData, isParent = true, uuidParent = '', header 
 				) : (
 					<>
 						<p style={{width: '44px', paddingRight: '16px'}}>{order}</p>
-						<p style={{width: '120px', paddingRight: '16px'}}>{listData?.trayCode || '---'}</p>
-						<p style={{width: '120px', paddingRight: '16px'}}>{listData?.trayWeight || '---'}</p>
-						<p style={{width: '120px', paddingRight: '16px'}}>{listData?.woodWeight || '---'}</p>
-						<p style={{width: '120px', paddingRight: '16px'}}>{listData?.trayWoodWeight1 || 0}</p>
-						<p style={{width: '120px', paddingRight: '16px'}}>{listData?.trayWoodWeight2 || 0}</p>
-						<p style={{width: '120px', paddingRight: '16px'}}>{listData?.trayWoodWeight3 || 0}</p>
-						<p style={{width: '90px', paddingRight: '16px'}}>{listData?.finalDryness?.toFixed(2) || '---'}</p>
-						<p style={{width: '180px', paddingRight: '16px'}}>{listData?.description || '---'}</p>
+						<p style={{width: '120px', paddingRight: '16px'}}>{sampleData?.trayCode || '---'}</p>
+						<p style={{width: '120px', paddingRight: '16px'}}>{sampleData?.trayWeight || '---'}</p>
+						<p style={{width: '120px', paddingRight: '16px'}}>{sampleData?.woodWeight || '---'}</p>
+						<p style={{width: '120px', paddingRight: '16px'}}>{sampleData?.trayWoodWeight1 || 0}</p>
+						<p style={{width: '120px', paddingRight: '16px'}}>{sampleData?.trayWoodWeight2 || 0}</p>
+						<p style={{width: '120px', paddingRight: '16px'}}>{sampleData?.trayWoodWeight3 || 0}</p>
+						<p style={{width: '90px', paddingRight: '16px'}}>{sampleData?.finalDryness?.toFixed(2) || '---'}</p>
+						<p style={{width: '180px', paddingRight: '16px'}}>{sampleData?.description || '---'}</p>
 						<p style={{width: '90px', paddingRight: '16px'}}>
 							<StateActive
-								stateActive={listData?.status}
+								stateActive={sampleData?.status}
 								listState={[
 									{
 										state: 0,
@@ -92,10 +87,10 @@ function ItemTablePC({order, listData, isParent = true, uuidParent = '', header 
 				)}
 			</div>
 
-			{openArrow && !!listData?.sampleDryness ? (
+			{openArrow && !!sampleData?.sampleDryness ? (
 				<div className={styles.list_storage}>
-					{listData?.sampleDryness?.map((v: any, i: number) => (
-						<ItemTablePC key={v.uuid} order={i + 1} listData={v} isParent={false} uuidParent={uuidParent} />
+					{sampleData?.sampleDryness?.map((v: any, i: number) => (
+						<ItemTablePC key={v.uuid} order={i + 1} sampleData={v} isParent={false} uuidParent={uuidParent} />
 					))}
 				</div>
 			) : null}

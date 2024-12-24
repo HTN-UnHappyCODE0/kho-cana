@@ -9,17 +9,15 @@ import GridColumn from '~/components/layouts/GridColumn';
 import sampleSessionServices from '~/services/sampleSessionServices';
 import Select, {Option} from '~/components/common/Select';
 import clsx from 'clsx';
-import {convertWeight, timeSubmit} from '~/common/funcs/optionConvert';
 import DataWrapper from '~/components/common/DataWrapper';
 import Noti from '~/components/common/DataWrapper/components/Noti';
 import {ISampleData} from '../../nhap-lieu/quy-cach/FormUpdateWeigh/interfaces';
 import {IoClose} from 'react-icons/io5';
 import {convertCoin} from '~/common/funcs/convertCoin';
-import {set} from 'nprogress';
 
 function FormDetailSampleSpec({onClose, dataUuidDetail}: PropsFormDetailSampleSpec) {
 	const [statusSampleData, setStatusSampleData] = useState<any>('1');
-	const [SampleData, setSampleData] = useState<any[]>([]);
+	const [sampleData, setSampleData] = useState<any[]>([]);
 
 	const listSampleData = useQuery([QUERY_KEY.table_du_lieu_mau, dataUuidDetail, statusSampleData], {
 		queryFn: () =>
@@ -82,12 +80,12 @@ function FormDetailSampleSpec({onClose, dataUuidDetail}: PropsFormDetailSampleSp
 					</div>
 				</div>
 				<DataWrapper
-					data={SampleData || []}
+					data={sampleData || []}
 					loading={listSampleData.isFetching}
 					noti={<Noti des='Hiện tại chưa có dữ liệu nào!' disableButton />}
 				>
 					<div className={styles.table_option}>
-						{SampleData?.map((v: ISampleData) => (
+						{sampleData?.map((v: ISampleData) => (
 							<label key={v?.uuid} className={styles.option}>
 								<label
 									htmlFor={v?.uuid}

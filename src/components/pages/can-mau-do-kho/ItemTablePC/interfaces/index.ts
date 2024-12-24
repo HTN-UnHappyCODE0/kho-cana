@@ -1,6 +1,6 @@
 export interface PropsItemTablePC {
 	order: number;
-	listData: any;
+	sampleData: any;
 	isParent?: boolean;
 	uuidParent?: string | null;
 	header?: boolean;
