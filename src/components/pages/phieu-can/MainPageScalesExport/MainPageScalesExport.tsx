@@ -46,6 +46,7 @@ import StateActive from '~/components/common/StateActive';
 import scalesStationServices from '~/services/scalesStationServices';
 import Popup from '~/components/common/Popup';
 import FormUpdateShipBill from '../../lenh-can/FormUpdateShipBill';
+import FormAccessSpecExcel from '../MainDetailScales/components/FormAccessSpecExcel';
 
 function MainPageScalesExport({}: PropsMainPageScalesExport) {
 	const router = useRouter();
@@ -70,7 +71,7 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 	const [uuidPlay, setUuidPlay] = useState<string>('');
 	const [uuidStop, setUuidStop] = useState<string>('');
 	const [billUuidUpdateShip, setBillUuidUpdateShip] = useState<string | null>(null);
-
+	const [openExportExcel, setOpenExportExcel] = useState<boolean>(false);
 	const [listBatchBill, setListBatchBill] = useState<any[]>([]);
 	const [total, setTotal] = useState<number>(0);
 
@@ -308,7 +309,7 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 	});
 
 	const exportExcel = useMutation({
-		mutationFn: () => {
+		mutationFn: (isHaveSpec: number) => {
 			return httpRequest({
 				http: batchBillServices.exportExcel({
 					page: Number(_page) || 1,
@@ -352,18 +353,20 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 					scalesStationUuid: (_scalesStationUuid as string) || '',
 					documentId: '',
 					storageUuid: (_storageUuid as string) || '',
+					isExportSpec: isHaveSpec,
 				}),
 			});
 		},
 		onSuccess(data) {
 			if (data) {
 				window.open(`${process.env.NEXT_PUBLIC_PATH_EXPORT}/${data}`, '_blank');
+				setOpenExportExcel(false);
 			}
 		},
 	});
 
-	const handleExportExcel = () => {
-		return exportExcel.mutate();
+	const handleExportExcel = (isHaveSpec: number) => {
+		return exportExcel.mutate(isHaveSpec);
 	};
 
 	return (
@@ -503,7 +506,16 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 					</div>
 				</div>
 				<div className={styles.btn}>
-					<Button rounded_2 w_fit p_8_16 green bold onClick={handleExportExcel}>
+					<Button
+						rounded_2
+						w_fit
+						p_8_16
+						green
+						bold
+						onClick={() => {
+							setOpenExportExcel(true);
+						}}
+					>
 						Xuất excel
 					</Button>
 				</div>
@@ -884,6 +896,19 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 			{/* Cập nhật tàu trung chuyển */}
 			<Popup open={!!billUuidUpdateShip} onClose={() => setBillUuidUpdateShip(null)}>
 				<FormUpdateShipBill uuid={billUuidUpdateShip} onClose={() => setBillUuidUpdateShip(null)} />
+			</Popup>
+			<Popup open={openExportExcel} onClose={() => setOpenExportExcel(false)}>
+				<FormAccessSpecExcel
+					onAccess={() => {
+						handleExportExcel(1);
+					}}
+					onClose={() => {
+						setOpenExportExcel(false);
+					}}
+					onDeny={() => {
+						handleExportExcel(0);
+					}}
+				/>
 			</Popup>
 		</div>
 	);
