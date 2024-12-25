@@ -39,7 +39,7 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 	const {_keywordForm, _pageSample, _pageSampleSize} = router.query;
 
 	const [dataCheckWeigh, setDataCheckWeigh] = useState<string | null>();
-	const [uuidSampleSession, setUuidSampleSession] = useState<string | null>();
+	const [uuidSampleSession, setUuidSampleSession] = useState<string[] | null>([]);
 	const [statusSampleData, setStatusSampleData] = useState<any>('1');
 
 	const [finalDryness, setFinalDryness] = useState<number>(0);
@@ -94,9 +94,12 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 		queryFn: () =>
 			httpRequest({
 				isList: true,
-				http: sampleSessionServices.getListSampleData({
-					sampleSessionUuid: uuidSampleSession as string,
-					status: Number(statusSampleData),
+				http: sampleSessionServices.getListSampleData2({
+					lstSampleSessionUuid: (Array.isArray(uuidSampleSession) ? uuidSampleSession : [uuidSampleSession]).filter(
+						(uuid): uuid is string => uuid !== null
+					),
+					lstCustomerUuid: [],
+					status: null,
 				}),
 			}),
 		select(data) {
@@ -181,7 +184,17 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 					}),
 				}),
 			select(data) {
-				return data;
+				if (data?.items?.length == 1 || data?.items?.length == 0) {
+					return data?.items;
+				} else {
+					return [
+						{
+							uuid: data?.items?.map((v: any) => v?.uuid),
+							code: 'Tất cả',
+						},
+						...data?.items,
+					];
+				}
 			},
 		}
 	);
@@ -222,6 +235,12 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 			dryness: finalDryness,
 		});
 	};
+
+	useEffect(() => {
+		if (listSampleSession?.data?.length > 0) {
+			setUuidSampleSession(listSampleSession?.data[0]?.uuid);
+		}
+	}, [listSampleSession]);
 
 	return (
 		<div className={styles.container}>
@@ -341,7 +360,7 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 						value={uuidSampleSession}
 						label={<span>Cân mẫu</span>}
 					>
-						{listSampleSession?.data?.items?.map((v: any) => (
+						{listSampleSession?.data?.map((v: any) => (
 							<Option key={v?.uuid} value={v?.uuid} title={v?.code} onClick={() => setUuidSampleSession(v?.uuid)} />
 						))}
 					</Select>
