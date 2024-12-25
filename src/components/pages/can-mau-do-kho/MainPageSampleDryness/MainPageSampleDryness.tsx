@@ -286,7 +286,8 @@ function MainPageSampleDryness({}: PropsMainPageSampleDryness) {
 								title: 'Hình thức',
 								render: (data: ISampleSession) => (
 									<>
-										<p>{data?.shipUu ? 'Cân lô' : 'Cân lẻ'}</p>
+										<p>{data?.code?.[3] === 'O' ? 'Cân lô' : data?.code?.[3] === 'E' ? 'Cân lẻ' : ''}</p>
+
 										<p style={{fontWeight: 600}}>{data?.billUu?.code || '---'}</p>
 									</>
 								),
@@ -299,7 +300,9 @@ function MainPageSampleDryness({}: PropsMainPageSampleDryness) {
 							},
 							{
 								title: 'Độ khô trung bình (%)',
-								render: (data: ISampleSession) => <>{data?.shipUu ? data?.drynessAvg?.toFixed(2) || 0 : '---'}</>,
+								render: (data: ISampleSession) => (
+									<>{data?.code?.[3] === 'O' ? data?.drynessAvg?.toFixed(2) || '---' : '---'}</>
+								),
 							},
 							{
 								title: 'Ngày phân tích',

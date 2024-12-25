@@ -148,6 +148,18 @@ const sampleSessionServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	getListSampleData2: (
+		data: {
+			lstSampleSessionUuid: string[];
+			lstCustomerUuid?: string[];
+			status: number | null;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/SampleSession/get-list-sample-data2`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 	confirmSample: (
 		data: {
 			uuid: string[];

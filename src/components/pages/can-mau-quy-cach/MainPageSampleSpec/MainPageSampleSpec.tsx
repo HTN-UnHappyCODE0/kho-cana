@@ -309,7 +309,7 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 								title: 'Hình thức',
 								render: (data: ISampleSession) => (
 									<>
-										<p>{data?.shipUu ? 'Cân lô' : 'Cân lẻ'}</p>
+										<p>{data?.code?.[3] === 'O' ? 'Cân lô' : data?.code?.[3] === 'E' ? 'Cân lẻ' : ''}</p>
 										<p style={{fontWeight: 600}}>{data?.billUu?.code || '---'}</p>
 									</>
 								),
