@@ -59,6 +59,8 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 	} | null>(null);
 
 	const [listCustomer, setListCustomer] = useState<any[]>([]);
+	const [listSpec, setListSpec] = useState<any[]>([]);
+	const [listShip, setListShip] = useState<any[]>([]);
 	const [SampleData, setSampleData] = useState<any[]>([]);
 
 	useEffect(() => {
@@ -66,7 +68,27 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 			const customers = dataUpdateWeigh
 				.flatMap((item) => (item?.fromUu ? [{name: item?.fromUu?.name, uuid: item?.fromUu?.uuid}] : []))
 				.filter((customer, index, self) => index === self.findIndex((c) => c.uuid === customer.uuid));
+			const specs = dataUpdateWeigh
+				.flatMap((item) =>
+					item?.specificationsUu ? [{name: item?.specificationsUu?.name, uuid: item?.specificationsUu?.uuid}] : []
+				)
+				.filter((spec, index, self) => index === self.findIndex((c) => c.uuid === spec.uuid));
+			const ships = dataUpdateWeigh.flatMap((item) => {
+				const shipArray = [];
+				if (item?.batchUu?.shipUu) {
+					shipArray.push({name: item?.batchUu?.shipUu?.licensePalate, uuid: item?.batchUu?.shipUu?.uuid});
+				}
+				if (item?.batchUu?.shipOutUu) {
+					shipArray.push({name: item?.batchUu?.shipOutUu?.licensePalate, uuid: item?.batchUu?.shipOutUu?.uuid});
+				}
+				shipArray.filter((ship, index, self) => index === self.findIndex((c) => c.uuid === ship.uuid));
+				return shipArray;
+			});
 
+			setListShip(ships);
+			setCustomerUuid(customers[0]?.uuid);
+			setSpecUuid(specs[0]?.uuid);
+			setListSpec(specs);
 			setListCustomer(customers);
 		}
 	}, [dataUpdateWeigh]);
@@ -133,24 +155,24 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 		},
 	});
 
-	const listShip = useQuery([QUERY_KEY.dropdown_ma_tau], {
-		queryFn: () =>
-			httpRequest({
-				isDropdown: true,
-				http: shipServices.listShip({
-					page: 1,
-					pageSize: 50,
-					keyword: '',
-					status: CONFIG_STATUS.HOAT_DONG,
-					isPaging: CONFIG_PAGING.NO_PAGING,
-					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
-				}),
-			}),
-		select(data) {
-			return data;
-		},
-	});
+	// const listShip = useQuery([QUERY_KEY.dropdown_ma_tau], {
+	// 	queryFn: () =>
+	// 		httpRequest({
+	// 			isDropdown: true,
+	// 			http: shipServices.listShip({
+	// 				page: 1,
+	// 				pageSize: 50,
+	// 				keyword: '',
+	// 				status: CONFIG_STATUS.HOAT_DONG,
+	// 				isPaging: CONFIG_PAGING.NO_PAGING,
+	// 				isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+	// 				typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+	// 			}),
+	// 		}),
+	// 	select(data) {
+	// 		return data;
+	// 	},
+	// });
 
 	const listSampleSession = useQuery(
 		[QUERY_KEY.table_ds_can_mau, _pageSample, _pageSampleSize, _keywordForm, customerUuid, specUuid, shipUuid, date],
@@ -251,6 +273,7 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 						</div>
 
 						<SelectFilterOption
+							isShowAll={false}
 							uuid={customerUuid}
 							setUuid={setCustomerUuid}
 							listData={listCustomer?.map((v: any) => ({
@@ -280,7 +303,7 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 						<SelectFilterOption
 							uuid={shipUuid}
 							setUuid={setShipUuid}
-							listData={listShip?.data?.map((v: any) => ({
+							listData={listShip?.map((v: any) => ({
 								uuid: v?.uuid,
 								name: v?.licensePalate,
 							}))}
@@ -317,9 +340,10 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 						/> */}
 
 						<SelectFilterOption
+							isShowAll={false}
 							uuid={specUuid}
 							setUuid={setSpecUuid}
-							listData={listSpecification?.data?.map((v: any) => ({
+							listData={listSpec?.map((v: any) => ({
 								uuid: v?.uuid,
 								name: v?.name,
 							}))}
