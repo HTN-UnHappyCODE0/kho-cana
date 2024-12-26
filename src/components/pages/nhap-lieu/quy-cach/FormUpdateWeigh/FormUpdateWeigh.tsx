@@ -52,7 +52,7 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 	const [shipUuid, setShipUuid] = useState<string>('');
 	const [specUuid, setSpecUuid] = useState<string>('');
 	// const [statusSample, setStatusSample] = useState<string>(String(STATUS_SAMPLE_SESSION.USING));
-	const [typeDate, setTypeDate] = useState<number | null>(TYPE_DATE.LAST_7_DAYS);
+	const [typeDate, setTypeDate] = useState<number | null>(TYPE_DATE.THIS_YEAR);
 	const [date, setDate] = useState<{
 		from: Date | null;
 		to: Date | null;
@@ -86,10 +86,10 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 			});
 
 			setListShip(ships);
-			setCustomerUuid(customers[0]?.uuid);
-			setSpecUuid(specs[0]?.uuid);
 			setListSpec(specs);
 			setListCustomer(customers);
+			setCustomerUuid(customers[0]?.uuid);
+			setSpecUuid(specs[0]?.uuid);
 		}
 	}, [dataUpdateWeigh]);
 
@@ -116,28 +116,6 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 	// 		return data;
 	// 	},
 	// });
-
-	const listSampleData = useQuery([QUERY_KEY.table_du_lieu_mau, uuidSampleSession, statusSampleData], {
-		queryFn: () =>
-			httpRequest({
-				isList: true,
-				http: sampleSessionServices.getListSampleData2({
-					lstSampleSessionUuid: (Array.isArray(uuidSampleSession) ? uuidSampleSession : [uuidSampleSession]).filter(
-						(uuid): uuid is string => uuid !== null
-					),
-					lstCustomerUuid: [],
-					status: null,
-				}),
-			}),
-
-		select(data) {
-			return data;
-		},
-		onSuccess(data) {
-			setDataCheckWeigh(null);
-		},
-		enabled: !!uuidSampleSession && !!statusSampleData,
-	});
 
 	const listSpecification = useQuery([QUERY_KEY.dropdown_quy_cach], {
 		queryFn: () =>
@@ -213,8 +191,36 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 					];
 				}
 			},
+			onSuccess(data) {
+				if (data) {
+					setUuidSampleSession(data[0]?.uuid);
+				}
+			},
+			enabled: !!customerUuid || !!_keywordForm || !!specUuid || !!shipUuid || !!date,
 		}
 	);
+
+	const listSampleData = useQuery([QUERY_KEY.table_du_lieu_mau, uuidSampleSession, statusSampleData], {
+		queryFn: () =>
+			httpRequest({
+				isList: true,
+				http: sampleSessionServices.getListSampleData2({
+					lstSampleSessionUuid: (Array.isArray(uuidSampleSession) ? uuidSampleSession : [uuidSampleSession]).filter(
+						(uuid): uuid is string => uuid !== null
+					),
+					lstCustomerUuid: [],
+					status: statusSampleData,
+				}),
+			}),
+
+		select(data) {
+			return data;
+		},
+		onSuccess(data) {
+			setDataCheckWeigh(null);
+		},
+		enabled: !!uuidSampleSession || !!statusSampleData,
+	});
 
 	const funcUpdateSpecWeightSession = useMutation({
 		mutationFn: () =>
@@ -244,10 +250,6 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 		},
 	});
 
-	useEffect(() => {
-		setUuidSampleSession(null);
-	}, [customerUuid, _keywordForm, specUuid, shipUuid, date]);
-
 	const handleSubmit = async () => {
 		if (!dataCheckWeigh) {
 			return toastWarn({msg: 'Vui lòng chọn cân mẫu!'});
@@ -263,12 +265,6 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 			setSampleData(data);
 		}
 	}, [listSampleData]);
-
-	useEffect(() => {
-		if (listSampleSession?.data?.length > 0) {
-			setUuidSampleSession(listSampleSession?.data[0]?.uuid);
-		}
-	}, [listSampleSession]);
 
 	return (
 		<div className={styles.container}>

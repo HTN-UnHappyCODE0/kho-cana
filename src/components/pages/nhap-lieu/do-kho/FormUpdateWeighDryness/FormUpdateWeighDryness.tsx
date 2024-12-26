@@ -39,7 +39,7 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 	const {_keywordForm, _pageSample, _pageSampleSize} = router.query;
 
 	const [dataCheckWeigh, setDataCheckWeigh] = useState<string | null>();
-	const [uuidSampleSession, setUuidSampleSession] = useState<string[] | null>([]);
+	const [uuidSampleSession, setUuidSampleSession] = useState<string | null>();
 	const [statusSampleData, setStatusSampleData] = useState<any>('1');
 
 	const [finalDryness, setFinalDryness] = useState<number>(0);
@@ -49,7 +49,7 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 	const [shipUuid, setShipUuid] = useState<string>('');
 	const [specUuid, setSpecUuid] = useState<string>('');
 	const [statusSample, setStatusSample] = useState<string>(String(STATUS_SAMPLE_SESSION.USING));
-	const [typeDate, setTypeDate] = useState<number | null>(TYPE_DATE.LAST_7_DAYS);
+	const [typeDate, setTypeDate] = useState<number | null>(TYPE_DATE.THIS_YEAR);
 	const [date, setDate] = useState<{
 		from: Date | null;
 		to: Date | null;
@@ -83,33 +83,12 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 			});
 
 			setListShip(ships);
-			setCustomerUuid(customers[0]?.uuid);
-			setSpecUuid(specs[0]?.uuid);
 			setListSpec(specs);
 			setListCustomer(customers);
+			setCustomerUuid(customers[0]?.uuid);
+			setSpecUuid(specs[0]?.uuid);
 		}
 	}, [dataUpdateWeigh]);
-
-	const listSampleData = useQuery([QUERY_KEY.table_du_lieu_mau, uuidSampleSession, statusSampleData], {
-		queryFn: () =>
-			httpRequest({
-				isList: true,
-				http: sampleSessionServices.getListSampleData2({
-					lstSampleSessionUuid: (Array.isArray(uuidSampleSession) ? uuidSampleSession : [uuidSampleSession]).filter(
-						(uuid): uuid is string => uuid !== null
-					),
-					lstCustomerUuid: [],
-					status: null,
-				}),
-			}),
-		select(data) {
-			return data;
-		},
-		onSuccess(data) {
-			setDataCheckWeigh(null);
-		},
-		enabled: !!uuidSampleSession && !!statusSampleData,
-	});
 
 	const listSpecification = useQuery([QUERY_KEY.dropdown_quy_cach], {
 		queryFn: () =>
@@ -196,8 +175,36 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 					];
 				}
 			},
+			onSuccess(data) {
+				if (data) {
+					setUuidSampleSession(data[0]?.uuid);
+				}
+			},
+
+			enabled: !!customerUuid || !!_keywordForm || !!specUuid || !!shipUuid || !!date,
 		}
 	);
+
+	const listSampleData = useQuery([QUERY_KEY.table_du_lieu_mau, uuidSampleSession, statusSampleData], {
+		queryFn: () =>
+			httpRequest({
+				isList: true,
+				http: sampleSessionServices.getListSampleData2({
+					lstSampleSessionUuid: (Array.isArray(uuidSampleSession) ? uuidSampleSession : [uuidSampleSession]).filter(
+						(uuid): uuid is string => uuid !== null
+					),
+					lstCustomerUuid: [],
+					status: null,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+		onSuccess(data) {
+			setDataCheckWeigh(null);
+		},
+		enabled: !!uuidSampleSession || !!statusSampleData,
+	});
 
 	const funcUpdateDrynessWeightSession = useMutation({
 		mutationFn: (body: {uuids: string[]; dryness: number}) =>
@@ -222,10 +229,6 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 		},
 	});
 
-	useEffect(() => {
-		setUuidSampleSession(null);
-	}, [customerUuid, _keywordForm, specUuid, statusSample, shipUuid, type, date]);
-
 	const handleSubmit = async () => {
 		if (!dataCheckWeigh) {
 			return toastWarn({msg: 'Vui lòng chọn cân mẫu!'});
@@ -235,12 +238,6 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 			dryness: finalDryness,
 		});
 	};
-
-	useEffect(() => {
-		if (listSampleSession?.data?.length > 0) {
-			setUuidSampleSession(listSampleSession?.data[0]?.uuid);
-		}
-	}, [listSampleSession]);
 
 	return (
 		<div className={styles.container}>
