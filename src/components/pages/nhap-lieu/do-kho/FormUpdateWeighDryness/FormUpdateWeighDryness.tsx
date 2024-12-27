@@ -49,7 +49,7 @@ function FormUpdateWeighDryness({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh
 	const [shipUuid, setShipUuid] = useState<string>('');
 	const [specUuid, setSpecUuid] = useState<string>('');
 	const [statusSample, setStatusSample] = useState<string>(String(STATUS_SAMPLE_SESSION.USING));
-	const [typeDate, setTypeDate] = useState<number | null>(TYPE_DATE.THIS_YEAR);
+	const [typeDate, setTypeDate] = useState<number | null>(TYPE_DATE.LAST_7_DAYS);
 	const [date, setDate] = useState<{
 		from: Date | null;
 		to: Date | null;

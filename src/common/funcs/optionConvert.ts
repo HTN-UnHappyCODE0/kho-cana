@@ -30,7 +30,9 @@ export function checkTime(i: any) {
 }
 
 export const timeSubmit = (date: Date | null | undefined, isTo?: boolean) => {
-	return date ? `${date.getFullYear()}-${checkTime(date.getMonth() + 1)}-${checkTime(date.getDate())}T${isTo ? '23:59' : '00:00'}` : null;
+	return date
+		? `${date.getFullYear()}-${checkTime(date.getMonth() + 1)}-${checkTime(date.getDate())}T${isTo ? '23:59:59' : '00:00:00'}`
+		: null;
 };
 
 export function getKeyCert(): {
