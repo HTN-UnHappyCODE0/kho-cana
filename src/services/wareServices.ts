@@ -86,6 +86,7 @@ const wareServices = {
 			description: string;
 			colorShow: string;
 			type: number;
+			companyUuid: string;
 		},
 		tokenAxios?: any
 	) => {
