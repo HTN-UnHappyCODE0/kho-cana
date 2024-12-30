@@ -10,4 +10,10 @@ export interface IProductType {
 	uuid: string;
 	colorShow: string;
 	type: number;
+	companyUu: {
+		code: string;
+		name: string;
+		status: number;
+		uuid: string;
+	};
 }

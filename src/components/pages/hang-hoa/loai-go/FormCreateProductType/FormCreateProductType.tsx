@@ -7,12 +7,14 @@ import Button from '~/components/common/Button';
 import {IoClose} from 'react-icons/io5';
 import TextArea from '~/components/common/Form/components/TextArea';
 import clsx from 'clsx';
-import {useMutation, useQueryClient} from '@tanstack/react-query';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {httpRequest} from '~/services';
 import wareServices from '~/services/wareServices';
-import {QUERY_KEY, TYPE_PRODUCT} from '~/constants/config/enum';
+import {CONFIG_DESCENDING, CONFIG_PAGING, CONFIG_STATUS, CONFIG_TYPE_FIND, QUERY_KEY, TYPE_PRODUCT} from '~/constants/config/enum';
 import Loading from '~/components/common/Loading';
 import InputColor from '~/components/common/InputColor';
+import Select, {Option} from '~/components/common/Select';
+import companyServices from '~/services/companyServices';
 
 function FormCreateProductType({onClose}: PropsFormCreateProductType) {
 	const queryClient = useQueryClient();
@@ -22,7 +24,27 @@ function FormCreateProductType({onClose}: PropsFormCreateProductType) {
 		productType: TYPE_PRODUCT;
 		description: string;
 		colorShow: string;
-	}>({name: '', description: '', colorShow: '#16DBCC', productType: TYPE_PRODUCT.CONG_TY});
+		companyUuid: string;
+	}>({name: '', description: '', colorShow: '#16DBCC', productType: TYPE_PRODUCT.CONG_TY, companyUuid: ''});
+
+	const listCompany = useQuery([QUERY_KEY.dropdown_cong_ty], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: companyServices.listCompany({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
 
 	const funcCreateProductType = useMutation({
 		mutationFn: () =>
@@ -36,6 +58,7 @@ function FormCreateProductType({onClose}: PropsFormCreateProductType) {
 					description: form.description,
 					type: form.productType,
 					colorShow: form.colorShow,
+					companyUuid: form.companyUuid,
 				}),
 			}),
 		onSuccess(data) {
@@ -45,6 +68,7 @@ function FormCreateProductType({onClose}: PropsFormCreateProductType) {
 					description: '',
 					productType: TYPE_PRODUCT.CONG_TY,
 					colorShow: '#16DBCC',
+					companyUuid: '',
 				});
 				onClose();
 				queryClient.invalidateQueries([QUERY_KEY.table_loai_go]);
@@ -133,6 +157,26 @@ function FormCreateProductType({onClose}: PropsFormCreateProductType) {
 						</span>
 					}
 				/>
+
+				<div className='mt'>
+					<Select
+						isSearch
+						name='companyUuid'
+						value={form.companyUuid}
+						placeholder='Chọn KV cảng xuất khẩu'
+						onChange={(e) =>
+							setForm((prev: any) => ({
+								...prev,
+								companyUuid: e.target.value,
+							}))
+						}
+						label={<span>Thuộc KV cảng xuất khẩu</span>}
+					>
+						{listCompany?.data?.map((v: any) => (
+							<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
+						))}
+					</Select>
+				</div>
 
 				<div className='mt'>
 					<InputColor
