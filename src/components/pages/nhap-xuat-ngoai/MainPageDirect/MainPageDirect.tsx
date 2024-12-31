@@ -538,6 +538,10 @@ function MainPageDirect({}: PropsMainPageDirect) {
 								render: (data: any) => <>{data?.timeEnd ? <Moment date={data?.timeEnd} format='DD/MM/YYYY' /> : '---'}</>,
 							},
 							{
+								title: 'Tàu trung chuyển',
+								render: (data: any) => <>{data?.shipTempUu?.licensePalate || '---'}</>,
+							},
+							{
 								title: 'Xác nhận SL',
 								render: (data: any) => (
 									<StateActive
