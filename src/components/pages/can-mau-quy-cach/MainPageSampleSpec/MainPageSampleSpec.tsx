@@ -37,6 +37,7 @@ import Button from '~/components/common/Button';
 import {useReactToPrint} from 'react-to-print';
 import TemplateSampleSpec from '~/components/pdf-template/TemplateSampleSpec';
 import Dialog from '~/components/common/Dialog';
+import {toastWarn} from '~/common/funcs/toast';
 
 function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 	const router = useRouter();
@@ -182,22 +183,23 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 		removeAfterPrint: true,
 	});
 
+	const handleUpdateAll = () => {
+		const arr = getListSampleSession?.filter((v) => v.isChecked !== false);
+
+		if (!arr?.every((obj: any) => obj?.status === STATUS_SAMPLE_SESSION.FINISH)) {
+			return toastWarn({msg: 'Chỉ chọn các mẫu đã hoàn thành!'});
+		} else {
+			setUuidConfirm(getListSampleSession?.filter((v) => v.isChecked !== false)?.map((x: any) => x.uuid));
+		}
+	};
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.header}>
 				<div className={styles.main_search}>
 					{getListSampleSession?.some((x) => x.isChecked !== false) && (
 						<div style={{height: 40}}>
-							<Button
-								className={styles.btn}
-								rounded_2
-								maxHeight
-								primary
-								p_4_12
-								onClick={() => {
-									setUuidConfirm(getListSampleSession?.filter((v) => v.isChecked !== false)?.map((x: any) => x.uuid));
-								}}
-							>
+							<Button className={styles.btn} rounded_2 maxHeight primary p_4_12 onClick={handleUpdateAll}>
 								Xác nhận
 							</Button>
 						</div>

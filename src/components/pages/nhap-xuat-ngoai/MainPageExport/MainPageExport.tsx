@@ -4,7 +4,7 @@ import {PropsMainPageExport} from './interfaces';
 import styles from './MainPageExport.module.scss';
 import DataWrapper from '~/components/common/DataWrapper';
 import Pagination from '~/components/common/Pagination';
-import {Eye} from 'iconsax-react';
+import {Eye, SaveAdd} from 'iconsax-react';
 import IconCustom from '~/components/common/IconCustom';
 import {LuPencil} from 'react-icons/lu';
 import Moment from 'react-moment';
@@ -46,11 +46,12 @@ import clsx from 'clsx';
 import StateActive from '~/components/common/StateActive';
 import Popup from '~/components/common/Popup';
 import FormAccessSpecExcel from '../../phieu-can/MainDetailScales/components/FormAccessSpecExcel';
+import FormUpdateShipBill from '../../lenh-can/FormUpdateShipBill';
 
 function MainPageExport({}: PropsMainPageExport) {
 	const router = useRouter();
 	const [openExportExcel, setOpenExportExcel] = useState<boolean>(false);
-
+	const [billUuidUpdateShip, setBillUuidUpdateShip] = useState<string | null>(null);
 	const {
 		_page,
 		_pageSize,
@@ -619,6 +620,15 @@ function MainPageExport({}: PropsMainPageExport) {
 								fixedRight: true,
 								render: (data: any) => (
 									<div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px'}}>
+										{data?.isBatch == TYPE_BATCH.CAN_LO || data?.isBatch == TYPE_BATCH.KHONG_CAN ? (
+											<IconCustom
+												edit
+												icon={<SaveAdd fontSize={20} fontWeight={600} />}
+												tooltip='Cập nhật tàu trung chuyển'
+												color='#777E90'
+												onClick={() => setBillUuidUpdateShip(data.uuid)}
+											/>
+										) : null}
 										<IconCustom
 											lock
 											icon={<LuPencil size='22' />}
@@ -671,6 +681,10 @@ function MainPageExport({}: PropsMainPageExport) {
 						handleExportExcel(0);
 					}}
 				/>
+			</Popup>
+
+			<Popup open={!!billUuidUpdateShip} onClose={() => setBillUuidUpdateShip(null)}>
+				<FormUpdateShipBill uuid={billUuidUpdateShip} onClose={() => setBillUuidUpdateShip(null)} />
 			</Popup>
 		</div>
 	);

@@ -32,7 +32,7 @@ import Image from 'next/image';
 import icons from '~/constants/images/icons';
 import Moment from 'react-moment';
 import IconCustom from '~/components/common/IconCustom';
-import {AddSquare, Edit, Eye} from 'iconsax-react';
+import {AddSquare, Edit, Eye, SaveAdd} from 'iconsax-react';
 import {LuPencil} from 'react-icons/lu';
 import {useMutation, useQuery} from '@tanstack/react-query';
 import {httpRequest} from '~/services';
@@ -48,11 +48,13 @@ import {clsx} from 'clsx';
 import StateActive from '~/components/common/StateActive';
 import Popup from '~/components/common/Popup';
 import FormAccessSpecExcel from '../../phieu-can/MainDetailScales/components/FormAccessSpecExcel';
+import FormUpdateShipBill from '../../lenh-can/FormUpdateShipBill';
 
 function MainPageAll({}: PropsMainPageAll) {
 	const [openCreate, setOpenCreate] = useState<boolean>(false);
 	const router = useRouter();
 	const [openExportExcel, setOpenExportExcel] = useState<boolean>(false);
+	const [billUuidUpdateShip, setBillUuidUpdateShip] = useState<string | null>(null);
 
 	const {
 		_page,
@@ -680,6 +682,15 @@ function MainPageAll({}: PropsMainPageAll) {
 								fixedRight: true,
 								render: (data: any) => (
 									<div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px'}}>
+										{data?.isBatch == TYPE_BATCH.CAN_LO || data?.isBatch == TYPE_BATCH.KHONG_CAN ? (
+											<IconCustom
+												edit
+												icon={<SaveAdd fontSize={20} fontWeight={600} />}
+												tooltip='Cập nhật tàu trung chuyển'
+												color='#777E90'
+												onClick={() => setBillUuidUpdateShip(data.uuid)}
+											/>
+										) : null}
 										<IconCustom
 											edit
 											icon={<LuPencil fontSize={20} fontWeight={600} />}
@@ -734,6 +745,10 @@ function MainPageAll({}: PropsMainPageAll) {
 						handleExportExcel(0);
 					}}
 				/>
+			</Popup>
+
+			<Popup open={!!billUuidUpdateShip} onClose={() => setBillUuidUpdateShip(null)}>
+				<FormUpdateShipBill uuid={billUuidUpdateShip} onClose={() => setBillUuidUpdateShip(null)} />
 			</Popup>
 		</div>
 	);
