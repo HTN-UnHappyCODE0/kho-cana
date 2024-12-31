@@ -236,9 +236,13 @@ function MainPageDetail({}: PropsMainPageDetail) {
 								/>
 							</span>
 						</td>
-						<td rowSpan={3} className={styles.description}>
-							<span>{detailBatchBill?.state == STATE_BILL.QLK_REJECTED ? 'Lý do' : 'Mô tả'} :</span>
-							<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.description || '---'}</span>
+						<td>
+							<div style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
+								<span>Tàu trung chuyển: </span>
+								<span style={{marginLeft: '6px', fontWeight: 600}}>
+									{detailBatchBill?.shipTempUu?.licensePalate || '---'}
+								</span>
+							</div>
 						</td>
 					</tr>
 					<tr>
@@ -247,6 +251,10 @@ function MainPageDetail({}: PropsMainPageDetail) {
 								<span>Trạm cân: </span>
 								<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.scalesStationUu?.name || '---'}</span>
 							</div>
+						</td>
+						<td rowSpan={2} className={styles.description}>
+							<span>{detailBatchBill?.state == STATE_BILL.QLK_REJECTED ? 'Lý do' : 'Mô tả'} :</span>
+							<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.description || '---'}</span>
 						</td>
 					</tr>
 

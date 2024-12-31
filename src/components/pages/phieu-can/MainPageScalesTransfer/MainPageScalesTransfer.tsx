@@ -773,13 +773,15 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 										) : null}
 
 										{/* Cập nhật tàu trung chuyển */}
-										<IconCustom
-											edit
-											icon={<SaveAdd fontSize={20} fontWeight={600} />}
-											tooltip='Cập nhật tàu trung chuyển'
-											color='#777E90'
-											onClick={() => setBillUuidUpdateShip(data.uuid)}
-										/>
+										{data?.isBatch == TYPE_BATCH.CAN_LO || data?.isBatch == TYPE_BATCH.KHONG_CAN ? (
+											<IconCustom
+												edit
+												icon={<SaveAdd fontSize={20} fontWeight={600} />}
+												tooltip='Cập nhật tàu trung chuyển'
+												color='#777E90'
+												onClick={() => setBillUuidUpdateShip(data.uuid)}
+											/>
+										) : null}
 
 										{/* Chỉnh sửa phiếu */}
 										<IconCustom
