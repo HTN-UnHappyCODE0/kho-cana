@@ -116,7 +116,7 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 	});
 
 	const listSampleSession = useQuery(
-		[QUERY_KEY.table_ds_can_mau, _page, _customerUuid, _pageSize, _shipUuid, _keyword, _dateTo, _dateFrom, _specUuid, _status],
+		[QUERY_KEY.table_ds_can_mau_quy_cach, _page, _customerUuid, _pageSize, _shipUuid, _keyword, _dateTo, _dateFrom, _specUuid, _status],
 		{
 			queryFn: () =>
 				httpRequest({
@@ -167,7 +167,7 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 		onSuccess(data) {
 			if (data) {
 				setUuidConfirm([]);
-				queryClient.invalidateQueries([QUERY_KEY.table_ds_can_mau]);
+				queryClient.invalidateQueries([QUERY_KEY.table_ds_can_mau_quy_cach]);
 			}
 		},
 		onError(error) {
@@ -314,6 +314,12 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 										<p>{data?.code?.[3] === 'O' ? 'Cân lô' : data?.code?.[3] === 'E' ? 'Cân lẻ' : ''}</p>
 										<p style={{fontWeight: 600}}>{data?.billUu?.code || '---'}</p>
 									</>
+								),
+							},
+							{
+								title: 'Từ ngày',
+								render: (data: ISampleSession) => (
+									<>{data?.toDate ? <Moment date={data?.fromDate} format='DD/MM/YYYY' /> : '---'}</>
 								),
 							},
 							{

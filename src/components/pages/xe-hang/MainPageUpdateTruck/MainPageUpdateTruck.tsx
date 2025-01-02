@@ -311,11 +311,7 @@ function MainPageUpdateTruck({}: PropsMainPageUpdateTruck) {
 								isMoney
 								unit='Tấn'
 								blur={true}
-								label={
-									<span>
-										Khối lượng nhỏ nhất <span style={{color: 'red'}}>*</span>
-									</span>
-								}
+								label={<span>Khối lượng nhỏ nhất</span>}
 								placeholder='Nhập khối lượng nhỏ nhất'
 							/>
 						</div>
@@ -327,11 +323,7 @@ function MainPageUpdateTruck({}: PropsMainPageUpdateTruck) {
 							isMoney
 							unit='Tấn'
 							blur={true}
-							label={
-								<span>
-									Khối lượng lớn nhất <span style={{color: 'red'}}>*</span>
-								</span>
-							}
+							label={<span>Khối lượng lớn nhất</span>}
 							placeholder='Nhập khối lượng lớn nhất'
 						/>
 					</div>
