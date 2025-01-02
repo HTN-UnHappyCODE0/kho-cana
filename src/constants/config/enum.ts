@@ -93,6 +93,7 @@ export enum QUERY_KEY {
 	table_cap_nhat_phieu_da_cap_nhat,
 	table_du_lieu_mau,
 	table_ds_can_mau,
+	table_ds_can_mau_quy_cach,
 
 	chi_tiet_lenh_can,
 	chi_tiet_phieu_can,

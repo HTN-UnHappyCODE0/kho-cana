@@ -295,6 +295,12 @@ function MainPageSampleDryness({}: PropsMainPageSampleDryness) {
 								),
 							},
 							{
+								title: 'Từ ngày',
+								render: (data: ISampleSession) => (
+									<>{data?.toDate ? <Moment date={data?.fromDate} format='DD/MM/YYYY' /> : '---'}</>
+								),
+							},
+							{
 								title: 'Đến ngày',
 								render: (data: ISampleSession) => (
 									<>{data?.toDate ? <Moment date={data?.toDate} format='DD/MM/YYYY' /> : '---'}</>

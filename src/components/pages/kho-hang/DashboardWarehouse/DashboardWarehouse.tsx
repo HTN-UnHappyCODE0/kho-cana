@@ -80,6 +80,8 @@ function DashboardWarehouse({
 		}
 	}, [uuidCompanyDefault, infoUser?.companyUuid]);
 
+	// ${nameCompany}
+
 	return (
 		<div className={clsx(styles.container, {[styles.isTotal]: isTotal})}>
 			<div className={styles.top}>
@@ -89,7 +91,7 @@ function DashboardWarehouse({
 							<ChartSquare size='28' color='#fff' variant='Bold' />
 						</div>
 					)}
-					<h4 className={styles.title}>{isTotal ? `Tổng kho ${nameCompany} ` : dataWarehouse?.name}</h4>
+					<h4 className={styles.title}>{isTotal ? `Tổng kho ` : dataWarehouse?.name}</h4>
 				</div>
 
 				{isTotal && infoUser?.companyUuid == null && (
