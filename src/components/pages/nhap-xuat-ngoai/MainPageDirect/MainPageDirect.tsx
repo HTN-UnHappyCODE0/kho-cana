@@ -47,6 +47,7 @@ import StateActive from '~/components/common/StateActive';
 import Popup from '~/components/common/Popup';
 import FormAccessSpecExcel from '../../phieu-can/MainDetailScales/components/FormAccessSpecExcel';
 import FormUpdateShipBill from '../../lenh-can/FormUpdateShipBill';
+import Loading from '~/components/common/Loading';
 
 function MainPageDirect({}: PropsMainPageDirect) {
 	const router = useRouter();
@@ -284,6 +285,7 @@ function MainPageDirect({}: PropsMainPageDirect) {
 
 	return (
 		<div className={styles.container}>
+			<Loading loading={exportExcel.isLoading} />
 			<div className={styles.header}>
 				<div className={styles.main_search}>
 					<div className={styles.search}>

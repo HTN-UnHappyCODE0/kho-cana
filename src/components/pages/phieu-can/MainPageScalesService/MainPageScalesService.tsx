@@ -371,7 +371,7 @@ function MainPageScalesService({}: PropsMainPageScalesService) {
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={funcStartBatchBill.isLoading || funcStopBatchBill.isLoading} />
+			<Loading loading={funcStartBatchBill.isLoading || funcStopBatchBill.isLoading || exportExcel.isLoading} />
 			<div className={styles.header}>
 				<div className={styles.main_search}>
 					<div className={styles.search}>
