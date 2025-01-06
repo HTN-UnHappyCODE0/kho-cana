@@ -83,6 +83,16 @@ const batchBillServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	reStartBatchbill: (
+		data: {
+			uuid: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/BatchBill/restart-bill`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 	detailBatchbill: (
 		data: {
 			uuid: string;

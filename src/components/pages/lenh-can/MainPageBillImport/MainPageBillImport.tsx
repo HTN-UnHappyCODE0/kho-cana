@@ -32,7 +32,7 @@ import {useRouter} from 'next/router';
 import Moment from 'react-moment';
 import IconCustom from '~/components/common/IconCustom';
 import {LuPencil} from 'react-icons/lu';
-import {Eye, Play, SaveAdd, Trash} from 'iconsax-react';
+import {Eye, Play, RefreshSquare, SaveAdd, Trash} from 'iconsax-react';
 import {IDataBill} from '../MainPageBillAll/interfaces';
 import Link from 'next/link';
 import Popup from '~/components/common/Popup';
@@ -70,6 +70,7 @@ function MainPageBillImport({}: PropsMainPageBillImport) {
 
 	const [billUuid, setBilldUuid] = useState<string | null>(null);
 	const [billUuidUpdateShip, setBillUuidUpdateShip] = useState<string | null>(null);
+	const [billUuidReStart, setBillUuidReStart] = useState<string | null>(null);
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
@@ -229,6 +230,7 @@ function MainPageBillImport({}: PropsMainPageBillImport) {
 			},
 		}
 	);
+
 	const funcStartBatchBill = useMutation({
 		mutationFn: () =>
 			httpRequest({
@@ -242,6 +244,27 @@ function MainPageBillImport({}: PropsMainPageBillImport) {
 		onSuccess(data) {
 			if (data) {
 				setUuidPlay('');
+				queryClient.invalidateQueries([QUERY_KEY.table_lenh_can_nhap]);
+			}
+		},
+		onError(error) {
+			console.log({error});
+		},
+	});
+
+	const funcReStartBatchBill = useMutation({
+		mutationFn: () =>
+			httpRequest({
+				showMessageFailed: true,
+				showMessageSuccess: true,
+				msgSuccess: 'Tiếp tục lệnh cân thành công!',
+				http: batchBillServices.reStartBatchbill({
+					uuid: billUuidReStart!,
+				}),
+			}),
+		onSuccess(data) {
+			if (data) {
+				setBillUuidReStart('');
 				queryClient.invalidateQueries([QUERY_KEY.table_lenh_can_nhap]);
 			}
 		},
@@ -517,6 +540,15 @@ function MainPageBillImport({}: PropsMainPageBillImport) {
 												onClick={() => setBilldUuid(data.uuid)}
 											/>
 										)}
+										{data?.status == STATUS_BILL.DA_CAN_CHUA_KCS && (
+											<IconCustom
+												edit
+												icon={<RefreshSquare fontSize={20} fontWeight={600} />}
+												tooltip='Tiếp tục cân'
+												color='#777E90'
+												onClick={() => setBillUuidReStart(data.uuid)}
+											/>
+										)}
 										<IconCustom
 											edit
 											icon={<SaveAdd fontSize={20} fontWeight={600} />}
@@ -561,6 +593,13 @@ function MainPageBillImport({}: PropsMainPageBillImport) {
 				note='Bạn có muốn thực hiện thao tác cân cho phiếu cân này không?'
 				onClose={() => setUuidPlay('')}
 				onSubmit={funcStartBatchBill.mutate}
+			/>
+			<Dialog
+				open={!!billUuidReStart}
+				title='Tiếp tục cân'
+				note='Bạn có muốn thực hiện tiếp tục cân cho phiếu cân này không?'
+				onClose={() => setBillUuidReStart('')}
+				onSubmit={funcReStartBatchBill.mutate}
 			/>
 			{/* POPUP */}
 			<Popup open={!!billUuid} onClose={() => setBilldUuid(null)}>
