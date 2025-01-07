@@ -291,7 +291,8 @@ function MainDetailWeighingStation({}: PropsMainDetailWeighingStation) {
 			/>
 
 			<Dialog
-				danger
+				danger={scalesStation?.status == CONFIG_STATUS.HOAT_DONG}
+				green={scalesStation?.status == CONFIG_STATUS.BI_KHOA}
 				open={openChangeStatus}
 				onClose={() => setOpenChangeStatus(false)}
 				title={scalesStation?.status == CONFIG_STATUS.HOAT_DONG ? 'Khóa trạm cân' : 'Mở khóa trạm cân'}
