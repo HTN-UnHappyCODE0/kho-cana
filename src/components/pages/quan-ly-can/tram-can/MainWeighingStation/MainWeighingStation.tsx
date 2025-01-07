@@ -260,7 +260,8 @@ function MainWeighingStation({}: PropsMainWeighingStation) {
 				/>
 			</div>
 			<Dialog
-				danger
+				danger={dataStatus?.status == CONFIG_STATUS.HOAT_DONG}
+				green={dataStatus?.status != CONFIG_STATUS.HOAT_DONG}
 				open={!!dataStatus}
 				onClose={() => setDataStatus(null)}
 				title={dataStatus?.status == CONFIG_STATUS.HOAT_DONG ? 'Khóa trạm cân' : 'Mở khóa trạm cân'}

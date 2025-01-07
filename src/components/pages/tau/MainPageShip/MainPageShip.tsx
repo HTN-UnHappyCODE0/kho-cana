@@ -192,7 +192,7 @@ function MainPageShip({}: PropsMainPageShip) {
 								title: 'Tác vụ',
 								fixedRight: true,
 								render: (data: IShip) => (
-									<div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px'}}>
+									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
 										<IconCustom
 											edit
 											icon={<LuPencil fontSize={20} fontWeight={600} />}
@@ -222,7 +222,8 @@ function MainPageShip({}: PropsMainPageShip) {
 				/>
 			</div>
 			<Dialog
-				danger
+				danger={dataStatus?.status == CONFIG_STATUS.HOAT_DONG}
+				green={dataStatus?.status != CONFIG_STATUS.HOAT_DONG}
 				open={!!dataStatus}
 				onClose={() => setDataStatus(null)}
 				title={dataStatus?.status == CONFIG_STATUS.BI_KHOA ? 'Mở khóa tàu' : 'Khóa tàu'}
