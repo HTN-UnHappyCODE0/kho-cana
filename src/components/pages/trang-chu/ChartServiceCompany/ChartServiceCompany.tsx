@@ -25,6 +25,7 @@ import moment from 'moment';
 import {convertWeight, timeSubmit} from '~/common/funcs/optionConvert';
 import customerServices from '~/services/customerServices';
 import storageServices from '~/services/storageServices';
+import companyServices from '~/services/companyServices';
 
 function ChartServiceCompany({}: PropsChartServiceCompany) {
 	const [isShowBDMT, setIsShowBDMT] = useState<string>(String(TYPE_SHOW_BDMT.MT));
@@ -48,6 +49,26 @@ function ChartServiceCompany({}: PropsChartServiceCompany) {
 	}>({
 		totalWeight: 0,
 		lstProductTotal: [],
+	});
+	const [uuidCompany, setUuidCompanyFilter] = useState<string>('');
+
+	const listCompany = useQuery([QUERY_KEY.dropdown_cong_ty], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: companyServices.listCompany({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
 	});
 
 	const listStorage = useQuery([QUERY_KEY.dropdown_bai], {
@@ -97,7 +118,7 @@ function ChartServiceCompany({}: PropsChartServiceCompany) {
 		},
 	});
 
-	useQuery([QUERY_KEY.thong_ke_tong_hang_dich_vu, customerUuid, storageUuid, isShowBDMT, date], {
+	useQuery([QUERY_KEY.thong_ke_tong_hang_dich_vu, customerUuid, storageUuid, isShowBDMT, date, uuidCompany], {
 		queryFn: () =>
 			httpRequest({
 				isData: true,
@@ -107,7 +128,7 @@ function ChartServiceCompany({}: PropsChartServiceCompany) {
 					isShowBDMT: Number(isShowBDMT),
 					storageUuid: storageUuid,
 					warehouseUuid: '',
-					companyUuid: '',
+					companyUuid: uuidCompany,
 					typeFindDay: 0,
 					timeStart: timeSubmit(date?.from)!,
 					timeEnd: timeSubmit(date?.to, true)!,
@@ -210,6 +231,15 @@ function ChartServiceCompany({}: PropsChartServiceCompany) {
 						placeholder='Tất cả bãi'
 					/>
 					<SelectFilterDate isOptionDateAll={false} date={date} setDate={setDate} typeDate={typeDate} setTypeDate={setTypeDate} />
+					<SelectFilterOption
+						uuid={uuidCompany}
+						setUuid={setUuidCompanyFilter}
+						listData={listCompany?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						placeholder='Tất cả kv cảng xuất khẩu'
+					/>
 				</div>
 			</div>
 			<div className={styles.head_data}>
