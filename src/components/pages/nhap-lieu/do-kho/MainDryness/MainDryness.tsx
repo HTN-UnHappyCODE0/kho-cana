@@ -51,6 +51,8 @@ import scalesStationServices from '~/services/scalesStationServices';
 import PositionContainer from '~/components/common/PositionContainer';
 import FormUpdateWeighDryness from '../FormUpdateWeighDryness';
 import FormUpdateWeigh from '../../quy-cach/FormUpdateWeigh';
+import SelectFilterOption from '~/components/pages/trang-chu/SelectFilterOption';
+import SelectFilterState from '~/components/common/SelectFilterState';
 
 function MainDryness({}: PropsMainDryness) {
 	const router = useRouter();
@@ -79,6 +81,7 @@ function MainDryness({}: PropsMainDryness) {
 	const [dataWeightSessionSubmit, setDataWeightSessionSubmit] = useState<any[]>([]);
 	const [dataWeightSessionSpec, setDataWeightSessionSpec] = useState<any[]>([]);
 	const [dataWeight, setDataWeight] = useState<any[]>([]);
+	const [status, setStatus] = useState<string>(String(STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE));
 
 	const [weightSessions, setWeightSessions] = useState<any[]>([]);
 
@@ -194,19 +197,19 @@ function MainDryness({}: PropsMainDryness) {
 		},
 	});
 
-	useEffect(() => {
-		router.replace(
-			{
-				pathname: router.pathname,
-				query: {
-					...router.query,
-					_status: STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
-				},
-			},
-			undefined,
-			{shallow: true, scroll: false}
-		);
-	}, []);
+	// useEffect(() => {
+	// 	router.replace(
+	// 		{
+	// 			pathname: router.pathname,
+	// 			query: {
+	// 				...router.query,
+	// 				_status: STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
+	// 			},
+	// 		},
+	// 		undefined,
+	// 		{shallow: true, scroll: false}
+	// 	);
+	// }, []);
 
 	const queryWeightsession = useQuery(
 		[
@@ -221,7 +224,7 @@ function MainDryness({}: PropsMainDryness) {
 			_dateFrom,
 			_dateTo,
 			_isShift,
-			_status,
+			status,
 			_storageUuid,
 			_scalesStationUuid,
 		],
@@ -242,10 +245,10 @@ function MainDryness({}: PropsMainDryness) {
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
 						scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_TRUC_TIEP],
 						specUuid: !!_specUuid ? (_specUuid as string) : null,
-						status: !!_status
-							? [Number(_status)]
+						status: !!status
+							? [Number(status)]
 							: [
-									STATUS_WEIGHT_SESSION.CAN_LAN_2,
+									// STATUS_WEIGHT_SESSION.CAN_LAN_2,
 									STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
 									STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
 							  ],
@@ -532,8 +535,24 @@ function MainDryness({}: PropsMainDryness) {
 							]}
 						/>
 					</div>
-					<div className={styles.filter}>
-						<FilterCustom
+
+					<SelectFilterState
+						isShowAll={true}
+						uuid={status}
+						setUuid={setStatus}
+						listData={[
+							{
+								uuid: String(STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE),
+								name: 'Chưa có',
+							},
+							{
+								uuid: String(STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE),
+								name: 'Đã có',
+							},
+						]}
+						placeholder='Độ khô'
+					/>
+					{/* <FilterCustom
 							isSearch
 							name='Độ khô'
 							query='_status'
@@ -547,8 +566,8 @@ function MainDryness({}: PropsMainDryness) {
 									name: 'Đã có',
 								},
 							]}
-						/>
-					</div>
+						/> */}
+
 					<FilterCustom
 						isSearch
 						name='Khách hàng'
@@ -746,7 +765,7 @@ function MainDryness({}: PropsMainDryness) {
 						_dateFrom,
 						_dateTo,
 						_isShift,
-						_status,
+						status,
 						_storageUuid,
 						_scalesStationUuid,
 					]}
