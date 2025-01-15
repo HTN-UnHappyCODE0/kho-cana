@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 
 import {IDetailCustomer, IlistCustomerSpec, PropsPageDetailPartner} from './interfaces';
 import styles from './PageDetailPartner.module.scss';
@@ -6,25 +6,27 @@ import {IoArrowBackOutline} from 'react-icons/io5';
 import clsx from 'clsx';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
-import {useQuery, useQueryClient} from '@tanstack/react-query';
+import {useQuery} from '@tanstack/react-query';
 import {
 	CONFIG_DESCENDING,
 	CONFIG_PAGING,
-	CONFIG_STATUS,
 	CONFIG_TYPE_FIND,
 	QUERY_KEY,
+	STATE_BILL,
+	STATUS_BILL,
+	TYPE_ACTION_AUDIT,
+	TYPE_BATCH,
+	TYPE_SCALES,
 	TYPE_SIFT,
 	TYPE_TRANSPORT,
 } from '~/constants/config/enum';
 import {httpRequest} from '~/services';
 import customerServices from '~/services/customerServices';
 import TagStatus from '~/components/common/TagStatus';
-import {getTextAddress} from '~/common/funcs/optionConvert';
+import {convertWeight, getTextAddress} from '~/common/funcs/optionConvert';
 import DataWrapper from '~/components/common/DataWrapper';
 import Table from '~/components/common/Table';
-import priceTagServices from '~/services/priceTagServices';
 import TagStatusSpecCustomer from '../TagStatusSpecCustomer';
-import Pagination from '~/components/common/Pagination';
 import Popup from '~/components/common/Popup';
 import Noti from '~/components/common/DataWrapper/components/Noti';
 import PopupAddPrice from '../PopupAddPrice/PopupAddPrice';
@@ -34,15 +36,23 @@ import icons from '~/constants/images/icons';
 import IconCustom from '~/components/common/IconCustom';
 import {LuPencil} from 'react-icons/lu';
 import PopupUpdatePrice from '../PopupUpdatePrice';
-import {convertCoin} from '~/common/funcs/convertCoin';
+import TabNavLink from '~/components/common/TabNavLink';
+import batchBillServices from '~/services/batchBillServices';
+import {ITableBillScale} from '../../cang-boc-do/PageUpdatePort/interfaces';
+import Moment from 'react-moment';
+import TemplateSampleSpec from '~/components/pdf-template/TemplateSampleSpec';
+import {useReactToPrint} from 'react-to-print';
+import {toastWarn} from '~/common/funcs/toast';
 
 function PageDetailPartner({}: PropsPageDetailPartner) {
 	const router = useRouter();
+	const contentToPrint = useRef<HTMLDivElement>(null);
 
-	const {_id, _page, _pageSize} = router.query;
+	const {_id, _type} = router.query;
 
 	const [openCreate, setOpenCreate] = useState<boolean>(false);
 	const [uuidUpdate, setUuidUpdate] = useState<string>('');
+	const [listBatchBill, setListBatchBill] = useState<any[]>([]);
 
 	const {data: detailCustomer} = useQuery<IDetailCustomer>([QUERY_KEY.chi_tiet_nha_cung_cap, _id], {
 		queryFn: () =>
@@ -57,30 +67,61 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 		enabled: !!_id,
 	});
 
-	const listPriceTagCustomer = useQuery([QUERY_KEY.table_hang_hoa_cua_nha_cung_cap, _id, _page, _pageSize], {
+	const {isLoading} = useQuery([QUERY_KEY.table_lich_su_nhap_hang_ncc, _id], {
 		queryFn: () =>
 			httpRequest({
 				isList: true,
-				http: priceTagServices.listPriceTag({
-					page: Number(_page) || 1,
-					pageSize: Number(_pageSize) || 200,
+				http: batchBillServices.getListBill({
+					page: 1,
+					pageSize: 200,
 					keyword: '',
-					isPaging: CONFIG_PAGING.IS_PAGING,
-					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.IS_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.TABLE,
-					status: CONFIG_STATUS.HOAT_DONG,
-					customerUuid: _id as string,
-					specUuid: '',
+					scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_TRUC_TIEP],
+					customerUuid: (_id as string) || '',
+					isBatch: null,
+					isCreateBatch: null,
 					productTypeUuid: '',
-					priceTagUuid: '',
-					state: null,
+					specificationsUuid: '',
+					status: [STATUS_BILL.DA_CAN_CHUA_KCS, STATUS_BILL.DA_KCS, STATUS_BILL.CHOT_KE_TOAN],
+					state: [],
+					timeStart: null,
+					timeEnd: null,
+					warehouseUuid: '',
+					qualityUuid: '',
 					transportType: null,
+					typeCheckDay: 1,
+					scalesStationUuid: '',
+					storageUuid: '',
+					isHaveDryness: TYPE_ACTION_AUDIT.HAVE_DRY,
 				}),
 			}),
+		onSuccess(data) {
+			if (data) {
+				setListBatchBill(
+					data?.items?.map((v: any, index: number) => ({
+						...v,
+						index: index,
+						isChecked: false,
+					}))
+				);
+			}
+		},
 		select(data) {
-			return data;
+			if (data) {
+				return data;
+			}
 		},
 		enabled: !!_id,
+	});
+
+	const handlePrint = useReactToPrint({
+		content: () => contentToPrint.current,
+		documentTitle: 'Can_mau_test',
+		onBeforePrint: () => console.log('before printing...'),
+		onAfterPrint: () => console.log('after printing...'),
+		removeAfterPrint: true,
 	});
 
 	return (
@@ -184,90 +225,233 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 			</div>
 
 			<div className={clsx('mt')}>
-				<div className={styles.main_table}>
-					<h1 className={styles.list_title}>Danh sách loại hàng</h1>
-					<div>
-						<Button
-							p_8_16
-							icon={<Image alt='icon add' src={icons.add} width={20} height={20} />}
-							rounded_2
-							onClick={() => setOpenCreate(true)}
-						>
-							Thêm loại hàng
-						</Button>
-					</div>
-				</div>
+				<TabNavLink
+					listHref={[
+						{
+							title: 'Danh sách loại hàng',
+							pathname: router.pathname,
+							query: null,
+						},
+						{
+							title: 'Lịch sử nhập hàng',
+							pathname: router.pathname,
+							query: 'history-import',
+						},
+					]}
+					query='_type'
+				/>
 			</div>
-			<div className={clsx('mt')}>
-				<div className={styles.table}>
-					<DataWrapper
-						data={detailCustomer?.customerSpec || []}
-						// loading={detailCustomer.isloading}
-						noti={<Noti disableButton des='Hiện tại chưa có hàng hóa nào!' />}
-					>
-						<Table
-							data={detailCustomer?.customerSpec || []}
-							column={[
-								{
-									title: 'STT',
-									render: (data: IlistCustomerSpec, index: number) => <>{index + 1}</>,
-								},
-								{
-									title: 'Loại hàng',
-									fixedLeft: true,
-									render: (data: IlistCustomerSpec) => <>{data?.productTypeUu?.name}</>,
-								},
-								{
-									title: 'Quốc gia',
-									render: (data: IlistCustomerSpec) => <>{data?.qualityUu?.name}</>,
-								},
-								{
-									title: 'Quy cách',
-									render: (data: IlistCustomerSpec) => <>{data?.specUu?.name}</>,
-								},
-								{
-									title: 'Bãi',
-									render: (data: IlistCustomerSpec) => <>{data?.storageUu?.name || '---'}</>,
-								},
-								{
-									title: 'Vận chuyển',
-									render: (data: IlistCustomerSpec) => (
-										<>
-											{data?.transportType == TYPE_TRANSPORT.DUONG_BO && 'Đường bộ'}
-											{data?.transportType == TYPE_TRANSPORT.DUONG_THUY && 'Đường thủy'}
-										</>
-									),
-								},
 
-								{
-									title: 'Cung cấp',
-									render: (data: IlistCustomerSpec) => <TagStatusSpecCustomer status={data.state} />,
-								},
-								{
-									title: 'Tác vụ',
-									fixedRight: true,
-									render: (data: IlistCustomerSpec) => (
-										<div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px'}}>
-											<IconCustom
-												edit
-												icon={<LuPencil fontSize={20} fontWeight={600} />}
-												tooltip='Cập nhật bãi'
-												color='#777E90'
-												onClick={() => setUuidUpdate(data?.uuid)}
-											/>
-										</div>
-									),
-								},
-							]}
-						/>
-					</DataWrapper>
-					{/* <Pagination
-						currentPage={Number(_page) || 1}
-						pageSize={Number(_pageSize) || 200}
-						total={listPriceTagCustomer?.data?.pagination?.totalCount}
-						dependencies={[_id, _pageSize]}
-					/> */}
+			<div className={clsx('mt')}>
+				{!_type && (
+					<>
+						<div className={styles.main_table}>
+							<h1 className={styles.list_title}>Danh sách loại hàng</h1>
+							<div>
+								<Button
+									p_8_16
+									icon={<Image alt='icon add' src={icons.add} width={20} height={20} />}
+									rounded_2
+									onClick={() => setOpenCreate(true)}
+								>
+									Thêm loại hàng
+								</Button>
+							</div>
+						</div>
+						<div className={clsx('mt')}>
+							<div className={styles.table}>
+								<DataWrapper
+									data={detailCustomer?.customerSpec || []}
+									noti={<Noti disableButton des='Hiện tại chưa có hàng hóa nào!' />}
+								>
+									<Table
+										data={detailCustomer?.customerSpec || []}
+										column={[
+											{
+												title: 'STT',
+												render: (data: IlistCustomerSpec, index: number) => <>{index + 1}</>,
+											},
+											{
+												title: 'Loại hàng',
+												fixedLeft: true,
+												render: (data: IlistCustomerSpec) => <>{data?.productTypeUu?.name}</>,
+											},
+											{
+												title: 'Quốc gia',
+												render: (data: IlistCustomerSpec) => <>{data?.qualityUu?.name}</>,
+											},
+											{
+												title: 'Quy cách',
+												render: (data: IlistCustomerSpec) => <>{data?.specUu?.name}</>,
+											},
+											{
+												title: 'Bãi',
+												render: (data: IlistCustomerSpec) => <>{data?.storageUu?.name || '---'}</>,
+											},
+											{
+												title: 'Vận chuyển',
+												render: (data: IlistCustomerSpec) => (
+													<>
+														{data?.transportType == TYPE_TRANSPORT.DUONG_BO && 'Đường bộ'}
+														{data?.transportType == TYPE_TRANSPORT.DUONG_THUY && 'Đường thủy'}
+													</>
+												),
+											},
+
+											{
+												title: 'Cung cấp',
+												render: (data: IlistCustomerSpec) => <TagStatusSpecCustomer status={data.state} />,
+											},
+											{
+												title: 'Tác vụ',
+												fixedRight: true,
+												render: (data: IlistCustomerSpec) => (
+													<div
+														style={{
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'flex-end',
+															gap: '4px',
+														}}
+													>
+														<IconCustom
+															edit
+															icon={<LuPencil fontSize={20} fontWeight={600} />}
+															tooltip='Cập nhật bãi'
+															color='#777E90'
+															onClick={() => setUuidUpdate(data?.uuid)}
+														/>
+													</div>
+												),
+											},
+										]}
+									/>
+								</DataWrapper>
+							</div>
+						</div>
+					</>
+				)}
+
+				{/* Template */}
+				<div style={{display: 'none'}}>
+					<TemplateSampleSpec
+						ref={contentToPrint}
+						customerName={detailCustomer?.name!}
+						listBill={listBatchBill
+							?.filter((v: any) => v?.isChecked == true)
+							?.map((x) => ({
+								uuid: x?.uuid,
+								code: x?.code,
+								productName: x?.productTypeUu?.name,
+								date: x?.timeEnd,
+								licensePalate:
+									x?.isBatch == TYPE_BATCH.CAN_LO
+										? x?.batchsUu?.shipUu?.licensePalate
+										: x?.isBatch == TYPE_BATCH.CAN_LE
+										? x?.weightSessionUu?.truckUu?.licensePalate
+										: x?.isBatch == TYPE_BATCH.KHONG_CAN
+										? '---'
+										: '---',
+								weightTotal: x?.weightTotal,
+								drynessAvg: x?.drynessAvg,
+								weightBdmt: x?.weightBdmt,
+							}))}
+					/>
 				</div>
+
+				{_type == 'history-import' && (
+					<>
+						<div className={styles.main_table}>
+							<h1 className={styles.list_title}>Lịch sử nhập hàng</h1>
+							{listBatchBill?.some((x) => x.isChecked !== false) && (
+								<div>
+									<Button
+										p_8_16
+										rounded_2
+										onClick={() => {
+											const arr = listBatchBill?.filter((v: any) => v?.isChecked == true);
+
+											if (!arr?.every((v) => v?.productTypeUu?.uuid === arr[0]?.productTypeUu?.uuid)) {
+												return toastWarn({msg: 'Chỉ chọn được các lô có cùng loại hàng!'});
+											} else {
+												handlePrint();
+											}
+										}}
+									>
+										Xuất chứng từ
+									</Button>
+								</div>
+							)}
+						</div>
+						<div className={clsx('mt')}>
+							<div className={styles.table}>
+								<DataWrapper
+									data={listBatchBill || []}
+									loading={isLoading}
+									noti={<Noti disableButton des='Hiện tại chưa có phiếu cân nào!' />}
+								>
+									<Table
+										data={listBatchBill || []}
+										onSetData={setListBatchBill}
+										column={[
+											{
+												title: 'STT',
+												checkBox: true,
+												render: (data: ITableBillScale, index: number) => <>{index + 1}</>,
+											},
+											{
+												title: 'Ngày nhập',
+												render: (data: ITableBillScale) => (
+													<p style={{fontWeight: 500, color: '#3772FF'}}>
+														<Moment date={data?.timeEnd} format='DD/MM/YYYY' />
+													</p>
+												),
+											},
+											{
+												title: 'Mã lô/Số phiếu',
+												render: (data: ITableBillScale) => (
+													<p style={{fontWeight: 500, color: '#3772FF'}}>{data?.code || '---'}</p>
+												),
+											},
+											{
+												title: 'Loại hàng',
+												render: (data: ITableBillScale) => <>{data?.productTypeUu?.name || '---'}</>,
+											},
+											{
+												title: 'Biển số xe',
+												render: (data: ITableBillScale) => (
+													<>
+														<p style={{fontWeight: 600, color: '#3772FF'}}>
+															{data?.isBatch == TYPE_BATCH.CAN_LO
+																? data?.batchsUu?.shipUu?.licensePalate
+																: data?.isBatch == TYPE_BATCH.CAN_LE
+																? data?.weightSessionUu?.truckUu?.licensePalate
+																: data?.isBatch == TYPE_BATCH.KHONG_CAN
+																? '---'
+																: '---'}
+														</p>
+													</>
+												),
+											},
+											{
+												title: 'KL tươi (Tấn)',
+												render: (data: ITableBillScale) => <>{convertWeight(data?.weightTotal) || 0}</>,
+											},
+											{
+												title: 'Độ khô (%)',
+												render: (data: ITableBillScale) => <>{data?.drynessAvg?.toFixed(2) || 0}</>,
+											},
+											{
+												title: 'KL khô (Tấn)',
+												render: (data: ITableBillScale) => <>{convertWeight(data?.weightBdmt) || 0}</>,
+											},
+										]}
+									/>
+								</DataWrapper>
+							</div>
+						</div>
+					</>
+				)}
 			</div>
 
 			<Popup open={openCreate} onClose={() => setOpenCreate(false)}>

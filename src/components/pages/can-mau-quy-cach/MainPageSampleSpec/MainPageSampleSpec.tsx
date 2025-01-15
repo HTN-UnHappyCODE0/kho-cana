@@ -34,15 +34,12 @@ import IconCustom from '~/components/common/IconCustom';
 import PositionContainer from '~/components/common/PositionContainer';
 import FormDetailSampleSpec from '../FormDetailSampleSpec';
 import Button from '~/components/common/Button';
-import {useReactToPrint} from 'react-to-print';
-import TemplateSampleSpec from '~/components/pdf-template/TemplateSampleSpec';
 import Dialog from '~/components/common/Dialog';
 import {toastWarn} from '~/common/funcs/toast';
 
 function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
-	const contentToPrint = useRef<HTMLDivElement>(null);
 
 	const {_page, _pageSize, _keyword, _status, _specUuid, _shipUuid, _dateFrom, _dateTo, _customerUuid} = router.query;
 	const [uuidDetail, setUuidDetail] = useState<string>('');
@@ -175,14 +172,6 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 		},
 	});
 
-	const handlePrint = useReactToPrint({
-		content: () => contentToPrint.current,
-		documentTitle: 'Can_mau_test',
-		onBeforePrint: () => console.log('before printing...'),
-		onAfterPrint: () => console.log('after printing...'),
-		removeAfterPrint: true,
-	});
-
 	const handleUpdateAll = () => {
 		const arr = getListSampleSession?.filter((v) => v.isChecked !== false);
 
@@ -269,17 +258,6 @@ function MainPageSampleSpec({}: PropsMainPageSampleSpec) {
 						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.LAST_7_DAYS} />
 					</div>
 				</div>
-
-				{/* <div className={styles.btn}>
-					<Button rounded_2 w_fit p_8_16 green bold onClick={handlePrint}>
-						In + xuất pdf
-					</Button>
-				</div> */}
-			</div>
-
-			{/* Template */}
-			<div style={{display: 'none'}}>
-				<TemplateSampleSpec ref={contentToPrint} />
 			</div>
 
 			<div className={styles.table}>

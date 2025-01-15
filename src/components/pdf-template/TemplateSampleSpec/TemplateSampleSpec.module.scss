@@ -3,7 +3,7 @@
 	margin: 8mm;
 
 	@bottom-center {
-		content: 'Page ' counter(page) ' of ' counter(pages);
+		content: 'Trang ' counter(page) ' of ' counter(pages);
 	}
 }
 

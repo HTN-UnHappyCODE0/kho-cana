@@ -7,8 +7,10 @@ import ImageFill from '~/components/common/ImageFill';
 import Image from 'next/image';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/redux/store';
+import Moment from 'react-moment';
+import {convertCoin} from '~/common/funcs/convertCoin';
 
-const TemplateSampleSpec = forwardRef<HTMLDivElement, PropsTemplateSampleSpec>(({}, ref) => {
+const TemplateSampleSpec = forwardRef<HTMLDivElement, PropsTemplateSampleSpec>(({customerName, listBill}, ref) => {
 	const {infoUser} = useSelector((state: RootState) => state.user);
 
 	return (
@@ -32,28 +34,28 @@ const TemplateSampleSpec = forwardRef<HTMLDivElement, PropsTemplateSampleSpec>((
 				<h3>Chứng nhận giám định về độ khô</h3>
 				<div className={styles.item}>
 					<p>Tên khách hàng:</p>
-					<p>Bình An</p>
+					<p>{customerName}</p>
 				</div>
 				<div className={styles.item}>
 					<p>Tên hàng:</p>
-					<p>Dăm gỗ</p>
+					<p>{listBill?.[0]?.productName}</p>
 				</div>
 				<div className={styles.item}>
 					<p>Khối lượng tươi:</p>
 					<p>
-						121.34 <span>(tấn)</span>
+						{convertCoin(listBill?.reduce((acc, item) => acc + item?.weightTotal, 0))} <span>(tấn)</span>
 					</p>
 				</div>
 				<div className={styles.item}>
 					<p>Khối lượng khô:</p>
 					<p>
-						60.86 <span>(tấn)</span>
+						{convertCoin(listBill?.reduce((acc, item) => acc + item?.weightBdmt, 0))} <span>(tấn)</span>
 					</p>
 				</div>
 				<div className={styles.item}>
 					<p>Số lượng mẫu:</p>
 					<p>
-						3 <span>(mẫu)</span>
+						{listBill?.length} <span>(mẫu)</span>
 					</p>
 				</div>
 
@@ -70,40 +72,26 @@ const TemplateSampleSpec = forwardRef<HTMLDivElement, PropsTemplateSampleSpec>((
 								<th>STT</th>
 								<th>Ngày nhập</th>
 								<th>Số phiếu</th>
-								<th>Biển số xe</th>
+								<th>Số xe/Tàu</th>
 								<th>Khối lượng tươi (tấn)</th>
 								<th>Độ khô (%)</th>
 								<th>Khối lượng khô (tấn)</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>1</td>
-								<td>1/12/2024</td>
-								<td>25</td>
-								<td>98C 35431</td>
-								<td>42.27</td>
-								<td>48.32</td>
-								<td>20.42</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>1/12/2024</td>
-								<td>42</td>
-								<td>98C 01159</td>
-								<td>36.96</td>
-								<td>51.53</td>
-								<td>19.05</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>1/12/2024</td>
-								<td>57</td>
-								<td>98C 35431</td>
-								<td>42.11</td>
-								<td>50.80</td>
-								<td>21.39</td>
-							</tr>
+							{listBill?.map((v, i) => (
+								<tr key={v?.uuid}>
+									<td>{i + 1}</td>
+									<td>
+										<Moment date={v?.date} format='DD/MM/YYYY' />
+									</td>
+									<td>{v?.code}</td>
+									<td>{v?.licensePalate}</td>
+									<td>{convertCoin(v?.weightTotal)}</td>
+									<td>{v?.drynessAvg?.toFixed(2)}</td>
+									<td>{convertCoin(v?.weightBdmt)}</td>
+								</tr>
+							))}
 						</tbody>
 					</table>
 				</div>

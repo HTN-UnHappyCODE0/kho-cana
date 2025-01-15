@@ -17,7 +17,6 @@ import {
 	TYPE_DATE,
 	TYPE_PRODUCT,
 	TYPE_SCALES,
-	TYPE_SIFT,
 } from '~/constants/config/enum';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {httpRequest} from '~/services';
@@ -29,7 +28,6 @@ import DataWrapper from '~/components/common/DataWrapper';
 import Noti from '~/components/common/DataWrapper/components/Noti';
 import Table from '~/components/common/Table';
 import Link from 'next/link';
-import {convertCoin} from '~/common/funcs/convertCoin';
 import Pagination from '~/components/common/Pagination';
 import batchBillServices from '~/services/batchBillServices';
 import IconCustom from '~/components/common/IconCustom';
@@ -38,7 +36,7 @@ import clsx from 'clsx';
 import Button from '~/components/common/Button';
 import Loading from '~/components/common/Loading';
 import Dialog from '~/components/common/Dialog';
-import {convertWeight, formatDrynessAvg} from '~/common/funcs/optionConvert';
+import {convertWeight} from '~/common/funcs/optionConvert';
 import scalesStationServices from '~/services/scalesStationServices';
 import storageServices from '~/services/storageServices';
 import StateActive from '~/components/common/StateActive';
