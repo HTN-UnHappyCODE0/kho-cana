@@ -2,9 +2,9 @@
 	size: A4;
 	margin: 8mm;
 
-	@bottom-center {
-		content: 'Trang ' counter(page) ' of ' counter(pages);
-	}
+	// @bottom-center {
+	// 	content: 'Trang ' counter(page) ' of ' counter(pages);
+	// }
 }
 
 @media print {
