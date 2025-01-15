@@ -82,6 +82,7 @@ function MainDryness({}: PropsMainDryness) {
 	const [dataWeightSessionSpec, setDataWeightSessionSpec] = useState<any[]>([]);
 	const [dataWeight, setDataWeight] = useState<any[]>([]);
 	const [status, setStatus] = useState<string>(String(STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE));
+	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 
 	const [weightSessions, setWeightSessions] = useState<any[]>([]);
 
@@ -227,6 +228,7 @@ function MainDryness({}: PropsMainDryness) {
 			status,
 			_storageUuid,
 			_scalesStationUuid,
+			isHaveDryness,
 		],
 		{
 			queryFn: () =>
@@ -248,9 +250,12 @@ function MainDryness({}: PropsMainDryness) {
 						status: !!status
 							? [Number(status)]
 							: [
-									// STATUS_WEIGHT_SESSION.CAN_LAN_2,
+									STATUS_WEIGHT_SESSION.CAN_LAN_2,
 									STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
 									STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
+									STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
+									STATUS_WEIGHT_SESSION.KCS_XONG,
+									STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
 							  ],
 						truckUuid: '',
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
@@ -261,6 +266,7 @@ function MainDryness({}: PropsMainDryness) {
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
 						isHaveSpec: null,
+						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 					}),
 				}),
 			onSuccess(data) {
@@ -538,15 +544,15 @@ function MainDryness({}: PropsMainDryness) {
 
 					<SelectFilterState
 						isShowAll={true}
-						uuid={status}
-						setUuid={setStatus}
+						uuid={isHaveDryness}
+						setUuid={setIsHaveDryness}
 						listData={[
 							{
-								uuid: String(STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE),
+								uuid: String(0),
 								name: 'Chưa có',
 							},
 							{
-								uuid: String(STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE),
+								uuid: String(1),
 								name: 'Đã có',
 							},
 						]}

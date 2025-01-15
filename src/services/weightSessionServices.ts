@@ -27,6 +27,7 @@ const weightSessionServices = {
 			shipUuid?: string;
 			scalesStationUuid?: string;
 			isHaveSpec?: number | null;
+			isHaveDryness?: number | null;
 		},
 		tokenAxios?: any
 	) => {
