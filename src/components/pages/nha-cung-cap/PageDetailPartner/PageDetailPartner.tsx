@@ -10,12 +10,15 @@ import {useQuery} from '@tanstack/react-query';
 import {
 	CONFIG_DESCENDING,
 	CONFIG_PAGING,
+	CONFIG_STATUS,
 	CONFIG_TYPE_FIND,
 	QUERY_KEY,
 	STATE_BILL,
 	STATUS_BILL,
 	TYPE_ACTION_AUDIT,
 	TYPE_BATCH,
+	TYPE_DATE,
+	TYPE_PRODUCT,
 	TYPE_SCALES,
 	TYPE_SIFT,
 	TYPE_TRANSPORT,
@@ -43,12 +46,15 @@ import Moment from 'react-moment';
 import TemplateSampleSpec from '~/components/pdf-template/TemplateSampleSpec';
 import {useReactToPrint} from 'react-to-print';
 import {toastWarn} from '~/common/funcs/toast';
+import DateRangerCustom from '~/components/common/DateRangerCustom';
+import wareServices from '~/services/wareServices';
+import FilterCustom from '~/components/common/FilterCustom';
 
 function PageDetailPartner({}: PropsPageDetailPartner) {
 	const router = useRouter();
 	const contentToPrint = useRef<HTMLDivElement>(null);
 
-	const {_id, _type} = router.query;
+	const {_id, _type, _productTypeUuid, _dateFrom, _dateTo} = router.query;
 
 	const [openCreate, setOpenCreate] = useState<boolean>(false);
 	const [uuidUpdate, setUuidUpdate] = useState<string>('');
@@ -67,7 +73,27 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 		enabled: !!_id,
 	});
 
-	const {isLoading} = useQuery([QUERY_KEY.table_lich_su_nhap_hang_ncc, _id], {
+	const listProductType = useQuery([QUERY_KEY.dropdown_loai_go], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: wareServices.listProductType({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					status: CONFIG_STATUS.HOAT_DONG,
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					type: [TYPE_PRODUCT.CONG_TY],
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
+	const {isLoading} = useQuery([QUERY_KEY.table_lich_su_nhap_hang_ncc, _id, _productTypeUuid, _dateFrom, _dateTo], {
 		queryFn: () =>
 			httpRequest({
 				isList: true,
@@ -82,12 +108,12 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 					customerUuid: (_id as string) || '',
 					isBatch: null,
 					isCreateBatch: null,
-					productTypeUuid: '',
+					productTypeUuid: (_productTypeUuid as string) || '',
 					specificationsUuid: '',
 					status: [STATUS_BILL.DA_CAN_CHUA_KCS, STATUS_BILL.DA_KCS, STATUS_BILL.CHOT_KE_TOAN],
 					state: [],
-					timeStart: null,
-					timeEnd: null,
+					timeStart: _dateFrom ? (_dateFrom as string) : null,
+					timeEnd: _dateTo ? (_dateTo as string) : null,
 					warehouseUuid: '',
 					qualityUuid: '',
 					transportType: null,
@@ -363,6 +389,7 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 					<>
 						<div className={styles.main_table}>
 							<h1 className={styles.list_title}>Lịch sử nhập hàng</h1>
+
 							{listBatchBill?.some((x) => x.isChecked !== false) && (
 								<div>
 									<Button
@@ -382,6 +409,20 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 									</Button>
 								</div>
 							)}
+						</div>
+
+						<div className={clsx('mt', styles.filter)}>
+							<FilterCustom
+								isSearch
+								name='Loại hàng'
+								query='_productTypeUuid'
+								listFilter={listProductType?.data?.map((v: any) => ({
+									id: v?.uuid,
+									name: v?.name,
+								}))}
+							/>
+
+							<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.LAST_7_DAYS} />
 						</div>
 						<div className={clsx('mt')}>
 							<div className={styles.table}>
