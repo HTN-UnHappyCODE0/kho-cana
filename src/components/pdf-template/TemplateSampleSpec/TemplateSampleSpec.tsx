@@ -5,14 +5,10 @@ import styles from './TemplateSampleSpec.module.scss';
 import icons from '~/constants/images/icons';
 import ImageFill from '~/components/common/ImageFill';
 import Image from 'next/image';
-import {useSelector} from 'react-redux';
-import {RootState} from '~/redux/store';
 import Moment from 'react-moment';
 import {convertCoin} from '~/common/funcs/convertCoin';
 
 const TemplateSampleSpec = forwardRef<HTMLDivElement, PropsTemplateSampleSpec>(({customerName, listBill}, ref) => {
-	const {infoUser} = useSelector((state: RootState) => state.user);
-
 	return (
 		<div ref={ref} className={styles.container}>
 			<div className={styles.header}>
@@ -103,7 +99,6 @@ const TemplateSampleSpec = forwardRef<HTMLDivElement, PropsTemplateSampleSpec>((
 					<div></div>
 					<div className={styles.sign}>
 						<h3>Phân tích viên</h3>
-						<p>{infoUser?.fullname}</p>
 					</div>
 				</div>
 			</div>
