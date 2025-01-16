@@ -82,7 +82,7 @@ function MainDryness({}: PropsMainDryness) {
 	const [dataWeightSessionSpec, setDataWeightSessionSpec] = useState<any[]>([]);
 	const [dataWeight, setDataWeight] = useState<any[]>([]);
 	const [status, setStatus] = useState<string>(String(STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE));
-	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
+	const [isHaveDryness, setIsHaveDryness] = useState<string>('0');
 
 	const [weightSessions, setWeightSessions] = useState<any[]>([]);
 
@@ -247,16 +247,14 @@ function MainDryness({}: PropsMainDryness) {
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
 						scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_TRUC_TIEP],
 						specUuid: !!_specUuid ? (_specUuid as string) : null,
-						status: !!status
-							? [Number(status)]
-							: [
-									STATUS_WEIGHT_SESSION.CAN_LAN_2,
-									STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
-									STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
-									STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
-									STATUS_WEIGHT_SESSION.KCS_XONG,
-									STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
-							  ],
+						status: [
+							STATUS_WEIGHT_SESSION.CAN_LAN_2,
+							STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
+							STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
+							STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
+							STATUS_WEIGHT_SESSION.KCS_XONG,
+							STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
+						],
 						truckUuid: '',
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
