@@ -144,7 +144,7 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 
 	const handlePrint = useReactToPrint({
 		content: () => contentToPrint.current,
-		documentTitle: 'Can_mau_test',
+		documentTitle: 'Xuat_chung_tu_do_kho',
 		onBeforePrint: () => console.log('before printing...'),
 		onAfterPrint: () => console.log('after printing...'),
 		removeAfterPrint: true,
