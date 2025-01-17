@@ -57,7 +57,7 @@ const TemplateSampleSpec = forwardRef<HTMLDivElement, PropsTemplateSampleSpec>((
 
 				<h3 style={{marginTop: '24px'}}>Kết quả phân tích</h3>
 				<p>
-					Mẫu hàng được phân tích tại phòng phân tích của <b>Công ty công phần cảng Thái Hưng</b>. <br />
+					Mẫu hàng được phân tích tại phòng phân tích của <b>Công ty cổ phần cảng Thái Hưng</b>. <br />
 					Kết quả như sau:
 				</p>
 
@@ -93,7 +93,7 @@ const TemplateSampleSpec = forwardRef<HTMLDivElement, PropsTemplateSampleSpec>((
 				</div>
 
 				<p style={{marginTop: '20px'}}>
-					Điểm giám định: <b>Tại Công ty công phần cảng Thái Hưng</b> - Phòng phân tích.
+					Điểm giám định: <b>Tại Công ty cổ phần cảng Thái Hưng</b> - Phòng phân tích.
 				</p>
 				<div className={styles.grid} style={{marginTop: '60px'}}>
 					<div></div>
