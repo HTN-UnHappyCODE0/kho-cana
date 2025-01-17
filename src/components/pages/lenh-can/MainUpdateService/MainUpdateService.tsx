@@ -268,9 +268,6 @@ function MainUpdateService({}: PropsMainUpdateService) {
 		if (form.transportType == TYPE_TRANSPORT.DUONG_THUY && !form.shipUuid) {
 			return toastWarn({msg: 'Vui lòng chọn tàu!'});
 		}
-		if (!form.customerUuid) {
-			return toastWarn({msg: 'Vui lòng chọn khách hàng!'});
-		}
 		if (!form.productTypeUuid) {
 			return toastWarn({msg: 'Vui lòng chọn loại hàng!'});
 		}
@@ -496,11 +493,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 							name='customerUuid'
 							placeholder='Chọn khách hàng'
 							value={form?.customerUuid}
-							label={
-								<span>
-									Khách hàng <span style={{color: 'red'}}>*</span>
-								</span>
-							}
+							label={<span>Khách hàng</span>}
 						>
 							{listCustomer?.data?.map((v: any) => (
 								<Option
