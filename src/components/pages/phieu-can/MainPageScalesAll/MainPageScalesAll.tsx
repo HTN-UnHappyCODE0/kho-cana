@@ -611,7 +611,9 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 								title: 'Từ(Tàu/Xe)',
 								render: (data: ITableBillScale) => (
 									<>
-										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>
+										<p style={{marginBottom: 4, fontWeight: 600}}>
+											{data?.fromUu?.name || data?.customerName || '---'}
+										</p>
 										{data?.scalesType == TYPE_SCALES.CAN_XUAT && (
 											<>
 												{data?.isBatch == TYPE_BATCH.CAN_LO && (
