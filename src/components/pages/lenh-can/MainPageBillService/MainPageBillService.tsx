@@ -400,7 +400,9 @@ function MainPageBillService({}: PropsMainPageBillService) {
 								title: 'Từ(Tàu/Xe)',
 								render: (data: IDataBill) => (
 									<>
-										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>
+										<p style={{marginBottom: 4, fontWeight: 600}}>
+											{data?.fromUu?.name || data?.customerName || '---'}
+										</p>
 										{data?.scalesType == TYPE_SCALES.CAN_XUAT && (
 											<p style={{fontWeight: 400, color: '#3772FF'}}>{'---'}</p>
 										)}
