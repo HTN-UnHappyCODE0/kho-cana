@@ -12,4 +12,6 @@ export interface IFormCreateService {
 	customerUuid: string;
 	scaleStationUuid: string;
 	portname: string;
+	warehouseUuid: string;
+	storageUuid: string;
 }
