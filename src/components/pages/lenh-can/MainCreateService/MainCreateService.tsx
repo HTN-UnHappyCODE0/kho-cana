@@ -516,6 +516,7 @@ function MainCreateService({}: PropsMainCreateService) {
 											setForm((prev: any) => ({
 												...prev,
 												productTypeUuid: v?.uuid,
+												storageUuid: '',
 											}))
 										}
 									/>
