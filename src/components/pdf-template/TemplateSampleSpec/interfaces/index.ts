@@ -1,5 +1,6 @@
 export interface PropsTemplateSampleSpec {
 	customerName: string;
+	countSample: number;
 	listBill: {
 		uuid: string;
 		date: string;

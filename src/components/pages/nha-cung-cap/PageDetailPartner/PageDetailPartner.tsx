@@ -13,7 +13,6 @@ import {
 	CONFIG_STATUS,
 	CONFIG_TYPE_FIND,
 	QUERY_KEY,
-	STATE_BILL,
 	STATUS_BILL,
 	TYPE_ACTION_AUDIT,
 	TYPE_BATCH,
@@ -363,6 +362,7 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 					<TemplateSampleSpec
 						ref={contentToPrint}
 						customerName={detailCustomer?.name!}
+						countSample={Math.max(...listBatchBill?.map((v: any) => v?.countSample))}
 						listBill={listBatchBill
 							?.filter((v: any) => v?.isChecked == true)
 							?.map((x) => ({

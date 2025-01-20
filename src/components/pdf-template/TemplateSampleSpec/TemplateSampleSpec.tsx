@@ -8,7 +8,7 @@ import Image from 'next/image';
 import Moment from 'react-moment';
 import {convertCoin} from '~/common/funcs/convertCoin';
 
-const TemplateSampleSpec = forwardRef<HTMLDivElement, PropsTemplateSampleSpec>(({customerName, listBill}, ref) => {
+const TemplateSampleSpec = forwardRef<HTMLDivElement, PropsTemplateSampleSpec>(({customerName, countSample, listBill}, ref) => {
 	return (
 		<div ref={ref} className={styles.container}>
 			<div className={styles.header}>
@@ -51,7 +51,7 @@ const TemplateSampleSpec = forwardRef<HTMLDivElement, PropsTemplateSampleSpec>((
 				<div className={styles.item}>
 					<p>Số lượng mẫu:</p>
 					<p>
-						{listBill?.length} <span>(mẫu)</span>
+						{countSample || 0} <span>(mẫu)</span>
 					</p>
 				</div>
 
@@ -82,7 +82,7 @@ const TemplateSampleSpec = forwardRef<HTMLDivElement, PropsTemplateSampleSpec>((
 										<Moment date={v?.date} format='DD/MM/YYYY' />
 									</td>
 									<td>{v?.code}</td>
-									<td>{v?.licensePalate}</td>
+									<td>{v?.licensePalate || '---'}</td>
 									<td>{convertCoin(v?.weightTotal)}</td>
 									<td>{v?.drynessAvg?.toFixed(2)}</td>
 									<td>{convertCoin(v?.weightBdmt)}</td>
