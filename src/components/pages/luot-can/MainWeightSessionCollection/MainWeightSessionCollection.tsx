@@ -175,7 +175,7 @@ function MainWeightSessionCollection({}: PropsMainWeightSessionCollection) {
 							{
 								title: 'Biển số xe',
 								render: (data: IWeightSessionByTruck) => (
-									<p style={{color: '#2D74FF', fontWeight: 600}}>{data?.truckUu?.licensePalate}</p>
+									<p style={{color: '#2D74FF', fontWeight: 600}}>{data?.truckUu?.licensePalate || '---'}</p>
 								),
 							},
 							{

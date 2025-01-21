@@ -601,7 +601,7 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 								title: 'Từ',
 								render: (data: IWeightSession) => (
 									<>
-										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name}</p>
+										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || '---'}</p>
 										{/* <p>({data?.fromUu?.parentUu?.name || '---'})</p> */}
 									</>
 								),
