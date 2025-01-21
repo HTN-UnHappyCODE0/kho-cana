@@ -553,13 +553,13 @@ function MainWeightSessionExport({}: PropsMainWeightSessionExport) {
 							},
 							{
 								title: 'Biển số xe',
-								render: (data: IWeightSession) => <>{data?.truckUu?.licensePalate}</>,
+								render: (data: IWeightSession) => <>{data?.truckUu?.licensePalate || '---'}</>,
 							},
 							{
 								title: 'Từ',
 								render: (data: IWeightSession) => (
 									<>
-										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name}</p>
+										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || '---'}</p>
 										{/* <p>({data?.fromUu?.parentUu?.name || '---'})</p> */}
 									</>
 								),
