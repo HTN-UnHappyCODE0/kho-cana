@@ -362,7 +362,7 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 					<TemplateSampleSpec
 						ref={contentToPrint}
 						customerName={detailCustomer?.name!}
-						countSample={Math.max(...listBatchBill?.map((v: any) => v?.countSample))}
+						countSample={listBatchBill?.reduce((acc, item) => acc + item?.countSample, 0)}
 						listBill={listBatchBill
 							?.filter((v: any) => v?.isChecked == true)
 							?.map((x) => ({
