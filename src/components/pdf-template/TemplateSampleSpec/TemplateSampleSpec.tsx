@@ -6,7 +6,7 @@ import icons from '~/constants/images/icons';
 import ImageFill from '~/components/common/ImageFill';
 import Image from 'next/image';
 import Moment from 'react-moment';
-import {convertCoin} from '~/common/funcs/convertCoin';
+import {convertWeight} from '~/common/funcs/optionConvert';
 
 const TemplateSampleSpec = forwardRef<HTMLDivElement, PropsTemplateSampleSpec>(({customerName, countSample, listBill}, ref) => {
 	return (
@@ -39,13 +39,13 @@ const TemplateSampleSpec = forwardRef<HTMLDivElement, PropsTemplateSampleSpec>((
 				<div className={styles.item}>
 					<p>Khối lượng tươi:</p>
 					<p>
-						{convertCoin(listBill?.reduce((acc, item) => acc + item?.weightTotal, 0))} <span>(tấn)</span>
+						{convertWeight(listBill?.reduce((acc, item) => acc + item?.weightTotal, 0))} <span>(tấn)</span>
 					</p>
 				</div>
 				<div className={styles.item}>
 					<p>Khối lượng khô:</p>
 					<p>
-						{convertCoin(listBill?.reduce((acc, item) => acc + item?.weightBdmt, 0))} <span>(tấn)</span>
+						{convertWeight(listBill?.reduce((acc, item) => acc + item?.weightBdmt, 0))} <span>(tấn)</span>
 					</p>
 				</div>
 				<div className={styles.item}>
@@ -83,9 +83,9 @@ const TemplateSampleSpec = forwardRef<HTMLDivElement, PropsTemplateSampleSpec>((
 									</td>
 									<td>{v?.code}</td>
 									<td>{v?.licensePalate || '---'}</td>
-									<td>{convertCoin(v?.weightTotal)}</td>
+									<td>{convertWeight(v?.weightTotal)}</td>
 									<td>{v?.drynessAvg?.toFixed(2)}</td>
-									<td>{convertCoin(v?.weightBdmt)}</td>
+									<td>{convertWeight(v?.weightBdmt)}</td>
 								</tr>
 							))}
 						</tbody>
