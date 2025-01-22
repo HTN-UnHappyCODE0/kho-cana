@@ -362,7 +362,9 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 					<TemplateSampleSpec
 						ref={contentToPrint}
 						customerName={detailCustomer?.name!}
-						countSample={listBatchBill?.reduce((acc, item) => acc + item?.countSample, 0)}
+						countSample={listBatchBill
+							?.filter((v: any) => v?.isChecked == true)
+							?.reduce((acc, item) => acc + item?.countSample, 0)}
 						listBill={listBatchBill
 							?.filter((v: any) => v?.isChecked == true)
 							?.map((x) => ({
