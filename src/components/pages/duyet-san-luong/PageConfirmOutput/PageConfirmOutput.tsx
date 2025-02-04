@@ -47,10 +47,12 @@ import storageServices from '~/services/storageServices';
 import StateActive from '~/components/common/StateActive';
 import Moment from 'react-moment';
 import FormAccessSpecExcel from '../../phieu-can/MainDetailScales/components/FormAccessSpecExcel';
+import SelectFilterState from '~/components/common/SelectFilterState';
 
 function PageConfirmOutput({}: PropsPageConfirmOutput) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
+	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 
 	const {
 		_page,
@@ -175,6 +177,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 			_dateTo,
 			_scalesStationUuid,
 			_storageUuid,
+			isHaveDryness,
 		],
 		{
 			queryFn: () =>
@@ -203,7 +206,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 						typeCheckDay: TYPE_CHECK_DAY_BILL.THOI_GIAN_KTK_DUYET,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
-						isHaveDryness: TYPE_ACTION_AUDIT.NO_DRY,
+						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 					}),
 				}),
 			onSuccess(data) {
@@ -276,6 +279,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 					shipUuid: '',
 					storageUuid: (_storageUuid as string) || '',
 					isExportSpec: isHaveSpec,
+					isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 				}),
 			});
 		},
@@ -405,6 +409,21 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 							id: v?.uuid,
 							name: v?.name,
 						}))}
+					/>
+					<SelectFilterState
+						uuid={isHaveDryness}
+						setUuid={setIsHaveDryness}
+						listData={[
+							{
+								uuid: String(0),
+								name: 'Chưa có',
+							},
+							{
+								uuid: String(1),
+								name: 'Đã có',
+							},
+						]}
+						placeholder='Độ khô'
 					/>
 
 					<div className={styles.filter}>
@@ -730,6 +749,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 							_scalesStationUuid,
 							_dateTo,
 							_storageUuid,
+							isHaveDryness,
 						]}
 					/>
 				)}

@@ -48,11 +48,14 @@ import Popup from '~/components/common/Popup';
 import FormAccessSpecExcel from '../../phieu-can/MainDetailScales/components/FormAccessSpecExcel';
 import FormUpdateShipBill from '../../lenh-can/FormUpdateShipBill';
 import Loading from '~/components/common/Loading';
+import SelectFilterState from '~/components/common/SelectFilterState';
 
 function MainPageExport({}: PropsMainPageExport) {
 	const router = useRouter();
 	const [openExportExcel, setOpenExportExcel] = useState<boolean>(false);
 	const [billUuidUpdateShip, setBillUuidUpdateShip] = useState<string | null>(null);
+	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
+
 	const {
 		_page,
 		_pageSize,
@@ -85,6 +88,7 @@ function MainPageExport({}: PropsMainPageExport) {
 			_state,
 			_storageUuid,
 			_scalesStationUuid,
+			isHaveDryness,
 		],
 		{
 			queryFn: () =>
@@ -131,7 +135,7 @@ function MainPageExport({}: PropsMainPageExport) {
 						typeCheckDay: 0,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
-						isHaveDryness: TYPE_ACTION_AUDIT.NO_DRY,
+						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 					}),
 				}),
 			select(data) {
@@ -268,6 +272,7 @@ function MainPageExport({}: PropsMainPageExport) {
 					storageUuid: (_storageUuid as string) || '',
 					documentId: '',
 					isExportSpec: isHaveSpec,
+					isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 				}),
 			});
 		},
@@ -383,6 +388,22 @@ function MainPageExport({}: PropsMainPageExport) {
 								name: 'Chốt kế toán',
 							},
 						]}
+					/>
+
+					<SelectFilterState
+						uuid={isHaveDryness}
+						setUuid={setIsHaveDryness}
+						listData={[
+							{
+								uuid: String(0),
+								name: 'Chưa có',
+							},
+							{
+								uuid: String(1),
+								name: 'Đã có',
+							},
+						]}
+						placeholder='Độ khô'
 					/>
 
 					<div className={styles.filter}>
@@ -672,6 +693,7 @@ function MainPageExport({}: PropsMainPageExport) {
 						_shipUuid,
 						_storageUuid,
 						_scalesStationUuid,
+						isHaveDryness,
 					]}
 				/>
 			</div>

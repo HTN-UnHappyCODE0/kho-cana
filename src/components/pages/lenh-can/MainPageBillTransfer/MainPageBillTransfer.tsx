@@ -47,12 +47,14 @@ import {convertWeight} from '~/common/funcs/optionConvert';
 import storageServices from '~/services/storageServices';
 import scalesStationServices from '~/services/scalesStationServices';
 import FormUpdateShipBill from '../FormUpdateShipBill';
+import SelectFilterState from '~/components/common/SelectFilterState';
 
 function MainPageBillTransfer({}: PropsMainPageBillTransfer) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 	const [uuidPlay, setUuidPlay] = useState<string>('');
 	const [billUuidUpdateShip, setBillUuidUpdateShip] = useState<string | null>(null);
+	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 
 	const {
 		_page,
@@ -193,6 +195,7 @@ function MainPageBillTransfer({}: PropsMainPageBillTransfer) {
 			_dateTo,
 			_storageUuid,
 			_scalesStationUuid,
+			isHaveDryness,
 		],
 		{
 			queryFn: () =>
@@ -221,7 +224,7 @@ function MainPageBillTransfer({}: PropsMainPageBillTransfer) {
 						typeCheckDay: 0,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
-						isHaveDryness: TYPE_ACTION_AUDIT.NO_DRY,
+						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 					}),
 				}),
 			select(data) {
@@ -352,7 +355,21 @@ function MainPageBillTransfer({}: PropsMainPageBillTransfer) {
 							name: v?.name,
 						}))}
 					/>
-
+					<SelectFilterState
+						uuid={isHaveDryness}
+						setUuid={setIsHaveDryness}
+						listData={[
+							{
+								uuid: String(0),
+								name: 'Chưa có',
+							},
+							{
+								uuid: String(1),
+								name: 'Đã có',
+							},
+						]}
+						placeholder='Độ khô'
+					/>
 					<div className={styles.filter}>
 						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
 					</div>
@@ -582,6 +599,7 @@ function MainPageBillTransfer({}: PropsMainPageBillTransfer) {
 						_dateTo,
 						_storageUuid,
 						_scalesStationUuid,
+						isHaveDryness,
 					]}
 				/>
 			</div>

@@ -47,11 +47,13 @@ import {convertCoin} from '~/common/funcs/convertCoin';
 import storageServices from '~/services/storageServices';
 import scalesStationServices from '~/services/scalesStationServices';
 import FormUpdateShipBill from '../FormUpdateShipBill';
+import SelectFilterState from '~/components/common/SelectFilterState';
 
 function MainPageBillDirect({}: PropsMainPageBillDirect) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 	const [uuidPlay, setUuidPlay] = useState<string>('');
+	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 
 	const {
 		_page,
@@ -195,6 +197,7 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 			_dateTo,
 			_storageUuid,
 			_scalesStationUuid,
+			isHaveDryness,
 		],
 		{
 			queryFn: () =>
@@ -223,7 +226,7 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 						typeCheckDay: 0,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
-						isHaveDryness: TYPE_ACTION_AUDIT.NO_DRY,
+						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 					}),
 				}),
 			select(data) {
@@ -354,6 +357,22 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 							id: v?.uuid,
 							name: v?.name,
 						}))}
+					/>
+
+					<SelectFilterState
+						uuid={isHaveDryness}
+						setUuid={setIsHaveDryness}
+						listData={[
+							{
+								uuid: String(0),
+								name: 'Chưa có',
+							},
+							{
+								uuid: String(1),
+								name: 'Đã có',
+							},
+						]}
+						placeholder='Độ khô'
 					/>
 
 					<div className={styles.filter}>
@@ -586,6 +605,7 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 						_dateTo,
 						_storageUuid,
 						_scalesStationUuid,
+						isHaveDryness,
 					]}
 				/>
 			</div>

@@ -41,9 +41,11 @@ import batchBillServices from '~/services/batchBillServices';
 import scalesStationServices from '~/services/scalesStationServices';
 import storageServices from '~/services/storageServices';
 import {convertCoin} from '~/common/funcs/convertCoin';
+import SelectFilterState from '~/components/common/SelectFilterState';
 
 function MainBillSend({}: PropsMainBillSend) {
 	const router = useRouter();
+	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 
 	const {
 		_page,
@@ -190,6 +192,7 @@ function MainBillSend({}: PropsMainBillSend) {
 			_isShift,
 			_storageUuid,
 			_scalesStationUuid,
+			isHaveDryness,
 		],
 		{
 			queryFn: () =>
@@ -220,7 +223,7 @@ function MainBillSend({}: PropsMainBillSend) {
 						state: [],
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
-						isHaveDryness: TYPE_ACTION_AUDIT.NO_DRY,
+						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 					}),
 				}),
 			onSuccess(data) {
@@ -332,6 +335,22 @@ function MainBillSend({}: PropsMainBillSend) {
 							id: v?.uuid,
 							name: v?.name,
 						}))}
+					/>
+
+					<SelectFilterState
+						uuid={isHaveDryness}
+						setUuid={setIsHaveDryness}
+						listData={[
+							{
+								uuid: String(0),
+								name: 'Chưa có',
+							},
+							{
+								uuid: String(1),
+								name: 'Đã có',
+							},
+						]}
+						placeholder='Độ khô'
 					/>
 
 					<div className={styles.filter}>
@@ -491,6 +510,7 @@ function MainBillSend({}: PropsMainBillSend) {
 							_isShift,
 							_storageUuid,
 							_scalesStationUuid,
+							isHaveDryness,
 						]}
 					/>
 				)}
