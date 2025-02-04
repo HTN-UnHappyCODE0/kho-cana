@@ -47,6 +47,7 @@ import {convertWeight} from '~/common/funcs/optionConvert';
 import storageServices from '~/services/storageServices';
 import scalesStationServices from '~/services/scalesStationServices';
 import FormUpdateShipBill from '../FormUpdateShipBill';
+import SelectFilterState from '~/components/common/SelectFilterState';
 
 function MainPageBillAll({}: PropsMainPageBillAll) {
 	const router = useRouter();
@@ -72,6 +73,7 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 	const [billUuid, setBillUuid] = useState<string | null>(null);
 	const [billUuidUpdateShip, setBillUuidUpdateShip] = useState<string | null>(null);
 	const [billUuidReStart, setBillUuidReStart] = useState<string | null>(null);
+	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
@@ -195,6 +197,7 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 			_dateTo,
 			_storageUuid,
 			_scalesStationUuid,
+			isHaveDryness,
 		],
 		{
 			queryFn: () =>
@@ -223,7 +226,7 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 						typeCheckDay: 0,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
-						isHaveDryness: TYPE_ACTION_AUDIT.NO_DRY,
+						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 					}),
 				}),
 			select(data) {
@@ -373,6 +376,22 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 							id: v?.uuid,
 							name: v?.name,
 						}))}
+					/>
+
+					<SelectFilterState
+						uuid={isHaveDryness}
+						setUuid={setIsHaveDryness}
+						listData={[
+							{
+								uuid: String(0),
+								name: 'Chưa có',
+							},
+							{
+								uuid: String(1),
+								name: 'Đã có',
+							},
+						]}
+						placeholder='Độ khô'
 					/>
 
 					<div className={styles.filter}>
@@ -643,6 +662,7 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 						_dateTo,
 						_storageUuid,
 						_scalesStationUuid,
+						isHaveDryness,
 					]}
 				/>
 			</div>

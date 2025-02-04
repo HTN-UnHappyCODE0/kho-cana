@@ -244,6 +244,7 @@ function MainSpecification({}: PropsMainSpecification) {
 						shift: !!_isShift ? Number(_isBatch) : null,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
+						isHaveDryness: null,
 					}),
 				}),
 			onSuccess(data) {

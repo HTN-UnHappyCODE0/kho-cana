@@ -52,6 +52,7 @@ import FormUpdateDraftShip from '../../cap-nhat-mon-tau/FormUpdateDraftShip';
 import IconCustom from '~/components/common/IconCustom';
 import {ITableBillScale} from '~/components/pages/duyet-phieu/PageConfirmBill/interfaces';
 import FormUpdateBillEdit from '../FormUpdateBillEdit';
+import SelectFilterState from '~/components/common/SelectFilterState';
 
 function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 	const router = useRouter();
@@ -77,6 +78,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 	} = router.query;
 
 	const [dataWeightSessionSubmit, setDataWeightSessionSubmit] = useState<any>();
+	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 
 	// const [loading, setLoading] = useState<boolean>(false);
 	// const [weightSessions, setWeightSessions] = useState<any[]>([]);
@@ -160,6 +162,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 			_dateTo,
 			_scalesStationUuid,
 			_storageUuid,
+			isHaveDryness,
 		],
 		{
 			queryFn: () =>
@@ -188,7 +191,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 						typeCheckDay: 0,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
-						isHaveDryness: TYPE_ACTION_AUDIT.NO_DRY,
+						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 						typeProduct: TYPE_PRODUCT.CONG_TY,
 					}),
 				}),
@@ -321,6 +324,22 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 							id: v?.uuid,
 							name: v?.name,
 						}))}
+					/>
+
+					<SelectFilterState
+						uuid={isHaveDryness}
+						setUuid={setIsHaveDryness}
+						listData={[
+							{
+								uuid: String(0),
+								name: 'Chưa có',
+							},
+							{
+								uuid: String(1),
+								name: 'Đã có',
+							},
+						]}
+						placeholder='Độ khô'
 					/>
 
 					<div className={styles.filter}>
@@ -510,6 +529,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 						_storageUuid,
 						_scalesStationUuid,
 						_state,
+						isHaveDryness,
 					]}
 				/>
 				{/* )} */}

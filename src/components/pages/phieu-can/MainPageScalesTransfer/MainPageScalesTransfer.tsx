@@ -47,10 +47,12 @@ import scalesStationServices from '~/services/scalesStationServices';
 import Popup from '~/components/common/Popup';
 import FormUpdateShipBill from '../../lenh-can/FormUpdateShipBill';
 import FormAccessSpecExcel from '../MainDetailScales/components/FormAccessSpecExcel';
+import SelectFilterState from '~/components/common/SelectFilterState';
 
 function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
+	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 
 	const {
 		_page,
@@ -198,6 +200,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 			_state,
 			_storageUuid,
 			_scalesStationUuid,
+			isHaveDryness,
 		],
 		{
 			queryFn: () =>
@@ -244,7 +247,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 						typeCheckDay: 0,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
-						isHaveDryness: TYPE_ACTION_AUDIT.NO_DRY,
+						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 					}),
 				}),
 			onSuccess(data) {
@@ -353,6 +356,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 					documentId: '',
 					storageUuid: (_storageUuid as string) || '',
 					isExportSpec: isHaveSpec,
+					isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 				}),
 			});
 		},
@@ -499,6 +503,21 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 							id: v?.uuid,
 							name: v?.name,
 						}))}
+					/>
+					<SelectFilterState
+						uuid={isHaveDryness}
+						setUuid={setIsHaveDryness}
+						listData={[
+							{
+								uuid: String(0),
+								name: 'Chưa có',
+							},
+							{
+								uuid: String(1),
+								name: 'Đã có',
+							},
+						]}
+						placeholder='Độ khô'
 					/>
 					<div className={styles.filter}>
 						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
@@ -824,6 +843,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 							_state,
 							_storageUuid,
 							_scalesStationUuid,
+							isHaveDryness,
 						]}
 					/>
 				)}

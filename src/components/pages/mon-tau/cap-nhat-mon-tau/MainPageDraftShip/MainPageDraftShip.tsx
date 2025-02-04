@@ -40,6 +40,7 @@ import Popup from '~/components/common/Popup';
 import FormUpdateDraftShip from '../FormUpdateDraftShip';
 import {ITableBillScale} from '~/components/pages/duyet-phieu/PageConfirmBill/interfaces';
 import clsx from 'clsx';
+import SelectFilterState from '~/components/common/SelectFilterState';
 
 function MainPageDraftShip({}: PropsMainPageDraftShip) {
 	const router = useRouter();
@@ -63,6 +64,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 	} = router.query;
 
 	const [dataWeightSessionSubmit, setDataWeightSessionSubmit] = useState<any>();
+	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
@@ -143,6 +145,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 			_scalesStationUuid,
 			_storageUuid,
 			_typeProduct,
+			isHaveDryness,
 		],
 		{
 			queryFn: () =>
@@ -171,7 +174,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 						typeCheckDay: 0,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
-						isHaveDryness: TYPE_ACTION_AUDIT.NO_DRY,
+						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 						typeProduct: TYPE_PRODUCT.CONG_TY,
 					}),
 				}),
@@ -306,7 +309,21 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 							name: v?.name,
 						}))}
 					/>
-
+					<SelectFilterState
+						uuid={isHaveDryness}
+						setUuid={setIsHaveDryness}
+						listData={[
+							{
+								uuid: String(0),
+								name: 'Chưa có',
+							},
+							{
+								uuid: String(1),
+								name: 'Đã có',
+							},
+						]}
+						placeholder='Độ khô'
+					/>
 					<div className={styles.filter}>
 						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.YESTERDAY} />
 					</div>
@@ -488,6 +505,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 						_scalesStationUuid,
 						_state,
 						_typeProduct,
+						isHaveDryness,
 					]}
 				/>
 			</div>

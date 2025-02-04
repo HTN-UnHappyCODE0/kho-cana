@@ -43,10 +43,12 @@ import StateActive from '~/components/common/StateActive';
 import Moment from 'react-moment';
 import Popup from '~/components/common/Popup';
 import FormAccessSpecExcel from '../../phieu-can/MainDetailScales/components/FormAccessSpecExcel';
+import SelectFilterState from '~/components/common/SelectFilterState';
 
 function PageConfirmBill({}: PropsPageConfirmBill) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
+	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 
 	const {
 		_page,
@@ -170,6 +172,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 			_dateTo,
 			_scalesStationUuid,
 			_storageUuid,
+			isHaveDryness,
 		],
 		{
 			queryFn: () =>
@@ -200,7 +203,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 						typeCheckDay: 1,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
-						isHaveDryness: TYPE_ACTION_AUDIT.NO_DRY,
+						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 					}),
 				}),
 			onSuccess(data) {
@@ -275,6 +278,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 					shipUuid: '',
 					storageUuid: (_storageUuid as string) || '',
 					isExportSpec: isHaveSpec,
+					isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 				}),
 			});
 		},
@@ -387,6 +391,22 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 							id: v?.uuid,
 							name: v?.name,
 						}))}
+					/>
+
+					<SelectFilterState
+						uuid={isHaveDryness}
+						setUuid={setIsHaveDryness}
+						listData={[
+							{
+								uuid: String(0),
+								name: 'Chưa có',
+							},
+							{
+								uuid: String(1),
+								name: 'Đã có',
+							},
+						]}
+						placeholder='Độ khô'
 					/>
 
 					<div className={styles.filter}>
@@ -698,6 +718,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 							_dateTo,
 							_scalesStationUuid,
 							_storageUuid,
+							isHaveDryness,
 						]}
 					/>
 				)}

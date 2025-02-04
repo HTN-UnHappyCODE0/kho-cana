@@ -246,6 +246,7 @@ const batchBillServices = {
 			scalesStationUuid: string;
 			documentId: string;
 			isExportSpec?: number | null;
+			isHaveDryness?: number | null;
 		},
 		tokenAxios?: any
 	) => {

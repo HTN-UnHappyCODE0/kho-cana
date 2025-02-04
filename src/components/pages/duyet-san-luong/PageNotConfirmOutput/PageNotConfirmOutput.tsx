@@ -46,10 +46,12 @@ import scalesStationServices from '~/services/scalesStationServices';
 import storageServices from '~/services/storageServices';
 import StateActive from '~/components/common/StateActive';
 import Moment from 'react-moment';
+import SelectFilterState from '~/components/common/SelectFilterState';
 
 function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
+	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 
 	const {
 		_page,
@@ -174,6 +176,7 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 			_dateTo,
 			_scalesStationUuid,
 			_storageUuid,
+			isHaveDryness,
 		],
 		{
 			queryFn: () =>
@@ -202,7 +205,7 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 						typeCheckDay: TYPE_CHECK_DAY_BILL.THOI_GIAN_QLK_DUYET,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
-						isHaveDryness: TYPE_ACTION_AUDIT.NO_DRY,
+						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 					}),
 				}),
 			onSuccess(data) {
@@ -360,6 +363,22 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 							id: v?.uuid,
 							name: v?.name,
 						}))}
+					/>
+
+					<SelectFilterState
+						uuid={isHaveDryness}
+						setUuid={setIsHaveDryness}
+						listData={[
+							{
+								uuid: String(0),
+								name: 'Chưa có',
+							},
+							{
+								uuid: String(1),
+								name: 'Đã có',
+							},
+						]}
+						placeholder='Độ khô'
 					/>
 
 					<div className={styles.filter}>
@@ -671,6 +690,7 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 							_dateFrom,
 							_dateTo,
 							_storageUuid,
+							isHaveDryness,
 						]}
 					/>
 				)}

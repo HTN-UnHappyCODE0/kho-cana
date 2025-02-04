@@ -46,10 +46,12 @@ import scalesStationServices from '~/services/scalesStationServices';
 import Popup from '~/components/common/Popup';
 import FormUpdateShipBill from '../../lenh-can/FormUpdateShipBill';
 import FormAccessSpecExcel from '../MainDetailScales/components/FormAccessSpecExcel';
+import SelectFilterState from '~/components/common/SelectFilterState';
 
 function MainPageScalesAll({}: PropsMainPageScalesAll) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
+	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 
 	const {
 		_page,
@@ -199,6 +201,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 			_state,
 			_storageUuid,
 			_scalesStationUuid,
+			isHaveDryness,
 		],
 		{
 			queryFn: () =>
@@ -245,7 +248,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 						typeCheckDay: 0,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
-						isHaveDryness: TYPE_ACTION_AUDIT.NO_DRY,
+						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 					}),
 				}),
 			onSuccess(data) {
@@ -354,6 +357,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 					documentId: '',
 					storageUuid: (_storageUuid as string) || '',
 					isExportSpec: isHaveSpec,
+					isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 				}),
 			});
 		},
@@ -535,6 +539,21 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 							id: v?.uuid,
 							name: v?.name,
 						}))}
+					/>
+					<SelectFilterState
+						uuid={isHaveDryness}
+						setUuid={setIsHaveDryness}
+						listData={[
+							{
+								uuid: String(0),
+								name: 'Chưa có',
+							},
+							{
+								uuid: String(1),
+								name: 'Đã có',
+							},
+						]}
+						placeholder='Độ khô'
 					/>
 					<div className={styles.filter}>
 						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
@@ -903,6 +922,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 							_state,
 							_storageUuid,
 							_scalesStationUuid,
+							isHaveDryness,
 						]}
 					/>
 				)}
