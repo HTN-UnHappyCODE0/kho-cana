@@ -19,7 +19,7 @@ const batchBillServices = {
 			timeEnd: string | null;
 			specificationsUuid: string;
 			warehouseUuid: string;
-			customerUuid: string;
+			customerUuid: string[];
 			productTypeUuid: string;
 			qualityUuid: string;
 			transportType: number | null;
@@ -239,7 +239,7 @@ const batchBillServices = {
 			qualityUuid: string;
 			specificationsUuid: string;
 			productTypeUuid: string;
-			customerUuid: string;
+			customerUuid: string[];
 			storageUuid: string;
 			shipUuid: string;
 			typeCheckDay: number;

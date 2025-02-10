@@ -47,18 +47,19 @@ import Popup from '~/components/common/Popup';
 import FormUpdateShipBill from '../../lenh-can/FormUpdateShipBill';
 import FormAccessSpecExcel from '../MainDetailScales/components/FormAccessSpecExcel';
 import SelectFilterState from '~/components/common/SelectFilterState';
+import SelectFilterMany from '~/components/common/SelectFilterMany';
 
 function MainPageScalesAll({}: PropsMainPageScalesAll) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
+	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 
 	const {
 		_page,
 		_pageSize,
 		_keyword,
 		_isBatch,
-		_customerUuid,
 		_productTypeUuid,
 		_shipUuid,
 		_status,
@@ -192,7 +193,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 			_pageSize,
 			_keyword,
 			_isBatch,
-			_customerUuid,
+			customerUuid,
 			_productTypeUuid,
 			_shipUuid,
 			_status,
@@ -225,7 +226,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 									STATE_BILL.KTK_CHECKED,
 									STATE_BILL.END,
 							  ],
-						customerUuid: (_customerUuid as string) || '',
+						customerUuid: customerUuid,
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
 						isCreateBatch: null,
 						productTypeUuid: (_productTypeUuid as string) || '',
@@ -332,7 +333,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 								STATE_BILL.KTK_CHECKED,
 								STATE_BILL.END,
 						  ],
-					customerUuid: (_customerUuid as string) || '',
+					customerUuid: customerUuid,
 					isBatch: !!_isBatch ? Number(_isBatch) : null,
 					isCreateBatch: null,
 					productTypeUuid: (_productTypeUuid as string) || '',
@@ -435,14 +436,14 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 						/>
 					</div>
 
-					<FilterCustom
-						isSearch
-						name='Khách hàng'
-						query='_customerUuid'
-						listFilter={listCustomer?.data?.map((v: any) => ({
-							id: v?.uuid,
+					<SelectFilterMany
+						selectedIds={customerUuid}
+						setSelectedIds={setCustomerUuid}
+						listData={listCustomer?.data?.map((v: any) => ({
+							uuid: v?.uuid,
 							name: v?.name,
 						}))}
+						name='Khách hàng'
 					/>
 					<FilterCustom
 						isSearch
@@ -913,7 +914,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 							_pageSize,
 							_keyword,
 							_isBatch,
-							_customerUuid,
+							customerUuid,
 							_productTypeUuid,
 							_shipUuid,
 							_status,

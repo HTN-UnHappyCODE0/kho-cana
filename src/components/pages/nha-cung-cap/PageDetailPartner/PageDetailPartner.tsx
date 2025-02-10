@@ -104,7 +104,7 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 					isDescending: CONFIG_DESCENDING.IS_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.TABLE,
 					scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_TRUC_TIEP],
-					customerUuid: (_id as string) || '',
+					customerUuid: _id ? [_id as string] : [],
 					isBatch: null,
 					isCreateBatch: null,
 					productTypeUuid: (_productTypeUuid as string) || '',

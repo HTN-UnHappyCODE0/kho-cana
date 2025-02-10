@@ -48,19 +48,20 @@ import storageServices from '~/services/storageServices';
 import scalesStationServices from '~/services/scalesStationServices';
 import FormUpdateShipBill from '../FormUpdateShipBill';
 import SelectFilterState from '~/components/common/SelectFilterState';
+import SelectFilterMany from '~/components/common/SelectFilterMany';
 
 function MainPageBillDirect({}: PropsMainPageBillDirect) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 	const [uuidPlay, setUuidPlay] = useState<string>('');
 	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
+	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 
 	const {
 		_page,
 		_pageSize,
 		_keyword,
 		_isBatch,
-		_customerUuid,
 		_productTypeUuid,
 		_shipUuid,
 		_status,
@@ -189,7 +190,6 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 			_pageSize,
 			_keyword,
 			_isBatch,
-			_customerUuid,
 			_productTypeUuid,
 			_shipUuid,
 			_status,
@@ -198,6 +198,7 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 			_storageUuid,
 			_scalesStationUuid,
 			isHaveDryness,
+			customerUuid,
 		],
 		{
 			queryFn: () =>
@@ -211,7 +212,7 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
 						scalesType: [TYPE_SCALES.CAN_TRUC_TIEP],
-						customerUuid: (_customerUuid as string) || '',
+						customerUuid: customerUuid,
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
 						isCreateBatch: 1,
 						productTypeUuid: (_productTypeUuid as string) || '',
@@ -285,14 +286,14 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 						<Search keyName='_keyword' placeholder='Tìm kiếm theo mã lô hàng' />
 					</div>
 
-					<FilterCustom
-						isSearch
-						name='Khách hàng'
-						query='_customerUuid'
-						listFilter={listCustomer?.data?.map((v: any) => ({
-							id: v?.uuid,
+					<SelectFilterMany
+						selectedIds={customerUuid}
+						setSelectedIds={setCustomerUuid}
+						listData={listCustomer?.data?.map((v: any) => ({
+							uuid: v?.uuid,
 							name: v?.name,
 						}))}
+						name='Khách hàng'
 					/>
 
 					<FilterCustom
@@ -597,7 +598,7 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 						_pageSize,
 						_keyword,
 						_isBatch,
-						_customerUuid,
+						customerUuid,
 						_productTypeUuid,
 						_shipUuid,
 						_status,

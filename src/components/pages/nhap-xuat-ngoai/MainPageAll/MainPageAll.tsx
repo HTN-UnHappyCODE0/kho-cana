@@ -51,6 +51,7 @@ import FormAccessSpecExcel from '../../phieu-can/MainDetailScales/components/For
 import FormUpdateShipBill from '../../lenh-can/FormUpdateShipBill';
 import Loading from '~/components/common/Loading';
 import SelectFilterState from '~/components/common/SelectFilterState';
+import SelectFilterMany from '~/components/common/SelectFilterMany';
 
 function MainPageAll({}: PropsMainPageAll) {
 	const [openCreate, setOpenCreate] = useState<boolean>(false);
@@ -58,6 +59,7 @@ function MainPageAll({}: PropsMainPageAll) {
 	const [openExportExcel, setOpenExportExcel] = useState<boolean>(false);
 	const [billUuidUpdateShip, setBillUuidUpdateShip] = useState<string | null>(null);
 	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
+	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 
 	const {
 		_page,
@@ -68,7 +70,6 @@ function MainPageAll({}: PropsMainPageAll) {
 		_isBatch,
 		_state,
 		_status,
-		_customerUuid,
 		_productTypeUuid,
 		_shipUuid,
 		_storageUuid,
@@ -82,7 +83,7 @@ function MainPageAll({}: PropsMainPageAll) {
 			_pageSize,
 			_keyword,
 			_isBatch,
-			_customerUuid,
+			customerUuid,
 			_productTypeUuid,
 			_shipUuid,
 			_status,
@@ -115,7 +116,7 @@ function MainPageAll({}: PropsMainPageAll) {
 									STATE_BILL.KTK_CHECKED,
 									STATE_BILL.END,
 							  ],
-						customerUuid: (_customerUuid as string) || '',
+						customerUuid: customerUuid,
 						isBatch: TYPE_BATCH.KHONG_CAN,
 						isCreateBatch: null,
 						productTypeUuid: (_productTypeUuid as string) || '',
@@ -269,7 +270,7 @@ function MainPageAll({}: PropsMainPageAll) {
 								STATE_BILL.KTK_CHECKED,
 								STATE_BILL.END,
 						  ],
-					customerUuid: (_customerUuid as string) || '',
+					customerUuid: customerUuid,
 					isBatch: TYPE_BATCH.KHONG_CAN,
 					isCreateBatch: null,
 					productTypeUuid: (_productTypeUuid as string) || '',
@@ -313,14 +314,14 @@ function MainPageAll({}: PropsMainPageAll) {
 						<Search keyName='_keyword' placeholder='Tìm kiếm theo mã lô hàng' />
 					</div>
 
-					<FilterCustom
-						isSearch
-						name='Khách hàng'
-						query='_customerUuid'
-						listFilter={listCustomer?.data?.map((v: any) => ({
-							id: v?.uuid,
+					<SelectFilterMany
+						selectedIds={customerUuid}
+						setSelectedIds={setCustomerUuid}
+						listData={listCustomer?.data?.map((v: any) => ({
+							uuid: v?.uuid,
 							name: v?.name,
 						}))}
+						name='Khách hàng'
 					/>
 
 					<FilterCustom
@@ -748,7 +749,7 @@ function MainPageAll({}: PropsMainPageAll) {
 						_dateFrom,
 						_dateTo,
 						_isBatch,
-						_customerUuid,
+						customerUuid,
 						_productTypeUuid,
 						_shipUuid,
 						_status,

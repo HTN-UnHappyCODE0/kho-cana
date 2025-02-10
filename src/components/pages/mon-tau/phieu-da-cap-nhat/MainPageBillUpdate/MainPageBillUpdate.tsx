@@ -53,12 +53,14 @@ import IconCustom from '~/components/common/IconCustom';
 import {ITableBillScale} from '~/components/pages/duyet-phieu/PageConfirmBill/interfaces';
 import FormUpdateBillEdit from '../FormUpdateBillEdit';
 import SelectFilterState from '~/components/common/SelectFilterState';
+import SelectFilterMany from '~/components/common/SelectFilterMany';
 
 function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 
 	const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 
 	const {
 		_page,
@@ -66,7 +68,6 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 		_keyword,
 		_isBatch,
 		_isShift,
-		_customerUuid,
 		_status,
 		_productTypeUuid,
 		_specUuid,
@@ -154,7 +155,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 			_page,
 			_pageSize,
 			_keyword,
-			_customerUuid,
+			customerUuid,
 			_isBatch,
 			_productTypeUuid,
 			_state,
@@ -176,7 +177,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 						isDescending: CONFIG_DESCENDING.IS_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
 						scalesType: [TYPE_SCALES.CAN_XUAT, TYPE_SCALES.CAN_CHUYEN_KHO],
-						customerUuid: (_customerUuid as string) || '',
+						customerUuid: customerUuid,
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
 						isCreateBatch: null,
 						productTypeUuid: (_productTypeUuid as string) || '',
@@ -279,14 +280,14 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 						/>
 					</div>
 
-					<FilterCustom
-						isSearch
-						name='Khách hàng'
-						query='_customerUuid'
-						listFilter={listCustomer?.data?.map((v: any) => ({
-							id: v?.uuid,
+					<SelectFilterMany
+						selectedIds={customerUuid}
+						setSelectedIds={setCustomerUuid}
+						listData={listCustomer?.data?.map((v: any) => ({
+							uuid: v?.uuid,
 							name: v?.name,
 						}))}
+						name='Khách hàng'
 					/>
 					<FilterCustom
 						isSearch
@@ -519,7 +520,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 						_pageSize,
 						_keyword,
 						_isBatch,
-						_customerUuid,
+						customerUuid,
 						_productTypeUuid,
 						_specUuid,
 						_dateFrom,

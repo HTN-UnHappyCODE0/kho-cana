@@ -36,13 +36,15 @@ import Popup from '~/components/common/Popup';
 import FormUpdatePort from '../FormUpdatePort';
 import Button from '~/components/common/Button';
 import {convertWeight, formatDrynessAvg} from '~/common/funcs/optionConvert';
+import SelectFilterMany from '~/components/common/SelectFilterMany';
 
 function PageUpdatePort({}: PropsPageUpdatePort) {
 	const router = useRouter();
 
-	const {_page, _pageSize, _keyword, _customerUuid, _productTypeUuid, _dateFrom, _dateTo} = router.query;
+	const {_page, _pageSize, _keyword, _productTypeUuid, _dateFrom, _dateTo} = router.query;
 
 	const [listBatchBillSubmit, setListBatchBillSubmit] = useState<ITableBillScale[]>([]);
+	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 
 	const [listBatchBill, setListBatchBill] = useState<any[]>([]);
 	const [total, setTotal] = useState<number>(0);
@@ -92,7 +94,7 @@ function PageUpdatePort({}: PropsPageUpdatePort) {
 	});
 
 	const getListBatch = useQuery(
-		[QUERY_KEY.table_cang_boc_do, _page, _pageSize, _keyword, _customerUuid, _productTypeUuid, _dateFrom, _dateTo],
+		[QUERY_KEY.table_cang_boc_do, _page, _pageSize, customerUuid, _keyword, _productTypeUuid, _dateFrom, _dateTo],
 		{
 			queryFn: () =>
 				httpRequest({
@@ -105,7 +107,7 @@ function PageUpdatePort({}: PropsPageUpdatePort) {
 						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
 						scalesType: [],
-						customerUuid: (_customerUuid as string) || '',
+						customerUuid: customerUuid,
 						isBatch: TYPE_BATCH.CAN_LO,
 						isCreateBatch: null,
 						productTypeUuid: (_productTypeUuid as string) || '',
@@ -169,7 +171,7 @@ function PageUpdatePort({}: PropsPageUpdatePort) {
 						<Search keyName='_keyword' placeholder='Tìm kiếm theo mã lô hàng' />
 					</div>
 
-					<FilterCustom
+					{/* <FilterCustom
 						isSearch
 						name='Khách hàng'
 						query='_customerUuid'
@@ -177,6 +179,15 @@ function PageUpdatePort({}: PropsPageUpdatePort) {
 							id: v?.uuid,
 							name: v?.name,
 						}))}
+					/> */}
+					<SelectFilterMany
+						selectedIds={customerUuid}
+						setSelectedIds={setCustomerUuid}
+						listData={listCustomer?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						name='Khách hàng'
 					/>
 					<FilterCustom
 						isSearch
@@ -331,7 +342,7 @@ function PageUpdatePort({}: PropsPageUpdatePort) {
 						currentPage={Number(_page) || 1}
 						pageSize={Number(_pageSize) || 200}
 						total={total}
-						dependencies={[_pageSize, _keyword, _customerUuid, _productTypeUuid, _dateFrom, _dateTo]}
+						dependencies={[_pageSize, _keyword, customerUuid, _productTypeUuid, _dateFrom, _dateTo]}
 					/>
 				)}
 			</div>
