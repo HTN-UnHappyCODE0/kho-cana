@@ -42,10 +42,12 @@ import scalesStationServices from '~/services/scalesStationServices';
 import storageServices from '~/services/storageServices';
 import {convertCoin} from '~/common/funcs/convertCoin';
 import SelectFilterState from '~/components/common/SelectFilterState';
+import SelectFilterMany from '~/components/common/SelectFilterMany';
 
 function MainBillSend({}: PropsMainBillSend) {
 	const router = useRouter();
 	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
+	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 
 	const {
 		_page,
@@ -53,7 +55,6 @@ function MainBillSend({}: PropsMainBillSend) {
 		_keyword,
 		_isBatch,
 		_isShift,
-		_customerUuid,
 		_productTypeUuid,
 		_specUuid,
 		_dateFrom,
@@ -184,7 +185,7 @@ function MainBillSend({}: PropsMainBillSend) {
 			_pageSize,
 			_keyword,
 			_isBatch,
-			_customerUuid,
+			customerUuid,
 			_productTypeUuid,
 			_specUuid,
 			_dateFrom,
@@ -211,7 +212,7 @@ function MainBillSend({}: PropsMainBillSend) {
 						status: [STATUS_BILL.DA_KCS, STATUS_BILL.CHOT_KE_TOAN],
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
-						customerUuid: _customerUuid ? (_customerUuid as string) : '',
+						customerUuid: customerUuid,
 						productTypeUuid: _productTypeUuid ? (_productTypeUuid as string) : '',
 						specificationsUuid: (_specUuid as string) || '',
 						isCreateBatch: null,
@@ -291,14 +292,14 @@ function MainBillSend({}: PropsMainBillSend) {
 							]}
 						/>
 					</div>
-					<FilterCustom
-						isSearch
-						name='Khách hàng'
-						query='_customerUuid'
-						listFilter={listCustomer?.data?.map((v: any) => ({
-							id: v?.uuid,
+					<SelectFilterMany
+						selectedIds={customerUuid}
+						setSelectedIds={setCustomerUuid}
+						listData={listCustomer?.data?.map((v: any) => ({
+							uuid: v?.uuid,
 							name: v?.name,
 						}))}
+						name='Khách hàng'
 					/>
 					<FilterCustom
 						isSearch
@@ -502,7 +503,7 @@ function MainBillSend({}: PropsMainBillSend) {
 							_pageSize,
 							_keyword,
 							_isBatch,
-							_customerUuid,
+							customerUuid,
 							_productTypeUuid,
 							_specUuid,
 							_dateFrom,

@@ -44,25 +44,16 @@ import Moment from 'react-moment';
 import Popup from '~/components/common/Popup';
 import FormAccessSpecExcel from '../../phieu-can/MainDetailScales/components/FormAccessSpecExcel';
 import SelectFilterState from '~/components/common/SelectFilterState';
+import SelectFilterMany from '~/components/common/SelectFilterMany';
 
 function PageConfirmBill({}: PropsPageConfirmBill) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
+	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 
-	const {
-		_page,
-		_pageSize,
-		_keyword,
-		_customerUuid,
-		_isBatch,
-		_productTypeUuid,
-		_state,
-		_dateFrom,
-		_dateTo,
-		_scalesStationUuid,
-		_storageUuid,
-	} = router.query;
+	const {_page, _pageSize, _keyword, _isBatch, _productTypeUuid, _state, _dateFrom, _dateTo, _scalesStationUuid, _storageUuid} =
+		router.query;
 
 	const [uuidQLKConfirm, setUuidQLKConfirm] = useState<string[]>([]);
 	const [openExportExcel, setOpenExportExcel] = useState<boolean>(false);
@@ -164,7 +155,6 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 			_page,
 			_pageSize,
 			_keyword,
-			_customerUuid,
 			_isBatch,
 			_productTypeUuid,
 			_state,
@@ -173,6 +163,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 			_scalesStationUuid,
 			_storageUuid,
 			isHaveDryness,
+			customerUuid,
 		],
 		{
 			queryFn: () =>
@@ -186,7 +177,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 						isDescending: CONFIG_DESCENDING.IS_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
 						scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_TRUC_TIEP],
-						customerUuid: (_customerUuid as string) || '',
+						customerUuid: customerUuid,
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
 						isCreateBatch: null,
 						productTypeUuid: (_productTypeUuid as string) || '',
@@ -258,7 +249,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 					isDescending: CONFIG_DESCENDING.IS_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.TABLE,
 					scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_TRUC_TIEP],
-					customerUuid: (_customerUuid as string) || '',
+					customerUuid: customerUuid,
 					isBatch: !!_isBatch ? Number(_isBatch) : null,
 					isCreateBatch: null,
 					productTypeUuid: (_productTypeUuid as string) || '',
@@ -340,14 +331,14 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 							]}
 						/>
 					</div>
-					<FilterCustom
-						isSearch
-						name='Khách hàng'
-						query='_customerUuid'
-						listFilter={listCustomer?.data?.map((v: any) => ({
-							id: v?.uuid,
+					<SelectFilterMany
+						selectedIds={customerUuid}
+						setSelectedIds={setCustomerUuid}
+						listData={listCustomer?.data?.map((v: any) => ({
+							uuid: v?.uuid,
 							name: v?.name,
 						}))}
+						name='Khách hàng'
 					/>
 					<FilterCustom
 						isSearch
@@ -710,7 +701,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 						dependencies={[
 							_pageSize,
 							_keyword,
-							_customerUuid,
+							customerUuid,
 							_isBatch,
 							_productTypeUuid,
 							_state,

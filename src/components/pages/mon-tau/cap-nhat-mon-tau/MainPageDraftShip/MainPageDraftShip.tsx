@@ -41,6 +41,7 @@ import FormUpdateDraftShip from '../FormUpdateDraftShip';
 import {ITableBillScale} from '~/components/pages/duyet-phieu/PageConfirmBill/interfaces';
 import clsx from 'clsx';
 import SelectFilterState from '~/components/common/SelectFilterState';
+import SelectFilterMany from '~/components/common/SelectFilterMany';
 
 function MainPageDraftShip({}: PropsMainPageDraftShip) {
 	const router = useRouter();
@@ -51,7 +52,6 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 		_keyword,
 		_isBatch,
 		_isShift,
-		_customerUuid,
 		_status,
 		_productTypeUuid,
 		_specUuid,
@@ -65,6 +65,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 
 	const [dataWeightSessionSubmit, setDataWeightSessionSubmit] = useState<any>();
 	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
+	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
@@ -136,7 +137,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 			_page,
 			_pageSize,
 			_keyword,
-			_customerUuid,
+			customerUuid,
 			_isBatch,
 			_productTypeUuid,
 			_state,
@@ -159,7 +160,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 						isDescending: CONFIG_DESCENDING.IS_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
 						scalesType: [TYPE_SCALES.CAN_XUAT, TYPE_SCALES.CAN_CHUYEN_KHO],
-						customerUuid: (_customerUuid as string) || '',
+						customerUuid: customerUuid,
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
 						isCreateBatch: null,
 						productTypeUuid: (_productTypeUuid as string) || '',
@@ -263,15 +264,16 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 						/>
 					</div>
 
-					<FilterCustom
-						isSearch
-						name='Khách hàng'
-						query='_customerUuid'
-						listFilter={listCustomer?.data?.map((v: any) => ({
-							id: v?.uuid,
+					<SelectFilterMany
+						selectedIds={customerUuid}
+						setSelectedIds={setCustomerUuid}
+						listData={listCustomer?.data?.map((v: any) => ({
+							uuid: v?.uuid,
 							name: v?.name,
 						}))}
+						name='Khách hàng'
 					/>
+
 					<FilterCustom
 						isSearch
 						name='Loại hàng'
@@ -494,7 +496,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 						_pageSize,
 						_keyword,
 						_isBatch,
-						_customerUuid,
+						customerUuid,
 						_productTypeUuid,
 						_specUuid,
 						_dateFrom,

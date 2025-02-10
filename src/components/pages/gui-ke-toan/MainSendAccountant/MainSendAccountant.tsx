@@ -50,12 +50,14 @@ import {convertCoin} from '~/common/funcs/convertCoin';
 import batchBillServices from '~/services/batchBillServices';
 import {ITableBillScale} from '../../duyet-phieu/PageConfirmBill/interfaces';
 import StateActive from '~/components/common/StateActive';
+import SelectFilterMany from '~/components/common/SelectFilterMany';
 
 function MainSendAccountant({}: PropsMainSendAccountant) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 
 	const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 
 	const {
 		_page,
@@ -63,7 +65,6 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 		_keyword,
 		_isBatch,
 		_isShift,
-		_customerUuid,
 		_status,
 		_productTypeUuid,
 		_specUuid,
@@ -283,7 +284,7 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 			_page,
 			_pageSize,
 			_keyword,
-			_customerUuid,
+			customerUuid,
 			_isBatch,
 			_productTypeUuid,
 			_state,
@@ -304,7 +305,7 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 						isDescending: CONFIG_DESCENDING.IS_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
 						scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_TRUC_TIEP],
-						customerUuid: (_customerUuid as string) || '',
+						customerUuid: customerUuid,
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
 						isCreateBatch: null,
 						productTypeUuid: (_productTypeUuid as string) || '',
@@ -475,14 +476,14 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 						/>
 					</div>
 
-					<FilterCustom
-						isSearch
-						name='Khách hàng'
-						query='_customerUuid'
-						listFilter={listCustomer?.data?.map((v: any) => ({
-							id: v?.uuid,
+					<SelectFilterMany
+						selectedIds={customerUuid}
+						setSelectedIds={setCustomerUuid}
+						listData={listCustomer?.data?.map((v: any) => ({
+							uuid: v?.uuid,
 							name: v?.name,
 						}))}
+						name='Khách hàng'
 					/>
 					<FilterCustom
 						isSearch
@@ -800,7 +801,7 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 							_pageSize,
 							_keyword,
 							_isBatch,
-							_customerUuid,
+							customerUuid,
 							_productTypeUuid,
 							_specUuid,
 							_dateFrom,
