@@ -26,10 +26,11 @@ import {convertWeight, timeSubmit} from '~/common/funcs/optionConvert';
 import customerServices from '~/services/customerServices';
 import storageServices from '~/services/storageServices';
 import companyServices from '~/services/companyServices';
+import SelectFilterMany from '../SelectFilterMany';
 
 function ChartImportCompany({}: PropsChartImportCompany) {
 	const [isShowBDMT, setIsShowBDMT] = useState<string>(String(TYPE_SHOW_BDMT.MT));
-	const [customerUuid, setCustomerUuid] = useState<string>('');
+	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 	const [storageUuid, setStorageUuid] = useState<string>('');
 	const [typeDate, setTypeDate] = useState<number | null>(TYPE_DATE.LAST_7_DAYS);
 	const [date, setDate] = useState<{
@@ -212,9 +213,9 @@ function ChartImportCompany({}: PropsChartImportCompany) {
 						]}
 						placeholder='Tấn hàng'
 					/>
-					<SelectFilterOption
-						uuid={customerUuid}
-						setUuid={setCustomerUuid}
+					<SelectFilterMany
+						selectedIds={customerUuid}
+						setSelectedIds={setCustomerUuid}
 						listData={listCustomer?.data?.map((v: any) => ({
 							uuid: v?.uuid,
 							name: v?.name,
