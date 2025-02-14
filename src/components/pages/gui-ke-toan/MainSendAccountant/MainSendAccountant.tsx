@@ -51,6 +51,7 @@ import batchBillServices from '~/services/batchBillServices';
 import {ITableBillScale} from '../../duyet-phieu/PageConfirmBill/interfaces';
 import StateActive from '~/components/common/StateActive';
 import SelectFilterMany from '~/components/common/SelectFilterMany';
+import truckServices from '~/services/truckServices';
 
 function MainSendAccountant({}: PropsMainSendAccountant) {
 	const router = useRouter();
@@ -77,6 +78,7 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 
 	const [dataWeightSessionSubmit, setDataWeightSessionSubmit] = useState<any[]>([]);
 	const [openSentData, setOpenSentData] = useState<boolean>(false);
+	const [truckUuid, setTruckUuid] = useState<string[]>([]);
 
 	const [loading, setLoading] = useState<boolean>(false);
 	const [weightSessions, setWeightSessions] = useState<any[]>([]);
@@ -139,6 +141,25 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
 					status: CONFIG_STATUS.HOAT_DONG,
 					qualityUuid: '',
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
+	const listTruck = useQuery([QUERY_KEY.dropdown_xe_hang], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: truckServices.listTruck({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
 				}),
 			}),
 		select(data) {
@@ -292,6 +313,7 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 			_dateTo,
 			_scalesStationUuid,
 			_storageUuid,
+			truckUuid,
 		],
 		{
 			queryFn: () =>
@@ -321,6 +343,7 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
 						isHaveDryness: TYPE_ACTION_AUDIT.HAVE_DRY,
+						truckUuid: truckUuid,
 					}),
 				}),
 			onSuccess(data) {
@@ -484,6 +507,15 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 							name: v?.name,
 						}))}
 						name='Khách hàng'
+					/>
+					<SelectFilterMany
+						selectedIds={truckUuid}
+						setSelectedIds={setTruckUuid}
+						listData={listTruck?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.licensePalate,
+						}))}
+						name='Biển số xe'
 					/>
 					<FilterCustom
 						isSearch
@@ -811,6 +843,7 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 							_storageUuid,
 							_scalesStationUuid,
 							_state,
+							truckUuid,
 						]}
 					/>
 				)}

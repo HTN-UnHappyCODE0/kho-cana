@@ -47,6 +47,7 @@ import FormAccessSpecExcel from '../../phieu-can/MainDetailScales/components/For
 import Popup from '~/components/common/Popup';
 import SelectFilterState from '~/components/common/SelectFilterState';
 import SelectFilterMany from '~/components/common/SelectFilterMany';
+import truckServices from '~/services/truckServices';
 
 function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 	const router = useRouter();
@@ -60,6 +61,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 	const [uuidQLKConfirm, setUuidQLKConfirm] = useState<string[]>([]);
 	const [openExportExcel, setOpenExportExcel] = useState<boolean>(false);
 	const [listBatchBill, setListBatchBill] = useState<any[]>([]);
+	const [truckUuid, setTruckUuid] = useState<string[]>([]);
 	const [total, setTotal] = useState<number>(0);
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
@@ -79,6 +81,25 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 					typeCus: null,
 					provinceId: '',
 					specUuid: '',
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
+	const listTruck = useQuery([QUERY_KEY.dropdown_xe_hang], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: truckServices.listTruck({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
 				}),
 			}),
 		select(data) {
@@ -166,6 +187,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 			_scalesStationUuid,
 			_storageUuid,
 			isHaveDryness,
+			truckUuid,
 		],
 		{
 			queryFn: () =>
@@ -195,6 +217,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
+						truckUuid: truckUuid,
 					}),
 				}),
 			onSuccess(data) {
@@ -268,6 +291,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 					storageUuid: (_storageUuid as string) || '',
 					isExportSpec: isHaveSpec,
 					isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
+					truckUuid: truckUuid,
 				}),
 			});
 		},
@@ -337,6 +361,15 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 							name: v?.name,
 						}))}
 						name='Khách hàng'
+					/>
+					<SelectFilterMany
+						selectedIds={truckUuid}
+						setSelectedIds={setTruckUuid}
+						listData={listTruck?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.licensePalate,
+						}))}
+						name='Biển số xe'
 					/>
 					<FilterCustom
 						isSearch
@@ -708,6 +741,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 							_scalesStationUuid,
 							_storageUuid,
 							isHaveDryness,
+							truckUuid,
 						]}
 					/>
 				)}

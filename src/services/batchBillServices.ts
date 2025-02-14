@@ -29,6 +29,7 @@ const batchBillServices = {
 			storageUuid: string | null;
 			isHaveDryness?: number | null;
 			typeProduct?: number;
+			truckUuid: string[];
 		},
 		tokenAxios?: any
 	) => {
@@ -247,6 +248,7 @@ const batchBillServices = {
 			documentId: string;
 			isExportSpec?: number | null;
 			isHaveDryness?: number | null;
+			truckUuid: string[];
 		},
 		tokenAxios?: any
 	) => {

@@ -34,6 +34,7 @@ import storageServices from '~/services/storageServices';
 import customerServices from '~/services/customerServices';
 import useDebounce from '~/common/hooks/useDebounce';
 import scalesStationServices from '~/services/scalesStationServices';
+import SelectFilterMany from '~/components/common/SelectFilterMany';
 
 function TableDetail({}: PropsTableDetail) {
 	const router = useRouter();
@@ -43,7 +44,6 @@ function TableDetail({}: PropsTableDetail) {
 		_page,
 		_pageSize,
 		_keyword,
-		_truckUuid,
 		_specUuid,
 		_status,
 		_dateFrom,
@@ -57,6 +57,7 @@ function TableDetail({}: PropsTableDetail) {
 	} = router.query;
 
 	const [uuidDescription, setUuidDescription] = useState<string>('');
+	const [truckUuid, setTruckUuid] = useState<string[]>([]);
 
 	const [byFilter, setByFilter] = useState<boolean>(false);
 	const [formCode, setFormCode] = useState<{codeStart: string; codeEnd: string}>({
@@ -202,7 +203,7 @@ function TableDetail({}: PropsTableDetail) {
 			_page,
 			_pageSize,
 			_keyword,
-			_truckUuid,
+			truckUuid,
 			_specUuid,
 			_status,
 			_dateFrom,
@@ -251,7 +252,7 @@ function TableDetail({}: PropsTableDetail) {
 									STATUS_WEIGHT_SESSION.KCS_XONG,
 									STATUS_WEIGHT_SESSION.DA_HUY,
 							  ],
-						truckUuid: !!_truckUuid ? (_truckUuid as string) : '',
+						truckUuid: truckUuid,
 						shipUuid: (_shipUuid as string) || '',
 						shift: !!_shift ? Number(_shift) : null,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
@@ -332,14 +333,14 @@ function TableDetail({}: PropsTableDetail) {
 								}))}
 							/> */}
 
-							<FilterCustom
-								isSearch
-								name='Biển số xe'
-								query='_truckUuid'
-								listFilter={listTruck?.data?.map((v: any) => ({
-									id: v?.uuid,
+							<SelectFilterMany
+								selectedIds={truckUuid}
+								setSelectedIds={setTruckUuid}
+								listData={listCustomer?.data?.map((v: any) => ({
+									uuid: v?.uuid,
 									name: v?.licensePalate,
 								}))}
+								name='Biển số xe'
 							/>
 							<div className={styles.filter}>
 								<FilterCustom
@@ -609,7 +610,7 @@ function TableDetail({}: PropsTableDetail) {
 						_id,
 						_pageSize,
 						_keyword,
-						_truckUuid,
+						truckUuid,
 						_specUuid,
 						_status,
 						_dateFrom,

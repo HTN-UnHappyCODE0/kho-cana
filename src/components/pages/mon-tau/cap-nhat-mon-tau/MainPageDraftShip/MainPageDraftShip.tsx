@@ -42,6 +42,7 @@ import {ITableBillScale} from '~/components/pages/duyet-phieu/PageConfirmBill/in
 import clsx from 'clsx';
 import SelectFilterState from '~/components/common/SelectFilterState';
 import SelectFilterMany from '~/components/common/SelectFilterMany';
+import truckServices from '~/services/truckServices';
 
 function MainPageDraftShip({}: PropsMainPageDraftShip) {
 	const router = useRouter();
@@ -66,6 +67,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 	const [dataWeightSessionSubmit, setDataWeightSessionSubmit] = useState<any>();
 	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
+	const [truckUuid, setTruckUuid] = useState<string[]>([]);
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
@@ -147,6 +149,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 			_storageUuid,
 			_typeProduct,
 			isHaveDryness,
+			truckUuid,
 		],
 		{
 			queryFn: () =>
@@ -177,6 +180,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 						storageUuid: (_storageUuid as string) || '',
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 						typeProduct: TYPE_PRODUCT.CONG_TY,
+						truckUuid: truckUuid,
 					}),
 				}),
 
@@ -187,6 +191,25 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 			},
 		}
 	);
+
+	const listTruck = useQuery([QUERY_KEY.dropdown_xe_hang], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: truckServices.listTruck({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
 
 	const listStorage = useQuery([QUERY_KEY.table_bai], {
 		queryFn: () =>
@@ -272,6 +295,16 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 							name: v?.name,
 						}))}
 						name='Khách hàng'
+					/>
+
+					<SelectFilterMany
+						selectedIds={truckUuid}
+						setSelectedIds={setTruckUuid}
+						listData={listTruck?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.licensePalate,
+						}))}
+						name='Biển số xe'
 					/>
 
 					<FilterCustom
@@ -508,6 +541,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 						_state,
 						_typeProduct,
 						isHaveDryness,
+						truckUuid,
 					]}
 				/>
 			</div>
