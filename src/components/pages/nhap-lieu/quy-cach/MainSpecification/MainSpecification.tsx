@@ -236,7 +236,7 @@ function MainSpecification({}: PropsMainSpecification) {
 							STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
 						],
 						isHaveSpec: !!_isHaveSpec ? Number(_isHaveSpec) : null,
-						truckUuid: '',
+						truckUuid: [],
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
 						customerUuid: _customerUuid ? (_customerUuid as string) : '',

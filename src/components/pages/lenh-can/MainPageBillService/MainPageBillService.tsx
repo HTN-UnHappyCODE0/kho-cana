@@ -49,12 +49,14 @@ import scalesStationServices from '~/services/scalesStationServices';
 import FormUpdateShipBill from '../FormUpdateShipBill';
 import SelectFilterState from '~/components/common/SelectFilterState';
 import SelectFilterMany from '~/components/common/SelectFilterMany';
+import truckServices from '~/services/truckServices';
 
 function MainPageBillService({}: PropsMainPageBillService) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 	const [uuidPlay, setUuidPlay] = useState<string>('');
 	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
+	const [truckUuid, setTruckUuid] = useState<string[]>([]);
 
 	const {_page, _pageSize, _keyword, _productTypeUuid, _shipUuid, _status, _scalesStationUuid, _dateFrom, _dateTo, _storageUuid} =
 		router.query;
@@ -133,6 +135,25 @@ function MainPageBillService({}: PropsMainPageBillService) {
 		},
 	});
 
+	const listTruck = useQuery([QUERY_KEY.dropdown_xe_hang], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: truckServices.listTruck({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
 	const listProductType = useQuery([QUERY_KEY.dropdown_loai_go], {
 		queryFn: () =>
 			httpRequest({
@@ -187,6 +208,7 @@ function MainPageBillService({}: PropsMainPageBillService) {
 			_storageUuid,
 			_scalesStationUuid,
 			isHaveDryness,
+			truckUuid,
 		],
 		{
 			queryFn: () =>
@@ -216,6 +238,7 @@ function MainPageBillService({}: PropsMainPageBillService) {
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
+						truckUuid: truckUuid,
 					}),
 				}),
 			select(data) {
@@ -282,6 +305,16 @@ function MainPageBillService({}: PropsMainPageBillService) {
 							name: v?.name,
 						}))}
 						name='Khách hàng'
+					/>
+
+					<SelectFilterMany
+						selectedIds={truckUuid}
+						setSelectedIds={setTruckUuid}
+						listData={listTruck?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.licensePalate,
+						}))}
+						name='Biển số xe'
 					/>
 
 					<FilterCustom
@@ -591,6 +624,7 @@ function MainPageBillService({}: PropsMainPageBillService) {
 						_storageUuid,
 						_scalesStationUuid,
 						isHaveDryness,
+						truckUuid,
 					]}
 				/>
 			</div>

@@ -120,6 +120,7 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 					scalesStationUuid: '',
 					storageUuid: '',
 					isHaveDryness: TYPE_ACTION_AUDIT.HAVE_DRY,
+					truckUuid: [],
 				}),
 			}),
 		onSuccess(data) {

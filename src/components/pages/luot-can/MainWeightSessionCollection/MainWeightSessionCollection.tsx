@@ -83,7 +83,7 @@ function MainWeightSessionCollection({}: PropsMainWeightSessionCollection) {
 						codeStart: null,
 						specUuid: '',
 						status: [],
-						truckUuid: '',
+						truckUuid: [],
 						shift: null,
 						shipUuid: '',
 					}),

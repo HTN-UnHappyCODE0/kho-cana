@@ -18,7 +18,9 @@ function SelectFilterMany({selectedIds, setSelectedIds, listData, name, isShowAl
 
 	const filteredData = useMemo(() => {
 		const searchKey = removeVietnameseTones(keyword).toLowerCase();
-		return Array.isArray(listData) ? listData.filter((v) => removeVietnameseTones(v.name).toLowerCase().includes(searchKey)) : [];
+		return Array.isArray(listData)
+			? listData.filter((v) => v.name && removeVietnameseTones(v.name).toLowerCase().includes(searchKey))
+			: [];
 	}, [keyword, listData]);
 
 	const handleSelectItem = (uuid: string) => {

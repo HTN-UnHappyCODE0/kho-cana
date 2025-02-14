@@ -255,7 +255,7 @@ function MainDryness({}: PropsMainDryness) {
 							STATUS_WEIGHT_SESSION.KCS_XONG,
 							STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
 						],
-						truckUuid: '',
+						truckUuid: [],
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
 						customerUuid: _customerUuid ? (_customerUuid as string) : '',

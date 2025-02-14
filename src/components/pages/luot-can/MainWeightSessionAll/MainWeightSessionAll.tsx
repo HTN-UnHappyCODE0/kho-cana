@@ -40,6 +40,7 @@ import storageServices from '~/services/storageServices';
 import shipServices from '~/services/shipServices';
 import StateActive from '~/components/common/StateActive';
 import scalesStationServices from '~/services/scalesStationServices';
+import SelectFilterMany from '~/components/common/SelectFilterMany';
 
 function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 	const router = useRouter();
@@ -47,7 +48,6 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 		_page,
 		_pageSize,
 		_keyword,
-		_truckUuid,
 		_specUuid,
 		_status,
 		_dateFrom,
@@ -65,6 +65,7 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 		codeStart: '',
 		codeEnd: '',
 	});
+	const [truckUuid, setTruckUuid] = useState<string[]>([]);
 
 	const debounceCodeStart = useDebounce(formCode.codeStart, 500);
 	const debounceCodeEnd = useDebounce(formCode.codeEnd, 500);
@@ -201,7 +202,7 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 			_page,
 			_pageSize,
 			_keyword,
-			_truckUuid,
+			truckUuid,
 			_specUuid,
 			_status,
 			_dateFrom,
@@ -248,7 +249,7 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 									STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
 									STATUS_WEIGHT_SESSION.KCS_XONG,
 							  ],
-						truckUuid: !!_truckUuid ? (_truckUuid as string) : '',
+						truckUuid: truckUuid,
 						shipUuid: (_shipUuid as string) || '',
 						shift: !!_shift ? Number(_shift) : null,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
@@ -267,7 +268,7 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 			_page,
 			_pageSize,
 			_keyword,
-			_truckUuid,
+			truckUuid,
 			_specUuid,
 			_status,
 			_dateFrom,
@@ -313,7 +314,7 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 									STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
 									STATUS_WEIGHT_SESSION.KCS_XONG,
 							  ],
-						truckUuid: !!_truckUuid ? (_truckUuid as string) : '',
+						truckUuid: truckUuid,
 						shift: !!_shift ? Number(_shift) : null,
 						shipUuid: (_shipUuid as string) || '',
 						scalesStationUuid: (_scalesStationUuid as string) || '',
@@ -377,7 +378,7 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 							}))}
 						/>
 
-						<FilterCustom
+						{/* <FilterCustom
 							isSearch
 							name='Biển số xe'
 							query='_truckUuid'
@@ -385,6 +386,15 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 								id: v?.uuid,
 								name: v?.licensePalate,
 							}))}
+						/> */}
+						<SelectFilterMany
+							selectedIds={truckUuid}
+							setSelectedIds={setTruckUuid}
+							listData={listTruck?.data?.map((v: any) => ({
+								uuid: v?.uuid,
+								name: v?.licensePalate,
+							}))}
+							name='Biển số xe'
 						/>
 						<div className={styles.filter}>
 							<FilterCustom
@@ -719,7 +729,7 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 					dependencies={[
 						_pageSize,
 						_keyword,
-						_truckUuid,
+						truckUuid,
 						_specUuid,
 						_status,
 						_dateFrom,

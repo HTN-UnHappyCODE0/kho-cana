@@ -49,12 +49,14 @@ import FormUpdateShipBill from '../../lenh-can/FormUpdateShipBill';
 import FormAccessSpecExcel from '../MainDetailScales/components/FormAccessSpecExcel';
 import SelectFilterState from '~/components/common/SelectFilterState';
 import SelectFilterMany from '~/components/common/SelectFilterMany';
+import truckServices from '~/services/truckServices';
 
 function MainPageScalesImport({}: PropsMainPageScalesImport) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
+	const [truckUuid, setTruckUuid] = useState<string[]>([]);
 
 	const {
 		_page,
@@ -146,6 +148,25 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 		},
 	});
 
+	const listTruck = useQuery([QUERY_KEY.dropdown_xe_hang], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: truckServices.listTruck({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
 	const listScalesStation = useQuery([QUERY_KEY.table_tram_can], {
 		queryFn: () =>
 			httpRequest({
@@ -202,6 +223,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 			_storageUuid,
 			_scalesStationUuid,
 			isHaveDryness,
+			truckUuid,
 		],
 		{
 			queryFn: () =>
@@ -249,6 +271,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
+						truckUuid: truckUuid,
 					}),
 				}),
 			onSuccess(data) {
@@ -358,6 +381,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 					storageUuid: (_storageUuid as string) || '',
 					isExportSpec: isHaveSpec,
 					isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
+					truckUuid: truckUuid,
 				}),
 			});
 		},
@@ -410,6 +434,15 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 							name: v?.name,
 						}))}
 						name='Khách hàng'
+					/>
+					<SelectFilterMany
+						selectedIds={truckUuid}
+						setSelectedIds={setTruckUuid}
+						listData={listTruck?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.licensePalate,
+						}))}
+						name='Biển số xe'
 					/>
 					<FilterCustom
 						isSearch
@@ -900,6 +933,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 							_storageUuid,
 							_scalesStationUuid,
 							isHaveDryness,
+							truckUuid,
 						]}
 					/>
 				)}

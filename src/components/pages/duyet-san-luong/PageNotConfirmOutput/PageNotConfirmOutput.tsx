@@ -48,6 +48,7 @@ import StateActive from '~/components/common/StateActive';
 import Moment from 'react-moment';
 import SelectFilterState from '~/components/common/SelectFilterState';
 import SelectFilterMany from '~/components/common/SelectFilterMany';
+import truckServices from '~/services/truckServices';
 
 function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 	const router = useRouter();
@@ -62,6 +63,7 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 	const [uuidKTKReject, setUuidKTKReject] = useState<string[]>([]);
 
 	const [listBatchBill, setListBatchBill] = useState<any[]>([]);
+	const [truckUuid, setTruckUuid] = useState<string[]>([]);
 	const [total, setTotal] = useState<number>(0);
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
@@ -81,6 +83,25 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 					typeCus: null,
 					provinceId: '',
 					specUuid: '',
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
+	const listTruck = useQuery([QUERY_KEY.dropdown_xe_hang], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: truckServices.listTruck({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
 				}),
 			}),
 		select(data) {
@@ -168,6 +189,7 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 			_scalesStationUuid,
 			_storageUuid,
 			isHaveDryness,
+			truckUuid,
 		],
 		{
 			queryFn: () =>
@@ -197,6 +219,7 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: (_storageUuid as string) || '',
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
+						truckUuid: truckUuid,
 					}),
 				}),
 			onSuccess(data) {
@@ -311,6 +334,15 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 							name: v?.name,
 						}))}
 						name='Khách hàng'
+					/>
+					<SelectFilterMany
+						selectedIds={truckUuid}
+						setSelectedIds={setTruckUuid}
+						listData={listTruck?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.licensePalate,
+						}))}
+						name='Biển số xe'
 					/>
 					<FilterCustom
 						isSearch
@@ -682,6 +714,7 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 							_dateTo,
 							_storageUuid,
 							isHaveDryness,
+							truckUuid,
 						]}
 					/>
 				)}

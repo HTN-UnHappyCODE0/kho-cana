@@ -42,6 +42,7 @@ import storageServices from '~/services/storageServices';
 import customerServices from '~/services/customerServices';
 import StateActive from '~/components/common/StateActive';
 import scalesStationServices from '~/services/scalesStationServices';
+import SelectFilterMany from '~/components/common/SelectFilterMany';
 
 function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 	const router = useRouter();
@@ -49,7 +50,6 @@ function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 		_page,
 		_pageSize,
 		_keyword,
-		_truckUuid,
 		_specUuid,
 		_dateFrom,
 		_dateTo,
@@ -62,6 +62,7 @@ function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 		_scalesStationUuid,
 	} = router.query;
 
+	const [truckUuid, setTruckUuid] = useState<string[]>([]);
 	const [byFilter, setByFilter] = useState<boolean>(false);
 	const [formCode, setFormCode] = useState<{codeStart: string; codeEnd: string}>({
 		codeStart: '',
@@ -204,7 +205,7 @@ function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 			_page,
 			_pageSize,
 			_keyword,
-			_truckUuid,
+			truckUuid,
 			_specUuid,
 			_status,
 			_dateFrom,
@@ -251,7 +252,7 @@ function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 									STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
 									STATUS_WEIGHT_SESSION.KCS_XONG,
 							  ],
-						truckUuid: !!_truckUuid ? (_truckUuid as string) : '',
+						truckUuid: truckUuid,
 						shipUuid: (_shipUuid as string) || '',
 						shift: !!_shift ? Number(_shift) : null,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
@@ -270,7 +271,7 @@ function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 			_page,
 			_pageSize,
 			_keyword,
-			_truckUuid,
+			truckUuid,
 			_specUuid,
 			_status,
 			_dateFrom,
@@ -316,7 +317,7 @@ function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 									STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
 									STATUS_WEIGHT_SESSION.KCS_XONG,
 							  ],
-						truckUuid: !!_truckUuid ? (_truckUuid as string) : '',
+						truckUuid: truckUuid,
 						shift: !!_shift ? Number(_shift) : null,
 						shipUuid: (_shipUuid as string) || '',
 						scalesStationUuid: (_scalesStationUuid as string) || '',
@@ -379,14 +380,14 @@ function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 							}))}
 						/>
 
-						<FilterCustom
-							isSearch
-							name='Biển số xe'
-							query='_truckUuid'
-							listFilter={listTruck?.data?.map((v: any) => ({
-								id: v?.uuid,
+						<SelectFilterMany
+							selectedIds={truckUuid}
+							setSelectedIds={setTruckUuid}
+							listData={listTruck?.data?.map((v: any) => ({
+								uuid: v?.uuid,
 								name: v?.licensePalate,
 							}))}
+							name='Biển số xe'
 						/>
 						<div className={styles.filter}>
 							<FilterCustom
@@ -676,7 +677,7 @@ function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 					dependencies={[
 						_pageSize,
 						_keyword,
-						_truckUuid,
+						truckUuid,
 						_specUuid,
 						_dateFrom,
 						_dateTo,
