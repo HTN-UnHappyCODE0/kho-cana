@@ -385,6 +385,12 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 								drynessAvg: x?.drynessAvg,
 								weightBdmt: x?.weightBdmt,
 							}))}
+						TypeQuality={listBatchBill
+							?.filter((v: any) => v?.isChecked == true)
+							?.every((v: any) => v?.qualityUu?.name?.toLowerCase().includes('trung quốc'))}
+						// TypeQuality={listBatchBill
+						// 	?.filter((v: any) => v?.isChecked == true)
+						// 	?.some((v: any) => v?.qualityUu?.name?.toLowerCase().includes('trung quốc'))}
 					/>
 				</div>
 
@@ -460,6 +466,10 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 											{
 												title: 'Loại hàng',
 												render: (data: ITableBillScale) => <>{data?.productTypeUu?.name || '---'}</>,
+											},
+											{
+												title: 'Quốc gia',
+												render: (data: ITableBillScale) => <>{data?.qualityUu?.name || '---'}</>,
 											},
 											{
 												title: 'Biển số xe',

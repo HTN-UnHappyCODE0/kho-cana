@@ -11,4 +11,5 @@ export interface PropsTemplateSampleSpec {
 		drynessAvg: number;
 		weightBdmt: number;
 	}[];
+	TypeQuality: boolean;
 }
