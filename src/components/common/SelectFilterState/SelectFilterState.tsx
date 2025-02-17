@@ -93,7 +93,7 @@ function SelectFilterState({uuid, setUuid, listData, placeholder, isShowAll = tr
 			>
 				<div className={styles.value}>
 					<p className={styles.name}>{placeholder && `${placeholder}:`}</p>
-					<p className={styles.text}>{uuid == '' ? 'tất cả' : listData?.find((v: any) => v?.uuid == uuid)?.name}</p>
+					<p className={styles.text}>{uuid == '' ? 'Tất cả' : listData?.find((v: any) => v?.uuid == uuid)?.name}</p>
 				</div>
 
 				<div className={styles.arrow}>

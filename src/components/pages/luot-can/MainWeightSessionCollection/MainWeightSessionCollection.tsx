@@ -45,7 +45,7 @@ function MainWeightSessionCollection({}: PropsMainWeightSessionCollection) {
 					storageUuid: '',
 					timeStart: _dateFrom ? (_dateFrom as string) : null,
 					timeEnd: _dateTo ? (_dateTo as string) : null,
-					truckUuid: '',
+					truckUuid: [],
 					customerUuid: '',
 					groupBy: 1,
 					productTypeUuid: '',

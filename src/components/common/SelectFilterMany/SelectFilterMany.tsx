@@ -52,6 +52,7 @@ function SelectFilterMany({selectedIds, setSelectedIds, listData, name, isShowAl
 			render={() => (
 				<div className={styles.main_option}>
 					<input
+						placeholder='Tìm kiếm...'
 						ref={inputSearchRef}
 						name='Tìm kiếm...'
 						className={styles.inputSearch}
@@ -96,7 +97,7 @@ function SelectFilterMany({selectedIds, setSelectedIds, listData, name, isShowAl
 					<p className={styles.name}>{name && `${name}:`}</p>
 					<p className={styles.selectedText}>
 						{selectedIds.length === 0
-							? name
+							? 'Tất cả'
 							: listData
 									.filter((v) => selectedIds.includes(v.uuid))
 									.map((v) => v.name)

@@ -336,7 +336,7 @@ function TableDetail({}: PropsTableDetail) {
 							<SelectFilterMany
 								selectedIds={truckUuid}
 								setSelectedIds={setTruckUuid}
-								listData={listCustomer?.data?.map((v: any) => ({
+								listData={listTruck?.data?.map((v: any) => ({
 									uuid: v?.uuid,
 									name: v?.licensePalate,
 								}))}
