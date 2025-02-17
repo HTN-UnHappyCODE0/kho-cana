@@ -42,7 +42,7 @@ function TableListTruck({}: PropsTableListTruck) {
 					storageUuid: '',
 					timeEnd: null,
 					timeStart: null,
-					truckUuid: '',
+					truckUuid: [],
 					customerUuid: '',
 					groupBy: 1,
 					productTypeUuid: '',
