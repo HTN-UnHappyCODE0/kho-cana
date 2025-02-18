@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {PropsChartImportCompany} from './interfaces';
 import styles from './ChartImportCompany.module.scss';
@@ -95,7 +95,7 @@ function ChartImportCompany({}: PropsChartImportCompany) {
 		},
 	});
 
-	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang_nhap], {
+	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang_nhap, uuidCompany], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -112,6 +112,7 @@ function ChartImportCompany({}: PropsChartImportCompany) {
 					typeCus: TYPE_CUSTOMER.NHA_CUNG_CAP,
 					provinceId: '',
 					specUuid: '',
+					companyUuid: uuidCompany,
 				}),
 			}),
 		select(data) {
@@ -192,11 +193,35 @@ function ChartImportCompany({}: PropsChartImportCompany) {
 		},
 	});
 
+	useEffect(() => {
+		if (uuidCompany) {
+			setCustomerUuid([]);
+		}
+	}, [uuidCompany]);
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.head}>
 				<h3>Biểu đồ thống kê hàng nhập</h3>
 				<div className={styles.filter}>
+					<SelectFilterOption
+						uuid={uuidCompany}
+						setUuid={setUuidCompanyFilter}
+						listData={listCompany?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						placeholder='Tất cả kv cảng xuất khẩu'
+					/>
+					<SelectFilterMany
+						selectedIds={customerUuid}
+						setSelectedIds={setCustomerUuid}
+						listData={listCustomer?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						placeholder='Tất cả nhà cung cấp'
+					/>
 					<SelectFilterOption
 						isShowAll={false}
 						uuid={isShowBDMT}
@@ -213,15 +238,7 @@ function ChartImportCompany({}: PropsChartImportCompany) {
 						]}
 						placeholder='Tấn hàng'
 					/>
-					<SelectFilterMany
-						selectedIds={customerUuid}
-						setSelectedIds={setCustomerUuid}
-						listData={listCustomer?.data?.map((v: any) => ({
-							uuid: v?.uuid,
-							name: v?.name,
-						}))}
-						placeholder='Tất cả nhà cung cấp'
-					/>
+
 					<SelectFilterOption
 						uuid={storageUuid}
 						setUuid={setStorageUuid}
@@ -232,15 +249,6 @@ function ChartImportCompany({}: PropsChartImportCompany) {
 						placeholder='Tất cả bãi'
 					/>
 					<SelectFilterDate isOptionDateAll={false} date={date} setDate={setDate} typeDate={typeDate} setTypeDate={setTypeDate} />
-					<SelectFilterOption
-						uuid={uuidCompany}
-						setUuid={setUuidCompanyFilter}
-						listData={listCompany?.data?.map((v: any) => ({
-							uuid: v?.uuid,
-							name: v?.name,
-						}))}
-						placeholder='Tất cả kv cảng xuất khẩu'
-					/>
 				</div>
 			</div>
 			<div className={styles.head_data}>
