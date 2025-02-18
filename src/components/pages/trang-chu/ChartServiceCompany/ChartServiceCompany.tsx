@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {PropsChartServiceCompany} from './interfaces';
 import styles from './ChartServiceCompany.module.scss';
@@ -95,7 +95,7 @@ function ChartServiceCompany({}: PropsChartServiceCompany) {
 		},
 	});
 
-	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang_dich_vu], {
+	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang_dich_vu, uuidCompany], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -112,6 +112,7 @@ function ChartServiceCompany({}: PropsChartServiceCompany) {
 					typeCus: TYPE_CUSTOMER.DICH_VU,
 					provinceId: '',
 					specUuid: '',
+					companyUuid: uuidCompany,
 				}),
 			}),
 		select(data) {
@@ -191,6 +192,12 @@ function ChartServiceCompany({}: PropsChartServiceCompany) {
 			});
 		},
 	});
+
+	useEffect(() => {
+		if (uuidCompany) {
+			setCustomerUuid([]);
+		}
+	}, [uuidCompany]);
 
 	return (
 		<div className={styles.container}>

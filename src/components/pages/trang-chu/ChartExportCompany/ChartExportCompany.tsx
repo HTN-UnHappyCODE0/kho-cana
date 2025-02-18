@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {PropsChartExportCompany} from './interfaces';
 import styles from './ChartExportCompany.module.scss';
@@ -95,7 +95,7 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 		},
 	});
 
-	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang_xuat], {
+	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang_xuat, uuidCompany], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -112,6 +112,7 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 					typeCus: TYPE_CUSTOMER.KH_XUAT,
 					provinceId: '',
 					specUuid: '',
+					companyUuid: uuidCompany,
 				}),
 			}),
 		select(data) {
@@ -191,6 +192,12 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 			});
 		},
 	});
+
+	useEffect(() => {
+		if (uuidCompany) {
+			setCustomerUuid([]);
+		}
+	}, [uuidCompany]);
 
 	return (
 		<div className={styles.container}>
