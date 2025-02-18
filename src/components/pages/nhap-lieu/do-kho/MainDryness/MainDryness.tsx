@@ -53,6 +53,7 @@ import FormUpdateWeighDryness from '../FormUpdateWeighDryness';
 import FormUpdateWeigh from '../../quy-cach/FormUpdateWeigh';
 import SelectFilterOption from '~/components/pages/trang-chu/SelectFilterOption';
 import SelectFilterState from '~/components/common/SelectFilterState';
+import SelectFilterMany from '~/components/common/SelectFilterMany';
 
 function MainDryness({}: PropsMainDryness) {
 	const router = useRouter();
@@ -66,7 +67,6 @@ function MainDryness({}: PropsMainDryness) {
 		_keyword,
 		_isBatch,
 		_isShift,
-		_customerUuid,
 		_storageUuid,
 		_status,
 		_productTypeUuid,
@@ -83,6 +83,7 @@ function MainDryness({}: PropsMainDryness) {
 	const [dataWeight, setDataWeight] = useState<any[]>([]);
 	const [status, setStatus] = useState<string>(String(STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE));
 	const [isHaveDryness, setIsHaveDryness] = useState<string>('0');
+	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 
 	const [weightSessions, setWeightSessions] = useState<any[]>([]);
 
@@ -219,7 +220,7 @@ function MainDryness({}: PropsMainDryness) {
 			_pageSize,
 			_keyword,
 			_isBatch,
-			_customerUuid,
+			customerUuid,
 			_productTypeUuid,
 			_specUuid,
 			_dateFrom,
@@ -259,7 +260,8 @@ function MainDryness({}: PropsMainDryness) {
 						listTruckUuid: [],
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
-						customerUuid: _customerUuid ? (_customerUuid as string) : '',
+						customerUuid: '',
+						listCustomerUuid: customerUuid,
 						productTypeUuid: _productTypeUuid ? (_productTypeUuid as string) : '',
 						shift: !!_isShift ? Number(_isShift) : null,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
@@ -573,14 +575,14 @@ function MainDryness({}: PropsMainDryness) {
 							]}
 						/> */}
 
-					<FilterCustom
-						isSearch
-						name='Khách hàng'
-						query='_customerUuid'
-						listFilter={listCustomer?.data?.map((v: any) => ({
-							id: v?.uuid,
+					<SelectFilterMany
+						selectedIds={customerUuid}
+						setSelectedIds={setCustomerUuid}
+						listData={listCustomer?.data?.map((v: any) => ({
+							uuid: v?.uuid,
 							name: v?.name,
 						}))}
+						name='Khách hàng'
 					/>
 					<FilterCustom
 						isSearch
@@ -764,7 +766,7 @@ function MainDryness({}: PropsMainDryness) {
 						_pageSize,
 						_keyword,
 						_isBatch,
-						_customerUuid,
+						customerUuid,
 						_productTypeUuid,
 						_specUuid,
 						_dateFrom,

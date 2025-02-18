@@ -42,6 +42,7 @@ import storageServices from '~/services/storageServices';
 import PositionContainer from '~/components/common/PositionContainer';
 import FormUpdateWeigh from '../FormUpdateWeigh';
 import clsx from 'clsx';
+import SelectFilterMany from '~/components/common/SelectFilterMany';
 
 function MainSpecification({}: PropsMainSpecification) {
 	const router = useRouter();
@@ -51,7 +52,6 @@ function MainSpecification({}: PropsMainSpecification) {
 		_pageSize,
 		_keyword,
 		_isBatch,
-		_customerUuid,
 		_storageUuid,
 		_scalesStationUuid,
 		_productTypeUuid,
@@ -68,6 +68,7 @@ function MainSpecification({}: PropsMainSpecification) {
 	const [weightSessions, setWeightSessions] = useState<any[]>([]);
 	const [total, setTotal] = useState<number>(0);
 	const [loading, setLoading] = useState<boolean>(false);
+	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
@@ -199,7 +200,7 @@ function MainSpecification({}: PropsMainSpecification) {
 			_pageSize,
 			_keyword,
 			_isBatch,
-			_customerUuid,
+			customerUuid,
 			_productTypeUuid,
 			_specUuid,
 			_dateFrom,
@@ -240,7 +241,8 @@ function MainSpecification({}: PropsMainSpecification) {
 						truckUuid: '',
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
-						customerUuid: _customerUuid ? (_customerUuid as string) : '',
+						customerUuid: '',
+						listCustomerUuid: customerUuid,
 						productTypeUuid: _productTypeUuid ? (_productTypeUuid as string) : '',
 						shift: !!_isShift ? Number(_isBatch) : null,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
@@ -365,14 +367,14 @@ function MainSpecification({}: PropsMainSpecification) {
 							]}
 						/>
 					</div>
-					<FilterCustom
-						isSearch
-						name='Khách hàng'
-						query='_customerUuid'
-						listFilter={listCustomer?.data?.map((v: any) => ({
-							id: v?.uuid,
+					<SelectFilterMany
+						selectedIds={customerUuid}
+						setSelectedIds={setCustomerUuid}
+						listData={listCustomer?.data?.map((v: any) => ({
+							uuid: v?.uuid,
 							name: v?.name,
 						}))}
+						name='Khách hàng'
 					/>
 					<FilterCustom
 						isSearch
@@ -573,7 +575,7 @@ function MainSpecification({}: PropsMainSpecification) {
 							_pageSize,
 							_keyword,
 							_isBatch,
-							_customerUuid,
+							customerUuid,
 							_productTypeUuid,
 							_specUuid,
 							_dateFrom,
