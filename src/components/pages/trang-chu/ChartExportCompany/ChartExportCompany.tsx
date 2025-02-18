@@ -205,6 +205,24 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 				<h3>Biểu đồ thống kê hàng xuất</h3>
 				<div className={styles.filter}>
 					<SelectFilterOption
+						uuid={uuidCompany}
+						setUuid={setUuidCompanyFilter}
+						listData={listCompany?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						placeholder='Tất cả kv cảng xuất khẩu'
+					/>
+					<SelectFilterMany
+						selectedIds={customerUuid}
+						setSelectedIds={setCustomerUuid}
+						listData={listCustomer?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						placeholder='Tất cả nhà cung cấp'
+					/>
+					<SelectFilterOption
 						isShowAll={false}
 						uuid={isShowBDMT}
 						setUuid={setIsShowBDMT}
@@ -220,15 +238,7 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 						]}
 						placeholder='Tấn hàng'
 					/>
-					<SelectFilterMany
-						selectedIds={customerUuid}
-						setSelectedIds={setCustomerUuid}
-						listData={listCustomer?.data?.map((v: any) => ({
-							uuid: v?.uuid,
-							name: v?.name,
-						}))}
-						placeholder='Tất cả nhà cung cấp'
-					/>
+
 					<SelectFilterOption
 						uuid={storageUuid}
 						setUuid={setStorageUuid}
@@ -239,15 +249,6 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 						placeholder='Tất cả bãi'
 					/>
 					<SelectFilterDate isOptionDateAll={false} date={date} setDate={setDate} typeDate={typeDate} setTypeDate={setTypeDate} />
-					<SelectFilterOption
-						uuid={uuidCompany}
-						setUuid={setUuidCompanyFilter}
-						listData={listCompany?.data?.map((v: any) => ({
-							uuid: v?.uuid,
-							name: v?.name,
-						}))}
-						placeholder='Tất cả kv cảng xuất khẩu'
-					/>
 				</div>
 			</div>
 			<div className={styles.head_data}>

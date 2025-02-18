@@ -4,6 +4,7 @@
 	position: relative;
 	max-height: 100vh;
 	min-height: 100vh;
+	min-width: 660px;
 	background: #fff;
 	display: flex;
 	flex-direction: column;
@@ -93,5 +94,11 @@
 		flex-direction: column;
 		overflow: auto;
 		margin-top: 16px;
+	}
+}
+
+@media (max-width: $widthMobile) {
+	.container {
+		min-width: 100vw;
 	}
 }
