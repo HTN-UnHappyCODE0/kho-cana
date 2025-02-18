@@ -49,7 +49,6 @@ function TableDetail({}: PropsTableDetail) {
 		_status,
 		_dateFrom,
 		_dateTo,
-		_customerUuid,
 		_storageUuid,
 		_isBatch,
 		_shipUuid,
@@ -64,7 +63,7 @@ function TableDetail({}: PropsTableDetail) {
 		codeStart: '',
 		codeEnd: '',
 	});
-
+	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 	const debounceCodeStart = useDebounce(formCode.codeStart, 500);
 	const debounceCodeEnd = useDebounce(formCode.codeEnd, 500);
 
@@ -211,7 +210,7 @@ function TableDetail({}: PropsTableDetail) {
 			byFilter,
 			debounceCodeStart,
 			debounceCodeEnd,
-			_customerUuid,
+			customerUuid,
 			_storageUuid,
 			_isBatch,
 			_shipUuid,
@@ -235,7 +234,8 @@ function TableDetail({}: PropsTableDetail) {
 						storageUuid: (_storageUuid as string) || '',
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
-						customerUuid: (_customerUuid as string) || '',
+						customerUuid: '',
+						listCustomerUuid: customerUuid,
 						productTypeUuid: '',
 						billUuid: (_id as string) || '',
 						codeEnd: byFilter && !!debounceCodeEnd ? Number(debounceCodeEnd) : null,
@@ -313,15 +313,15 @@ function TableDetail({}: PropsTableDetail) {
 								<Search type='number' keyName='_shift' placeholder='Tìm kiếm theo ca' />
 							</div>
 
-							{/* <FilterCustom
-								isSearch
-								name='Khách hàng'
-								query='_customerUuid'
-								listFilter={listCustomer?.data?.map((v: any) => ({
-									id: v?.uuid,
-									name: v?.name,
-								}))}
-							/>
+							{/* <SelectFilterMany
+						selectedIds={customerUuid}
+						setSelectedIds={setCustomerUuid}
+						listData={listCustomer?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						name='Khách hàng'
+					/>
 
 							
 							{/* <FilterCustom
@@ -665,7 +665,7 @@ function TableDetail({}: PropsTableDetail) {
 						byFilter,
 						debounceCodeStart,
 						debounceCodeEnd,
-						_customerUuid,
+						customerUuid,
 						_storageUuid,
 						_isBatch,
 						_shipUuid,

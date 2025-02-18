@@ -53,7 +53,6 @@ function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 		_specUuid,
 		_dateFrom,
 		_dateTo,
-		_customerUuid,
 		_shipUuid,
 		_storageUuid,
 		_isBatch,
@@ -68,7 +67,7 @@ function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 		codeStart: '',
 		codeEnd: '',
 	});
-
+	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 	const debounceCodeStart = useDebounce(formCode.codeStart, 500);
 	const debounceCodeEnd = useDebounce(formCode.codeEnd, 500);
 
@@ -213,7 +212,7 @@ function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 			byFilter,
 			debounceCodeStart,
 			debounceCodeEnd,
-			_customerUuid,
+			customerUuid,
 			_storageUuid,
 			_isBatch,
 			_shipUuid,
@@ -236,7 +235,8 @@ function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 						storageUuid: (_storageUuid as string) || '',
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
-						customerUuid: (_customerUuid as string) || '',
+						customerUuid: '',
+						listCustomerUuid: customerUuid,
 						productTypeUuid: '',
 						billUuid: '',
 						codeEnd: byFilter && !!debounceCodeEnd ? Number(debounceCodeEnd) : null,
@@ -280,7 +280,7 @@ function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 			byFilter,
 			debounceCodeStart,
 			debounceCodeEnd,
-			_customerUuid,
+			customerUuid,
 			_storageUuid,
 			_isBatch,
 			_shipUuid,
@@ -303,7 +303,8 @@ function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 						storageUuid: (_storageUuid as string) || '',
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
-						customerUuid: (_customerUuid as string) || '',
+						customerUuid: '',
+						listCustomerUuid: customerUuid,
 						productTypeUuid: '',
 						billUuid: '',
 						codeEnd: byFilter && !!debounceCodeEnd ? Number(debounceCodeEnd) : null,
@@ -343,14 +344,14 @@ function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 							<Search type='number' keyName='_shift' placeholder='Tìm kiếm theo ca' />
 						</div>
 
-						<FilterCustom
-							isSearch
-							name='Khách hàng'
-							query='_customerUuid'
-							listFilter={listCustomer?.data?.map((v: any) => ({
-								id: v?.uuid,
+						<SelectFilterMany
+							selectedIds={customerUuid}
+							setSelectedIds={setCustomerUuid}
+							listData={listCustomer?.data?.map((v: any) => ({
+								uuid: v?.uuid,
 								name: v?.name,
 							}))}
+							name='Khách hàng'
 						/>
 
 						<FilterCustom
@@ -686,7 +687,7 @@ function MainWeightSessionTransfer({}: PropsMainWeightSessionTransfer) {
 						byFilter,
 						debounceCodeStart,
 						debounceCodeEnd,
-						_customerUuid,
+						customerUuid,
 						_shipUuid,
 						_storageUuid,
 						_isBatch,

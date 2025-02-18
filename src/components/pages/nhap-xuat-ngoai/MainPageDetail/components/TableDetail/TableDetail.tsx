@@ -48,7 +48,6 @@ function TableDetail({}: PropsTableDetail) {
 		_status,
 		_dateFrom,
 		_dateTo,
-		_customerUuid,
 		_storageUuid,
 		_isBatch,
 		_shipUuid,
@@ -58,7 +57,7 @@ function TableDetail({}: PropsTableDetail) {
 
 	const [uuidDescription, setUuidDescription] = useState<string>('');
 	const [truckUuid, setTruckUuid] = useState<string[]>([]);
-
+	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 	const [byFilter, setByFilter] = useState<boolean>(false);
 	const [formCode, setFormCode] = useState<{codeStart: string; codeEnd: string}>({
 		codeStart: '',
@@ -211,7 +210,7 @@ function TableDetail({}: PropsTableDetail) {
 			byFilter,
 			debounceCodeStart,
 			debounceCodeEnd,
-			_customerUuid,
+			customerUuid,
 			_storageUuid,
 			_isBatch,
 			_shipUuid,
@@ -235,7 +234,8 @@ function TableDetail({}: PropsTableDetail) {
 						storageUuid: (_storageUuid as string) || '',
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
-						customerUuid: (_customerUuid as string) || '',
+						customerUuid: '',
+						listCustomerUuid: customerUuid,
 						productTypeUuid: '',
 						billUuid: (_id as string) || '',
 						codeEnd: byFilter && !!debounceCodeEnd ? Number(debounceCodeEnd) : null,
@@ -619,7 +619,7 @@ function TableDetail({}: PropsTableDetail) {
 						byFilter,
 						debounceCodeStart,
 						debounceCodeEnd,
-						_customerUuid,
+						customerUuid,
 						_storageUuid,
 						_isBatch,
 						_shipUuid,

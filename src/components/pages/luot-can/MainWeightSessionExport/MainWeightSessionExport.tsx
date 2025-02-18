@@ -54,7 +54,6 @@ function MainWeightSessionExport({}: PropsMainWeightSessionExport) {
 		_specUuid,
 		_dateFrom,
 		_dateTo,
-		_customerUuid,
 		_status,
 		_shift,
 		_shipUuid,
@@ -69,7 +68,7 @@ function MainWeightSessionExport({}: PropsMainWeightSessionExport) {
 		codeStart: '',
 		codeEnd: '',
 	});
-
+	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 	const debounceCodeStart = useDebounce(formCode.codeStart, 500);
 	const debounceCodeEnd = useDebounce(formCode.codeEnd, 500);
 
@@ -212,7 +211,7 @@ function MainWeightSessionExport({}: PropsMainWeightSessionExport) {
 			byFilter,
 			debounceCodeStart,
 			debounceCodeEnd,
-			_customerUuid,
+			customerUuid,
 			_status,
 			_shift,
 			_shipUuid,
@@ -236,7 +235,8 @@ function MainWeightSessionExport({}: PropsMainWeightSessionExport) {
 						storageUuid: (_storageUuid as string) || '',
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
-						customerUuid: (_customerUuid as string) || '',
+						customerUuid: '',
+						listCustomerUuid: customerUuid,
 						productTypeUuid: '',
 						billUuid: '',
 						codeEnd: byFilter && !!debounceCodeEnd ? Number(debounceCodeEnd) : null,
@@ -278,7 +278,7 @@ function MainWeightSessionExport({}: PropsMainWeightSessionExport) {
 			byFilter,
 			debounceCodeStart,
 			debounceCodeEnd,
-			_customerUuid,
+			customerUuid,
 			_status,
 			_shift,
 			_shipUuid,
@@ -302,7 +302,8 @@ function MainWeightSessionExport({}: PropsMainWeightSessionExport) {
 						storageUuid: (_storageUuid as string) || '',
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
-						customerUuid: (_customerUuid as string) || '',
+						customerUuid: '',
+						listCustomerUuid: customerUuid,
 						productTypeUuid: '',
 						billUuid: '',
 						codeEnd: byFilter && !!debounceCodeEnd ? Number(debounceCodeEnd) : null,
@@ -344,14 +345,14 @@ function MainWeightSessionExport({}: PropsMainWeightSessionExport) {
 							<Search type='number' keyName='_shift' placeholder='Tìm kiếm theo ca' />
 						</div>
 
-						<FilterCustom
-							isSearch
-							name='Khách hàng'
-							query='_customerUuid'
-							listFilter={listCustomer?.data?.map((v: any) => ({
-								id: v?.uuid,
+						<SelectFilterMany
+							selectedIds={customerUuid}
+							setSelectedIds={setCustomerUuid}
+							listData={listCustomer?.data?.map((v: any) => ({
+								uuid: v?.uuid,
 								name: v?.name,
 							}))}
+							name='Khách hàng'
 						/>
 
 						<FilterCustom
@@ -687,12 +688,11 @@ function MainWeightSessionExport({}: PropsMainWeightSessionExport) {
 						_dateTo,
 						debounceCodeStart,
 						debounceCodeEnd,
-						_customerUuid,
+						customerUuid,
 						_status,
 						_shift,
 						_shipUuid,
 						_storageUuid,
-						_customerUuid,
 						_status,
 						_shift,
 						_shipUuid,
