@@ -252,11 +252,12 @@ function TableDetail({}: PropsTableDetail) {
 									STATUS_WEIGHT_SESSION.KCS_XONG,
 									STATUS_WEIGHT_SESSION.DA_HUY,
 							  ],
-						truckUuid: truckUuid,
 						shipUuid: (_shipUuid as string) || '',
 						shift: !!_shift ? Number(_shift) : null,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						isHaveSpec: null,
+						truckUuid: '',
+						listTruckUuid: truckUuid,
 					}),
 				}),
 			select(data) {

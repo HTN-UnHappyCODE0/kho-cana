@@ -222,7 +222,6 @@ function MainPageBillTransfer({}: PropsMainPageBillTransfer) {
 						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
 						scalesType: [TYPE_SCALES.CAN_CHUYEN_KHO],
-						customerUuid: customerUuid,
 						isBatch: TYPE_BATCH.CAN_LO,
 						isCreateBatch: 1,
 						productTypeUuid: (_productTypeUuid as string) || '',
@@ -239,6 +238,8 @@ function MainPageBillTransfer({}: PropsMainPageBillTransfer) {
 						storageUuid: (_storageUuid as string) || '',
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 						truckUuid: truckUuid,
+						customerUuid: '',
+						listCustomerUuid: customerUuid,
 					}),
 				}),
 			select(data) {

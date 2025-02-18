@@ -234,7 +234,6 @@ function MainBillSend({}: PropsMainBillSend) {
 						status: [STATUS_BILL.DA_KCS, STATUS_BILL.CHOT_KE_TOAN],
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
-						customerUuid: customerUuid,
 						productTypeUuid: _productTypeUuid ? (_productTypeUuid as string) : '',
 						specificationsUuid: (_specUuid as string) || '',
 						isCreateBatch: null,
@@ -248,6 +247,8 @@ function MainBillSend({}: PropsMainBillSend) {
 						storageUuid: (_storageUuid as string) || '',
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 						truckUuid: truckUuid,
+						customerUuid: '',
+						listCustomerUuid: customerUuid,
 					}),
 				}),
 			onSuccess(data) {

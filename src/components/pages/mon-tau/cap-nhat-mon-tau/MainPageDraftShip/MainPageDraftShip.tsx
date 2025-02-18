@@ -163,7 +163,6 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 						isDescending: CONFIG_DESCENDING.IS_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
 						scalesType: [TYPE_SCALES.CAN_XUAT, TYPE_SCALES.CAN_CHUYEN_KHO],
-						customerUuid: customerUuid,
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
 						isCreateBatch: null,
 						productTypeUuid: (_productTypeUuid as string) || '',
@@ -181,6 +180,8 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 						typeProduct: TYPE_PRODUCT.CONG_TY,
 						truckUuid: truckUuid,
+						customerUuid: '',
+						listCustomerUuid: customerUuid,
 					}),
 				}),
 

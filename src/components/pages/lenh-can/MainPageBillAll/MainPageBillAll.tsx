@@ -224,7 +224,6 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
 						scalesType: [],
-						customerUuid: customerUuid,
 						isBatch: TYPE_BATCH.CAN_LO,
 						isCreateBatch: 1,
 						productTypeUuid: (_productTypeUuid as string) || '',
@@ -241,6 +240,8 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 						storageUuid: (_storageUuid as string) || '',
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 						truckUuid: truckUuid,
+						customerUuid: '',
+						listCustomerUuid: customerUuid,
 					}),
 				}),
 			select(data) {

@@ -116,7 +116,6 @@ function MainPageDirect({}: PropsMainPageDirect) {
 									STATE_BILL.KTK_CHECKED,
 									STATE_BILL.END,
 							  ],
-						customerUuid: customerUuid,
 						isBatch: TYPE_BATCH.KHONG_CAN,
 						isCreateBatch: null,
 						productTypeUuid: (_productTypeUuid as string) || '',
@@ -141,6 +140,8 @@ function MainPageDirect({}: PropsMainPageDirect) {
 						storageUuid: (_storageUuid as string) || '',
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 						truckUuid: truckUuid,
+						customerUuid: '',
+						listCustomerUuid: customerUuid,
 					}),
 				}),
 			select(data) {

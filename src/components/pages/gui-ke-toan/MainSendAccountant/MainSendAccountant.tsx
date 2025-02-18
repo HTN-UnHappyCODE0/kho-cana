@@ -327,7 +327,6 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 						isDescending: CONFIG_DESCENDING.IS_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
 						scalesType: [TYPE_SCALES.CAN_NHAP, TYPE_SCALES.CAN_TRUC_TIEP],
-						customerUuid: customerUuid,
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
 						isCreateBatch: null,
 						productTypeUuid: (_productTypeUuid as string) || '',
@@ -344,6 +343,8 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 						storageUuid: (_storageUuid as string) || '',
 						isHaveDryness: TYPE_ACTION_AUDIT.HAVE_DRY,
 						truckUuid: truckUuid,
+						customerUuid: '',
+						listCustomerUuid: customerUuid,
 					}),
 				}),
 			onSuccess(data) {

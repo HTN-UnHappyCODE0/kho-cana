@@ -128,7 +128,6 @@ function PageUpdatePort({}: PropsPageUpdatePort) {
 						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
 						scalesType: [],
-						customerUuid: customerUuid,
 						isBatch: TYPE_BATCH.CAN_LO,
 						isCreateBatch: null,
 						productTypeUuid: (_productTypeUuid as string) || '',
@@ -152,6 +151,8 @@ function PageUpdatePort({}: PropsPageUpdatePort) {
 						storageUuid: '',
 						isHaveDryness: TYPE_ACTION_AUDIT.NO_DRY,
 						truckUuid: truckUuid,
+						customerUuid: '',
+						listCustomerUuid: customerUuid,
 					}),
 				}),
 			onSuccess(data) {

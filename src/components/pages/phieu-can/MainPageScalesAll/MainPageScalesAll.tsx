@@ -248,7 +248,6 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 									STATE_BILL.KTK_CHECKED,
 									STATE_BILL.END,
 							  ],
-						customerUuid: customerUuid,
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
 						isCreateBatch: null,
 						productTypeUuid: (_productTypeUuid as string) || '',
@@ -273,6 +272,8 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 						storageUuid: (_storageUuid as string) || '',
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 						truckUuid: truckUuid,
+						customerUuid: '',
+						listCustomerUuid: customerUuid,
 					}),
 				}),
 			onSuccess(data) {
