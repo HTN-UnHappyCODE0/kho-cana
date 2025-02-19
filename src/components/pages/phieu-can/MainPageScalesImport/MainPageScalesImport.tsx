@@ -32,7 +32,7 @@ import {useRouter} from 'next/router';
 import batchBillServices from '~/services/batchBillServices';
 import {ITableBillScale} from '../MainPageScalesAll/interfaces';
 import IconCustom from '~/components/common/IconCustom';
-import {Eye, Play, SaveAdd, StopCircle} from 'iconsax-react';
+import {Eye, FilterSquare, Play, SaveAdd, StopCircle} from 'iconsax-react';
 import Dialog from '~/components/common/Dialog';
 import Loading from '~/components/common/Loading';
 import Link from 'next/link';
@@ -50,6 +50,7 @@ import FormAccessSpecExcel from '../MainDetailScales/components/FormAccessSpecEx
 import SelectFilterState from '~/components/common/SelectFilterState';
 import SelectFilterMany from '~/components/common/SelectFilterMany';
 import truckServices from '~/services/truckServices';
+import PopupWeighReject from '../PopupWeighReject';
 
 function MainPageScalesImport({}: PropsMainPageScalesImport) {
 	const router = useRouter();
@@ -79,6 +80,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 	const [openExportExcel, setOpenExportExcel] = useState<boolean>(false);
 	const [listBatchBill, setListBatchBill] = useState<any[]>([]);
 	const [total, setTotal] = useState<number>(0);
+	const [openWeighReject, setOpenWeighReject] = useState<string | null>(null);
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
@@ -898,6 +900,14 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 											}
 										/>
 
+										<IconCustom
+											edit
+											icon={<FilterSquare fontSize={20} fontWeight={600} />}
+											tooltip='Cập nhật khối lượng tạp chất'
+											color='#777E90'
+											onClick={() => setOpenWeighReject(data.uuid)}
+										/>
+
 										{/* Xem chi tiết */}
 										<IconCustom
 											edit
@@ -973,6 +983,10 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 						handleExportExcel(0);
 					}}
 				/>
+			</Popup>
+
+			<Popup open={!!openWeighReject} onClose={() => setOpenWeighReject(null)}>
+				<PopupWeighReject uuid={openWeighReject} onClose={() => setOpenWeighReject(null)} />
 			</Popup>
 		</div>
 	);

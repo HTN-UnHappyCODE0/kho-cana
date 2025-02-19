@@ -4,7 +4,7 @@ import {PropsMainPageWeightReject} from './interfaces';
 import styles from './MainPageWeightReject.module.scss';
 import DataWrapper from '~/components/common/DataWrapper';
 import Pagination from '~/components/common/Pagination';
-import {useQuery, useQueryClient} from '@tanstack/react-query';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {
 	CONFIG_DESCENDING,
 	CONFIG_PAGING,
@@ -40,6 +40,12 @@ import {ITableBillScale} from '../../phieu-can/MainPageScalesAll/interfaces';
 import Link from 'next/link';
 import clsx from 'clsx';
 import StateActive from '~/components/common/StateActive';
+import Button from '~/components/common/Button';
+import Popup from '~/components/common/Popup';
+import FormAccessSpecExcel from '../../phieu-can/MainDetailScales/components/FormAccessSpecExcel';
+import FormAccessWeighReject from '../FormAccessWeighReject';
+import IconCustom from '~/components/common/IconCustom';
+import {TickCircle} from 'iconsax-react';
 
 function MainPageWeightReject({}: PropsMainPageWeightReject) {
 	const router = useRouter();
@@ -47,6 +53,8 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 	const [truckUuid, setTruckUuid] = useState<string[]>([]);
+	const [openExportExcel, setOpenExportExcel] = useState<boolean>(false);
+	const [openConfirm, setOpenConfirm] = useState<boolean>(false);
 
 	const {
 		_page,
@@ -65,6 +73,7 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 
 	const [listBatchBill, setListBatchBill] = useState<any[]>([]);
 	const [total, setTotal] = useState<number>(0);
+	const [uuidConfirm, setUuidConfirm] = useState<string | null>(null);
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
@@ -196,7 +205,7 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 
 	const getListBatch = useQuery(
 		[
-			QUERY_KEY.table_phieu_can_tat_ca,
+			QUERY_KEY.table_tap_chat,
 			_page,
 			_pageSize,
 			_keyword,
@@ -281,6 +290,92 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 			},
 		}
 	);
+
+	const exportExcel = useMutation({
+		mutationFn: (isHaveSpec: number) => {
+			return httpRequest({
+				http: batchBillServices.exportExcel({
+					page: Number(_page) || 1,
+					pageSize: Number(_pageSize) || 200,
+					keyword: (_keyword as string) || '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.TABLE,
+					scalesType: [],
+					state: !!_state
+						? [Number(_state)]
+						: [
+								STATE_BILL.NOT_CHECK,
+								STATE_BILL.QLK_REJECTED,
+								STATE_BILL.QLK_CHECKED,
+								STATE_BILL.KTK_REJECTED,
+								STATE_BILL.KTK_CHECKED,
+								STATE_BILL.END,
+						  ],
+					customerUuid: '',
+					listCustomerUuid: customerUuid,
+					isBatch: !!_isBatch ? Number(_isBatch) : null,
+					isCreateBatch: null,
+					productTypeUuid: (_productTypeUuid as string) || '',
+					specificationsUuid: '',
+					status: !!_status
+						? [Number(_status)]
+						: [
+								STATUS_BILL.DANG_CAN,
+								STATUS_BILL.TAM_DUNG,
+								STATUS_BILL.DA_CAN_CHUA_KCS,
+								STATUS_BILL.DA_KCS,
+								STATUS_BILL.CHOT_KE_TOAN,
+						  ],
+					timeStart: _dateFrom ? (_dateFrom as string) : null,
+					timeEnd: _dateTo ? (_dateTo as string) : null,
+					warehouseUuid: '',
+					qualityUuid: '',
+					transportType: null,
+					shipUuid: (_shipUuid as string) || '',
+					typeCheckDay: 0,
+					scalesStationUuid: (_scalesStationUuid as string) || '',
+					documentId: '',
+					storageUuid: (_storageUuid as string) || '',
+					isExportSpec: isHaveSpec,
+					isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
+					truckUuid: truckUuid,
+					isNeedConfirmReject: 1,
+				}),
+			});
+		},
+		onSuccess(data) {
+			if (data) {
+				window.open(`${process.env.NEXT_PUBLIC_PATH_EXPORT}/${data}`, '_blank');
+				setOpenExportExcel(false);
+			}
+		},
+	});
+
+	const handleExportExcel = (isHaveSpec: number) => {
+		return exportExcel.mutate(isHaveSpec);
+	};
+
+	const accessWeighReject = useMutation({
+		mutationFn: (isConfirm: number) => {
+			return httpRequest({
+				http: batchBillServices.confirmWeighReject({
+					uuid: uuidConfirm as string,
+					isConfirm: isConfirm,
+				}),
+			});
+		},
+		onSuccess(data) {
+			if (data) {
+				setUuidConfirm(null);
+				queryClient.invalidateQueries([QUERY_KEY.table_tap_chat]);
+			}
+		},
+	});
+
+	const handleConfirm = (isConfirm: number) => {
+		return accessWeighReject.mutate(isConfirm);
+	};
 
 	return (
 		<div className={styles.container}>
@@ -444,6 +539,20 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 					<div className={styles.filter}>
 						<DateRangerCustom titleTime='Thời gian' typeDateDefault={TYPE_DATE.TODAY} />
 					</div>
+				</div>
+				<div className={styles.btn}>
+					<Button
+						rounded_2
+						w_fit
+						p_8_16
+						green
+						bold
+						onClick={() => {
+							setOpenExportExcel(true);
+						}}
+					>
+						Xuất excel
+					</Button>
 				</div>
 			</div>
 			<div className={clsx('mt')}>
@@ -709,6 +818,24 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 									</>
 								),
 							},
+							{
+								title: 'Tác vụ',
+								fixedRight: true,
+								render: (data: ITableBillScale) => (
+									<div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px'}}>
+										{/* Duyệt sản lượng */}
+										{data?.isNeedConfirmReject == 1 ? (
+											<IconCustom
+												edit
+												icon={<TickCircle size={22} fontWeight={600} />}
+												tooltip='Xác nhận khối lượng tạp chất'
+												color='#2CAE39'
+												onClick={() => setUuidConfirm(data?.uuid)}
+											/>
+										) : null}
+									</div>
+								),
+							},
 						]}
 					/>
 				</DataWrapper>
@@ -737,7 +864,32 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 				)}
 			</div>
 
-			{/* Bắt đầu cân */}
+			<Popup open={openExportExcel} onClose={() => setOpenExportExcel(false)}>
+				<FormAccessSpecExcel
+					onAccess={() => {
+						handleExportExcel(1);
+					}}
+					onClose={() => {
+						setOpenExportExcel(false);
+					}}
+					onDeny={() => {
+						handleExportExcel(0);
+					}}
+				/>
+			</Popup>
+			<Popup open={!!uuidConfirm} onClose={() => setUuidConfirm(null)}>
+				<FormAccessWeighReject
+					onAccess={() => {
+						handleConfirm(1);
+					}}
+					onClose={() => {
+						setUuidConfirm(null);
+					}}
+					onDeny={() => {
+						handleConfirm(0);
+					}}
+				/>
+			</Popup>
 		</div>
 	);
 }

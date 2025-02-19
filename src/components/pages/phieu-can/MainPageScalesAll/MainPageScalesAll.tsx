@@ -49,11 +49,7 @@ import FormAccessSpecExcel from '../MainDetailScales/components/FormAccessSpecEx
 import SelectFilterState from '~/components/common/SelectFilterState';
 import SelectFilterMany from '~/components/common/SelectFilterMany';
 import truckServices from '~/services/truckServices';
-import {IoClose} from 'react-icons/io5';
-import Form, {FormContext, Input} from '~/components/common/Form';
-import {set} from 'nprogress';
-import {price} from '~/common/funcs/convertCoin';
-import {toastWarn} from '~/common/funcs/toast';
+import PopupWeighReject from '../PopupWeighReject';
 
 function MainPageScalesAll({}: PropsMainPageScalesAll) {
 	const router = useRouter();
@@ -62,8 +58,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 	const [truckUuid, setTruckUuid] = useState<string[]>([]);
 
-	const [openImpurities, setOpenImpurities] = useState<string | null>(null);
-	const [amountImpurities, setAmountImpurities] = useState<number>(0);
+	const [openWeighReject, setOpenWeighReject] = useState<string | null>(null);
 
 	const {
 		_page,
@@ -86,10 +81,6 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 	const [openExportExcel, setOpenExportExcel] = useState<boolean>(false);
 	const [listBatchBill, setListBatchBill] = useState<any[]>([]);
 	const [total, setTotal] = useState<number>(0);
-
-	const [form, setForm] = useState<{amountImpurities: number}>({
-		amountImpurities: 0,
-	});
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
@@ -442,43 +433,6 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 			return `/nhap-xuat-ngoai/chinh-sua-xuat-thang?_id=${data.uuid}`;
 		}
 		return '/nhap-xuat-ngoai/tat-ca';
-	};
-
-	const successImpurities = useMutation({
-		mutationFn: () => {
-			return httpRequest({
-				showMessageFailed: true,
-				showMessageSuccess: true,
-				msgSuccess: 'Cập nhật khối lượng tạp chất thành công!',
-				http: batchBillServices.updateWeighReject({
-					uuid: openImpurities as string,
-					weightReject: price(form.amountImpurities),
-				}),
-			});
-		},
-		onSuccess(data) {
-			if (data) {
-				setOpenImpurities(null);
-				setForm({
-					amountImpurities: 0,
-				});
-				queryClient.invalidateQueries([QUERY_KEY.table_phieu_can_tat_ca]);
-			}
-		},
-	});
-
-	const handleSuccessImpurities = () => {
-		if (price(form.amountImpurities) == 0) {
-			return toastWarn({msg: 'Vui lòng nhập khối lượng tạp chất!'});
-		}
-		return successImpurities.mutate();
-	};
-
-	const handleCloseImpurities = () => {
-		setOpenImpurities(null);
-		setForm({
-			amountImpurities: 0,
-		});
 	};
 
 	return (
@@ -977,7 +931,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 											icon={<FilterSquare fontSize={20} fontWeight={600} />}
 											tooltip='Cập nhật khối lượng tạp chất'
 											color='#777E90'
-											onClick={() => setOpenImpurities(data.uuid)}
+											onClick={() => setOpenWeighReject(data.uuid)}
 										/>
 
 										{/* Xem chi tiết */}
@@ -1061,49 +1015,8 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 				/>
 			</Popup>
 
-			<Popup open={!!openImpurities} onClose={handleCloseImpurities}>
-				<Form form={form} setForm={setForm} onSubmit={handleSuccessImpurities}>
-					<div className={styles.main_export}>
-						<h4 className={styles.title_export}>Cập nhật khối lượng tạp chất</h4>
-						<div className='mt'>
-							<Input
-								name='amountImpurities'
-								value={form.amountImpurities || 0}
-								isMoney
-								type='text'
-								unit='KG'
-								blur={true}
-								placeholder='Khối lượng tạp chất'
-								label={
-									<span>
-										Khối lượng tạp chất<span style={{color: 'red'}}> *</span>
-									</span>
-								}
-							/>
-						</div>
-
-						<div className={styles.control_export}>
-							<div>
-								<Button p_10_24 rounded_2 grey_outline onClick={handleCloseImpurities}>
-									Hủy bỏ
-								</Button>
-							</div>
-							<FormContext.Consumer>
-								{({isDone}) => (
-									<div>
-										<Button disable={!isDone} p_10_24 rounded_2 primary>
-											Xác nhận
-										</Button>
-									</div>
-								)}
-							</FormContext.Consumer>
-						</div>
-
-						<div className={styles.icon_close_export} onClick={handleCloseImpurities}>
-							<IoClose size={24} color='#23262F' />
-						</div>
-					</div>
-				</Form>
+			<Popup open={!!openWeighReject} onClose={() => setOpenWeighReject(null)}>
+				<PopupWeighReject uuid={openWeighReject} onClose={() => setOpenWeighReject(null)} />
 			</Popup>
 		</div>
 	);
