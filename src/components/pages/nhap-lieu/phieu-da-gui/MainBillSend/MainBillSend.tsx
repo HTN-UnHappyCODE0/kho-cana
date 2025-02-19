@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {IBillSend, PropsMainBillSend} from './interfaces';
 import styles from './MainBillSend.module.scss';
@@ -44,6 +44,7 @@ import {convertCoin} from '~/common/funcs/convertCoin';
 import SelectFilterState from '~/components/common/SelectFilterState';
 import SelectFilterMany from '~/components/common/SelectFilterMany';
 import truckServices from '~/services/truckServices';
+import companyServices from '~/services/companyServices';
 
 function MainBillSend({}: PropsMainBillSend) {
 	const router = useRouter();
@@ -70,8 +71,28 @@ function MainBillSend({}: PropsMainBillSend) {
 	const [listSelectBill, setListSelectBill] = useState<any[]>([]);
 	const [listBillSend, setListBillSend] = useState<any[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
+	const [uuidCompany, setUuidCompany] = useState<string>('');
 
-	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
+	const listCompany = useQuery([QUERY_KEY.dropdown_cong_ty], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: companyServices.listCompany({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
+	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang, uuidCompany], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -88,6 +109,7 @@ function MainBillSend({}: PropsMainBillSend) {
 					typeCus: TYPE_CUSTOMER.NHA_CUNG_CAP,
 					provinceId: '',
 					specUuid: '',
+					companyUuid: uuidCompany,
 				}),
 			}),
 		select(data) {
@@ -216,6 +238,7 @@ function MainBillSend({}: PropsMainBillSend) {
 			_scalesStationUuid,
 			isHaveDryness,
 			truckUuid,
+			uuidCompany,
 		],
 		{
 			queryFn: () =>
@@ -249,6 +272,7 @@ function MainBillSend({}: PropsMainBillSend) {
 						truckUuid: truckUuid,
 						customerUuid: '',
 						listCustomerUuid: customerUuid,
+						companyUuid: uuidCompany,
 					}),
 				}),
 			onSuccess(data) {
@@ -270,6 +294,11 @@ function MainBillSend({}: PropsMainBillSend) {
 			},
 		}
 	);
+	useEffect(() => {
+		if (uuidCompany) {
+			setCustomerUuid([]);
+		}
+	}, [uuidCompany]);
 
 	return (
 		<div className={styles.container}>
@@ -316,6 +345,15 @@ function MainBillSend({}: PropsMainBillSend) {
 							]}
 						/>
 					</div>
+					<SelectFilterState
+						uuid={uuidCompany}
+						setUuid={setUuidCompany}
+						listData={listCompany?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						placeholder='Kv cảng xuất khẩu'
+					/>
 					<SelectFilterMany
 						selectedIds={customerUuid}
 						setSelectedIds={setCustomerUuid}
@@ -546,6 +584,7 @@ function MainBillSend({}: PropsMainBillSend) {
 							_scalesStationUuid,
 							isHaveDryness,
 							truckUuid,
+							uuidCompany,
 						]}
 					/>
 				)}

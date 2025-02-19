@@ -32,6 +32,7 @@ const batchBillServices = {
 			customerUuid: string;
 			listCustomerUuid: string[];
 			isNeedConfirmReject?: number;
+			companyUuid: string;
 		},
 		tokenAxios?: any
 	) => {
@@ -253,6 +254,7 @@ const batchBillServices = {
 			customerUuid: string;
 			listCustomerUuid: string[];
 			isNeedConfirmReject?: number;
+			companyUuid: string;
 		},
 		tokenAxios?: any
 	) => {

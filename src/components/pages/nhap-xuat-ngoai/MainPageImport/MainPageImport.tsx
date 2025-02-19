@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {PropsMainPageImport} from './interfaces';
 import styles from './MainPageImport.module.scss';
@@ -51,6 +51,7 @@ import Loading from '~/components/common/Loading';
 import SelectFilterState from '~/components/common/SelectFilterState';
 import SelectFilterMany from '~/components/common/SelectFilterMany';
 import truckServices from '~/services/truckServices';
+import companyServices from '~/services/companyServices';
 
 function MainPageImport({}: PropsMainPageImport) {
 	const router = useRouter();
@@ -59,6 +60,26 @@ function MainPageImport({}: PropsMainPageImport) {
 	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 	const [truckUuid, setTruckUuid] = useState<string[]>([]);
+	const [uuidCompany, setUuidCompany] = useState<string>('');
+
+	const listCompany = useQuery([QUERY_KEY.dropdown_cong_ty], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: companyServices.listCompany({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
 
 	const {
 		_page,
@@ -112,6 +133,7 @@ function MainPageImport({}: PropsMainPageImport) {
 			_scalesStationUuid,
 			isHaveDryness,
 			truckUuid,
+			uuidCompany,
 		],
 		{
 			queryFn: () =>
@@ -161,6 +183,7 @@ function MainPageImport({}: PropsMainPageImport) {
 						truckUuid: truckUuid,
 						customerUuid: '',
 						listCustomerUuid: customerUuid,
+						companyUuid: uuidCompany,
 					}),
 				}),
 			select(data) {
@@ -169,7 +192,7 @@ function MainPageImport({}: PropsMainPageImport) {
 		}
 	);
 
-	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
+	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang, uuidCompany], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -186,6 +209,7 @@ function MainPageImport({}: PropsMainPageImport) {
 					typeCus: null,
 					provinceId: '',
 					specUuid: '',
+					companyUuid: uuidCompany,
 				}),
 			}),
 		select(data) {
@@ -306,6 +330,7 @@ function MainPageImport({}: PropsMainPageImport) {
 					isExportSpec: isHaveSpec,
 					isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 					truckUuid: truckUuid,
+					companyUuid: uuidCompany,
 				}),
 			});
 		},
@@ -320,7 +345,11 @@ function MainPageImport({}: PropsMainPageImport) {
 	const handleExportExcel = (isHaveSpec: number) => {
 		return exportExcel.mutate(isHaveSpec);
 	};
-
+	useEffect(() => {
+		if (uuidCompany) {
+			setCustomerUuid([]);
+		}
+	}, [uuidCompany]);
 	return (
 		<div className={styles.container}>
 			<Loading loading={exportExcel.isLoading} />
@@ -329,7 +358,15 @@ function MainPageImport({}: PropsMainPageImport) {
 					<div className={styles.search}>
 						<Search keyName='_keyword' placeholder='Tìm kiếm theo mã lô hàng' />
 					</div>
-
+					<SelectFilterState
+						uuid={uuidCompany}
+						setUuid={setUuidCompany}
+						listData={listCompany?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						placeholder='Kv cảng xuất khẩu'
+					/>
 					<SelectFilterMany
 						selectedIds={customerUuid}
 						setSelectedIds={setCustomerUuid}
@@ -742,6 +779,7 @@ function MainPageImport({}: PropsMainPageImport) {
 						_scalesStationUuid,
 						isHaveDryness,
 						truckUuid,
+						uuidCompany,
 					]}
 				/>
 			</div>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {ITableBillScale, PropsMainPageScalesAll} from './interfaces';
 import styles from './MainPageScalesAll.module.scss';
@@ -50,6 +50,7 @@ import SelectFilterState from '~/components/common/SelectFilterState';
 import SelectFilterMany from '~/components/common/SelectFilterMany';
 import truckServices from '~/services/truckServices';
 import PopupWeighReject from '../PopupWeighReject';
+import companyServices from '~/services/companyServices';
 
 function MainPageScalesAll({}: PropsMainPageScalesAll) {
 	const router = useRouter();
@@ -81,8 +82,28 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 	const [openExportExcel, setOpenExportExcel] = useState<boolean>(false);
 	const [listBatchBill, setListBatchBill] = useState<any[]>([]);
 	const [total, setTotal] = useState<number>(0);
+	const [uuidCompany, setUuidCompany] = useState<string>('');
 
-	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
+	const listCompany = useQuery([QUERY_KEY.dropdown_cong_ty], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: companyServices.listCompany({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
+	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang, uuidCompany], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -99,6 +120,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 					typeCus: null,
 					provinceId: '',
 					specUuid: '',
+					companyUuid: uuidCompany,
 				}),
 			}),
 		select(data) {
@@ -228,6 +250,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 			_scalesStationUuid,
 			isHaveDryness,
 			truckUuid,
+			uuidCompany,
 		],
 		{
 			queryFn: () =>
@@ -277,6 +300,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 						truckUuid: truckUuid,
 						customerUuid: '',
 						listCustomerUuid: customerUuid,
+						companyUuid: uuidCompany,
 					}),
 				}),
 			onSuccess(data) {
@@ -388,6 +412,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 					isExportSpec: isHaveSpec,
 					isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 					truckUuid: truckUuid,
+					companyUuid: uuidCompany,
 				}),
 			});
 		},
@@ -435,6 +460,12 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 		return '/nhap-xuat-ngoai/tat-ca';
 	};
 
+	useEffect(() => {
+		if (uuidCompany) {
+			setCustomerUuid([]);
+		}
+	}, [uuidCompany]);
+
 	return (
 		<div className={styles.container}>
 			<Loading loading={funcStartBatchBill.isLoading || funcStopBatchBill.isLoading || exportExcel.isLoading} />
@@ -464,6 +495,15 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 							]}
 						/>
 					</div>
+					<SelectFilterState
+						uuid={uuidCompany}
+						setUuid={setUuidCompany}
+						listData={listCompany?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						placeholder='Kv cảng xuất khẩu'
+					/>
 
 					<SelectFilterMany
 						selectedIds={customerUuid}
@@ -972,6 +1012,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 							_scalesStationUuid,
 							isHaveDryness,
 							truckUuid,
+							uuidCompany,
 						]}
 					/>
 				)}

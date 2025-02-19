@@ -48,6 +48,7 @@ import {toastWarn} from '~/common/funcs/toast';
 import DateRangerCustom from '~/components/common/DateRangerCustom';
 import wareServices from '~/services/wareServices';
 import FilterCustom from '~/components/common/FilterCustom';
+import companyServices from '~/services/companyServices';
 
 function PageDetailPartner({}: PropsPageDetailPartner) {
 	const router = useRouter();
@@ -58,6 +59,26 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 	const [openCreate, setOpenCreate] = useState<boolean>(false);
 	const [uuidUpdate, setUuidUpdate] = useState<string>('');
 	const [listBatchBill, setListBatchBill] = useState<any[]>([]);
+	const [uuidCompany, setUuidCompany] = useState<string>('');
+
+	const listCompany = useQuery([QUERY_KEY.dropdown_cong_ty], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: companyServices.listCompany({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
 
 	const {data: detailCustomer} = useQuery<IDetailCustomer>([QUERY_KEY.chi_tiet_nha_cung_cap, _id], {
 		queryFn: () =>
@@ -122,6 +143,7 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 					storageUuid: '',
 					isHaveDryness: TYPE_ACTION_AUDIT.HAVE_DRY,
 					truckUuid: [],
+					companyUuid: '',
 				}),
 			}),
 		onSuccess(data) {

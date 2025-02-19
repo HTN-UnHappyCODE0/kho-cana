@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Image from 'next/image';
 
 import {PropsMainPageBillImport} from './interfaces';
@@ -51,6 +51,7 @@ import FormUpdateShipBill from '../FormUpdateShipBill';
 import SelectFilterState from '~/components/common/SelectFilterState';
 import SelectFilterMany from '~/components/common/SelectFilterMany';
 import truckServices from '~/services/truckServices';
+import companyServices from '~/services/companyServices';
 
 function MainPageBillImport({}: PropsMainPageBillImport) {
 	const router = useRouter();
@@ -66,8 +67,27 @@ function MainPageBillImport({}: PropsMainPageBillImport) {
 	const [billUuidUpdateShip, setBillUuidUpdateShip] = useState<string | null>(null);
 	const [billUuidReStart, setBillUuidReStart] = useState<string | null>(null);
 	const [truckUuid, setTruckUuid] = useState<string[]>([]);
+	const [uuidCompany, setUuidCompany] = useState<string>('');
 
-	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
+	const listCompany = useQuery([QUERY_KEY.dropdown_cong_ty], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: companyServices.listCompany({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang, uuidCompany], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -84,6 +104,7 @@ function MainPageBillImport({}: PropsMainPageBillImport) {
 					typeCus: null,
 					provinceId: '',
 					specUuid: '',
+					companyUuid: uuidCompany,
 				}),
 			}),
 		select(data) {
@@ -210,6 +231,7 @@ function MainPageBillImport({}: PropsMainPageBillImport) {
 			_scalesStationUuid,
 			isHaveDryness,
 			truckUuid,
+			uuidCompany,
 		],
 		{
 			queryFn: () =>
@@ -241,6 +263,7 @@ function MainPageBillImport({}: PropsMainPageBillImport) {
 						truckUuid: truckUuid,
 						customerUuid: '',
 						listCustomerUuid: customerUuid,
+						companyUuid: uuidCompany,
 					}),
 				}),
 			select(data) {
@@ -290,6 +313,11 @@ function MainPageBillImport({}: PropsMainPageBillImport) {
 			console.log({error});
 		},
 	});
+	useEffect(() => {
+		if (uuidCompany) {
+			setCustomerUuid([]);
+		}
+	}, [uuidCompany]);
 
 	return (
 		<div className={styles.container}>
@@ -299,7 +327,15 @@ function MainPageBillImport({}: PropsMainPageBillImport) {
 					<div className={styles.search}>
 						<Search keyName='_keyword' placeholder='Tìm kiếm theo mã lô hàng' />
 					</div>
-
+					<SelectFilterState
+						uuid={uuidCompany}
+						setUuid={setUuidCompany}
+						listData={listCompany?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						placeholder='Kv cảng xuất khẩu'
+					/>
 					<SelectFilterMany
 						selectedIds={customerUuid}
 						setSelectedIds={setCustomerUuid}
@@ -630,6 +666,7 @@ function MainPageBillImport({}: PropsMainPageBillImport) {
 						_scalesStationUuid,
 						isHaveDryness,
 						truckUuid,
+						uuidCompany,
 					]}
 				/>
 			</div>

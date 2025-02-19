@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {PropsMainPageWeightReject} from './interfaces';
 import styles from './MainPageWeightReject.module.scss';
@@ -46,6 +46,7 @@ import FormAccessSpecExcel from '../../phieu-can/MainDetailScales/components/For
 import FormAccessWeighReject from '../FormAccessWeighReject';
 import IconCustom from '~/components/common/IconCustom';
 import {TickCircle} from 'iconsax-react';
+import companyServices from '~/services/companyServices';
 
 function MainPageWeightReject({}: PropsMainPageWeightReject) {
 	const router = useRouter();
@@ -74,8 +75,28 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 	const [listBatchBill, setListBatchBill] = useState<any[]>([]);
 	const [total, setTotal] = useState<number>(0);
 	const [uuidConfirm, setUuidConfirm] = useState<string | null>(null);
+	const [uuidCompany, setUuidCompany] = useState<string>('');
 
-	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
+	const listCompany = useQuery([QUERY_KEY.dropdown_cong_ty], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: companyServices.listCompany({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
+	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang, uuidCompany], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -92,6 +113,7 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 					typeCus: null,
 					provinceId: '',
 					specUuid: '',
+					companyUuid: uuidCompany,
 				}),
 			}),
 		select(data) {
@@ -221,6 +243,7 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 			_scalesStationUuid,
 			isHaveDryness,
 			truckUuid,
+			uuidCompany,
 		],
 		{
 			queryFn: () =>
@@ -271,6 +294,7 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 						customerUuid: '',
 						listCustomerUuid: customerUuid,
 						isNeedConfirmReject: 1,
+						companyUuid: uuidCompany,
 					}),
 				}),
 			onSuccess(data) {
@@ -341,6 +365,7 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 					isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 					truckUuid: truckUuid,
 					isNeedConfirmReject: 1,
+					companyUuid: uuidCompany,
 				}),
 			});
 		},
@@ -377,6 +402,12 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 		return accessWeighReject.mutate(isConfirm);
 	};
 
+	useEffect(() => {
+		if (uuidCompany) {
+			setCustomerUuid([]);
+		}
+	}, [uuidCompany]);
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.header}>
@@ -405,7 +436,15 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 							]}
 						/>
 					</div>
-
+					<SelectFilterState
+						uuid={uuidCompany}
+						setUuid={setUuidCompany}
+						listData={listCompany?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						placeholder='Kv cảng xuất khẩu'
+					/>
 					<SelectFilterMany
 						selectedIds={customerUuid}
 						setSelectedIds={setCustomerUuid}
@@ -859,6 +898,7 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 							_scalesStationUuid,
 							isHaveDryness,
 							truckUuid,
+							uuidCompany,
 						]}
 					/>
 				)}
