@@ -95,6 +95,7 @@ export enum QUERY_KEY {
 	table_ds_can_mau,
 	table_ds_can_mau_quy_cach,
 	table_lich_su_nhap_hang_ncc,
+	table_tap_chat,
 
 	chi_tiet_lenh_can,
 	chi_tiet_phieu_can,
