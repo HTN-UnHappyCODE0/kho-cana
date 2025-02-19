@@ -55,6 +55,7 @@ import FormUpdateBillEdit from '../FormUpdateBillEdit';
 import SelectFilterState from '~/components/common/SelectFilterState';
 import SelectFilterMany from '~/components/common/SelectFilterMany';
 import truckServices from '~/services/truckServices';
+import companyServices from '~/services/companyServices';
 
 function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 	const router = useRouter();
@@ -86,8 +87,27 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 	// const [loading, setLoading] = useState<boolean>(false);
 	// const [weightSessions, setWeightSessions] = useState<any[]>([]);
 	// const [total, setTotal] = useState<number>(0);
+	const [uuidCompany, setUuidCompany] = useState<string>('');
 
-	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
+	const listCompany = useQuery([QUERY_KEY.dropdown_cong_ty], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: companyServices.listCompany({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang, uuidCompany], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -104,6 +124,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 					typeCus: TYPE_CUSTOMER.KH_XUAT,
 					provinceId: '',
 					specUuid: '',
+					companyUuid: uuidCompany,
 				}),
 			}),
 		select(data) {
@@ -186,6 +207,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 			_storageUuid,
 			isHaveDryness,
 			truckUuid,
+			uuidCompany,
 		],
 		{
 			queryFn: () =>
@@ -218,6 +240,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 						truckUuid: truckUuid,
 						customerUuid: '',
 						listCustomerUuid: customerUuid,
+						companyUuid: uuidCompany,
 					}),
 				}),
 
@@ -274,6 +297,12 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 		},
 	});
 
+	useEffect(() => {
+		if (uuidCompany) {
+			setCustomerUuid([]);
+		}
+	}, [uuidCompany]);
+
 	return (
 		<div className={styles.container}>
 			{/* <Loading loading={funcUpdateKCSWeightSession.isLoading} /> */}
@@ -303,7 +332,15 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 							]}
 						/>
 					</div>
-
+					<SelectFilterState
+						uuid={uuidCompany}
+						setUuid={setUuidCompany}
+						listData={listCompany?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						placeholder='Kv cảng xuất khẩu'
+					/>
 					<SelectFilterMany
 						selectedIds={customerUuid}
 						setSelectedIds={setCustomerUuid}
@@ -565,6 +602,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 						_state,
 						isHaveDryness,
 						truckUuid,
+						uuidCompany,
 					]}
 				/>
 				{/* )} */}

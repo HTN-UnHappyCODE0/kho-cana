@@ -32,6 +32,7 @@ const batchBillServices = {
 			customerUuid: string;
 			listCustomerUuid: string[];
 			isNeedConfirmReject?: number;
+			companyUuid: string;
 		},
 		tokenAxios?: any
 	) => {
@@ -169,6 +170,9 @@ const batchBillServices = {
 			storageUuid: string;
 			customerUuid: string[];
 			warehouseUuid: string;
+			userOwnerUuid: string;
+			provinceId: string;
+			transportType: number | null;
 		},
 		tokenAxios?: any
 	) => {
@@ -187,6 +191,10 @@ const batchBillServices = {
 			storageUuid: string;
 			customerUuid: string[];
 			warehouseUuid: string;
+			userOwnerUuid: string;
+			typeShow?: number;
+			transportType: number | null;
+			provinceId: string;
 		},
 		tokenAxios?: any
 	) => {
@@ -205,6 +213,10 @@ const batchBillServices = {
 			storageUuid: string;
 			customerUuid: string[];
 			warehouseUuid: string;
+			userOwnerUuid: string;
+			typeShow?: number;
+			transportType: number | null;
+			provinceId: string;
 		},
 		tokenAxios?: any
 	) => {
@@ -253,6 +265,7 @@ const batchBillServices = {
 			customerUuid: string;
 			listCustomerUuid: string[];
 			isNeedConfirmReject?: number;
+			companyUuid: string;
 		},
 		tokenAxios?: any
 	) => {
