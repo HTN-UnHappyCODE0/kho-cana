@@ -11,7 +11,7 @@ function FormAccessSpecExcel({...props}: PropsFormAccessSpecExcel) {
 		<div className={styles.main_export}>
 			<div className={styles.iconWarn}>{<FiHelpCircle />}</div>
 			<h4 className={styles.title_export}>Lựa chọn</h4>
-			<p className={styles.des_export}>bạn có muốn xuất quy cách không ?</p>
+			<p className={styles.des_export}>Bạn có muốn xuất quy cách không ?</p>
 
 			<div className={styles.control_export}>
 				<div>
