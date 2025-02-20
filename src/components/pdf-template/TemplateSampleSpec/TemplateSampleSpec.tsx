@@ -102,6 +102,17 @@ const TemplateSampleSpec = forwardRef<HTMLDivElement, PropsTemplateSampleSpec>(
 						</table>
 					</div>
 
+					{TypeQuality == true && (
+						<p style={{marginTop: '20px'}}>
+							Điểm giám định: <b>Tại Công ty TNHH TRIỀU AN QN</b> - Phòng phân tích.
+						</p>
+					)}
+					{TypeQuality == false && (
+						<p style={{marginTop: '20px'}}>
+							Điểm giám định: <b>Tại Công ty cổ phần cảng Thái Hưng</b> - Phòng phân tích.
+						</p>
+					)}
+
 					<p style={{marginTop: '20px'}}>
 						Điểm giám định: <b>Tại Công ty cổ phần cảng Thái Hưng</b> - Phòng phân tích.
 					</p>

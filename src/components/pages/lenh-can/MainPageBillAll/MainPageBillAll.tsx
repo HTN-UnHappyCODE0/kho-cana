@@ -58,8 +58,7 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 
 	const [uuidPlay, setUuidPlay] = useState<string>('');
 
-	const {_page, _pageSize, _keyword, _productTypeUuid, _shipUuid, _status, _dateFrom, _dateTo, _scalesStationUuid, _storageUuid} =
-		router.query;
+	const {_page, _pageSize, _keyword, _productTypeUuid, _shipUuid, _status, _dateFrom, _dateTo, _scalesStationUuid} = router.query;
 
 	const [openCreate, setOpenCreate] = useState<boolean>(false);
 	const [billUuid, setBillUuid] = useState<string | null>(null);
@@ -69,6 +68,27 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 	const [truckUuid, setTruckUuid] = useState<string[]>([]);
 	const [uuidCompany, setUuidCompany] = useState<string>('');
+	const [uuidQuality, setUuidQuality] = useState<string>('');
+	const [uuidStorage, setUuidStorage] = useState<string>('');
+
+	const listQuality = useQuery([QUERY_KEY.dropdown_quoc_gia], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: wareServices.listQuality({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
 
 	const listCompany = useQuery([QUERY_KEY.dropdown_cong_ty], {
 		queryFn: () =>
@@ -133,7 +153,7 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 		},
 	});
 
-	const listStorage = useQuery([QUERY_KEY.table_bai], {
+	const listStorage = useQuery([QUERY_KEY.table_bai, uuidQuality], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -146,7 +166,7 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
 					warehouseUuid: '',
 					productUuid: '',
-					qualityUuid: '',
+					qualityUuid: uuidQuality,
 					specificationsUuid: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 				}),
@@ -229,7 +249,8 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 			_status,
 			_dateFrom,
 			_dateTo,
-			_storageUuid,
+			uuidQuality,
+			uuidStorage,
 			_scalesStationUuid,
 			isHaveDryness,
 			truckUuid,
@@ -255,12 +276,12 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
 						warehouseUuid: '',
-						qualityUuid: '',
+						qualityUuid: uuidQuality,
 						transportType: null,
 						shipUuid: (_shipUuid as string) || '',
 						typeCheckDay: 0,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
-						storageUuid: (_storageUuid as string) || '',
+						storageUuid: uuidStorage,
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 						truckUuid: truckUuid,
 						customerUuid: '',
@@ -339,7 +360,10 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 		if (uuidCompany) {
 			setCustomerUuid([]);
 		}
-	}, [uuidCompany]);
+		if (uuidQuality) {
+			setUuidStorage('');
+		}
+	}, [uuidCompany, uuidQuality]);
 
 	return (
 		<div className={styles.container}>
@@ -431,14 +455,23 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 						}))}
 					/>
 
-					<FilterCustom
-						isSearch
-						name='Bãi'
-						query='_storageUuid'
-						listFilter={listStorage?.data?.map((v: any) => ({
-							id: v?.uuid,
+					<SelectFilterState
+						uuid={uuidQuality}
+						setUuid={setUuidQuality}
+						listData={listQuality?.data?.map((v: any) => ({
+							uuid: v?.uuid,
 							name: v?.name,
 						}))}
+						placeholder='Chất lượng'
+					/>
+					<SelectFilterState
+						uuid={uuidStorage}
+						setUuid={setUuidStorage}
+						listData={listStorage?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						placeholder='Bãi'
 					/>
 
 					<SelectFilterState
@@ -723,7 +756,8 @@ function MainPageBillAll({}: PropsMainPageBillAll) {
 						_status,
 						_dateFrom,
 						_dateTo,
-						_storageUuid,
+						uuidQuality,
+						uuidStorage,
 						_scalesStationUuid,
 						isHaveDryness,
 						truckUuid,
