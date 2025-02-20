@@ -49,7 +49,7 @@ function PageUpdatePort({}: PropsPageUpdatePort) {
 	const [listBatchBillSubmit, setListBatchBillSubmit] = useState<ITableBillScale[]>([]);
 	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 	const [truckUuid, setTruckUuid] = useState<string[]>([]);
-
+	const [uuidQuality, setUuidQuality] = useState<string>('');
 	const [listBatchBill, setListBatchBill] = useState<any[]>([]);
 	const [total, setTotal] = useState<number>(0);
 	const [uuidCompany, setUuidCompany] = useState<string>('');
@@ -59,6 +59,25 @@ function PageUpdatePort({}: PropsPageUpdatePort) {
 			httpRequest({
 				isDropdown: true,
 				http: companyServices.listCompany({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
+	const listQuality = useQuery([QUERY_KEY.dropdown_quoc_gia], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: wareServices.listQuality({
 					page: 1,
 					pageSize: 50,
 					keyword: '',
@@ -178,7 +197,7 @@ function PageUpdatePort({}: PropsPageUpdatePort) {
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
 						warehouseUuid: '',
-						qualityUuid: '',
+						qualityUuid: uuidQuality,
 						transportType: null,
 						typeCheckDay: 0,
 						scalesStationUuid: '',
@@ -280,6 +299,15 @@ function PageUpdatePort({}: PropsPageUpdatePort) {
 							id: v?.uuid,
 							name: v?.name,
 						}))}
+					/>
+					<SelectFilterState
+						uuid={uuidQuality}
+						setUuid={setUuidQuality}
+						listData={listQuality?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						placeholder='Chất lượng'
 					/>
 
 					<div className={styles.filter}>
@@ -425,7 +453,17 @@ function PageUpdatePort({}: PropsPageUpdatePort) {
 						currentPage={Number(_page) || 1}
 						pageSize={Number(_pageSize) || 200}
 						total={total}
-						dependencies={[_pageSize, _keyword, customerUuid, _productTypeUuid, _dateFrom, _dateTo, truckUuid, uuidCompany]}
+						dependencies={[
+							_pageSize,
+							_keyword,
+							customerUuid,
+							_productTypeUuid,
+							_dateFrom,
+							_dateTo,
+							truckUuid,
+							uuidCompany,
+							uuidQuality,
+						]}
 					/>
 				)}
 			</div>

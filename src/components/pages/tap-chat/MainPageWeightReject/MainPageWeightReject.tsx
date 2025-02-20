@@ -57,25 +57,34 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 	const [openExportExcel, setOpenExportExcel] = useState<boolean>(false);
 	const [openConfirm, setOpenConfirm] = useState<boolean>(false);
 
-	const {
-		_page,
-		_pageSize,
-		_keyword,
-		_isBatch,
-		_productTypeUuid,
-		_shipUuid,
-		_status,
-		_dateFrom,
-		_dateTo,
-		_state,
-		_storageUuid,
-		_scalesStationUuid,
-	} = router.query;
+	const {_page, _pageSize, _keyword, _isBatch, _productTypeUuid, _shipUuid, _status, _dateFrom, _dateTo, _state, _scalesStationUuid} =
+		router.query;
 
 	const [listBatchBill, setListBatchBill] = useState<any[]>([]);
 	const [total, setTotal] = useState<number>(0);
 	const [uuidConfirm, setUuidConfirm] = useState<string | null>(null);
 	const [uuidCompany, setUuidCompany] = useState<string>('');
+	const [uuidQuality, setUuidQuality] = useState<string>('');
+	const [uuidStorage, setUuidStorage] = useState<string>('');
+
+	const listQuality = useQuery([QUERY_KEY.dropdown_quoc_gia], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: wareServices.listQuality({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
 
 	const listCompany = useQuery([QUERY_KEY.dropdown_cong_ty], {
 		queryFn: () =>
@@ -239,7 +248,8 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 			_dateFrom,
 			_dateTo,
 			_state,
-			_storageUuid,
+			uuidQuality,
+			uuidStorage,
 			_scalesStationUuid,
 			isHaveDryness,
 			truckUuid,
@@ -283,12 +293,12 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
 						warehouseUuid: '',
-						qualityUuid: '',
+						qualityUuid: uuidQuality,
 						transportType: null,
 						shipUuid: (_shipUuid as string) || '',
 						typeCheckDay: 0,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
-						storageUuid: (_storageUuid as string) || '',
+						storageUuid: uuidStorage,
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 						truckUuid: truckUuid,
 						customerUuid: '',
@@ -354,13 +364,13 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 					timeStart: _dateFrom ? (_dateFrom as string) : null,
 					timeEnd: _dateTo ? (_dateTo as string) : null,
 					warehouseUuid: '',
-					qualityUuid: '',
+					qualityUuid: uuidQuality,
 					transportType: null,
 					shipUuid: (_shipUuid as string) || '',
 					typeCheckDay: 0,
 					scalesStationUuid: (_scalesStationUuid as string) || '',
 					documentId: '',
-					storageUuid: (_storageUuid as string) || '',
+					storageUuid: uuidStorage,
 					isExportSpec: isHaveSpec,
 					isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 					truckUuid: truckUuid,
@@ -406,7 +416,10 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 		if (uuidCompany) {
 			setCustomerUuid([]);
 		}
-	}, [uuidCompany]);
+		if (uuidQuality) {
+			setUuidStorage('');
+		}
+	}, [uuidCompany, uuidQuality]);
 
 	return (
 		<div className={styles.container}>
@@ -551,14 +564,23 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 							name: v?.name,
 						}))}
 					/>
-					<FilterCustom
-						isSearch
-						name='Bãi'
-						query='_storageUuid'
-						listFilter={listStorage?.data?.map((v: any) => ({
-							id: v?.uuid,
+					<SelectFilterState
+						uuid={uuidQuality}
+						setUuid={setUuidQuality}
+						listData={listQuality?.data?.map((v: any) => ({
+							uuid: v?.uuid,
 							name: v?.name,
 						}))}
+						placeholder='Chất lượng'
+					/>
+					<SelectFilterState
+						uuid={uuidStorage}
+						setUuid={setUuidStorage}
+						listData={listStorage?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						placeholder='Bãi'
 					/>
 					<SelectFilterState
 						uuid={isHaveDryness}
@@ -894,7 +916,8 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 							_dateFrom,
 							_dateTo,
 							_state,
-							_storageUuid,
+							uuidQuality,
+							uuidStorage,
 							_scalesStationUuid,
 							isHaveDryness,
 							truckUuid,

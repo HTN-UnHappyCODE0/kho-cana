@@ -52,19 +52,8 @@ function MainBillSend({}: PropsMainBillSend) {
 	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 	const [truckUuid, setTruckUuid] = useState<string[]>([]);
 
-	const {
-		_page,
-		_pageSize,
-		_keyword,
-		_isBatch,
-		_isShift,
-		_productTypeUuid,
-		_specUuid,
-		_dateFrom,
-		_dateTo,
-		_storageUuid,
-		_scalesStationUuid,
-	} = router.query;
+	const {_page, _pageSize, _keyword, _isBatch, _isShift, _productTypeUuid, _specUuid, _dateFrom, _dateTo, _scalesStationUuid} =
+		router.query;
 
 	const [dataSpec, setDataSpec] = useState<IBillSend | null>(null);
 	const [total, setTotal] = useState<number>(0);
@@ -72,6 +61,27 @@ function MainBillSend({}: PropsMainBillSend) {
 	const [listBillSend, setListBillSend] = useState<any[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [uuidCompany, setUuidCompany] = useState<string>('');
+	const [uuidQuality, setUuidQuality] = useState<string>('');
+	const [uuidStorage, setUuidStorage] = useState<string>('');
+
+	const listQuality = useQuery([QUERY_KEY.dropdown_quoc_gia], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: wareServices.listQuality({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
 
 	const listCompany = useQuery([QUERY_KEY.dropdown_cong_ty], {
 		queryFn: () =>
@@ -196,7 +206,7 @@ function MainBillSend({}: PropsMainBillSend) {
 		},
 	});
 
-	const listStorage = useQuery([QUERY_KEY.table_bai], {
+	const listStorage = useQuery([QUERY_KEY.table_bai, uuidQuality], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -209,7 +219,7 @@ function MainBillSend({}: PropsMainBillSend) {
 					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
 					warehouseUuid: '',
 					productUuid: '',
-					qualityUuid: '',
+					qualityUuid: uuidQuality,
 					specificationsUuid: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 				}),
@@ -234,7 +244,8 @@ function MainBillSend({}: PropsMainBillSend) {
 			_dateFrom,
 			_dateTo,
 			_isShift,
-			_storageUuid,
+			uuidQuality,
+			uuidStorage,
 			_scalesStationUuid,
 			isHaveDryness,
 			truckUuid,
@@ -260,14 +271,14 @@ function MainBillSend({}: PropsMainBillSend) {
 						productTypeUuid: _productTypeUuid ? (_productTypeUuid as string) : '',
 						specificationsUuid: (_specUuid as string) || '',
 						isCreateBatch: null,
-						qualityUuid: '',
+						qualityUuid: uuidQuality,
 						transportType: null,
 						typeCheckDay: 0,
 						warehouseUuid: '',
 						shipUuid: '',
 						state: [],
 						scalesStationUuid: (_scalesStationUuid as string) || '',
-						storageUuid: (_storageUuid as string) || '',
+						storageUuid: uuidStorage,
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 						truckUuid: truckUuid,
 						customerUuid: '',
@@ -298,7 +309,10 @@ function MainBillSend({}: PropsMainBillSend) {
 		if (uuidCompany) {
 			setCustomerUuid([]);
 		}
-	}, [uuidCompany]);
+		if (uuidQuality) {
+			setUuidStorage('');
+		}
+	}, [uuidCompany, uuidQuality]);
 
 	return (
 		<div className={styles.container}>
@@ -399,14 +413,23 @@ function MainBillSend({}: PropsMainBillSend) {
 							name: v?.name,
 						}))}
 					/>
-					<FilterCustom
-						isSearch
-						name='Bãi'
-						query='_storageUuid'
-						listFilter={listStorage?.data?.map((v: any) => ({
-							id: v?.uuid,
+					<SelectFilterState
+						uuid={uuidQuality}
+						setUuid={setUuidQuality}
+						listData={listQuality?.data?.map((v: any) => ({
+							uuid: v?.uuid,
 							name: v?.name,
 						}))}
+						placeholder='Chất lượng'
+					/>
+					<SelectFilterState
+						uuid={uuidStorage}
+						setUuid={setUuidStorage}
+						listData={listStorage?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						placeholder='Bãi'
 					/>
 
 					<SelectFilterState
@@ -580,7 +603,8 @@ function MainBillSend({}: PropsMainBillSend) {
 							_dateFrom,
 							_dateTo,
 							_isShift,
-							_storageUuid,
+							uuidQuality,
+							uuidStorage,
 							_scalesStationUuid,
 							isHaveDryness,
 							truckUuid,

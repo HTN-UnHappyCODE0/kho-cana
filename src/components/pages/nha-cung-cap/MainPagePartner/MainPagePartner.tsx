@@ -198,7 +198,7 @@ function MainPagePartner({}: PropsMainPagePartner) {
 					<div className={styles.filter}>
 						<FilterCustom
 							isSearch
-							name='Nhà cung cấp'
+							name='Khách hàng'
 							query='_partnerUuid'
 							listFilter={listPartner?.data?.map((v: any) => ({
 								id: v?.uuid,

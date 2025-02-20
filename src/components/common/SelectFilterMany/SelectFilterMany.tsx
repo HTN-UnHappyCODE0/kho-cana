@@ -99,9 +99,9 @@ function SelectFilterMany({selectedIds, setSelectedIds, listData, name, isShowAl
 						{selectedIds.length === 0
 							? 'Tất cả'
 							: listData
-									.filter((v) => selectedIds.includes(v.uuid))
-									.map((v) => v.name)
-									.join(', ')}
+									?.filter((v) => selectedIds?.includes(v.uuid))
+									?.map((v) => v.name)
+									?.join(', ')}
 					</p>
 				</div>
 
