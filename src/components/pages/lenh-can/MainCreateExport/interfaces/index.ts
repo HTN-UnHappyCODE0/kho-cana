@@ -16,4 +16,5 @@ export interface IFormCreateExport {
 	description: string;
 	scaleStationUuid: string;
 	portname: string;
+	numShip: string;
 }

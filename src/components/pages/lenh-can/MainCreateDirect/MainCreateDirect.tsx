@@ -62,6 +62,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 		portname: '',
 		warehouseUuid: '',
 		storageTemporaryUuid: '',
+		numShip: '',
 	});
 
 	const listCustomerFrom = useQuery([QUERY_KEY.dropdown_khach_hang_nhap], {
@@ -280,6 +281,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 					scaleStationUuid: form.scaleStationUuid,
 					portname: form?.portname,
 					storageTemporaryUuid: form?.storageTemporaryUuid,
+					numShip: form.numShip,
 				}),
 			}),
 		onSuccess(data) {
@@ -692,7 +694,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 							</Select>
 						</div>
 					</div>
-					<div className={clsx('mt', 'col_2')}>
+					<div className={clsx('mt', 'col_3')}>
 						<Select
 							isSearch
 							name='toUuid'
@@ -748,6 +750,15 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 										/>
 									))}
 							</Select>
+						</div>
+						<div>
+							<Input
+								name='numShip'
+								value={form.numShip}
+								type='text'
+								label={<span>Số hiệu tàu</span>}
+								placeholder='Nhập số tàu'
+							/>
 						</div>
 					</div>
 					<div className={clsx('mt', 'col_2')}>

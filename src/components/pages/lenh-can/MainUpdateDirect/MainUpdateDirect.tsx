@@ -72,6 +72,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 		portname: '',
 		warehouseUuid: '',
 		storageTemporaryUuid: '',
+		numShip: '',
 	});
 
 	const {data: detailBatchBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -105,6 +106,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 					portname: data?.port || '',
 					warehouseUuid: data?.storageTemporaryUu?.parentUu?.uuid || '',
 					storageTemporaryUuid: data?.storageTemporaryUu?.uuid || '',
+					numShip: data?.numShip || '',
 				});
 
 				setListTruckChecked(
@@ -347,6 +349,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 					reason: form.reason,
 					portname: form.portname,
 					storageTemporaryUuid: form?.storageTemporaryUuid,
+					numShip: form.numShip,
 				}),
 			}),
 		onSuccess(data) {
@@ -777,7 +780,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 							</Select>
 						</div>
 					</div>
-					<div className={clsx('mt', 'col_2')}>
+					<div className={clsx('mt', 'col_3')}>
 						<Select
 							isSearch
 							name='toUuid'
@@ -833,6 +836,15 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 										/>
 									))}
 							</Select>
+						</div>
+						<div>
+							<Input
+								name='numShip'
+								value={form.numShip}
+								type='text'
+								label={<span>Số hiệu tàu</span>}
+								placeholder='Nhập số tàu'
+							/>
 						</div>
 					</div>
 					<div className={clsx('mt', 'col_2')}>
