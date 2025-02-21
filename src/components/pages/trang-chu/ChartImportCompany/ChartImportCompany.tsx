@@ -79,7 +79,7 @@ function ChartImportCompany({}: PropsChartImportCompany) {
 					keyword: '',
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-					typeFind: CONFIG_TYPE_FIND.TABLE,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
 					partnerUUid: '',
 					userUuid: '',
 					status: STATUS_CUSTOMER.HOP_TAC,

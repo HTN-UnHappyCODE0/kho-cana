@@ -1,6 +1,7 @@
 export interface PropsMainPageBillAll {}
 
 export interface IDataBill {
+	numShip: string;
 	lstTruck: {
 		code: string;
 		licensePalate: string;

@@ -61,6 +61,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 		isPrint: 0,
 		scaleStationUuid: '',
 		portname: '',
+		numShip: '',
 	});
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
@@ -271,6 +272,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 					lstTruckRemoveUuid: [],
 					scaleStationUuid: form?.scaleStationUuid,
 					portname: form.portname,
+					numShip: form?.numShip,
 				}),
 			}),
 		onSuccess(data) {
@@ -534,7 +536,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 							</div>
 						</div>
 					</div>
-					<div className={clsx('mt', 'col_2')}>
+					<div className={clsx('mt', 'col_3')}>
 						<Select
 							isSearch
 							name='shipUuid'
@@ -568,6 +570,15 @@ function MainCreateExport({}: PropsMainCreateExport) {
 							label={<span>Cảng bốc dỡ</span>}
 							placeholder='Nhập cảng bốc dỡ'
 						/>
+						<div>
+							<Input
+								name='numShip'
+								value={form.numShip}
+								type='text'
+								label={<span>Số hiệu tàu</span>}
+								placeholder='Nhập số tàu'
+							/>
+						</div>
 					</div>
 					<div className={clsx('mt', 'col_2')}>
 						<Select

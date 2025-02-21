@@ -66,7 +66,8 @@ function DashboardWarehouse({
 		}
 	}, [uuidCompany]);
 
-	const uuidCompanyDefault = '622f5955-5add-4490-8868-7d9ed1fa3e72';
+	const uuidCompanyDefault = '';
+	// const uuidCompanyDefault = '622f5955-5add-4490-8868-7d9ed1fa3e72';
 	useEffect(() => {
 		if (uuidCompanyDefault && infoUser?.companyUuid == null) {
 			setUuidCompanyFilter(uuidCompanyDefault);

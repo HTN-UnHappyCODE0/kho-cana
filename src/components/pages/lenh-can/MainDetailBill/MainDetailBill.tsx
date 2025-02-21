@@ -196,6 +196,20 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 							</div>
 						) : null}
 
+						{detailBatchBill?.scalesType == TYPE_SCALES.CAN_XUAT || detailBatchBill?.scalesType == TYPE_SCALES.CAN_TRUC_TIEP ? (
+							detailBatchBill?.isBatch == TYPE_BATCH.CAN_LO ? (
+								<div className={styles.item_table}>
+									<p>Số hiệu tàu:</p>
+									<span>{detailBatchBill?.numShip || '---'}</span>
+								</div>
+							) : (
+								<div className={styles.item_table}>
+									<p>Số hiệu tàu:</p>
+									<span>{'---'}</span>
+								</div>
+							)
+						) : null}
+
 						<div className={styles.item_table}>
 							<p>Loại hàng:</p>
 							<span>{detailBatchBill?.productTypeUu?.name || '---'}</span>

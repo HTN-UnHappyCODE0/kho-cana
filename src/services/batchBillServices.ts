@@ -67,6 +67,7 @@ const batchBillServices = {
 			scaleStationUuid: string;
 			portname: string;
 			storageTemporaryUuid?: string;
+			numShip?: string;
 		},
 		tokenAxios?: any
 	) => {

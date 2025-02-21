@@ -1,6 +1,7 @@
 export interface PropsMainDetailBill {}
 
 export interface IDetailBatchBill {
+	numShip: string;
 	lstTruck: {
 		code: string;
 		licensePalate: string;
