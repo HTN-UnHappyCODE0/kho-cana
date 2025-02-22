@@ -113,9 +113,9 @@ const TemplateSampleSpec = forwardRef<HTMLDivElement, PropsTemplateSampleSpec>(
 						</p>
 					)}
 
-					<p style={{marginTop: '20px'}}>
+					{/* <p style={{marginTop: '20px'}}>
 						Điểm giám định: <b>Tại Công ty cổ phần cảng Thái Hưng</b> - Phòng phân tích.
-					</p>
+					</p> */}
 					<div className={styles.grid} style={{marginTop: '60px'}}>
 						<div></div>
 						<div className={styles.sign}>
