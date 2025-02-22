@@ -438,7 +438,7 @@ function MainPageBillService({}: PropsMainPageBillService) {
 							uuid: v?.uuid,
 							name: v?.name,
 						}))}
-						placeholder='Chất lượng'
+						placeholder='Quốc gia'
 					/>
 					<SelectFilterState
 						uuid={uuidStorage}
