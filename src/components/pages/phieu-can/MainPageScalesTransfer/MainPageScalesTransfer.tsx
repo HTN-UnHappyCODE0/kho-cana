@@ -113,7 +113,7 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 		},
 	});
 
-	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang, uuidCompany], {
+	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang, listCompanyUuid], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -130,7 +130,8 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 					typeCus: null,
 					provinceId: '',
 					specUuid: '',
-					companyUuid: uuidCompany,
+					companyUuid: '',
+					listCompanyUuid: listCompanyUuid,
 				}),
 			}),
 		select(data) {
@@ -440,13 +441,13 @@ function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 		return exportExcel.mutate(isHaveSpec);
 	};
 	useEffect(() => {
-		if (uuidCompany) {
+		if (listCompanyUuid) {
 			setCustomerUuid([]);
 		}
 		if (uuidQuality) {
 			setUuidStorage('');
 		}
-	}, [uuidCompany, uuidQuality]);
+	}, [listCompanyUuid, uuidQuality]);
 
 	return (
 		<div className={styles.container}>

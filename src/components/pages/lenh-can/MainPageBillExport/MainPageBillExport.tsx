@@ -109,7 +109,7 @@ function MainPageBillExport({}: PropsMainPageBillExport) {
 		},
 	});
 
-	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
+	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang, listCompanyUuid], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -126,6 +126,7 @@ function MainPageBillExport({}: PropsMainPageBillExport) {
 					typeCus: null,
 					provinceId: '',
 					specUuid: '',
+					listCompanyUuid: listCompanyUuid,
 				}),
 			}),
 		select(data) {
@@ -338,13 +339,13 @@ function MainPageBillExport({}: PropsMainPageBillExport) {
 	});
 
 	useEffect(() => {
-		if (uuidCompany) {
+		if (listCompanyUuid) {
 			setCustomerUuid([]);
 		}
 		if (uuidQuality) {
 			setUuidStorage('');
 		}
-	}, [uuidCompany, uuidQuality]);
+	}, [listCompanyUuid, uuidQuality]);
 
 	return (
 		<div className={styles.container}>

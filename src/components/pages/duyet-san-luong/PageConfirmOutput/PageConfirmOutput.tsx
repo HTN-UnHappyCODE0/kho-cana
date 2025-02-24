@@ -109,7 +109,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 		},
 	});
 
-	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang, uuidCompany], {
+	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang, listCompanyUuid], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -126,7 +126,8 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 					typeCus: null,
 					provinceId: '',
 					specUuid: '',
-					companyUuid: uuidCompany,
+					companyUuid: '',
+					listCompanyUuid: listCompanyUuid,
 				}),
 			}),
 		select(data) {
@@ -363,13 +364,13 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 	};
 
 	useEffect(() => {
-		if (uuidCompany) {
+		if (listCompanyUuid) {
 			setCustomerUuid([]);
 		}
 		if (uuidQuality) {
 			setUuidStorage('');
 		}
-	}, [uuidCompany, uuidQuality]);
+	}, [listCompanyUuid, uuidQuality]);
 
 	return (
 		<div className={styles.container}>
