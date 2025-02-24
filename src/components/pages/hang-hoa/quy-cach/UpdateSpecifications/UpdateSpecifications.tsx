@@ -251,7 +251,7 @@ function UpdateSpecifications({}: PropsUpdateSpecifications) {
 							name='name'
 							value={form.name || ''}
 							isRequired
-							readOnly={true}
+							// readOnly={true}
 							max={255}
 							type='text'
 							blur={true}
