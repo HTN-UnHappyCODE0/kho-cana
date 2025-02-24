@@ -17,6 +17,9 @@ const customerServices = {
 			provinceId: string;
 			typeCus: TYPE_CUSTOMER | null;
 			companyUuid?: string;
+			parentUserUuid?: string;
+			listCompanyUuid?: string[];
+			listPartnerUUid?: string[];
 		},
 		tokenAxios?: any
 	) => {
