@@ -211,7 +211,7 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 		},
 	});
 
-	const listStorage = useQuery([QUERY_KEY.table_bai], {
+	const listStorage = useQuery([QUERY_KEY.table_bai, uuidQuality], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -224,7 +224,7 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
 					warehouseUuid: '',
 					productUuid: '',
-					qualityUuid: '',
+					qualityUuid: uuidQuality,
 					specificationsUuid: '',
 					status: CONFIG_STATUS.HOAT_DONG,
 				}),
