@@ -67,13 +67,13 @@ const TemplateSampleSpec = forwardRef<HTMLDivElement, PropsTemplateSampleSpec>(
 
 					<h3 style={{marginTop: '24px'}}>Kết quả phân tích</h3>
 					{TypeQuality == true && (
-						<p style={{marginTop: '20px'}}>
+						<p>
 							Mẫu hàng được phân tích tại phòng phân tích của <b>Công ty TNHH TRIỀU AN QN</b>. <br />
 							Kết quả như sau:
 						</p>
 					)}
 					{TypeQuality == false && (
-						<p style={{marginTop: '20px'}}>
+						<p>
 							Mẫu hàng được phân tích tại phòng phân tích của <b>Công ty cổ phần cảng Thái Hưng</b>. <br />
 							Kết quả như sau:
 						</p>
