@@ -144,6 +144,7 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 					isHaveDryness: TYPE_ACTION_AUDIT.HAVE_DRY,
 					truckUuid: [],
 					companyUuid: '',
+					listCompanyUuid: [],
 				}),
 			}),
 		onSuccess(data) {

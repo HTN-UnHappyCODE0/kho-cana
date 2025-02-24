@@ -92,6 +92,7 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 	const [total, setTotal] = useState<number>(0);
 	const [openWeighReject, setOpenWeighReject] = useState<string | null>(null);
 	const [uuidCompany, setUuidCompany] = useState<string>('');
+	const [listCompanyUuid, setListCompanyUuid] = useState<any[]>([]);
 
 	const listCompany = useQuery([QUERY_KEY.dropdown_cong_ty], {
 		queryFn: () =>
@@ -260,6 +261,7 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 			isHaveDryness,
 			truckUuid,
 			uuidCompany,
+			listCompanyUuid,
 		],
 		{
 			queryFn: () =>
@@ -310,6 +312,7 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 						customerUuid: '',
 						listCustomerUuid: customerUuid,
 						companyUuid: uuidCompany,
+						listCompanyUuid: listCompanyUuid,
 					}),
 				}),
 			onSuccess(data) {
@@ -422,6 +425,7 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 					isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 					truckUuid: truckUuid,
 					companyUuid: uuidCompany,
+					listCompanyUuid: listCompanyUuid,
 				}),
 			});
 		},
@@ -475,14 +479,14 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 							]}
 						/>
 					</div>
-					<SelectFilterState
-						uuid={uuidCompany}
-						setUuid={setUuidCompany}
+					<SelectFilterMany
+						selectedIds={listCompanyUuid}
+						setSelectedIds={setListCompanyUuid}
 						listData={listCompany?.data?.map((v: any) => ({
 							uuid: v?.uuid,
 							name: v?.name,
 						}))}
-						placeholder='Kv cảng xuất khẩu'
+						name='Kv cảng xuất khẩu'
 					/>
 					<SelectFilterMany
 						selectedIds={customerUuid}
@@ -1006,6 +1010,7 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 							isHaveDryness,
 							truckUuid,
 							uuidCompany,
+							listCompanyUuid,
 						]}
 					/>
 				)}

@@ -74,6 +74,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 	const [uuidCompany, setUuidCompany] = useState<string>('');
 	const [uuidQuality, setUuidQuality] = useState<string>('');
 	const [uuidStorage, setUuidStorage] = useState<string>('');
+	const [listCompanyUuid, setListCompanyUuid] = useState<any[]>([]);
 
 	const listQuality = useQuery([QUERY_KEY.dropdown_quoc_gia], {
 		queryFn: () =>
@@ -260,6 +261,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 			isHaveDryness,
 			truckUuid,
 			uuidCompany,
+			listCompanyUuid,
 		],
 		{
 			queryFn: () =>
@@ -310,6 +312,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 						customerUuid: '',
 						listCustomerUuid: customerUuid,
 						companyUuid: uuidCompany,
+						listCompanyUuid: listCompanyUuid,
 					}),
 				}),
 			onSuccess(data) {
@@ -422,6 +425,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 					isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 					truckUuid: truckUuid,
 					companyUuid: uuidCompany,
+					listCompanyUuid: listCompanyUuid,
 				}),
 			});
 		},
@@ -475,14 +479,14 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 							]}
 						/>
 					</div>
-					<SelectFilterState
-						uuid={uuidCompany}
-						setUuid={setUuidCompany}
+					<SelectFilterMany
+						selectedIds={listCompanyUuid}
+						setSelectedIds={setListCompanyUuid}
 						listData={listCompany?.data?.map((v: any) => ({
 							uuid: v?.uuid,
 							name: v?.name,
 						}))}
-						placeholder='Kv cảng xuất khẩu'
+						name='Kv cảng xuất khẩu'
 					/>
 					<SelectFilterMany
 						selectedIds={customerUuid}
@@ -1011,6 +1015,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 							isHaveDryness,
 							truckUuid,
 							uuidCompany,
+							listCompanyUuid,
 						]}
 					/>
 				)}

@@ -66,6 +66,7 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 	const [uuidCompany, setUuidCompany] = useState<string>('');
 	const [uuidQuality, setUuidQuality] = useState<string>('');
 	const [uuidStorage, setUuidStorage] = useState<string>('');
+	const [listCompanyUuid, setListCompanyUuid] = useState<any[]>([]);
 
 	const listQuality = useQuery([QUERY_KEY.dropdown_quoc_gia], {
 		queryFn: () =>
@@ -254,6 +255,7 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 			isHaveDryness,
 			truckUuid,
 			uuidCompany,
+			listCompanyUuid,
 		],
 		{
 			queryFn: () =>
@@ -305,6 +307,7 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 						listCustomerUuid: customerUuid,
 						isNeedConfirmReject: 1,
 						companyUuid: uuidCompany,
+						listCompanyUuid: listCompanyUuid,
 					}),
 				}),
 			onSuccess(data) {
@@ -376,6 +379,7 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 					truckUuid: truckUuid,
 					isNeedConfirmReject: 1,
 					companyUuid: uuidCompany,
+					listCompanyUuid: listCompanyUuid,
 				}),
 			});
 		},
@@ -449,14 +453,14 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 							]}
 						/>
 					</div>
-					<SelectFilterState
-						uuid={uuidCompany}
-						setUuid={setUuidCompany}
+					<SelectFilterMany
+						selectedIds={listCompanyUuid}
+						setSelectedIds={setListCompanyUuid}
 						listData={listCompany?.data?.map((v: any) => ({
 							uuid: v?.uuid,
 							name: v?.name,
 						}))}
-						placeholder='Kv cảng xuất khẩu'
+						name='Kv cảng xuất khẩu'
 					/>
 					<SelectFilterMany
 						selectedIds={customerUuid}
@@ -922,6 +926,7 @@ function MainPageWeightReject({}: PropsMainPageWeightReject) {
 							isHaveDryness,
 							truckUuid,
 							uuidCompany,
+							listCompanyUuid,
 						]}
 					/>
 				)}

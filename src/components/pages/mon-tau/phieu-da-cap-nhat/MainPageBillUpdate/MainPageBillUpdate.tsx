@@ -64,6 +64,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 	const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 	const [truckUuid, setTruckUuid] = useState<string[]>([]);
+	const [listCompanyUuid, setListCompanyUuid] = useState<any[]>([]);
 
 	const {
 		_page,
@@ -229,6 +230,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 			isHaveDryness,
 			truckUuid,
 			uuidCompany,
+			listCompanyUuid,
 		],
 		{
 			queryFn: () =>
@@ -262,6 +264,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 						customerUuid: '',
 						listCustomerUuid: customerUuid,
 						companyUuid: uuidCompany,
+						listCompanyUuid: listCompanyUuid,
 					}),
 				}),
 
@@ -356,14 +359,14 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 							]}
 						/>
 					</div>
-					<SelectFilterState
-						uuid={uuidCompany}
-						setUuid={setUuidCompany}
+					<SelectFilterMany
+						selectedIds={listCompanyUuid}
+						setSelectedIds={setListCompanyUuid}
 						listData={listCompany?.data?.map((v: any) => ({
 							uuid: v?.uuid,
 							name: v?.name,
 						}))}
-						placeholder='Kv cảng xuất khẩu'
+						name='Kv cảng xuất khẩu'
 					/>
 					<SelectFilterMany
 						selectedIds={customerUuid}
@@ -637,6 +640,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 						isHaveDryness,
 						truckUuid,
 						uuidCompany,
+						listCompanyUuid,
 					]}
 				/>
 				{/* )} */}
