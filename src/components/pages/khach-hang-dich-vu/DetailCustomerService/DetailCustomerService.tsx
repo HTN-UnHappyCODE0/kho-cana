@@ -206,15 +206,15 @@ function DetailCustomerService({}: PropsDetailCustomerService) {
 								},
 								{
 									title: 'Loại hàng',
-									render: (data: any) => <>{data?.productTypeUu?.name}</>,
+									render: (data: any) => <>{data?.productTypeUu?.name || '---'}</>,
 								},
 								{
 									title: 'Quốc gia',
-									render: (data: any) => <>{data?.qualityUu?.name}</>,
+									render: (data: any) => <>{data?.qualityUu?.name || '---'}</>,
 								},
 								{
 									title: 'Quy cách',
-									render: (data: any) => <>{data?.specUu?.name}</>,
+									render: (data: any) => <>{data?.specUu?.name || '---'}</>,
 								},
 								{
 									title: 'Vận chuyển',

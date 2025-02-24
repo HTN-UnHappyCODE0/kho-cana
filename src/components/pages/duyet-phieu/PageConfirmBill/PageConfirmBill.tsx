@@ -63,6 +63,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 	const [listBatchBill, setListBatchBill] = useState<any[]>([]);
 	const [total, setTotal] = useState<number>(0);
 	const [uuidCompany, setUuidCompany] = useState<string>('');
+	const [listCompanyUuid, setListCompanyUuid] = useState<any[]>([]);
 
 	const listCompany = useQuery([QUERY_KEY.dropdown_cong_ty], {
 		queryFn: () =>
@@ -229,6 +230,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 			truckUuid,
 			uuidCompany,
 			uuidQuality,
+			listCompanyUuid,
 		],
 		{
 			queryFn: () =>
@@ -263,6 +265,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 						customerUuid: '',
 						listCustomerUuid: customerUuid,
 						companyUuid: uuidCompany,
+						listCompanyUuid: listCompanyUuid,
 					}),
 				}),
 			onSuccess(data) {
@@ -341,6 +344,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 					isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 					truckUuid: truckUuid,
 					companyUuid: uuidCompany,
+					listCompanyUuid: listCompanyUuid,
 				}),
 			});
 		},
@@ -410,7 +414,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 							]}
 						/>
 					</div>
-					<SelectFilterState
+					{/* <SelectFilterState
 						uuid={uuidCompany}
 						setUuid={setUuidCompany}
 						listData={listCompany?.data?.map((v: any) => ({
@@ -418,6 +422,15 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 							name: v?.name,
 						}))}
 						placeholder='Kv cảng xuất khẩu'
+					/> */}
+					<SelectFilterMany
+						selectedIds={listCompanyUuid}
+						setSelectedIds={setListCompanyUuid}
+						listData={listCompany?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						name='Kv cảng xuất khẩu'
 					/>
 
 					<SelectFilterMany
@@ -820,6 +833,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 							truckUuid,
 							uuidCompany,
 							uuidQuality,
+							listCompanyUuid,
 						]}
 					/>
 				)}

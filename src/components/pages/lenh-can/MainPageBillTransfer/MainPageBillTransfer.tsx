@@ -68,6 +68,7 @@ function MainPageBillTransfer({}: PropsMainPageBillTransfer) {
 	const [uuidCompany, setUuidCompany] = useState<string>('');
 	const [uuidQuality, setUuidQuality] = useState<string>('');
 	const [uuidStorage, setUuidStorage] = useState<string>('');
+	const [listCompanyUuid, setListCompanyUuid] = useState<any[]>([]);
 
 	const listQuality = useQuery([QUERY_KEY.dropdown_quoc_gia], {
 		queryFn: () =>
@@ -252,6 +253,7 @@ function MainPageBillTransfer({}: PropsMainPageBillTransfer) {
 			isHaveDryness,
 			truckUuid,
 			uuidCompany,
+			listCompanyUuid,
 		],
 		{
 			queryFn: () =>
@@ -284,6 +286,7 @@ function MainPageBillTransfer({}: PropsMainPageBillTransfer) {
 						customerUuid: '',
 						listCustomerUuid: customerUuid,
 						companyUuid: uuidCompany,
+						listCompanyUuid: listCompanyUuid,
 					}),
 				}),
 			select(data) {
@@ -350,14 +353,14 @@ function MainPageBillTransfer({}: PropsMainPageBillTransfer) {
 					<div className={styles.search}>
 						<Search keyName='_keyword' placeholder='Tìm kiếm theo mã lô hàng' />
 					</div>
-					<SelectFilterState
-						uuid={uuidCompany}
-						setUuid={setUuidCompany}
+					<SelectFilterMany
+						selectedIds={listCompanyUuid}
+						setSelectedIds={setListCompanyUuid}
 						listData={listCompany?.data?.map((v: any) => ({
 							uuid: v?.uuid,
 							name: v?.name,
 						}))}
-						placeholder='Kv cảng xuất khẩu'
+						name='Kv cảng xuất khẩu'
 					/>
 					<SelectFilterMany
 						selectedIds={customerUuid}
@@ -722,6 +725,7 @@ function MainPageBillTransfer({}: PropsMainPageBillTransfer) {
 						isHaveDryness,
 						truckUuid,
 						uuidCompany,
+						listCompanyUuid,
 					]}
 				/>
 			</div>

@@ -63,6 +63,7 @@ function MainBillSend({}: PropsMainBillSend) {
 	const [uuidCompany, setUuidCompany] = useState<string>('');
 	const [uuidQuality, setUuidQuality] = useState<string>('');
 	const [uuidStorage, setUuidStorage] = useState<string>('');
+	const [listCompanyUuid, setListCompanyUuid] = useState<any[]>([]);
 
 	const listQuality = useQuery([QUERY_KEY.dropdown_quoc_gia], {
 		queryFn: () =>
@@ -250,6 +251,7 @@ function MainBillSend({}: PropsMainBillSend) {
 			isHaveDryness,
 			truckUuid,
 			uuidCompany,
+			listCompanyUuid,
 		],
 		{
 			queryFn: () =>
@@ -284,6 +286,7 @@ function MainBillSend({}: PropsMainBillSend) {
 						customerUuid: '',
 						listCustomerUuid: customerUuid,
 						companyUuid: uuidCompany,
+						listCompanyUuid: listCompanyUuid,
 					}),
 				}),
 			onSuccess(data) {
@@ -359,14 +362,14 @@ function MainBillSend({}: PropsMainBillSend) {
 							]}
 						/>
 					</div>
-					<SelectFilterState
-						uuid={uuidCompany}
-						setUuid={setUuidCompany}
+					<SelectFilterMany
+						selectedIds={listCompanyUuid}
+						setSelectedIds={setListCompanyUuid}
 						listData={listCompany?.data?.map((v: any) => ({
 							uuid: v?.uuid,
 							name: v?.name,
 						}))}
-						placeholder='Kv cảng xuất khẩu'
+						name='Kv cảng xuất khẩu'
 					/>
 					<SelectFilterMany
 						selectedIds={customerUuid}
@@ -609,6 +612,7 @@ function MainBillSend({}: PropsMainBillSend) {
 							isHaveDryness,
 							truckUuid,
 							uuidCompany,
+							listCompanyUuid,
 						]}
 					/>
 				)}
