@@ -94,9 +94,9 @@ function SelectFilterMany({selectedIds, setSelectedIds, listData, placeholder, i
 					{selectedIds.length === 0
 						? placeholder
 						: listData
-								.filter((v) => selectedIds.includes(v.uuid))
-								.map((v) => v.name)
-								.join(', ')}
+								?.filter((v) => selectedIds?.includes(v.uuid))
+								?.map((v) => v.name)
+								?.join(', ')}
 				</p>
 				<div className={styles.arrow}>
 					<ArrowDown2 size={16} />

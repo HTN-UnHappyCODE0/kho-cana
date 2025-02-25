@@ -271,6 +271,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 						listCustomerUuid: customerUuid,
 						companyUuid: uuidCompany,
 						listCompanyUuid: listCompanyUuid,
+						TypeProduct: TYPE_PRODUCT.CONG_TY,
 					}),
 				}),
 			onSuccess(data) {
@@ -348,6 +349,7 @@ function PageConfirmOutput({}: PropsPageConfirmOutput) {
 					truckUuid: truckUuid,
 					companyUuid: uuidCompany,
 					listCompanyUuid: listCompanyUuid,
+					TypeProduct: TYPE_PRODUCT.CONG_TY,
 				}),
 			});
 		},
