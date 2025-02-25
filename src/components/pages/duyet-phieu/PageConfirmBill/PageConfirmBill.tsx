@@ -267,6 +267,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 						listCustomerUuid: customerUuid,
 						companyUuid: uuidCompany,
 						listCompanyUuid: listCompanyUuid,
+						TypeProduct: TYPE_PRODUCT.CONG_TY,
 					}),
 				}),
 			onSuccess(data) {
@@ -346,6 +347,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 					truckUuid: truckUuid,
 					companyUuid: uuidCompany,
 					listCompanyUuid: listCompanyUuid,
+					TypeProduct: TYPE_PRODUCT.CONG_TY,
 				}),
 			});
 		},

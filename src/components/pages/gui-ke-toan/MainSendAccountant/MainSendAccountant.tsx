@@ -395,6 +395,7 @@ function MainSendAccountant({}: PropsMainSendAccountant) {
 						listCustomerUuid: customerUuid,
 						companyUuid: uuidCompany,
 						listCompanyUuid: listCompanyUuid,
+						TypeProduct: TYPE_PRODUCT.CONG_TY,
 					}),
 				}),
 			onSuccess(data) {

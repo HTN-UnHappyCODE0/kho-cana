@@ -268,6 +268,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 						listCustomerUuid: customerUuid,
 						companyUuid: uuidCompany,
 						listCompanyUuid: listCompanyUuid,
+						TypeProduct: TYPE_PRODUCT.CONG_TY,
 					}),
 				}),
 			onSuccess(data) {
@@ -344,6 +345,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 					isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 					truckUuid: truckUuid,
 					companyUuid: uuidCompany,
+					TypeProduct: TYPE_PRODUCT.CONG_TY,
 				}),
 			});
 		},
