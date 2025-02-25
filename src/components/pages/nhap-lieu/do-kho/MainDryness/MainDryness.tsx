@@ -128,7 +128,7 @@ function MainDryness({}: PropsMainDryness) {
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
-					type: [TYPE_PRODUCT.CONG_TY, TYPE_PRODUCT.DUNG_CHUNG],
+					type: [TYPE_PRODUCT.CONG_TY],
 				}),
 			}),
 		select(data) {
@@ -290,7 +290,7 @@ function MainDryness({}: PropsMainDryness) {
 						storageUuid: (_storageUuid as string) || '',
 						isHaveSpec: null,
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
-						TypeProduct: TYPE_PRODUCT.CONG_TY,
+						typeProduct: TYPE_PRODUCT.CONG_TY,
 						listCompanyUuid: listCompanyUuid,
 					}),
 				}),
