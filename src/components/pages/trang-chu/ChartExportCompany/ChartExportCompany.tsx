@@ -344,7 +344,7 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 					partnerUUid: '',
 					userUuid: '',
 					status: STATUS_CUSTOMER.HOP_TAC,
-					typeCus: TYPE_CUSTOMER.NHA_CUNG_CAP,
+					typeCus: TYPE_CUSTOMER.KH_XUAT,
 					provinceId: '',
 					specUuid: '',
 					companyUuid: uuidCompany,

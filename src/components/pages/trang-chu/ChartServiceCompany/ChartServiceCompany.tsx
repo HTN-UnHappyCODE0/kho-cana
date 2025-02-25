@@ -344,7 +344,7 @@ function ChartServiceCompany({}: PropsChartServiceCompany) {
 					partnerUUid: '',
 					userUuid: '',
 					status: STATUS_CUSTOMER.HOP_TAC,
-					typeCus: TYPE_CUSTOMER.NHA_CUNG_CAP,
+					typeCus: TYPE_CUSTOMER.DICH_VU,
 					provinceId: '',
 					specUuid: '',
 					companyUuid: uuidCompany,
