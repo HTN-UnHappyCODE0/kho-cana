@@ -208,7 +208,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 					isPaging: CONFIG_PAGING.NO_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
-					type: [TYPE_PRODUCT.CONG_TY, TYPE_PRODUCT.DUNG_CHUNG],
+					type: [TYPE_PRODUCT.CONG_TY],
 				}),
 			}),
 		select(data) {
@@ -268,7 +268,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 						listCustomerUuid: customerUuid,
 						companyUuid: uuidCompany,
 						listCompanyUuid: listCompanyUuid,
-						TypeProduct: TYPE_PRODUCT.CONG_TY,
+						typeProduct: TYPE_PRODUCT.CONG_TY,
 					}),
 				}),
 			onSuccess(data) {
@@ -345,7 +345,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 					isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 					truckUuid: truckUuid,
 					companyUuid: uuidCompany,
-					TypeProduct: TYPE_PRODUCT.CONG_TY,
+					typeProduct: TYPE_PRODUCT.CONG_TY,
 				}),
 			});
 		},
@@ -395,6 +395,24 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 					<div className={styles.search}>
 						<Search keyName='_keyword' placeholder='Tìm kiếm theo mã lô hàng' />
 					</div>
+					<SelectFilterMany
+						selectedIds={listCompanyUuid}
+						setSelectedIds={setListCompanyUuid}
+						listData={listCompany?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						name='Kv cảng xuất khẩu'
+					/>
+					<SelectFilterMany
+						selectedIds={customerUuid}
+						setSelectedIds={setCustomerUuid}
+						listData={listCustomer?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						name='Khách hàng'
+					/>
 					<div className={styles.filter}>
 						<FilterCustom
 							isSearch
@@ -426,24 +444,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 						}))}
 						placeholder='Kv cảng xuất khẩu'
 					/> */}
-					<SelectFilterMany
-						selectedIds={listCompanyUuid}
-						setSelectedIds={setListCompanyUuid}
-						listData={listCompany?.data?.map((v: any) => ({
-							uuid: v?.uuid,
-							name: v?.name,
-						}))}
-						name='Kv cảng xuất khẩu'
-					/>
-					<SelectFilterMany
-						selectedIds={customerUuid}
-						setSelectedIds={setCustomerUuid}
-						listData={listCustomer?.data?.map((v: any) => ({
-							uuid: v?.uuid,
-							name: v?.name,
-						}))}
-						name='Khách hàng'
-					/>
+
 					<SelectFilterMany
 						selectedIds={truckUuid}
 						setSelectedIds={setTruckUuid}

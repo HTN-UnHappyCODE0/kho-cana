@@ -31,7 +31,7 @@ const weightSessionServices = {
 			customerUuid: string;
 			listCustomerUuid: string[];
 			listCompanyUuid?: string[];
-			TypeProduct?: number;
+			typeProduct?: number;
 		},
 		tokenAxios?: any
 	) => {

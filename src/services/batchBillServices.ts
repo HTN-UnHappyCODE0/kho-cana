@@ -38,7 +38,6 @@ const batchBillServices = {
 			isExportSpec?: number;
 			listCompanyUuid?: string[];
 			listPartnerUuid?: string[];
-			TypeProduct?: number;
 		},
 		tokenAxios?: any
 	) => {
@@ -277,7 +276,6 @@ const batchBillServices = {
 			typeProduct?: number;
 			listCompanyUuid?: string[];
 			listPartnerUuid?: string[];
-			TypeProduct?: number;
 		},
 		tokenAxios?: any
 	) => {
