@@ -395,6 +395,24 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 					<div className={styles.search}>
 						<Search keyName='_keyword' placeholder='Tìm kiếm theo mã lô hàng' />
 					</div>
+					<SelectFilterMany
+						selectedIds={listCompanyUuid}
+						setSelectedIds={setListCompanyUuid}
+						listData={listCompany?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						name='Kv cảng xuất khẩu'
+					/>
+					<SelectFilterMany
+						selectedIds={customerUuid}
+						setSelectedIds={setCustomerUuid}
+						listData={listCustomer?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						name='Khách hàng'
+					/>
 					<div className={styles.filter}>
 						<FilterCustom
 							isSearch
@@ -426,24 +444,7 @@ function PageNotConfirmBill({}: PropsPageNotConfirmBill) {
 						}))}
 						placeholder='Kv cảng xuất khẩu'
 					/> */}
-					<SelectFilterMany
-						selectedIds={listCompanyUuid}
-						setSelectedIds={setListCompanyUuid}
-						listData={listCompany?.data?.map((v: any) => ({
-							uuid: v?.uuid,
-							name: v?.name,
-						}))}
-						name='Kv cảng xuất khẩu'
-					/>
-					<SelectFilterMany
-						selectedIds={customerUuid}
-						setSelectedIds={setCustomerUuid}
-						listData={listCustomer?.data?.map((v: any) => ({
-							uuid: v?.uuid,
-							name: v?.name,
-						}))}
-						name='Khách hàng'
-					/>
+
 					<SelectFilterMany
 						selectedIds={truckUuid}
 						setSelectedIds={setTruckUuid}

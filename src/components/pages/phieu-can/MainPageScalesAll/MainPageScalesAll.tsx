@@ -492,27 +492,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 					<div className={styles.search}>
 						<Search keyName='_keyword' placeholder='Tìm kiếm theo mã lô hàng' />
 					</div>
-					<div className={styles.filter}>
-						<FilterCustom
-							isSearch
-							name='Kiểu cân'
-							query='_isBatch'
-							listFilter={[
-								{
-									id: TYPE_BATCH.CAN_LO,
-									name: 'Cân lô',
-								},
-								{
-									id: TYPE_BATCH.CAN_LE,
-									name: 'Cân lẻ',
-								},
-								{
-									id: TYPE_BATCH.KHONG_CAN,
-									name: 'Không qua cân',
-								},
-							]}
-						/>
-					</div>
+
 					{/* <SelectFilterState
 						uuid={uuidCompany}
 						setUuid={setUuidCompany}
@@ -541,6 +521,27 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 						}))}
 						name='Khách hàng'
 					/>
+					<div className={styles.filter}>
+						<FilterCustom
+							isSearch
+							name='Kiểu cân'
+							query='_isBatch'
+							listFilter={[
+								{
+									id: TYPE_BATCH.CAN_LO,
+									name: 'Cân lô',
+								},
+								{
+									id: TYPE_BATCH.CAN_LE,
+									name: 'Cân lẻ',
+								},
+								{
+									id: TYPE_BATCH.KHONG_CAN,
+									name: 'Không qua cân',
+								},
+							]}
+						/>
+					</div>
 					<SelectFilterMany
 						selectedIds={truckUuid}
 						setSelectedIds={setTruckUuid}
