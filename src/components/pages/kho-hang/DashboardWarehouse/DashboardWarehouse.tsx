@@ -8,7 +8,7 @@ import ItemDashboard from './components/ItemDashboard';
 import ItemInfoChart from './components/ItemInfoChart';
 import ChartDashboard from './components/ChartDashboard';
 import Link from 'next/link';
-import {CONFIG_DESCENDING, CONFIG_PAGING, CONFIG_STATUS, CONFIG_TYPE_FIND, QUERY_KEY} from '~/constants/config/enum';
+import {CONFIG_DESCENDING, CONFIG_PAGING, CONFIG_STATUS, CONFIG_TYPE_FIND, QUERY_KEY, TYPE_PRODUCT} from '~/constants/config/enum';
 import {useQuery} from '@tanstack/react-query';
 import {httpRequest} from '~/services';
 import companyServices from '~/services/companyServices';
@@ -25,6 +25,7 @@ function DashboardWarehouse({
 	specTotal,
 	dataWarehouse,
 	setUuidCompany,
+	setUuidTypeProduct,
 }: PropsDashboardWarehouse) {
 	const [arrayTypeAction, setArrayTypeAction] = useState<('product' | 'quality' | 'spec')[]>(['product', 'quality', 'spec']);
 
@@ -40,6 +41,7 @@ function DashboardWarehouse({
 
 	const [uuidCompany, setUuidCompanyFilter] = useState<string>('');
 	const [nameCompany, setNameCompanyFilter] = useState<string>('');
+	const [typeProduct, setTypeProduct] = useState<number>(TYPE_PRODUCT.CONG_TY);
 
 	const listCompany = useQuery([QUERY_KEY.dropdown_cong_ty], {
 		queryFn: () =>
@@ -64,7 +66,10 @@ function DashboardWarehouse({
 		if (setUuidCompany) {
 			setUuidCompany(uuidCompany);
 		}
-	}, [uuidCompany]);
+		if (setUuidTypeProduct) {
+			setUuidTypeProduct(typeProduct);
+		}
+	}, [uuidCompany, typeProduct]);
 
 	const uuidCompanyDefault = '';
 	// const uuidCompanyDefault = '622f5955-5add-4490-8868-7d9ed1fa3e72';
@@ -96,19 +101,35 @@ function DashboardWarehouse({
 				</div>
 
 				{isTotal && infoUser?.companyUuid == null && (
-					<div className={styles.filter}>
-						<SelectFilterOption
-							uuid={uuidCompany}
-							setUuid={setUuidCompanyFilter}
-							setName={setNameCompanyFilter}
-							listData={listCompany?.data?.map((v: any) => ({
-								uuid: v?.uuid,
-								name: v?.name,
-							}))}
-							placeholder='Tất cả kv cảng xuất khẩu'
-						/>
+					<div className={styles.filter_group}>
+						<div className={styles.input_price}>
+							<input
+								id={`state_type_product`}
+								name='state_type_product'
+								type='checkbox'
+								className={styles.input}
+								checked={typeProduct === TYPE_PRODUCT.CONG_TY}
+								onChange={(e) => setTypeProduct(e.target.checked ? TYPE_PRODUCT.CONG_TY : 0)}
+							/>
+							<label className={styles.label_check_box} htmlFor={`state_type_product`}>
+								Chỉ hiển thị hàng công ty
+							</label>
+						</div>
+						<div className={styles.filter}>
+							<SelectFilterOption
+								uuid={uuidCompany}
+								setUuid={setUuidCompanyFilter}
+								setName={setNameCompanyFilter}
+								listData={listCompany?.data?.map((v: any) => ({
+									uuid: v?.uuid,
+									name: v?.name,
+								}))}
+								placeholder='Tất cả kv cảng xuất khẩu'
+							/>
+						</div>
 					</div>
 				)}
+
 				{!isTotal && (
 					<Link href={`/kho-hang/${dataWarehouse?.uuid}`} className={styles.link}>
 						Chi tiết kho hàng
@@ -134,6 +155,13 @@ function DashboardWarehouse({
 						value={isTotal ? total?.amountBDMT! : dataWarehouse?.amountBDMT!}
 						text='Khối lượng quy khô chuẩn (BDMT)'
 						background='#2DA2BC'
+					/>
+					<ItemDashboard
+						isTotal={isTotal}
+						value={isTotal ? total?.amountOutBDMT! : dataWarehouse?.amountOutBDMT!}
+						text='Khối lượng xuất tạm tính (BDMT)'
+						background='#e93a3a'
+						textColor='#e93a3a'
 					/>
 				</div>
 				<div className={styles.main_info}>

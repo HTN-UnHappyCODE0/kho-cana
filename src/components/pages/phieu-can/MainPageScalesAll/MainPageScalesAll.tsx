@@ -702,6 +702,33 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 				</div>
 			</div>
 			<div className={styles.table}>
+				{!getListBatch.isFetching && (
+					<Pagination
+						currentPage={Number(_page) || 1}
+						pageSize={Number(_pageSize) || 200}
+						total={total}
+						dependencies={[
+							_pageSize,
+							_keyword,
+							_isBatch,
+							customerUuid,
+							_productTypeUuid,
+							_shipUuid,
+							_status,
+							_dateFrom,
+							_dateTo,
+							_state,
+							uuidQuality,
+							uuidStorage,
+							_scalesStationUuid,
+							isHaveDryness,
+							truckUuid,
+							uuidCompany,
+							uuidQuality,
+							listCompanyUuid,
+						]}
+					/>
+				)}
 				<DataWrapper
 					data={listBatchBill || []}
 					loading={getListBatch?.isFetching}
