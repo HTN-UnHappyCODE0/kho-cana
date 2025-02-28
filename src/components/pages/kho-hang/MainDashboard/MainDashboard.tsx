@@ -4,18 +4,19 @@ import {PropsMainDashboard} from './interfaces';
 import styles from './MainDashboard.module.scss';
 import DashboardWarehouse from '../DashboardWarehouse';
 import {useQuery} from '@tanstack/react-query';
-import {QUERY_KEY, TYPE_STORE} from '~/constants/config/enum';
+import {QUERY_KEY, TYPE_PRODUCT, TYPE_STORE} from '~/constants/config/enum';
 import {httpRequest} from '~/services';
 import warehouseServices from '~/services/warehouseServices';
 
 function MainDashboard({}: PropsMainDashboard) {
 	const [uuidCompany, setUuidCompany] = useState<string>('');
-	const {data: dataWarehouse} = useQuery([QUERY_KEY.thong_ke_kho_hang, uuidCompany], {
+	const [uuidTypeProduct, setUuidTypeProduct] = useState<number | null>(null);
+	const {data: dataWarehouse} = useQuery([QUERY_KEY.thong_ke_kho_hang, uuidCompany, uuidTypeProduct], {
 		queryFn: () =>
 			httpRequest({
 				isData: true,
 				http: warehouseServices.dashbroadWarehouse({
-					typeProduct: TYPE_STORE.ADMIN_KHO,
+					typeProduct: uuidTypeProduct,
 					companyUuid: uuidCompany as string,
 				}),
 			}),
@@ -35,6 +36,7 @@ function MainDashboard({}: PropsMainDashboard) {
 				qualityTotal={dataWarehouse?.qualityTotal}
 				specTotal={dataWarehouse?.specTotal}
 				setUuidCompany={setUuidCompany}
+				setUuidTypeProduct={setUuidTypeProduct}
 			/>
 			{dataWarehouse?.detailWarehouseSpec?.map((v: any) => (
 				<DashboardWarehouse dataWarehouse={v} key={v?.uuid} isTotal={false} />
