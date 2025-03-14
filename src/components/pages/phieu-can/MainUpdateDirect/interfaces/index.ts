@@ -26,4 +26,5 @@ export interface IFormUpdateDirect {
 	portname: string;
 	warehouseUuid: string;
 	storageTemporaryUuid: string;
+	numShip: string;
 }

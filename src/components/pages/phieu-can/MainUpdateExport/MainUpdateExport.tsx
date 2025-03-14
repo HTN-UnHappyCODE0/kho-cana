@@ -76,6 +76,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 		isBatch: TYPE_BATCH.CAN_LO,
 		scaleStationUuid: '',
 		portname: '',
+		numShip: '',
 	});
 
 	const {data: detailBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -111,6 +112,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 					reason: '',
 					scaleStationUuid: data?.scalesStationUu?.uuid || '',
 					portname: data?.port || '',
+					numShip: data?.numShip || '',
 				});
 
 				// SET LIST TRUCK
@@ -346,6 +348,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 						?.map((item) => item.uuid),
 					scaleStationUuid: form?.scaleStationUuid,
 					portname: form?.portname,
+					numShip: form.numShip,
 				}),
 			}),
 		onSuccess(data) {
@@ -656,7 +659,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 							</div>
 						</div>
 					</div>
-					<div className={clsx('mt', 'col_2')}>
+					<div className={clsx('mt', 'col_3')}>
 						<Select
 							isSearch
 							name='shipUuid'
@@ -690,6 +693,15 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 							label={<span>Cảng bốc dỡ</span>}
 							placeholder='Nhập cảng bốc dỡ'
 						/>
+						<div>
+							<Input
+								name='numShip'
+								value={form.numShip}
+								type='text'
+								label={<span>Số hiệu tàu</span>}
+								placeholder='Nhập số tàu'
+							/>
+						</div>
 					</div>
 					<div className={clsx('mt', 'col_2')}>
 						<Select
