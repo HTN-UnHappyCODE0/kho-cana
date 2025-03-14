@@ -310,9 +310,26 @@ function MainDetailScales({}: PropsMainDetailScales) {
 								<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.scalesStationUu?.name || '---'}</span>
 							</div>
 						</td>
-						<td rowSpan={4} className={styles.description}>
-							<span>{detailBatchBill?.state == STATE_BILL.QLK_REJECTED ? 'Lý do' : 'Mô tả'} :</span>
-							<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.description || '---'}</span>
+						<td>
+							<div style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
+								<span>Số hiệu tàu: </span>
+								<span style={{marginLeft: '6px', fontWeight: 600}}>
+									{detailBatchBill?.scalesType == TYPE_SCALES.CAN_XUAT ||
+									detailBatchBill?.scalesType == TYPE_SCALES.CAN_TRUC_TIEP ? (
+										detailBatchBill?.isBatch == TYPE_BATCH.CAN_LO ? (
+											<div className={styles.item_table}>
+												<span>{detailBatchBill?.numShip || '---'}</span>
+											</div>
+										) : (
+											<div className={styles.item_table}>
+												<span>{'---'}</span>
+											</div>
+										)
+									) : (
+										'---'
+									)}
+								</span>
+							</div>
 						</td>
 					</tr>
 					<tr>
@@ -355,6 +372,10 @@ function MainDetailScales({}: PropsMainDetailScales) {
 									]}
 								/>
 							</span>
+						</td>
+						<td rowSpan={3} className={styles.description}>
+							<span>{detailBatchBill?.state == STATE_BILL.QLK_REJECTED ? 'Lý do' : 'Mô tả'} :</span>
+							<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.description || '---'}</span>
 						</td>
 					</tr>
 					<tr>

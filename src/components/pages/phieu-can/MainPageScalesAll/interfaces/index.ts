@@ -1,6 +1,7 @@
 export interface PropsMainPageScalesAll {}
 
 export interface ITableBillScale {
+	numShip: string;
 	scalesStationUu: {
 		code: string;
 		name: string;

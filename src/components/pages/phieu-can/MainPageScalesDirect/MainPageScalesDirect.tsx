@@ -735,7 +735,41 @@ function MainPageScalesDirect({}: PropsMainPageScalesDirect) {
 								render: (data: ITableBillScale) => (
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.toUu?.name || '---'}</p>
-										{data?.scalesType == TYPE_SCALES.CAN_XUAT && (
+										{
+											data?.scalesType == TYPE_SCALES.CAN_XUAT &&
+												(data?.isBatch == TYPE_BATCH.CAN_LO ? (
+													<p style={{fontWeight: 400, color: '#3772FF'}}>
+														{data?.numShip || '---'} . {data?.batchsUu?.shipUu?.licensePalate || '---'}
+													</p>
+												) : (
+													<p style={{fontWeight: 400, color: '#3772FF'}}>
+														{data?.batchsUu?.shipUu?.licensePalate || '---'}
+													</p>
+												))
+											// (
+											// 	<p style={{fontWeight: 400, color: '#3772FF'}}>
+											// 		{data?.batchsUu?.shipUu?.licensePalate || '---'}
+											// 	</p>
+											// )
+										}
+										{
+											!(data?.scalesType == TYPE_SCALES.CAN_XUAT) &&
+												(data?.isBatch == TYPE_BATCH.CAN_LO ? (
+													<p style={{fontWeight: 400, color: '#3772FF'}}>
+														{data?.numShip || '---'} . {data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+													</p>
+												) : (
+													<p style={{fontWeight: 400, color: '#3772FF'}}>
+														{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+													</p>
+												))
+											// (
+											// 	<p style={{fontWeight: 400, color: '#3772FF'}}>
+											// 		{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+											// 	</p>
+											// )
+										}
+										{/* {data?.scalesType == TYPE_SCALES.CAN_XUAT && (
 											<p style={{fontWeight: 400, color: '#3772FF'}}>
 												{data?.batchsUu?.shipUu?.licensePalate || '---'}
 											</p>
@@ -744,7 +778,7 @@ function MainPageScalesDirect({}: PropsMainPageScalesDirect) {
 											<p style={{fontWeight: 400, color: '#3772FF'}}>
 												{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
 											</p>
-										)}
+										)} */}
 									</>
 								),
 							},
