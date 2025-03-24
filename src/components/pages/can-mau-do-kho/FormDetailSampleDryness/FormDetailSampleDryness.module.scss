@@ -1,0 +1,104 @@
+@import '../../../../styles/variables';
+
+.container {
+	position: relative;
+	max-height: 100vh;
+	min-height: 100vh;
+	min-width: 660px;
+	background: #fff;
+	display: flex;
+	flex-direction: column;
+	padding: 24px;
+}
+
+.title {
+	color: #2f3d50;
+	font-size: 24px;
+	font-weight: 600;
+}
+
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+}
+
+.btn {
+	display: flex;
+	gap: 8px;
+}
+
+.close {
+	position: absolute;
+	right: 32px;
+	top: 32px;
+	cursor: pointer;
+	user-select: none;
+	font-size: 24px;
+	color: var(--dark-2);
+	transition: transform 0.3s;
+
+	&:active {
+		transform: scale(0.9);
+	}
+}
+
+.table_srcoll {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	overflow: auto;
+	margin-top: 16px;
+}
+
+.table_head {
+	color: var(--light);
+	font-size: 14px;
+	font-weight: 600;
+	white-space: nowrap;
+	box-sizing: border-box;
+	background: var(--primary);
+	height: 50px;
+	display: flex;
+	align-items: center;
+	padding: 8px 0;
+
+	.table_head_item {
+		padding-right: 16px;
+		flex: 1;
+	}
+}
+
+.main_table_dropdow {
+	flex: 1;
+	overflow: auto;
+}
+
+.table_option {
+	display: none;
+}
+
+@media (max-width: $widthTablet) {
+	.container {
+		width: 100vw;
+	}
+
+	.table_srcoll {
+		display: none;
+	}
+
+	.table_option {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		overflow: auto;
+		margin-top: 16px;
+	}
+}
+
+@media (max-width: $widthMobile) {
+	.container {
+		min-width: 100vw;
+	}
+}

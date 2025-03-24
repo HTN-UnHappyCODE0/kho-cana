@@ -1,0 +1,28 @@
+.header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+}
+
+.left {
+	h4 {
+		color: var(--dark-2);
+		font-size: 24px;
+		font-weight: 700;
+	}
+
+	p {
+		color: var(--neutrals-2);
+		font-size: 14px;
+		font-weight: 500;
+	}
+}
+
+.right {
+	display: flex;
+	gap: 12px;
+}
+
+.form {
+	margin-top: 20px;
+}

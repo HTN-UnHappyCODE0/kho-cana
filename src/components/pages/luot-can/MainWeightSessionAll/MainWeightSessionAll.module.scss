@@ -1,0 +1,146 @@
+.main_search {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.left {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.right {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.search {
+	min-width: 296px;
+}
+
+.filter {
+	min-width: 220px;
+}
+
+.table {
+	margin-top: 24px;
+}
+
+.link {
+	font-weight: 600;
+	color: var(--primary);
+	transition: 0.3s;
+
+	&:hover {
+		opacity: 0.8;
+		text-decoration: underline;
+	}
+}
+
+.main_option {
+	width: 182px;
+	border-radius: 6px;
+	padding: 8px;
+	background: #fff;
+	box-shadow: 0px 137px 123px 0px rgba(175, 175, 175, 0.11), 0px 59.642px 64.694px 0px rgba(175, 175, 175, 0.08),
+		0px 29.66px 43.62px 0px rgba(175, 175, 175, 0.07), 0px 13.866px 30.709px 0px rgba(175, 175, 175, 0.07),
+		0px 5.309px 20.507px 0px rgba(175, 175, 175, 0.06), 0px 1.17px 10.708px 0px rgba(175, 175, 175, 0.05);
+}
+
+.item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 12px;
+	color: #2f3643;
+	font-size: 14px;
+	font-weight: 500;
+	border-radius: 6px;
+	transition: 0.3s;
+	user-select: none;
+
+	& + & {
+		margin-top: 4px;
+	}
+
+	&:hover {
+		background: #3772ff;
+		color: #fff;
+	}
+}
+.linkdetail {
+	color: #2d74ff;
+	cursor: pointer;
+	&:hover {
+		opacity: 0.8;
+		text-decoration: underline;
+	}
+}
+
+.box_right {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	color: #2f3643;
+	font-size: 16px;
+	font-weight: 500;
+
+	input {
+		cursor: pointer;
+		width: 20px;
+		height: 20px;
+		margin-right: 12px;
+	}
+
+	label {
+		display: block;
+		cursor: pointer;
+	}
+}
+.filter_to {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+
+	.input {
+		width: 64px;
+		border-radius: 2px;
+		border: 1px solid #e1e5ed;
+		background-color: #fff;
+		padding: 4px 10px;
+		font-size: 16px;
+		font-weight: 500;
+
+		&:focus {
+			border: 1px solid #2367ed;
+			background-color: #fff;
+		}
+	}
+}
+
+.checkbox_right {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	width: 280px;
+	color: #2f3643;
+	font-size: 16px;
+	font-weight: 500;
+
+	input {
+		cursor: pointer;
+		width: 20px;
+		height: 20px;
+		margin-right: 12px;
+	}
+
+	label {
+		display: block;
+		cursor: pointer;
+	}
+}
