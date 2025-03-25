@@ -179,7 +179,7 @@ function PageUpdatePartner({}: PropsPageUpdatePartner) {
 				isDropdown: true,
 				http: commonServices.listProvince({
 					keyword: '',
-					status: CONFIG_STATUS.HOAT_DONG,
+					status: null,
 				}),
 			}),
 		select(data) {
@@ -193,7 +193,7 @@ function PageUpdatePartner({}: PropsPageUpdatePartner) {
 				isDropdown: true,
 				http: commonServices.listDistrict({
 					keyword: '',
-					status: CONFIG_STATUS.HOAT_DONG,
+					status: null,
 					idParent: form?.provinceId,
 				}),
 			}),
@@ -209,7 +209,7 @@ function PageUpdatePartner({}: PropsPageUpdatePartner) {
 				isDropdown: true,
 				http: commonServices.listTown({
 					keyword: '',
-					status: CONFIG_STATUS.HOAT_DONG,
+					status: null,
 					idParent: form.districtId,
 				}),
 			}),
