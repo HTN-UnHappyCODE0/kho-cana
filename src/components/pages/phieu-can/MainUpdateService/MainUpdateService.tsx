@@ -309,7 +309,7 @@ function MainUpdateService({}: PropsMainUpdateService) {
 					description: form.description,
 					customerName: '',
 					fromUuid: form.customerUuid,
-					toUuid: form.customerUuid,
+					toUuid: form.storageUuid,
 					scaleStationUuid: form?.scaleStationUuid,
 					isPrint: form.isPrint,
 					lstTruckAddUuid: listTruckChecked
@@ -347,7 +347,12 @@ function MainUpdateService({}: PropsMainUpdateService) {
 		if (!form.scaleStationUuid) {
 			return toastWarn({msg: 'Vui lòng chọn trạm cân!'});
 		}
-		if (form.customerUuid != detailBill?.fromUu?.uuid || form.productTypeUuid != detailBill?.productTypeUu?.uuid) {
+		if (
+			// form.warehouseUuid != detailBill?.toUu?.parentUu?.uuid ||
+			form.storageUuid != detailBill?.toUu?.uuid ||
+			form.productTypeUuid != detailBill?.productTypeUu?.uuid ||
+			form.customerUuid != detailBill?.fromUu?.uuid
+		) {
 			return setOpenWarning(true);
 		} else {
 			return funcUpdateBatchBill.mutate();
