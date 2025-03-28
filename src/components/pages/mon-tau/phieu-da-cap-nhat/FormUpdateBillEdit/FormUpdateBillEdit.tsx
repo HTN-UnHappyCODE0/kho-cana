@@ -82,10 +82,14 @@ function FormUpdateBillEdit({dataUpdate, onClose}: PropsFormUpdateBillEdit) {
 				showMessageSuccess: true,
 				msgSuccess: 'Chỉnh sửa cập nhật mớn tàu thành công!',
 				http: batchBillServices.updateWeightBillOut({
-					billUuid: dataUpdate?.uuid || '',
 					drynessAvg: form.dryness,
-					weightMon: price(form.amountDraft),
 					paths: body.paths,
+					itemBill: [
+						{
+							billUuid: dataUpdate?.uuid,
+							weightMon: price(form.amountDraft),
+						},
+					],
 				}),
 			}),
 		onSuccess(data) {
