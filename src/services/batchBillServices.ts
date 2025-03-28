@@ -345,10 +345,12 @@ const batchBillServices = {
 	},
 	updateWeightBillOut: (
 		data: {
-			billUuid: string;
-			weightMon: number;
 			drynessAvg: number;
 			paths: string[];
+			itemBill: {
+				billUuid: string;
+				weightMon: number;
+			}[];
 		},
 		tokenAxios?: any
 	) => {

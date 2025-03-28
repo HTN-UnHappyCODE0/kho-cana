@@ -64,7 +64,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 		_typeProduct,
 	} = router.query;
 
-	const [dataWeightSessionSubmit, setDataWeightSessionSubmit] = useState<any>();
+	const [dataWeightSessionSubmit, setDataWeightSessionSubmit] = useState<any[]>([]);
 	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 	const [truckUuid, setTruckUuid] = useState<string[]>([]);
@@ -72,6 +72,8 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 	const [uuidQuality, setUuidQuality] = useState<string>('');
 	const [uuidStorage, setUuidStorage] = useState<string>('');
 	const [listCompanyUuid, setListCompanyUuid] = useState<any[]>([]);
+
+	const [listBillDraftShip, setListBillDraftShip] = useState<any[]>([]);
 
 	const listQuality = useQuery([QUERY_KEY.dropdown_quoc_gia], {
 		queryFn: () =>
@@ -233,7 +235,17 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 						listCompanyUuid: listCompanyUuid,
 					}),
 				}),
-
+			onSuccess(data) {
+				if (data) {
+					setListBillDraftShip(
+						data?.items?.map((v: any, index: number) => ({
+							...v,
+							index: index,
+							isChecked: false,
+						}))
+					);
+				}
+			},
 			select(data) {
 				if (data) {
 					return data;
@@ -320,6 +332,23 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 			{/* <Loading loading={funcUpdateKCSWeightSession.isLoading} /> */}
 			<div className={styles.header}>
 				<div className={styles.main_search}>
+					{listBillDraftShip?.some((x) => x.isChecked !== false) && (
+						<div style={{height: 40}}>
+							<Button
+								className={styles.btn}
+								rounded_2
+								maxHeight
+								primary
+								p_4_12
+								icon={<TickCircle size={18} />}
+								onClick={() => {
+									setDataWeightSessionSubmit(listBillDraftShip?.filter((v) => v.isChecked !== false));
+								}}
+							>
+								CN mớn tàu
+							</Button>
+						</div>
+					)}
 					<div className={styles.search}>
 						<Search keyName='_keyword' placeholder='Tìm kiếm theo số phiếu và mã lô hàng' />
 					</div>
@@ -459,17 +488,17 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 
 			<div className={styles.table}>
 				<DataWrapper
-					data={getListBill?.data?.items || []}
+					data={listBillDraftShip || []}
 					loading={getListBill?.isLoading}
 					noti={<Noti des='Hiện tại chưa có dữ liệu nào!' disableButton />}
 				>
 					<Table
-						data={getListBill?.data?.items || []}
-						// onSetData={setWeightSessions}
+						data={listBillDraftShip || []}
+						onSetData={setListBillDraftShip}
 						column={[
 							{
 								title: 'STT',
-								// checkBox: true,
+								checkBox: true,
 								render: (data: ITableBillScale, index: number) => <>{index + 1}</>,
 							},
 							{
@@ -551,6 +580,14 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 							{
 								title: (
 									<span className={styles.unit}>
+										klhanf <br /> (Tấn)
+									</span>
+								),
+								render: (data: ITableBillScale) => <>{convertWeight(data?.weightTotal) || 0}</>,
+							},
+							{
+								title: (
+									<span className={styles.unit}>
 										Lượng tươi theo mớn <br /> (Tấn)
 									</span>
 								),
@@ -587,7 +624,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 												p_4_12
 												icon={<TickCircle size={20} />}
 												onClick={() => {
-													setDataWeightSessionSubmit(data);
+													setDataWeightSessionSubmit([data]);
 												}}
 											>
 												CN mớn tàu
@@ -627,8 +664,8 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 				/>
 			</div>
 
-			<Popup open={!!dataWeightSessionSubmit} onClose={() => setDataWeightSessionSubmit(null)}>
-				<FormUpdateDraftShip dataUpdate={dataWeightSessionSubmit} onClose={() => setDataWeightSessionSubmit(null)} />
+			<Popup open={dataWeightSessionSubmit.length > 0} onClose={() => setDataWeightSessionSubmit([])}>
+				<FormUpdateDraftShip dataUpdate={dataWeightSessionSubmit} onClose={() => setDataWeightSessionSubmit([])} />
 			</Popup>
 		</div>
 	);
