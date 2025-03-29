@@ -580,14 +580,6 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 							{
 								title: (
 									<span className={styles.unit}>
-										klhanf <br /> (Tấn)
-									</span>
-								),
-								render: (data: ITableBillScale) => <>{convertWeight(data?.weightTotal) || 0}</>,
-							},
-							{
-								title: (
-									<span className={styles.unit}>
 										Lượng tươi theo mớn <br /> (Tấn)
 									</span>
 								),
