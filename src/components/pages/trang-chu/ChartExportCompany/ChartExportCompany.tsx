@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {PropsChartExportCompany} from './interfaces';
 import styles from './ChartExportCompany.module.scss';
 
-import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer} from 'recharts';
+import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Line, ComposedChart} from 'recharts';
 import SelectFilterOption from '../SelectFilterOption';
 import SelectFilterDate from '../SelectFilterDate';
 import {useQuery} from '@tanstack/react-query';
@@ -32,6 +32,7 @@ import SelectFilterMany from '../SelectFilterMany';
 import userServices from '~/services/userServices';
 import regencyServices from '~/services/regencyServices';
 import commonServices from '~/services/commonServices';
+import SelectFilterState from '~/components/common/SelectFilterState';
 
 function ChartExportCompany({}: PropsChartExportCompany) {
 	// const [isShowBDMT, setIsShowBDMT] = useState<string>(String(TYPE_SHOW_BDMT.MT));
@@ -303,7 +304,7 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 	const [userUuid, setUserUuid] = useState<string>('');
 	const [storageUuid, setStorageUuid] = useState<string>('');
 	const [typeDate, setTypeDate] = useState<number | null>(TYPE_DATE.LAST_7_DAYS);
-	const [uuidCompany, setUuidCompanyFilter] = useState<string>('');
+	const [uuidCompany, setUuidCompanyFilter] = useState<string[]>([]);
 	const [date, setDate] = useState<{
 		from: Date | null;
 		to: Date | null;
@@ -311,6 +312,7 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 
 	const [dataChartMT, setDataChartMT] = useState<any[]>([]);
 	const [dataChartBDMT, setDataChartBDMT] = useState<any[]>([]);
+	const [userPartnerUuid, setUserPartnerUuid] = useState<string>('');
 	const [productTypes, setProductTypes] = useState<any[]>([]);
 	const [dataTotal, setDataTotal] = useState<{
 		totalWeight: number;
@@ -330,7 +332,7 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 		lstProductTotal: [],
 	});
 
-	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang_xuat, uuidCompany], {
+	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang_xuat, uuidCompany, userUuid], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
@@ -342,12 +344,12 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
 					partnerUUid: '',
-					userUuid: '',
+					userUuid: userUuid,
 					status: STATUS_CUSTOMER.HOP_TAC,
-					typeCus: TYPE_CUSTOMER.KH_XUAT,
+					typeCus: TYPE_CUSTOMER.NHA_CUNG_CAP,
 					provinceId: '',
 					specUuid: '',
-					companyUuid: uuidCompany,
+					listCompanyUuid: uuidCompany,
 				}),
 			}),
 		select(data) {
@@ -430,11 +432,11 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 		},
 	});
 
-	const listUser = useQuery([QUERY_KEY.dropdown_nguoi_quan_ly], {
+	const listUserPurchasing = useQuery([QUERY_KEY.dropdown_quan_ly_nhap_hang_xuat], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
-				http: userServices.listUser({
+				http: userServices.listUser2({
 					page: 1,
 					pageSize: 50,
 					keyword: '',
@@ -443,10 +445,30 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
 					status: CONFIG_STATUS.HOAT_DONG,
 					provinceIDOwer: '',
-					regencyUuid: listRegency?.data?.find((v: any) => v?.code == REGENCY_NAME['Quản lý nhập hàng'])
-						? listRegency?.data?.find((v: any) => v?.code == REGENCY_NAME['Quản lý nhập hàng'])?.uuid
-						: null,
-					regencyUuidExclude: '',
+					regencyUuid: [listRegency?.data?.find((v: any) => v?.code == REGENCY_NAME['Quản lý nhập hàng'])?.uuid],
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+		enabled: listRegency.isSuccess,
+	});
+
+	const listUserMarket = useQuery([QUERY_KEY.dropdown_nhan_vien_thi_truong_xuat], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: userServices.listUser2({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+					provinceIDOwer: '',
+					regencyUuid: [listRegency?.data?.find((v: any) => v?.code == REGENCY_NAME['Nhân viên thị trường'])?.uuid],
+					parentUuid: '',
 				}),
 			}),
 		select(data) {
@@ -474,16 +496,19 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 					http: batchBillServices.dashbroadBillOut({
 						partnerUuid: '',
 						customerUuid: customerUuid,
-						isShowBDMT: 0,
+						isShowBDMT: 1,
 						storageUuid: storageUuid,
 						userOwnerUuid: userUuid,
+						userPartnerUuid: userPartnerUuid,
 						warehouseUuid: '',
-						companyUuid: uuidCompany,
+						companyUuid: '',
 						typeFindDay: 0,
 						timeStart: timeSubmit(date?.from)!,
 						timeEnd: timeSubmit(date?.to, true)!,
 						provinceId: provinceUuid,
 						transportType: isTransport ? Number(isTransport) : null,
+						listCompanyUuid: uuidCompany,
+						listPartnerUuid: [],
 					}),
 				}),
 			onSuccess({data}) {
@@ -578,6 +603,12 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 		}
 	}, [uuidCompany]);
 
+	useEffect(() => {
+		if (userUuid) {
+			setCustomerUuid([]);
+		}
+	}, [userUuid]);
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.head}>
@@ -600,9 +631,18 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 						placeholder='Tấn hàng'
 					/>
 
-					<SelectFilterOption
+					{/* <SelectFilterOption
 						uuid={uuidCompany}
 						setUuid={setUuidCompanyFilter}
+						listData={listCompany?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+						}))}
+						placeholder='Tất cả kv cảng xuất khẩu'
+					/> */}
+					<SelectFilterMany
+						selectedIds={uuidCompany}
+						setSelectedIds={setUuidCompanyFilter}
 						listData={listCompany?.data?.map((v: any) => ({
 							uuid: v?.uuid,
 							name: v?.name,
@@ -618,6 +658,26 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 						}))}
 						placeholder='Tất cả nhà cung cấp'
 					/> */}
+					<SelectFilterState
+						uuid={userPartnerUuid}
+						setUuid={setUserPartnerUuid}
+						listData={listUserPurchasing?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.fullName,
+						}))}
+						placeholder='Tất cả quản lý nhập hàng'
+					/>
+
+					<SelectFilterOption
+						uuid={userUuid}
+						setUuid={setUserUuid}
+						listData={listUserMarket?.data?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.fullName,
+						}))}
+						placeholder='Tất cả người quản lý nhân viên thị trường'
+					/>
+
 					<SelectFilterMany
 						selectedIds={customerUuid}
 						setSelectedIds={setCustomerUuid}
@@ -637,20 +697,7 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 						placeholder='Tất cả bãi'
 					/>
 					<SelectFilterDate isOptionDateAll={false} date={date} setDate={setDate} typeDate={typeDate} setTypeDate={setTypeDate} />
-					{/* <CheckRegencyCode
-						isPage={false}
-						regencys={[REGENCY_CODE.GIAM_DOC, REGENCY_CODE.PHO_GIAM_DOC, REGENCY_CODE.QUAN_LY_NHAP_HANG]}
-					> */}
-					{/* <SelectFilterOption
-						uuid={userUuid}
-						setUuid={setUserUuid}
-						listData={listUser?.data?.map((v: any) => ({
-							uuid: v?.uuid,
-							name: v?.fullName,
-						}))}
-						placeholder='Tất cả người quản lý mua hàng'
-					/> */}
-					{/* </CheckRegencyCode> */}
+
 					<SelectFilterOption
 						isShowAll={false}
 						uuid={isProductSpec}
@@ -720,7 +767,7 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 			</div>
 			<div className={styles.main_chart}>
 				<ResponsiveContainer width='100%' height='100%'>
-					<BarChart
+					<ComposedChart
 						width={500}
 						height={300}
 						data={isShowBDMT === String(TYPE_SHOW_BDMT.MT) ? dataChartMT : dataChartBDMT}
@@ -733,7 +780,11 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 						barSize={24}
 					>
 						<XAxis dataKey='name' scale='point' padding={{left: 40, right: 10}} />
+
 						<YAxis domain={[0, 4000000]} tickFormatter={(value): any => convertWeight(value)} />
+
+						<YAxis yAxisId='right' domain={[25, 75]} orientation='right' tickFormatter={(v) => `${v}%`} />
+
 						<Tooltip
 							formatter={(value, name, props): any => {
 								const dryness = props?.payload?.[`${name}_drynessAvg`] ?? 0;
@@ -742,10 +793,22 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 						/>
 
 						<CartesianGrid strokeDasharray='3 3' vertical={false} />
+
 						{productTypes.map((v, i) => (
 							<Bar key={i} dataKey={v?.key} stackId='product_type' fill={v?.fill} />
 						))}
-					</BarChart>
+
+						{productTypes.map((v, i) => (
+							<Line
+								key={`line-${i}`}
+								tooltipType='none'
+								dataKey={`${v?.key}_drynessAvg`}
+								stroke={v?.fill}
+								fill={v?.fill}
+								yAxisId='right'
+							/>
+						))}
+					</ComposedChart>
 				</ResponsiveContainer>
 			</div>
 		</div>
