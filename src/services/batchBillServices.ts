@@ -172,13 +172,16 @@ const batchBillServices = {
 			typeFindDay: number;
 			timeStart: string;
 			timeEnd: string;
-			isShowBDMT: number;
+			isShowBDMT: number | null;
 			storageUuid: string;
 			customerUuid: string[];
 			warehouseUuid: string;
 			userOwnerUuid: string;
 			provinceId: string;
 			transportType: number | null;
+			listCompanyUuid: string[];
+			listPartnerUuid: string[];
+			userPartnerUuid?: string;
 		},
 		tokenAxios?: any
 	) => {
@@ -193,14 +196,16 @@ const batchBillServices = {
 			typeFindDay: number;
 			timeStart: string;
 			timeEnd: string;
-			isShowBDMT: number;
+			isShowBDMT: number | null;
 			storageUuid: string;
 			customerUuid: string[];
 			warehouseUuid: string;
 			userOwnerUuid: string;
-			typeShow?: number;
-			transportType: number | null;
 			provinceId: string;
+			transportType: number | null;
+			listCompanyUuid: string[];
+			listPartnerUuid: string[];
+			userPartnerUuid?: string;
 		},
 		tokenAxios?: any
 	) => {
@@ -215,14 +220,16 @@ const batchBillServices = {
 			typeFindDay: number;
 			timeStart: string;
 			timeEnd: string;
-			isShowBDMT: number;
+			isShowBDMT: number | null;
 			storageUuid: string;
 			customerUuid: string[];
 			warehouseUuid: string;
 			userOwnerUuid: string;
-			typeShow?: number;
-			transportType: number | null;
 			provinceId: string;
+			transportType: number | null;
+			listCompanyUuid: string[];
+			listPartnerUuid: string[];
+			userPartnerUuid?: string;
 		},
 		tokenAxios?: any
 	) => {

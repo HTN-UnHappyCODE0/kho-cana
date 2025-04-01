@@ -48,6 +48,12 @@ export enum QUERY_KEY {
 	dropdown_bai_dich_vu,
 	dropdown_tinh_thanh_pho_dich_vu,
 	dropdown_cong_ty_dich_vu,
+	dropdown_nhan_vien_thi_truong_dich_vu,
+	dropdown_quan_ly_nhap_hang_dich_vu,
+	dropdown_cong_ty_nhap,
+	dropdown_nhan_vien_thi_truong_nhap,
+	dropdown_quan_ly_nhap_hang_xuat,
+	dropdown_nhan_vien_thi_truong_xuat,
 
 	table_xe_hang,
 	table_lenh_can_tat_ca,
