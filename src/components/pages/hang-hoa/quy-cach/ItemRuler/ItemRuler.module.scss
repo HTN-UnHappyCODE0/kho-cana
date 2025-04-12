@@ -20,7 +20,7 @@ $font-size-input: 16px;
 .criteria {
 	display: grid;
 	gap: 16px;
-	grid-template-columns: 5fr 240px 3fr;
+	grid-template-columns: 5fr 240px 1.5fr 1.5fr;
 	gap: 16px;
 
 	& + & {

@@ -37,6 +37,7 @@ function UpdateSpecifications({}: PropsUpdateSpecifications) {
 			titleType: string;
 			rule: TYPE_RULER;
 			value: number;
+			order: string | number;
 		}[]
 	>([
 		{
@@ -44,6 +45,7 @@ function UpdateSpecifications({}: PropsUpdateSpecifications) {
 			titleType: '',
 			rule: TYPE_RULER.NHO_HON,
 			value: 0,
+			order: '',
 		},
 	]);
 
@@ -70,6 +72,7 @@ function UpdateSpecifications({}: PropsUpdateSpecifications) {
 						titleType: v?.title,
 						rule: v?.ruler,
 						value: v?.value,
+						order: v?.order,
 					}))
 				);
 			}
@@ -124,6 +127,7 @@ function UpdateSpecifications({}: PropsUpdateSpecifications) {
 				titleType: '',
 				rule: TYPE_RULER.NHO_HON,
 				value: 0,
+				order: '',
 			},
 		]);
 	};
@@ -140,6 +144,7 @@ function UpdateSpecifications({}: PropsUpdateSpecifications) {
 					titleType: '',
 					rule: TYPE_RULER.NHO_HON,
 					value: 0,
+					order: '',
 				},
 			]);
 		}
@@ -180,6 +185,7 @@ function UpdateSpecifications({}: PropsUpdateSpecifications) {
 					colorShow: form.colorShow,
 					items: dataRuler?.map((v) => ({
 						...v,
+						order: Number(v?.order),
 						value: Number(v?.value),
 					})),
 				}),
@@ -218,6 +224,12 @@ function UpdateSpecifications({}: PropsUpdateSpecifications) {
 		}
 		if (!form?.colorShow) {
 			return toastWarn({msg: 'Vui lòng chọn màu!'});
+		}
+
+		const orderList = dataRuler.map((v) => v.order);
+		const hasDuplicateOrder = orderList.some((order, index) => orderList.indexOf(order) !== index);
+		if (hasDuplicateOrder) {
+			return toastWarn({msg: 'Số thứ tự bị trùng, vui lòng kiểm tra lại!'});
 		}
 
 		return funcUpdateSpecifications.mutate();
@@ -340,6 +352,9 @@ function UpdateSpecifications({}: PropsUpdateSpecifications) {
 							</p>
 							<p>
 								Thông số <span style={{color: 'red'}}>*</span>
+							</p>
+							<p>
+								Thứ tự <span style={{color: 'red'}}>*</span>
 							</p>
 						</div>
 						{dataRuler?.map((v, idx) => (

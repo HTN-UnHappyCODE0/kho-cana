@@ -34,6 +34,7 @@ function CreateSpecifications({}: PropsCreateSpecifications) {
 			titleType: string;
 			rule: TYPE_RULER;
 			value: number;
+			order: string | number;
 		}[]
 	>([
 		{
@@ -41,6 +42,7 @@ function CreateSpecifications({}: PropsCreateSpecifications) {
 			titleType: '',
 			rule: TYPE_RULER.NHO_HON,
 			value: 0,
+			order: '',
 		},
 	]);
 
@@ -91,6 +93,7 @@ function CreateSpecifications({}: PropsCreateSpecifications) {
 				titleType: '',
 				rule: TYPE_RULER.NHO_HON,
 				value: 0,
+				order: '',
 			},
 		]);
 	};
@@ -107,6 +110,7 @@ function CreateSpecifications({}: PropsCreateSpecifications) {
 					titleType: '',
 					rule: TYPE_RULER.NHO_HON,
 					value: 0,
+					order: '',
 				},
 			]);
 		}
@@ -147,6 +151,7 @@ function CreateSpecifications({}: PropsCreateSpecifications) {
 					colorShow: form.colorShow,
 					items: dataRuler?.map((v) => ({
 						...v,
+						order: Number(v?.order),
 						value: Number(v?.value),
 					})),
 				}),
