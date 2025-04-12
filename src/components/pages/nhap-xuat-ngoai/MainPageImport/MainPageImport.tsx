@@ -127,7 +127,7 @@ function MainPageImport({}: PropsMainPageImport) {
 
 	const listBill = useQuery(
 		[
-			QUERY_KEY.table_phieu_can_tat_ca,
+			QUERY_KEY.table_phieu_can_tat_ca_ngoai,
 			_page,
 			_pageSize,
 			_keyword,
