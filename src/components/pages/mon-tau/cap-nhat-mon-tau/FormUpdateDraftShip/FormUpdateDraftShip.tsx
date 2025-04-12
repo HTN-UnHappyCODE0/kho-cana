@@ -18,6 +18,7 @@ import batchBillServices from '~/services/batchBillServices';
 import Popup from '~/components/common/Popup';
 import FormReasonUpdateSpec from '../FormReasonUpdateSpec';
 import {convertWeight} from '~/common/funcs/optionConvert';
+import UploadMultipleFilePDF from '~/components/common/UploadMultipleFilePDF';
 
 function FormUpdateDraftShip({dataUpdate, onClose}: PropsFormUpdateDraftShip) {
 	const queryClient = useQueryClient();
@@ -190,23 +191,24 @@ function FormUpdateDraftShip({dataUpdate, onClose}: PropsFormUpdateDraftShip) {
 
 		const totalManual = Object.values(manualValues).reduce((sum, val) => sum + val, 0);
 
+		if (price(totalManual) !== price(form.amountDraft)) {
+			setOpenWarning(true);
+			return;
+		}
+
 		if (imgs.length > 0) {
 			const dataImage = await httpRequest({
 				setLoading,
 				isData: true,
 				http: uploadImageService.uploadMutilImage(imgs),
 			});
-			if (price(totalManual) !== price(form.amountDraft)) {
-				setOpenWarning(true);
-				return;
+
+			if (dataImage?.error?.code == 0) {
+				return funcUpdateDraftShip.mutate({
+					paths: dataImage.items,
+				});
 			} else {
-				if (dataImage?.error?.code == 0) {
-					return funcUpdateDraftShip.mutate({
-						paths: dataImage.items,
-					});
-				} else {
-					return toastWarn({msg: 'Upload ảnh thất bại!'});
-				}
+				return toastWarn({msg: 'Upload ảnh thất bại!'});
 			}
 		} else {
 			return toastWarn({msg: 'Chưa cập nhật ảnh!'});
@@ -336,7 +338,7 @@ function FormUpdateDraftShip({dataUpdate, onClose}: PropsFormUpdateDraftShip) {
 						type='text'
 						isMoney
 						unit='Kg'
-						blur={true}
+						blur={true}	
 						label={
 							<span>
 								Tổng lượng khô <span style={{color: 'red'}}>*</span>

@@ -1,17 +1,14 @@
 import React, {useEffect, useState} from 'react';
 
-import {PropsMainPageAll} from './interfaces';
-import styles from './MainPageAll.module.scss';
-import {useRouter} from 'next/router';
-import Search from '~/components/common/Search';
-import DateRangerCustom from '~/components/common/DateRangerCustom';
+import {PropsMainPageScalesTransfer} from './interfaces';
+import styles from './MainPageScalesTransfer.module.scss';
 import DataWrapper from '~/components/common/DataWrapper';
-import Table from '~/components/common/Table';
-import Link from 'next/link';
-import Noti from '~/components/common/DataWrapper/components/Noti';
-import {convertWeight} from '~/common/funcs/optionConvert';
-import Button from '~/components/common/Button';
 import Pagination from '~/components/common/Pagination';
+import {Eye, SaveAdd} from 'iconsax-react';
+import IconCustom from '~/components/common/IconCustom';
+import {LuPencil} from 'react-icons/lu';
+import Moment from 'react-moment';
+import {convertWeight} from '~/common/funcs/optionConvert';
 import {
 	CONFIG_DESCENDING,
 	CONFIG_PAGING,
@@ -28,19 +25,20 @@ import {
 	TYPE_SCALES,
 	TYPE_TRANSPORT,
 } from '~/constants/config/enum';
+import Link from 'next/link';
+import Table from '~/components/common/Table';
+import Noti from '~/components/common/DataWrapper/components/Noti';
+import Button from '~/components/common/Button';
 import Image from 'next/image';
+import DateRangerCustom from '~/components/common/DateRangerCustom';
+import Search from '~/components/common/Search';
+import {useRouter} from 'next/router';
 import icons from '~/constants/images/icons';
-import Moment from 'react-moment';
-import IconCustom from '~/components/common/IconCustom';
-import {AddSquare, Edit, Eye, SaveAdd} from 'iconsax-react';
-import {LuPencil} from 'react-icons/lu';
-import {useMutation, useQuery} from '@tanstack/react-query';
-import {httpRequest} from '~/services';
 import batchBillServices from '~/services/batchBillServices';
-import TippyHeadless from '@tippyjs/react/headless';
+import {httpRequest} from '~/services';
+import {useMutation, useQuery} from '@tanstack/react-query';
 import FilterCustom from '~/components/common/FilterCustom';
 import shipServices from '~/services/shipServices';
-import scalesStationServices from '~/services/scalesStationServices';
 import wareServices from '~/services/wareServices';
 import storageServices from '~/services/storageServices';
 import customerServices from '~/services/customerServices';
@@ -55,8 +53,7 @@ import SelectFilterMany from '~/components/common/SelectFilterMany';
 import truckServices from '~/services/truckServices';
 import companyServices from '~/services/companyServices';
 
-function MainPageAll({}: PropsMainPageAll) {
-	const [openCreate, setOpenCreate] = useState<boolean>(false);
+function MainPageScalesTransfer({}: PropsMainPageScalesTransfer) {
 	const router = useRouter();
 	const [openExportExcel, setOpenExportExcel] = useState<boolean>(false);
 	const [billUuidUpdateShip, setBillUuidUpdateShip] = useState<string | null>(null);
@@ -109,9 +106,28 @@ function MainPageAll({}: PropsMainPageAll) {
 	const {_page, _pageSize, _keyword, _dateFrom, _dateTo, _isBatch, _state, _status, _productTypeUuid, _shipUuid, _scalesStationUuid} =
 		router.query;
 
+	const listTruck = useQuery([QUERY_KEY.dropdown_xe_hang], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: truckServices.listTruck({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
 	const listBill = useQuery(
 		[
-			QUERY_KEY.table_phieu_can_tat_ca,
+			QUERY_KEY.table_phieu_can_chuyen_kho_ngoai,
 			_page,
 			_pageSize,
 			_keyword,
@@ -142,7 +158,7 @@ function MainPageAll({}: PropsMainPageAll) {
 						isPaging: CONFIG_PAGING.IS_PAGING,
 						isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
-						scalesType: [],
+						scalesType: [TYPE_SCALES.CAN_CHUYEN_KHO],
 						state: !!_state
 							? [Number(_state)]
 							: [
@@ -214,24 +230,7 @@ function MainPageAll({}: PropsMainPageAll) {
 			return data;
 		},
 	});
-	const listTruck = useQuery([QUERY_KEY.dropdown_xe_hang], {
-		queryFn: () =>
-			httpRequest({
-				isDropdown: true,
-				http: truckServices.listTruck({
-					page: 1,
-					pageSize: 50,
-					keyword: '',
-					isPaging: CONFIG_PAGING.NO_PAGING,
-					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
-					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
-					status: CONFIG_STATUS.HOAT_DONG,
-				}),
-			}),
-		select(data) {
-			return data;
-		},
-	});
+
 	const listStorage = useQuery([QUERY_KEY.table_bai, uuidQuality], {
 		queryFn: () =>
 			httpRequest({
@@ -296,23 +295,6 @@ function MainPageAll({}: PropsMainPageAll) {
 		},
 	});
 
-	const getUrlUpdateBatchBill = (data: any): string => {
-		if (data.scalesType == TYPE_SCALES.CAN_NHAP) {
-			return `/nhap-xuat-ngoai/chinh-sua-nhap?_id=${data.uuid}`;
-		}
-		if (data.scalesType == TYPE_SCALES.CAN_XUAT) {
-			return `/nhap-xuat-ngoai/chinh-sua-xuat?_id=${data.uuid}`;
-		}
-		if (data.scalesType == TYPE_SCALES.CAN_CHUYEN_KHO) {
-			return `/nhap-xuat-ngoai/chinh-sua-chuyen-kho?_id=${data.uuid}`;
-		}
-		if (data.scalesType == TYPE_SCALES.CAN_TRUC_TIEP) {
-			return `/nhap-xuat-ngoai/chinh-sua-xuat-thang?_id=${data.uuid}`;
-		}
-
-		return '/nhap-xuat-ngoai/tat-ca';
-	};
-
 	const exportExcel = useMutation({
 		mutationFn: (isHaveSpec: number) => {
 			return httpRequest({
@@ -323,7 +305,7 @@ function MainPageAll({}: PropsMainPageAll) {
 					isPaging: CONFIG_PAGING.IS_PAGING,
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.TABLE,
-					scalesType: [],
+					scalesType: [TYPE_SCALES.CAN_CHUYEN_KHO],
 					state: !!_state
 						? [Number(_state)]
 						: [
@@ -342,7 +324,13 @@ function MainPageAll({}: PropsMainPageAll) {
 					specificationsUuid: '',
 					status: !!_status
 						? [Number(_status)]
-						: [STATUS_BILL.TAM_DUNG, STATUS_BILL.DA_CAN_CHUA_KCS, STATUS_BILL.DA_KCS, STATUS_BILL.CHOT_KE_TOAN],
+						: [
+								STATUS_BILL.DANG_CAN,
+								STATUS_BILL.TAM_DUNG,
+								STATUS_BILL.DA_CAN_CHUA_KCS,
+								STATUS_BILL.DA_KCS,
+								STATUS_BILL.CHOT_KE_TOAN,
+						  ],
 					timeStart: _dateFrom ? (_dateFrom as string) : null,
 					timeEnd: _dateTo ? (_dateTo as string) : null,
 					warehouseUuid: '',
@@ -372,7 +360,6 @@ function MainPageAll({}: PropsMainPageAll) {
 	const handleExportExcel = (isHaveSpec: number) => {
 		return exportExcel.mutate(isHaveSpec);
 	};
-
 	useEffect(() => {
 		if (listCompanyUuid) {
 			setCustomerUuid([]);
@@ -381,7 +368,6 @@ function MainPageAll({}: PropsMainPageAll) {
 			setUuidStorage('');
 		}
 	}, [listCompanyUuid, uuidQuality]);
-
 	return (
 		<div className={styles.container}>
 			<Loading loading={exportExcel.isLoading} />
@@ -408,6 +394,7 @@ function MainPageAll({}: PropsMainPageAll) {
 						}))}
 						name='Khách hàng'
 					/>
+
 					<SelectFilterMany
 						selectedIds={truckUuid}
 						setSelectedIds={setTruckUuid}
@@ -546,68 +533,16 @@ function MainPageAll({}: PropsMainPageAll) {
 						Xuất excel
 					</Button>
 					<div>
-						<TippyHeadless
-							maxWidth={'100%'}
-							interactive
-							visible={openCreate}
-							onClickOutside={() => setOpenCreate(false)}
-							placement='bottom-end'
-							render={(attrs: any) => (
-								<div className={styles.main_option}>
-									<Link
-										onClick={() => setOpenCreate(false)}
-										href={'/nhap-xuat-ngoai/them-moi-nhap'}
-										className={styles.item}
-									>
-										<div className={styles.icon}>
-											<AddSquare size={20} />
-										</div>
-										<p>Cân nhập</p>
-									</Link>
-									<Link
-										onClick={() => setOpenCreate(false)}
-										href={'/nhap-xuat-ngoai/them-moi-xuat'}
-										className={styles.item}
-									>
-										<div className={styles.icon}>
-											<AddSquare size={20} />
-										</div>
-										<p>Cân xuất</p>
-									</Link>
-									<Link
-										href={'/nhap-xuat-ngoai/them-moi-chuyen-kho'}
-										onClick={() => setOpenCreate(false)}
-										className={styles.item}
-									>
-										<div className={styles.icon}>
-											<AddSquare size={20} />
-										</div>
-										<p>Cân chuyển kho</p>
-									</Link>
-									<Link
-										href={'/nhap-xuat-ngoai/them-moi-xuat-thang'}
-										onClick={() => setOpenCreate(false)}
-										className={styles.item}
-									>
-										<div className={styles.icon}>
-											<AddSquare size={20} />
-										</div>
-										<p>Cân xuất thẳng</p>
-									</Link>
-								</div>
-							)}
+						<Button
+							rounded_2
+							w_fit
+							p_8_16
+							bold
+							href={'/nhap-xuat-ngoai/them-moi-chuyen-kho'}
+							icon={<Image alt='icon add' src={icons.add} width={20} height={20} />}
 						>
-							<div>
-								<Button
-									p_8_16
-									icon={<Image alt='icon add' src={icons.add} width={20} height={20} />}
-									rounded_2
-									onClick={() => setOpenCreate(!openCreate)}
-								>
-									Tạo phiếu
-								</Button>
-							</div>
-						</TippyHeadless>
+							Tạo phiếu
+						</Button>
 					</div>
 				</div>
 			</div>
@@ -722,7 +657,6 @@ function MainPageAll({}: PropsMainPageAll) {
 								title: 'KL tươi (Tấn)',
 								render: (data: any) => <>{convertWeight(data?.weightTotal) || 0}</>,
 							},
-
 							{
 								title: 'Ngày bắt đầu',
 								render: (data: any) => (
@@ -833,11 +767,12 @@ function MainPageAll({}: PropsMainPageAll) {
 										) : null}
 										<IconCustom
 											edit
-											icon={<LuPencil fontSize={20} fontWeight={600} />}
-											tooltip='Chỉnh sửa'
+											icon={<LuPencil size={22} fontWeight={600} />}
+											tooltip='chỉnh sửa chuyển kho'
 											color='#777E90'
-											href={getUrlUpdateBatchBill(data)}
+											href={`/nhap-xuat-ngoai/chinh-sua-chuyen-kho?_id=${data.uuid}`}
 										/>
+
 										<IconCustom
 											edit
 											icon={<Eye size={22} fontWeight={600} />}
@@ -862,11 +797,11 @@ function MainPageAll({}: PropsMainPageAll) {
 						_dateFrom,
 						_dateTo,
 						_isBatch,
+						_state,
+						_status,
 						customerUuid,
 						_productTypeUuid,
 						_shipUuid,
-						_status,
-						_state,
 						uuidQuality,
 						uuidStorage,
 						_scalesStationUuid,
@@ -877,7 +812,6 @@ function MainPageAll({}: PropsMainPageAll) {
 					]}
 				/>
 			</div>
-
 			<Popup open={openExportExcel} onClose={() => setOpenExportExcel(false)}>
 				<FormAccessSpecExcel
 					onAccess={() => {
@@ -899,4 +833,4 @@ function MainPageAll({}: PropsMainPageAll) {
 	);
 }
 
-export default MainPageAll;
+export default MainPageScalesTransfer;

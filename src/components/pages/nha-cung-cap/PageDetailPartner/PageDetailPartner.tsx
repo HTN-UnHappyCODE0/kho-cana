@@ -186,7 +186,7 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 					className={styles.header_title}
 				>
 					<IoArrowBackOutline fontSize={20} fontWeight={600} />
-					<p>Chi tiết NCC {detailCustomer?.code}</p>
+					<p>Chi tiết NCC {detailCustomer?.name}</p>
 				</Link>
 			</div>
 

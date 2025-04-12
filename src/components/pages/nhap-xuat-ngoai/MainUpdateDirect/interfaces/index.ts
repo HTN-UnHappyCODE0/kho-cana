@@ -16,4 +16,5 @@ export interface IFormUpdateDirect {
 	timeEnd: string | Date;
 	batchUuid: string;
 	billUuid: string;
+	code: string;
 }

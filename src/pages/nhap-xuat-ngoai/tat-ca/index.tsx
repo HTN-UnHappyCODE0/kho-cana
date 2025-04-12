@@ -29,6 +29,10 @@ export default function Page() {
 						url: PATH.NhapXuatNgoaiXuatHang,
 					},
 					{
+						title: 'Chuyển kho',
+						url: PATH.NhapXuatNgoaiChuyenKho,
+					},
+					{
 						title: 'Xuất thẳng',
 						url: PATH.NhapXuatNgoaiXuatThang,
 					},

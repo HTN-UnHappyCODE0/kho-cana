@@ -2,7 +2,7 @@ import Head from 'next/head';
 import {Fragment, ReactElement} from 'react';
 import BaseLayout from '~/components/layouts/BaseLayout';
 import LayoutPages from '~/components/layouts/LayoutPages';
-import MainPageDirect from '~/components/pages/nhap-xuat-ngoai/MainPageDirect';
+import MainPageScalesTransfer from '~/components/pages/nhap-xuat-ngoai/MainPageScalesTransfer';
 import {PATH} from '~/constants/config';
 
 export default function Page() {
@@ -38,7 +38,7 @@ export default function Page() {
 					},
 				]}
 			>
-				<MainPageDirect />
+				<MainPageScalesTransfer />
 			</LayoutPages>
 		</Fragment>
 	);

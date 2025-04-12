@@ -62,6 +62,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 		billUuid: '',
 		shipUuid: '',
 		portname: '',
+		code: '',
 	});
 
 	const {data: detailBatchBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_nhap_xuat_ngoai, _id], {
@@ -89,6 +90,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 					billUuid: data?.uuid,
 					shipUuid: data?.batchsUu?.shipUu?.uuid || '',
 					portname: data?.port || '',
+					code: data?.code,
 				});
 				setImages(
 					data?.path?.map((v: any) => ({
@@ -352,7 +354,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>
-						<h4>Chỉnh sửa phiếu xuất</h4>
+						<h4>Chỉnh sửa phiếu xuất #{form.code}</h4>
 						<p>Điền đầy đủ các thông tin </p>
 					</div>
 					<div className={styles.right}>

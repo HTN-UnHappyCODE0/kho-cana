@@ -254,11 +254,11 @@ function MainCreateImport({}: PropsMainCreateImport) {
 		}
 
 		if (tomorrow < timeStart) {
-			return toastWarn({msg: 'Ngày bắt đầu không hợp lệ!'});
+			return toastWarn({msg: 'Ngày bắt đầu không lớn hơn hôm này!'});
 		}
 
 		if (tomorrow < timeEnd) {
-			return toastWarn({msg: 'Ngày kết thúc không hợp lệ!'});
+			return toastWarn({msg: 'Ngày kết thúc không lớn hơn hôm này!'});
 		}
 
 		if (timeStart > timeEnd) {
