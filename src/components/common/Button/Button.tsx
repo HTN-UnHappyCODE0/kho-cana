@@ -12,7 +12,7 @@ interface props {
 	[props: string]: any;
 }
 
-function Button({children, onClick, icon, href, className, target, div, ...props}: props): JSX.Element {
+function Button({children, onClick, icon, href, className, target, div, ...props}: props) {
 	const styleClass = useStyleClass(props, styles);
 
 	let onClickHandler: any = null;

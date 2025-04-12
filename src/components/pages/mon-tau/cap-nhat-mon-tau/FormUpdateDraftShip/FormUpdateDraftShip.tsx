@@ -311,7 +311,7 @@ function FormUpdateDraftShip({dataUpdate, onClose}: PropsFormUpdateDraftShip) {
 											value={Number(manualValues[v.uuid]?.toFixed(3))}
 											onChange={(e) => handleChange(v.uuid, parseFloat(e.target.value))}
 											onKeyDown={(e) => handleKeyEnter(e, i)}
-											ref={(el) => (inputRefs.current[i] = el)}
+											ref={(el: any) => (inputRefs.current[i] = el)}
 										/>
 										<div className={styles.unit}>Kg</div>
 									</div>
