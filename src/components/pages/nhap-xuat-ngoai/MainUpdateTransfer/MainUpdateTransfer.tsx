@@ -369,6 +369,12 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 			return toastWarn({msg: 'Ngày bắt đầu không lớn hơn hôm này!'});
 		}
 
+		if (!form?.timeStart) {
+			return toastWarn({msg: 'Vui lòng chọn ngày bắt đầu!'});
+		}
+		if (!form?.timeEnd) {
+			return toastWarn({msg: 'Vui lòng chọn ngày kết thúc!'});
+		}
 		if (tomorrow < timeEnd) {
 			return toastWarn({msg: 'Ngày kết thúc không lớn hơn hôm này!'});
 		}

@@ -321,6 +321,13 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 			return toastWarn({msg: 'Trùng kho đích!'});
 		}
 
+		if (!form?.timeStart) {
+			return toastWarn({msg: 'Vui lòng chọn ngày bắt đầu!'});
+		}
+		if (!form?.timeEnd) {
+			return toastWarn({msg: 'Vui lòng chọn ngày kết thúc!'});
+		}
+
 		if (tomorrow < timeStart) {
 			return toastWarn({msg: 'Ngày bắt đầu không lớn hơn hôm này!'});
 		}
