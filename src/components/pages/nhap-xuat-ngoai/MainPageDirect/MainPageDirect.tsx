@@ -108,7 +108,7 @@ function MainPageDirect({}: PropsMainPageDirect) {
 
 	const listBill = useQuery(
 		[
-			QUERY_KEY.table_phieu_can_tat_ca,
+			QUERY_KEY.table_phieu_can_thang_ngoai,
 			_page,
 			_pageSize,
 			_keyword,

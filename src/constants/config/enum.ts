@@ -110,6 +110,9 @@ export enum QUERY_KEY {
 	table_lich_su_nhap_hang_ncc,
 	table_tap_chat,
 	table_phieu_can_chuyen_kho_ngoai,
+	table_phieu_can_tat_ca_ngoai,
+	table_phieu_can_xuat_ngoai,
+	table_phieu_can_thang_ngoai,
 
 	chi_tiet_lenh_can,
 	chi_tiet_phieu_can,
