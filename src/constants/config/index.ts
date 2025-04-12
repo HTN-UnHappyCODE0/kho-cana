@@ -105,6 +105,7 @@ export enum PATH {
 	NhapXuatNgoaiNhapHang = '/nhap-xuat-ngoai/nhap-hang',
 	NhapXuatNgoaiXuatHang = '/nhap-xuat-ngoai/xuat-hang',
 	NhapXuatNgoaiXuatThang = '/nhap-xuat-ngoai/xuat-thang',
+	NhapXuatNgoaiChuyenKho = '/nhap-xuat-ngoai/chuyen-kho',
 
 	// cập nhật mớn tàu
 	MonTau = '/mon-tau',

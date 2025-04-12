@@ -609,6 +609,12 @@ function ChartServiceCompany({}: PropsChartServiceCompany) {
 		}
 	}, [userUuid]);
 
+	const currentData = isShowBDMT === String(TYPE_SHOW_BDMT.MT) ? dataChartMT : dataChartBDMT;
+
+	const drynessValues = currentData.flatMap((item) => productTypes.map((v) => item[`${v.key}_drynessAvg`] || 50));
+	const minDryness = Math.min(...drynessValues) - 1;
+	const maxDryness = Math.max(...drynessValues) + 1;
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.head}>
@@ -783,7 +789,7 @@ function ChartServiceCompany({}: PropsChartServiceCompany) {
 
 						<YAxis domain={[0, 4000000]} tickFormatter={(value): any => convertWeight(value)} />
 
-						<YAxis yAxisId='right' domain={[25, 75]} orientation='right' tickFormatter={(v) => `${v}%`} />
+						<YAxis yAxisId='right' domain={[minDryness, maxDryness]} orientation='right' tickFormatter={(v) => `${v}%`} />
 
 						<Tooltip
 							formatter={(value, name, props): any => {

@@ -16,4 +16,5 @@ export interface IFormUpdateExport {
 	billUuid: string;
 	shipUuid: string;
 	portname: string;
+	code: string;
 }

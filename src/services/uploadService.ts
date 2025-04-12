@@ -37,6 +37,27 @@ const uploadImageService = {
 			},
 		});
 	},
+
+	uploadMutilImagePDF: (files: any[]) => {
+		const dataFile = new FormData();
+
+		dataFile.append('Time', getKeyCert().time);
+		dataFile.append('KeyCert', getKeyCert().keyCert);
+		files?.forEach((file) => {
+			const isPdf = file?.type === 'application/pdf';
+
+			// dataFile.append('Type', isPdf ? '4' : '2');
+			dataFile.append('Type', '4');
+			dataFile.append('ImageFiles', file);
+		});
+
+		return axiosClient.post(`Upload/upload-images`, dataFile, {
+			headers: {
+				'Content-Type': 'multipart/form-data',
+				Accept: 'text/plain',
+			},
+		});
+	},
 };
 
 export default uploadImageService;

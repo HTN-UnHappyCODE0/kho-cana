@@ -61,6 +61,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 		timeEnd: '',
 		batchUuid: '',
 		billUuid: '',
+		code: '',
 	});
 
 	const {data: detailBatchBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_nhap_xuat_ngoai, _id], {
@@ -89,6 +90,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 					timeStart: moment(data.timeStart).format('yyyy-MM-DD'),
 					timeEnd: moment(data.timeEnd).format('yyyy-MM-DD'),
 					description: data?.description,
+					code: data?.code,
 				});
 				setImages(
 					data?.path?.map((v: any) => ({
@@ -370,7 +372,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.header}>
 					<div className={styles.left}>
-						<h4>Chỉnh sửa phiếu xuất thẳng</h4>
+						<h4>Chỉnh sửa phiếu xuất thẳng #{form.code}</h4>
 						<p>Điền đầy đủ các thông tin cân trực tiếp</p>
 					</div>
 					<div className={styles.right}>

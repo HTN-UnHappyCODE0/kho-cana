@@ -91,7 +91,7 @@ function DetailCustomerExport({}: PropsDetailCustomerExport) {
 					className={styles.header_title}
 				>
 					<IoArrowBackOutline fontSize={20} fontWeight={600} />
-					<p>Chi tiết khách hàng xuất {detailCustomer?.code}</p>
+					<p>Chi tiết khách hàng xuất {detailCustomer?.name}</p>
 				</Link>
 			</div>
 			<div className={clsx('mt')}>
