@@ -6,6 +6,7 @@ export interface PropsItemRuler {
 		titleType: string;
 		rule: TYPE_RULER;
 		value: number;
+		order: number | string;
 	};
 	idx: number;
 	showBtnDelete: boolean;

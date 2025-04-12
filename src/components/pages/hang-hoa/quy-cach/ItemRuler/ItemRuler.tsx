@@ -97,6 +97,35 @@ function ItemRuler({data, idx, showBtnDelete, handleDeleteRow, handleChangeValue
 					/>
 					<div className={styles.unit}>%</div>
 				</div>
+			</div>
+
+			<div className={styles.box_control}>
+				{/* <div className={styles.input_specification}>
+					<input
+						name='value'
+						value={data.value}
+						type='number'
+						max={100}
+						step={0.01}
+						placeholder='Nhập thông số'
+						className={styles.input}
+						onChange={(e) => handleChangeValue(idx, 'value', e.target.value)}
+					/>
+					<div className={styles.unit}>%</div>
+				</div> */}
+				<div className={styles.input_specification}>
+					<input
+						name='order'
+						value={data.order}
+						type='number'
+						max={100}
+						step={0.01}
+						placeholder='Nhập số thứ tự'
+						className={styles.input}
+						onChange={(e) => handleChangeValue(idx, 'order', e.target.value)}
+					/>
+					{/* <div className={styles.unit}>%</div> */}
+				</div>
 				{showBtnDelete && (
 					<div className={styles.btn_delete} onClick={() => handleDeleteRow(idx)}>
 						<Trash />

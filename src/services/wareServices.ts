@@ -50,6 +50,7 @@ const wareServices = {
 				titleType: string;
 				rule: number;
 				value: number;
+				order: number;
 			}[];
 		},
 		tokenAxios?: any

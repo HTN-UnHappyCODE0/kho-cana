@@ -46,6 +46,9 @@ function MainPageDetail({}: PropsMainPageDetail) {
 		if (detailBatchBill?.scalesType == TYPE_SCALES.CAN_XUAT) {
 			return `/nhap-xuat-ngoai/chinh-sua-xuat?_id=${detailBatchBill?.uuid}`;
 		}
+		if (detailBatchBill?.scalesType == TYPE_SCALES.CAN_CHUYEN_KHO) {
+			return `/nhap-xuat-ngoai/chinh-sua-chuyen-kho?_id=${detailBatchBill?.uuid}`;
+		}
 		if (detailBatchBill?.scalesType == TYPE_SCALES.CAN_TRUC_TIEP) {
 			return `/nhap-xuat-ngoai/chinh-sua-xuat-thang?_id=${detailBatchBill?.uuid}`;
 		}
