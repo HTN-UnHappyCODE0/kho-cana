@@ -176,12 +176,16 @@ const batchBillServices = {
 			storageUuid: string;
 			customerUuid: string[];
 			warehouseUuid: string;
-			userOwnerUuid: string;
-			provinceId: string;
+			userOwnerUuid: string[];
+			provinceId: string[];
 			transportType: number | null;
 			listCompanyUuid: string[];
 			listPartnerUuid: string[];
-			userPartnerUuid?: string;
+			userPartnerUuid?: string[];
+			typeShow?: number;
+			productTypeUuid?: string;
+			qualityUuid?: string;
+			specificationUuid?: string;
 		},
 		tokenAxios?: any
 	) => {
@@ -200,12 +204,16 @@ const batchBillServices = {
 			storageUuid: string;
 			customerUuid: string[];
 			warehouseUuid: string;
-			userOwnerUuid: string;
-			provinceId: string;
+			userOwnerUuid: string[];
+			provinceId: string[];
 			transportType: number | null;
 			listCompanyUuid: string[];
 			listPartnerUuid: string[];
-			userPartnerUuid?: string;
+			userPartnerUuid?: string[];
+			typeShow?: number;
+			productTypeUuid?: string;
+			qualityUuid?: string;
+			specificationUuid?: string;
 		},
 		tokenAxios?: any
 	) => {
@@ -224,12 +232,16 @@ const batchBillServices = {
 			storageUuid: string;
 			customerUuid: string[];
 			warehouseUuid: string;
-			userOwnerUuid: string;
-			provinceId: string;
+			userOwnerUuid: string[];
+			provinceId: string[];
 			transportType: number | null;
 			listCompanyUuid: string[];
 			listPartnerUuid: string[];
-			userPartnerUuid?: string;
+			userPartnerUuid?: string[];
+			typeShow?: number;
+			productTypeUuid?: string;
+			qualityUuid?: string;
+			specificationUuid?: string;
 		},
 		tokenAxios?: any
 	) => {
