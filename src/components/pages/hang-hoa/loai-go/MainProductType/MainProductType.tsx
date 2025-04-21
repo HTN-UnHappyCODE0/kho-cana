@@ -91,12 +91,12 @@ function MainProductType({}: PropsMainProductType) {
 					<div className={styles.filter}>
 						<FilterCustom
 							isSearch
-							name='Loại hàng hóa'
+							name='Sử dụng'
 							query='_type'
 							listFilter={[
 								{
 									id: TYPE_PRODUCT.CONG_TY,
-									name: 'KV cảng xuất khẩu',
+									name: 'Công ty',
 								},
 								{
 									id: TYPE_PRODUCT.DICH_VU,
@@ -168,20 +168,19 @@ function MainProductType({}: PropsMainProductType) {
 								render: (data: IProductType) => <>{data?.name || '---'}</>,
 							},
 							{
-								title: 'Loại hàng hóa',
+								title: 'Sử dụng',
 								render: (data: IProductType) => (
 									<>
-										{data?.type == TYPE_PRODUCT.CONG_TY && 'KV cảng xuất khẩu'}
+										{data?.type == TYPE_PRODUCT.CONG_TY && 'Công ty'}
 										{data?.type == TYPE_PRODUCT.DICH_VU && 'Dịch vụ'}
-										{data?.type == TYPE_PRODUCT.DUNG_CHUNG && 'KV cảng xuất khẩu + Dịch vụ'}
+										{data?.type == TYPE_PRODUCT.DUNG_CHUNG && 'Công ty + Dịch vụ'}
 									</>
 								),
 							},
 
 							{
 								title: 'Thời gian tạo',
-								render: (data: IProductType) =>
-									data?.created ? <Moment date={data?.created} format='HH:mm - DD/MM/YYYY' /> : '---',
+								render: (data: IProductType) => <Moment date={data?.created} format='HH:mm - DD/MM/YYYY'></Moment>,
 							},
 							{
 								title: 'Trạng thái',
@@ -223,7 +222,7 @@ function MainProductType({}: PropsMainProductType) {
 								title: 'Tác vụ',
 								fixedRight: true,
 								render: (data: IProductType) => (
-									<div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px'}}>
+									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
 										<IconCustom
 											edit
 											icon={<LuPencil fontSize={20} fontWeight={600} />}
@@ -264,7 +263,7 @@ function MainProductType({}: PropsMainProductType) {
 
 			<Dialog
 				danger={dataStatus?.status == CONFIG_STATUS.HOAT_DONG}
-				green={dataStatus?.status == CONFIG_STATUS.BI_KHOA}
+				green={dataStatus?.status != CONFIG_STATUS.HOAT_DONG}
 				open={!!dataStatus}
 				onClose={() => setDataStatus(null)}
 				title={dataStatus?.status == CONFIG_STATUS.HOAT_DONG ? 'Khóa loại hàng' : 'Mở khóa loại hàng'}

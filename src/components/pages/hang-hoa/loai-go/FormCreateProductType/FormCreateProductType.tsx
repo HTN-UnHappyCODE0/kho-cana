@@ -15,6 +15,7 @@ import Loading from '~/components/common/Loading';
 import InputColor from '~/components/common/InputColor';
 import Select, {Option} from '~/components/common/Select';
 import companyServices from '~/services/companyServices';
+import {toastWarn} from '~/common/funcs/toast';
 
 function FormCreateProductType({onClose}: PropsFormCreateProductType) {
 	const queryClient = useQueryClient();
@@ -25,7 +26,21 @@ function FormCreateProductType({onClose}: PropsFormCreateProductType) {
 		description: string;
 		colorShow: string;
 		companyUuid: string;
-	}>({name: '', description: '', colorShow: '#16DBCC', productType: TYPE_PRODUCT.CONG_TY, companyUuid: ''});
+		fullName: string;
+		normalName: string;
+		scientificName: string;
+		speciesGroup: string;
+	}>({
+		name: '',
+		description: '',
+		colorShow: '#16DBCC',
+		productType: TYPE_PRODUCT.CONG_TY,
+		companyUuid: '',
+		fullName: '',
+		normalName: '',
+		scientificName: '',
+		speciesGroup: '',
+	});
 
 	const listCompany = useQuery([QUERY_KEY.dropdown_cong_ty], {
 		queryFn: () =>
@@ -59,6 +74,10 @@ function FormCreateProductType({onClose}: PropsFormCreateProductType) {
 					type: form.productType,
 					colorShow: form.colorShow,
 					companyUuid: form.companyUuid,
+					fullName: form.fullName,
+					normalName: form.normalName,
+					scientificName: form.scientificName,
+					speciesGroup: form.speciesGroup,
 				}),
 			}),
 		onSuccess(data) {
@@ -69,6 +88,10 @@ function FormCreateProductType({onClose}: PropsFormCreateProductType) {
 					productType: TYPE_PRODUCT.CONG_TY,
 					colorShow: '#16DBCC',
 					companyUuid: '',
+					fullName: '',
+					normalName: '',
+					scientificName: '',
+					speciesGroup: '',
 				});
 				onClose();
 				queryClient.invalidateQueries([QUERY_KEY.table_loai_go]);
@@ -81,6 +104,9 @@ function FormCreateProductType({onClose}: PropsFormCreateProductType) {
 	});
 
 	const handleSubmit = () => {
+		if (!form.companyUuid) {
+			return toastWarn({msg: 'Vui lòng chọn KV cảng xuất khẩu!'});
+		}
 		return funcCreateProductType.mutate();
 	};
 
@@ -92,7 +118,7 @@ function FormCreateProductType({onClose}: PropsFormCreateProductType) {
 				<div className={clsx('mb')}>
 					<div className={styles.item}>
 						<label className={styles.label}>
-							Loại hàng hóa <span style={{color: 'red'}}>*</span>
+							Sử dụng <span style={{color: 'red'}}>*</span>
 						</label>
 						<div className={styles.group_radio}>
 							<div className={styles.item_radio}>
@@ -108,7 +134,7 @@ function FormCreateProductType({onClose}: PropsFormCreateProductType) {
 										}))
 									}
 								/>
-								<label htmlFor='cong_ty'>KV cảng xuất khẩu</label>
+								<label htmlFor='cong_ty'>Công ty</label>
 							</div>
 							<div className={styles.item_radio}>
 								<input
@@ -143,42 +169,72 @@ function FormCreateProductType({onClose}: PropsFormCreateProductType) {
 						</div>
 					</div>
 				</div>
-				<Input
-					name='name'
-					value={form.name || ''}
-					isRequired
-					max={255}
-					type='text'
-					blur={true}
-					placeholder='Nhập tên loại hàng'
-					label={
-						<span>
-							Tên loại hàng<span style={{color: 'red'}}> *</span>
-						</span>
-					}
-				/>
-
-				<div className='mt'>
-					<Select
-						isSearch
-						name='companyUuid'
-						value={form.companyUuid}
-						placeholder='Chọn KV cảng xuất khẩu'
-						onChange={(e) =>
-							setForm((prev: any) => ({
-								...prev,
-								companyUuid: e.target.value,
-							}))
+				<div className={clsx('mt', 'col_2')}>
+					<Input
+						name='name'
+						value={form.name || ''}
+						isRequired
+						max={255}
+						type='text'
+						blur={true}
+						placeholder='Nhập tên loại hàng'
+						label={
+							<span>
+								Tên loại hàng<span style={{color: 'red'}}> *</span>
+							</span>
 						}
-						label={<span>Thuộc KV cảng xuất khẩu</span>}
-					>
-						{listCompany?.data?.map((v: any) => (
-							<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
-						))}
-					</Select>
+					/>
+					<div>
+						<Input
+							name='fullName'
+							value={form.fullName || ''}
+							isRequired
+							max={255}
+							type='text'
+							blur={true}
+							placeholder='Nhập tên đẩy đủ loại hàng'
+							label={
+								<span>
+									Tên đầy đủ loại hàng<span style={{color: 'red'}}> *</span>
+								</span>
+							}
+						/>
+					</div>
 				</div>
 
-				<div className='mt'>
+				<div className={clsx('mt', 'col_2')}>
+					<Input
+						name='normalName'
+						value={form.normalName || ''}
+						isRequired
+						max={255}
+						type='text'
+						blur={true}
+						placeholder='Nhập tên thường gọi loại hàng'
+						label={
+							<span>
+								Tên thường gọi loại hàng<span style={{color: 'red'}}> *</span>
+							</span>
+						}
+					/>
+					<div>
+						<Input
+							name='scientificName'
+							value={form.scientificName || ''}
+							isRequired
+							max={255}
+							type='text'
+							blur={true}
+							placeholder='Nhập tên khoa học loại hàng'
+							label={
+								<span>
+									Tên khoa học loại hàng<span style={{color: 'red'}}> *</span>
+								</span>
+							}
+						/>
+					</div>
+				</div>
+				<div className={clsx('mt', 'col_2')}>
 					<InputColor
 						label={
 							<span>
@@ -193,6 +249,45 @@ function FormCreateProductType({onClose}: PropsFormCreateProductType) {
 							}))
 						}
 					/>
+					<div>
+						<Input
+							name='speciesGroup'
+							value={form.speciesGroup || ''}
+							isRequired
+							max={255}
+							type='text'
+							blur={true}
+							placeholder='Nhập nhóm loại hàng'
+							label={
+								<span>
+									Nhóm loại hàng<span style={{color: 'red'}}> *</span>
+								</span>
+							}
+						/>
+					</div>
+				</div>
+				<div className={clsx('mt')}>
+					<Select
+						isSearch
+						name='companyUuid'
+						value={form.companyUuid}
+						placeholder='Chọn KV cảng xuất khẩu'
+						onChange={(e) =>
+							setForm((prev: any) => ({
+								...prev,
+								companyUuid: e.target.value,
+							}))
+						}
+						label={
+							<span>
+								Thuộc KV cảng xuất khẩu <span style={{color: 'red'}}>*</span>
+							</span>
+						}
+					>
+						{listCompany?.data?.map((v: any) => (
+							<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
+						))}
+					</Select>
 				</div>
 
 				<div className={clsx('mt')}>

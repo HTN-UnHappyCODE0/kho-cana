@@ -27,7 +27,22 @@ function FormUpdateProductType({dataUpdateProductType, onClose}: PropsFormUpdate
 		description: string;
 		colorShow: string;
 		companyUuid: string;
-	}>({uuid: '', name: '', description: '', colorShow: '', productType: TYPE_PRODUCT.CONG_TY, companyUuid: ''});
+		fullName: string;
+		normalName: string;
+		scientificName: string;
+		speciesGroup: string;
+	}>({
+		uuid: '',
+		name: '',
+		description: '',
+		colorShow: '',
+		productType: TYPE_PRODUCT.CONG_TY,
+		companyUuid: '',
+		fullName: '',
+		normalName: '',
+		scientificName: '',
+		speciesGroup: '',
+	});
 
 	useEffect(() => {
 		setForm({
@@ -37,6 +52,10 @@ function FormUpdateProductType({dataUpdateProductType, onClose}: PropsFormUpdate
 			productType: dataUpdateProductType?.type || TYPE_PRODUCT.CONG_TY,
 			colorShow: dataUpdateProductType?.colorShow || '#16DBCC',
 			companyUuid: dataUpdateProductType?.companyUu?.uuid || '',
+			fullName: dataUpdateProductType?.fullName || '',
+			normalName: dataUpdateProductType?.normalName || '',
+			scientificName: dataUpdateProductType?.scientificName || '',
+			speciesGroup: dataUpdateProductType?.speciesGroup || '',
 		});
 	}, [dataUpdateProductType]);
 
@@ -72,6 +91,10 @@ function FormUpdateProductType({dataUpdateProductType, onClose}: PropsFormUpdate
 					type: form.productType,
 					colorShow: form.colorShow,
 					companyUuid: form.companyUuid,
+					fullName: form.fullName,
+					normalName: form.normalName,
+					scientificName: form.scientificName,
+					speciesGroup: form.speciesGroup,
 				}),
 			}),
 		onSuccess(data) {
@@ -83,6 +106,10 @@ function FormUpdateProductType({dataUpdateProductType, onClose}: PropsFormUpdate
 					productType: TYPE_PRODUCT.CONG_TY,
 					colorShow: '',
 					companyUuid: '',
+					fullName: '',
+					normalName: '',
+					scientificName: '',
+					speciesGroup: '',
 				});
 				onClose();
 				queryClient.invalidateQueries([QUERY_KEY.table_loai_go]);
@@ -112,7 +139,7 @@ function FormUpdateProductType({dataUpdateProductType, onClose}: PropsFormUpdate
 				<div className={clsx('mb')}>
 					<div className={styles.item}>
 						<label className={styles.label}>
-							Loại hàng hóa <span style={{color: 'red'}}>*</span>
+							Sử dụng <span style={{color: 'red'}}>*</span>
 						</label>
 						<div className={styles.group_radio}>
 							<div className={styles.item_radio}>
@@ -128,7 +155,7 @@ function FormUpdateProductType({dataUpdateProductType, onClose}: PropsFormUpdate
 										}))
 									}
 								/>
-								<label htmlFor='cong_ty'>KV cảng xuất khẩu</label>
+								<label htmlFor='cong_ty'>Công ty</label>
 							</div>
 							<div className={styles.item_radio}>
 								<input
@@ -163,42 +190,72 @@ function FormUpdateProductType({dataUpdateProductType, onClose}: PropsFormUpdate
 						</div>
 					</div>
 				</div>
-				<Input
-					name='name'
-					value={form.name || ''}
-					isRequired
-					max={255}
-					type='text'
-					blur={true}
-					placeholder='Nhập tên loại hàng'
-					label={
-						<span>
-							Tên loại hàng<span style={{color: 'red'}}> *</span>
-						</span>
-					}
-				/>
-
-				<div className='mt'>
-					<Select
-						isSearch
-						name='companyUuid'
-						value={form.companyUuid}
-						placeholder='Chọn KV cảng xuất khẩu'
-						onChange={(e) =>
-							setForm((prev: any) => ({
-								...prev,
-								companyUuid: e.target.value,
-							}))
+				<div className={clsx('mt', 'col_2')}>
+					<Input
+						name='name'
+						value={form.name || ''}
+						isRequired
+						max={255}
+						type='text'
+						blur={true}
+						placeholder='Nhập tên loại hàng'
+						label={
+							<span>
+								Tên loại hàng<span style={{color: 'red'}}> *</span>
+							</span>
 						}
-						label={<span>Thuộc KV cảng xuất khẩu</span>}
-					>
-						{listCompany?.data?.map((v: any) => (
-							<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
-						))}
-					</Select>
+					/>
+					<div>
+						<Input
+							name='fullName'
+							value={form.fullName || ''}
+							isRequired
+							max={255}
+							type='text'
+							blur={true}
+							placeholder='Nhập tên đẩy đủ loại hàng'
+							label={
+								<span>
+									Tên đầy đủ loại hàng<span style={{color: 'red'}}> *</span>
+								</span>
+							}
+						/>
+					</div>
 				</div>
 
-				<div className='mt'>
+				<div className={clsx('mt', 'col_2')}>
+					<Input
+						name='normalName'
+						value={form.normalName || ''}
+						isRequired
+						max={255}
+						type='text'
+						blur={true}
+						placeholder='Nhập tên thường gọi loại hàng'
+						label={
+							<span>
+								Tên thường gọi loại hàng<span style={{color: 'red'}}> *</span>
+							</span>
+						}
+					/>
+					<div>
+						<Input
+							name='scientificName'
+							value={form.scientificName || ''}
+							isRequired
+							max={255}
+							type='text'
+							blur={true}
+							placeholder='Nhập tên khoa học loại hàng'
+							label={
+								<span>
+									Tên khoa học loại hàng<span style={{color: 'red'}}> *</span>
+								</span>
+							}
+						/>
+					</div>
+				</div>
+				<div className={clsx('mt', 'col_2')}>
 					<InputColor
 						label={
 							<span>
@@ -213,6 +270,45 @@ function FormUpdateProductType({dataUpdateProductType, onClose}: PropsFormUpdate
 							}))
 						}
 					/>
+					<div>
+						<Input
+							name='speciesGroup'
+							value={form.speciesGroup || ''}
+							isRequired
+							max={255}
+							type='text'
+							blur={true}
+							placeholder='Nhập nhóm loại hàng'
+							label={
+								<span>
+									Nhóm loại hàng<span style={{color: 'red'}}> *</span>
+								</span>
+							}
+						/>
+					</div>
+				</div>
+				<div className={clsx('mt')}>
+					<Select
+						isSearch
+						name='companyUuid'
+						value={form.companyUuid}
+						placeholder='Chọn KV cảng xuất khẩu'
+						onChange={(e) =>
+							setForm((prev: any) => ({
+								...prev,
+								companyUuid: e.target.value,
+							}))
+						}
+						label={
+							<span>
+								Thuộc KV cảng xuất khẩu <span style={{color: 'red'}}>*</span>
+							</span>
+						}
+					>
+						{listCompany?.data?.map((v: any) => (
+							<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
+						))}
+					</Select>
 				</div>
 
 				<div className={clsx('mt')}>
@@ -229,7 +325,7 @@ function FormUpdateProductType({dataUpdateProductType, onClose}: PropsFormUpdate
 						<FormContext.Consumer>
 							{({isDone}) => (
 								<Button disable={!isDone} p_10_24 rounded_2 primary>
-									Cập nhật
+									Lưu lại
 								</Button>
 							)}
 						</FormContext.Consumer>

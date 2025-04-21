@@ -88,6 +88,10 @@ const wareServices = {
 			colorShow: string;
 			type: number;
 			companyUuid: string;
+			fullName: string;
+			normalName: string;
+			scientificName: string;
+			speciesGroup: string;
 		},
 		tokenAxios?: any
 	) => {
