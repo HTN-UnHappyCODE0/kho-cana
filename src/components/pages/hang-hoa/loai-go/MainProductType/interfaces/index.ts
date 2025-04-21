@@ -10,6 +10,10 @@ export interface IProductType {
 	uuid: string;
 	colorShow: string;
 	type: number;
+	normalName: string;
+	scientificName: string;
+	speciesGroup: string;
+	fullName: string;
 	companyUu: {
 		code: string;
 		name: string;
