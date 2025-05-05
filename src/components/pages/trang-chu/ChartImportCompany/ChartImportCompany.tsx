@@ -546,7 +546,7 @@ function ChartImportCompany({}: PropsChartImportCompany) {
 								name: 'Đường thủy',
 							},
 						]}
-						placeholder='Vsận chuyển'
+						placeholder='Vận chuyển'
 					/>
 					<SelectFilterMany
 						selectedIds={provinceUuid}
