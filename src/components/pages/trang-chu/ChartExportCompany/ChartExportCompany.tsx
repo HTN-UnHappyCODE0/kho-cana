@@ -543,7 +543,7 @@ function ChartExportCompany({}: PropsChartExportCompany) {
 								name: 'Đường thủy',
 							},
 						]}
-						placeholder='Vận chuyển'
+						placeholder='Vận chuyển '
 					/>
 					<SelectFilterMany
 						selectedIds={provinceUuid}
