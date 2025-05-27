@@ -362,11 +362,7 @@ function FormCreateStorage({draggedElements, onClose}: PropsFormCreateStorage) {
 											receiverUuid: e.target.value,
 										}))
 									}
-									label={
-										<span>
-											Bên mua <span style={{color: 'red'}}>*</span>
-										</span>
-									}
+									label={<span>Bên mua</span>}
 								>
 									{listReceiver?.data?.map((v: any) => (
 										<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
