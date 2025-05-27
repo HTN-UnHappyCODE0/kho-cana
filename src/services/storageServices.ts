@@ -140,6 +140,7 @@ const storageServices = {
 				uuid: string;
 				value: number;
 			}[];
+			receiverUuid: string;
 		},
 		tokenAxios?: any
 	) => {

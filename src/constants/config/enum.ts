@@ -54,6 +54,7 @@ export enum QUERY_KEY {
 	dropdown_nhan_vien_thi_truong_nhap,
 	dropdown_quan_ly_nhap_hang_xuat,
 	dropdown_nhan_vien_thi_truong_xuat,
+	dropdown_cong_ty_nhan,
 
 	table_xe_hang,
 	table_lenh_can_tat_ca,
@@ -131,6 +132,7 @@ export enum QUERY_KEY {
 	chi_tiet_gia_tien_hang,
 	chi_tiet_lich_su_thay_doi_phieu,
 	chi_tiet_nhap_xuat_ngoai,
+	chi_tiet_bien_ban,
 
 	thong_ke_kho_hang,
 	thong_ke_tong_hang_dich_vu,

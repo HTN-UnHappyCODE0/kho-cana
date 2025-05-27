@@ -18,4 +18,5 @@ export interface IFormUpdatePostionStorage {
 		title: string;
 		value: number;
 	}[];
+	receiverUuid: string;
 }

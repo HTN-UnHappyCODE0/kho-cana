@@ -16,4 +16,5 @@ export interface IFormCreateStorage {
 		title: string;
 		value: number;
 	}[];
+	receiverUuid: string;
 }
