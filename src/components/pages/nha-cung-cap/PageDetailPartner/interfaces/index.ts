@@ -133,3 +133,23 @@ export interface IlistCustomerSpec {
 	};
 	uuid: string;
 }
+
+
+export interface IDetailRepreCompany {
+	director: string;
+	regencyName: string;
+	taxCode: string;
+	address: string;
+	description: string;
+	note: string;
+	name: string;
+	codeName: string;
+	fullName: string;
+	status: number;
+	uuid: string;
+	qualityUu: {
+		name: string;
+		status: number;
+		uuid: string;
+	};
+}

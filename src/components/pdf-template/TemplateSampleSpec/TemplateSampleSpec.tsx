@@ -8,27 +8,17 @@ import Moment from 'react-moment';
 import {convertWeight} from '~/common/funcs/optionConvert';
 
 const TemplateSampleSpec = forwardRef<HTMLDivElement, PropsTemplateSampleSpec>(
-	({customerName, countSample, listBill, TypeQuality = false}, ref) => {
+	({customerName, countSample, listBill, TypeQuality = false, detailRepreCompany}, ref) => {
 		return (
 			<div ref={ref} className={styles.container}>
 				<div className={styles.header}>
 					<div className={styles.box_logo}>
 						<ImageFill src={icons.logo} className={styles.logo_icon} alt='Logo' />
 
-						{TypeQuality == true && (
-							<div className={styles.info}>
-								<h4>CÔNG TY TNHH TRIỀU AN QN</h4>
-								<p>Tổ 2 - Khu 6C - Phường Hồng Hải - Thành phố Hạ Long - Tỉnh Quảng Ninh</p>
-								{/* <p>Tel/Fax: 0203.657.9887 - Email: cangthaihung@gmail.com</p> */}
-							</div>
-						)}
-						{TypeQuality == false && (
-							<div className={styles.info}>
-								<h4>Công ty cổ phần cảng Thái Hưng</h4>
-								<p>Tổ 2 - Khu 6C - Phường Hồng Hải - TP Hạ Long - Quảng Ninh</p>
-								<p>Tel/Fax: 0203.657.9887 - Email: cangthaihung@gmail.com</p>
-							</div>
-						)}
+						<div className={styles.info}>
+							<h4>{detailRepreCompany?.fullName}</h4>
+							<p>{detailRepreCompany?.address}</p>
+						</div>
 					</div>
 				</div>
 				<div className={styles.watermark_logo}>
@@ -66,18 +56,11 @@ const TemplateSampleSpec = forwardRef<HTMLDivElement, PropsTemplateSampleSpec>(
 					</div>
 
 					<h3 style={{marginTop: '24px'}}>Kết quả phân tích</h3>
-					{TypeQuality == true && (
-						<p>
-							Mẫu hàng được phân tích tại phòng phân tích của <b>Công ty TNHH TRIỀU AN QN</b>. <br />
-							Kết quả như sau:
-						</p>
-					)}
-					{TypeQuality == false && (
-						<p>
-							Mẫu hàng được phân tích tại phòng phân tích của <b>Công ty cổ phần cảng Thái Hưng</b>. <br />
-							Kết quả như sau:
-						</p>
-					)}
+
+					<p>
+						Mẫu hàng được phân tích tại phòng phân tích của <b>{detailRepreCompany?.fullName}</b>. <br />
+						Kết quả như sau:
+					</p>
 
 					<div className={styles.table}>
 						<table>
@@ -110,16 +93,9 @@ const TemplateSampleSpec = forwardRef<HTMLDivElement, PropsTemplateSampleSpec>(
 						</table>
 					</div>
 
-					{TypeQuality == true && (
-						<p style={{marginTop: '20px'}}>
-							Điểm giám định: <b>Tại Công ty TNHH TRIỀU AN QN</b> - Phòng phân tích.
-						</p>
-					)}
-					{TypeQuality == false && (
-						<p style={{marginTop: '20px'}}>
-							Điểm giám định: <b>Tại Công ty cổ phần cảng Thái Hưng</b> - Phòng phân tích.
-						</p>
-					)}
+					<p style={{marginTop: '20px'}}>
+						Điểm giám định: <b>{detailRepreCompany?.fullName}</b> - Phòng phân tích.
+					</p>
 
 					{/* <p style={{marginTop: '20px'}}>
 						Điểm giám định: <b>Tại Công ty cổ phần cảng Thái Hưng</b> - Phòng phân tích.

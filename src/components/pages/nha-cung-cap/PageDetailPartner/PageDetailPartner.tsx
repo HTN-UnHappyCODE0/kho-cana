@@ -1,8 +1,8 @@
 import React, {useRef, useState} from 'react';
 
-import {IDetailCustomer, IlistCustomerSpec, PropsPageDetailPartner} from './interfaces';
+import {IDetailCustomer, IDetailRepreCompany, IlistCustomerSpec, PropsPageDetailPartner} from './interfaces';
 import styles from './PageDetailPartner.module.scss';
-import {IoArrowBackOutline} from 'react-icons/io5';
+import {IoArrowBackOutline, IoClose} from 'react-icons/io5';
 import clsx from 'clsx';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
@@ -49,6 +49,11 @@ import DateRangerCustom from '~/components/common/DateRangerCustom';
 import wareServices from '~/services/wareServices';
 import FilterCustom from '~/components/common/FilterCustom';
 import companyServices from '~/services/companyServices';
+import receiverServices from '~/services/receiverServices';
+import Select, {Option} from '~/components/common/Select';
+import Form from '~/components/common/Form';
+import {IRegencyUu} from '../../profile/MainPageProfile/interfaces';
+import {set} from 'nprogress';
 
 function PageDetailPartner({}: PropsPageDetailPartner) {
 	const router = useRouter();
@@ -60,6 +65,26 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 	const [uuidUpdate, setUuidUpdate] = useState<string>('');
 	const [listBatchBill, setListBatchBill] = useState<any[]>([]);
 	const [uuidCompany, setUuidCompany] = useState<string>('');
+	const [openSendMail, setOpenSendMail] = useState<boolean>(false);
+
+	const [form, setForm] = useState<{receiverUuid: string}>({
+		receiverUuid: '',
+	});
+
+	const {data: detailRepreCompany} = useQuery<IDetailRepreCompany>([QUERY_KEY.chi_tiet_bien_ban, form?.receiverUuid], {
+		queryFn: () =>
+			httpRequest({
+				http: receiverServices.detailReceiver({
+					uuid: form?.receiverUuid as string,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+		enabled: !!form?.receiverUuid,
+	});
+
+	console.log('detailRepreCompany', detailRepreCompany);
 
 	const listCompany = useQuery([QUERY_KEY.dropdown_cong_ty], {
 		queryFn: () =>
@@ -106,6 +131,25 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
 					type: [TYPE_PRODUCT.CONG_TY],
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
+	const listReceiver = useQuery([QUERY_KEY.dropdown_cong_ty_nhan], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: receiverServices.getListReceiver({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
 				}),
 			}),
 		select(data) {
@@ -169,10 +213,23 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 	const handlePrint = useReactToPrint({
 		content: () => contentToPrint.current,
 		documentTitle: 'Xuat_chung_tu_do_kho',
-		onBeforePrint: () => console.log('before printing...'),
-		onAfterPrint: () => console.log('after printing...'),
+		onAfterPrint: () => {
+			console.log('after printing...');
+			setOpenSendMail(false);
+		},
 		removeAfterPrint: true,
 	});
+
+	const handleSendMail = () => {
+		if (!form.receiverUuid) {
+			return toastWarn({msg: 'Vui lòng chọn bên mua!'});
+		}
+		return handlePrint();
+	};
+
+	const handleCloseSendMail = () => {
+		setOpenSendMail(false);
+	};
 
 	return (
 		<div className={styles.container}>
@@ -412,6 +469,7 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 						TypeQuality={listBatchBill
 							?.filter((v: any) => v?.isChecked == true)
 							?.every((v: any) => v?.qualityUu?.name?.toLowerCase().includes('trung quốc'))}
+						detailRepreCompany={detailRepreCompany!}
 						// TypeQuality={listBatchBill
 						// 	?.filter((v: any) => v?.isChecked == true)
 						// 	?.some((v: any) => v?.qualityUu?.name?.toLowerCase().includes('trung quốc'))}
@@ -434,7 +492,7 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 											if (!arr?.every((v) => v?.productTypeUu?.uuid === arr[0]?.productTypeUu?.uuid)) {
 												return toastWarn({msg: 'Chỉ chọn được các lô có cùng loại hàng!'});
 											} else {
-												handlePrint();
+												setOpenSendMail(true);
 											}
 										}}
 									>
@@ -541,6 +599,54 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 			</Popup>
 			<Popup open={!!uuidUpdate} onClose={() => setUuidUpdate('')}>
 				<PopupUpdatePrice customerSpecUuid={uuidUpdate} onClose={() => setUuidUpdate('')} />
+			</Popup>
+
+			<Popup open={openSendMail} onClose={handleCloseSendMail}>
+				<Form form={form} setForm={setForm} onSubmit={handleSendMail}>
+					<div className={styles.main_export}>
+						<h4 className={styles.title_export}>Gửi email</h4>
+						<p className={styles.des_export}>Chọn khoảng thời gian lấy dữ liệu</p>
+						<div className={styles.time_export}>
+							<Select
+								isSearch
+								name='receiverUuid'
+								placeholder='Chọn bên mua'
+								value={form?.receiverUuid}
+								onChange={(e: any) =>
+									setForm((prev: any) => ({
+										...prev,
+										receiverUuid: e.target.value,
+									}))
+								}
+								label={
+									<span>
+										Bên mua <span style={{color: 'red'}}>*</span>
+									</span>
+								}
+							>
+								{listReceiver?.data?.map((v: any) => (
+									<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
+								))}
+							</Select>
+						</div>
+						<div className={styles.control_export}>
+							<div>
+								<Button p_10_24 rounded_2 grey_outline onClick={handleCloseSendMail}>
+									Hủy bỏ
+								</Button>
+							</div>
+							<div>
+								<Button p_10_24 rounded_2 primary onClick={handleSendMail}>
+									Xác nhận
+								</Button>
+							</div>
+						</div>
+
+						<div className={styles.icon_close_export} onClick={handleCloseSendMail}>
+							<IoClose size={24} color='#23262F' />
+						</div>
+					</div>
+				</Form>
 			</Popup>
 		</div>
 	);

@@ -17,6 +17,7 @@ import Loading from '~/components/common/Loading';
 import wareServices from '~/services/wareServices';
 import {convertCoin, price} from '~/common/funcs/convertCoin';
 import criteriaServices from '~/services/criteriaServices';
+import receiverServices from '~/services/receiverServices';
 
 function FormUpdateStorage({onClose}: PropsFormUpdateStorage) {
 	const router = useRouter();
@@ -35,6 +36,7 @@ function FormUpdateStorage({onClose}: PropsFormUpdateStorage) {
 		amountKcs: 0,
 		drynessAvg: 0,
 		specWsValues: [],
+		receiverUuid: '',
 	});
 
 	useQuery([QUERY_KEY.chi_tiet_kho_hang, _uuidStorage], {
@@ -61,6 +63,7 @@ function FormUpdateStorage({onClose}: PropsFormUpdateStorage) {
 						title: v?.criteriaUu?.title,
 						value: v?.value,
 					})),
+					receiverUuid: data?.receiverUu?.uuid || '',
 				});
 			}
 		},
@@ -150,6 +153,27 @@ function FormUpdateStorage({onClose}: PropsFormUpdateStorage) {
 		},
 	});
 
+	const listReceiver = useQuery([QUERY_KEY.dropdown_cong_ty_nhan, form.qualityUuid], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: receiverServices.getListReceiver({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
+					status: CONFIG_STATUS.HOAT_DONG,
+					qualityUuid: form?.qualityUuid || '',
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+		enabled: !!form?.qualityUuid,
+	});
+
 	const listSpecification = useQuery([QUERY_KEY.dropdown_quy_cach, form.qualityUuid, form?.productUuid], {
 		queryFn: () =>
 			httpRequest({
@@ -193,6 +217,7 @@ function FormUpdateStorage({onClose}: PropsFormUpdateStorage) {
 						uuid: v?.uuid,
 						value: v?.value,
 					})),
+					receiverUuid: form?.receiverUuid || '',
 				}),
 			}),
 		onSuccess(data) {
@@ -208,6 +233,7 @@ function FormUpdateStorage({onClose}: PropsFormUpdateStorage) {
 					amountKcs: 0,
 					drynessAvg: 48,
 					specWsValues: [],
+					receiverUuid: '',
 				});
 				onClose();
 				queryClient.invalidateQueries([QUERY_KEY.chi_tiet_kho_hang, _id]);
@@ -364,6 +390,31 @@ function FormUpdateStorage({onClose}: PropsFormUpdateStorage) {
 												}))
 											}
 										/>
+									))}
+								</Select>
+							</div>
+
+							<div>
+								<Select
+									isSearch
+									name='receiverUuid'
+									readOnly={!form?.qualityUuid}
+									placeholder='Chọn bên mua'
+									value={form?.receiverUuid}
+									onChange={(e: any) =>
+										setForm((prev: any) => ({
+											...prev,
+											receiverUuid: e.target.value,
+										}))
+									}
+									label={
+										<span>
+											Bên mua <span style={{color: 'red'}}>*</span>
+										</span>
+									}
+								>
+									{listReceiver?.data?.map((v: any) => (
+										<Option key={v?.uuid} value={v?.uuid} title={v?.name} />
 									))}
 								</Select>
 							</div>

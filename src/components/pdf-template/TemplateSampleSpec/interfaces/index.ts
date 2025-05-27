@@ -1,3 +1,5 @@
+import {IDetailRepreCompany} from '~/components/pages/nha-cung-cap/PageDetailPartner/interfaces';
+
 export interface PropsTemplateSampleSpec {
 	customerName: string;
 	countSample: number;
@@ -12,4 +14,5 @@ export interface PropsTemplateSampleSpec {
 		weightBdmt: number;
 	}[];
 	TypeQuality: boolean;
+	detailRepreCompany: IDetailRepreCompany;
 }
