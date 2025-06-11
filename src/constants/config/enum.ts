@@ -114,6 +114,7 @@ export enum QUERY_KEY {
 	table_phieu_can_tat_ca_ngoai,
 	table_phieu_can_xuat_ngoai,
 	table_phieu_can_thang_ngoai,
+	table_thong_ke_theo_ngay,
 
 	chi_tiet_lenh_can,
 	chi_tiet_phieu_can,
@@ -370,4 +371,11 @@ export enum STATUS_SAMPLE_SESSION {
 	USING,
 	FINISH,
 	ACCEPT,
+}
+
+export enum TYPE_FILTE_TIME {
+	NGAY,
+	TUAN,
+	THANG,
+	NAM,
 }

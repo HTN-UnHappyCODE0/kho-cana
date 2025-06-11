@@ -119,6 +119,12 @@ export enum PATH {
 
 	// Tạp chất
 	TapChat = '/tap-chat',
+
+	// Thống kê sản lượng
+	ThongKeSanLuong = '/thong-ke-san-luong',
+
+	// Thống kê chất lượng
+	ThongKeChatLuong = '/thong-ke-chat-luong',
 }
 
 export const Menu: {
@@ -150,11 +156,27 @@ export const Menu: {
 			{title: 'Tạp chất', icon: icons.tapchat, path: PATH.TapChat, pathActive: PATH.TapChat},
 		],
 	},
+
 	{
 		title: 'Quản lý cân mẫu',
 		group: [
 			{title: 'Quy cách', icon: icons.canmau, path: PATH.CanMauQuyCach, pathActive: PATH.CanMauQuyCach},
 			{title: 'Độ khô', icon: icons.canmauquycach, path: PATH.CanMauDoKho, pathActive: PATH.CanMauDoKho},
+		],
+	},
+	{
+		title: 'Phân tích số liệu',
+		group: [
+			{
+				title: 'Thống kê sản lượng',
+				icon: icons.thongkethoethang,
+				path: PATH.ThongKeSanLuong,
+			},
+			{
+				title: 'Thống kê chất lượng',
+				icon: icons.thongkechatluong,
+				path: PATH.ThongKeChatLuong,
+			},
 		],
 	},
 	{

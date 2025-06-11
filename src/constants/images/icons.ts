@@ -43,6 +43,8 @@ import montau from '../../../public/static/images/document-forward.svg';
 import canmau from '../../../public/static/images/can_mau.svg';
 import canmauquycach from '../../../public/static/images/do_kho_quy_cach.svg';
 import tapchat from '../../../public/static/images/tapchat.svg';
+import thongkethoethang from '../../../public/static/images/thongketheothang.svg';
+import thongkechatluong from '../../../public/static/images/chart_qua.png';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -91,4 +93,6 @@ export default {
 	canmau,
 	canmauquycach,
 	tapchat,
+	thongkethoethang,
+	thongkechatluong,
 };
