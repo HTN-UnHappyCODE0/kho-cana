@@ -1,1 +1,1 @@
-export { default } from "./ChartImportCompany";
+export {default} from './ChartImportCompany';

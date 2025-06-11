@@ -33,6 +33,7 @@ const userServices = {
 			regencyUuid: string[];
 			provinceIDOwer: string;
 			parentUuid?: string;
+			listParentUuid?: string[];
 		},
 		tokenAxios?: any
 	) => {

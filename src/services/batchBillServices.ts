@@ -410,6 +410,36 @@ const batchBillServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+
+	dashbroadSpecBillIn: (
+		data: {
+			userOwnerUuid: string[];
+			partnerUuid: string;
+			companyUuid: string;
+			typeFindDay: number;
+			timeStart: string | null;
+			timeEnd: string | null;
+			isShowBDMT: number;
+			typeShow: number;
+			transportType: number | null;
+			storageUuid: string;
+			provinceId: string[];
+			customerUuid: string[];
+			warehouseUuid: string;
+			listCompanyUuid: string[];
+			listPartnerUuid: string[];
+			specificationUuid?: string;
+			productTypeUuid?: string;
+			qualityUuid?: string;
+			userPartnerUuid?: string[];
+			criterialUuid: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/BatchBill/dashbroad-spec-bill-in`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 };
 
 export default batchBillServices;
