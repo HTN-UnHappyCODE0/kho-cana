@@ -147,6 +147,7 @@ export enum QUERY_KEY {
 	thong_ke_tong_hop_phieu_can_chuyen_kho,
 	thong_ke_tong_hop_phieu_can_xuat_thang,
 	thong_ke_tong_hop_phieu_nhom_theo_xe,
+	thong_ke_bieu_do_chat_luong,
 
 	danh_sach_tieu_chi_quy_cach,
 	thong_ke_luong_du_lieu_duyet_khoi_luong,

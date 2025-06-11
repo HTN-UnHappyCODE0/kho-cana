@@ -1,5 +1,5 @@
 .container {
-	margin-top: 24px;
+	margin-top: 16px;
 	border-radius: 4px;
 	background: #fff;
 	box-shadow: 0px 4.235px 21.176px 0px rgba(175, 190, 211, 0.11);
@@ -24,8 +24,24 @@
 .filter {
 	display: flex;
 	align-items: center;
-	flex-wrap: wrap;
-	gap: 10px;
+	gap: 12px;
+	padding-bottom: 12px;
+	overflow: auto;
+
+	&::-webkit-scrollbar {
+		width: 8px;
+		height: 8px;
+	}
+
+	/* Track */
+	&::-webkit-scrollbar-track {
+		background: #f8f8f8;
+	}
+
+	/* Handle */
+	&::-webkit-scrollbar-thumb {
+		background: #ccc;
+	}
 }
 
 .main_chart {
