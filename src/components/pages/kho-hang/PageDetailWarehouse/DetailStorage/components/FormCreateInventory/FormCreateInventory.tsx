@@ -15,7 +15,7 @@ import UploadMultipleFile from '~/components/common/UploadMultipleFile';
 import Loading from '~/components/common/Loading';
 import {toastWarn} from '~/common/funcs/toast';
 import uploadImageService from '~/services/uploadService';
-import {price} from '~/common/funcs/convertCoin';
+import {convertCoin, price} from '~/common/funcs/convertCoin';
 
 function FormCreateInventory({onClose, nameStorage}: PropsFormCreateInventory) {
 	const router = useRouter();
@@ -31,11 +31,13 @@ function FormCreateInventory({onClose, nameStorage}: PropsFormCreateInventory) {
 		decription: string;
 		amountKcs: number;
 		dryness: number;
+		amountDry: number | string;
 	}>({
 		nameStorage: nameStorage || '',
 		decription: '',
 		amountKcs: 0,
 		dryness: 0,
+		amountDry: 0,
 	});
 
 	const funcInventoryStorage = useMutation({
@@ -59,6 +61,7 @@ function FormCreateInventory({onClose, nameStorage}: PropsFormCreateInventory) {
 					decription: '',
 					amountKcs: 0,
 					dryness: 0,
+					amountDry: 0,
 				});
 				setImages([]);
 				onClose();
@@ -103,6 +106,21 @@ function FormCreateInventory({onClose, nameStorage}: PropsFormCreateInventory) {
 		}
 	};
 
+	useEffect(() => {
+		if (form.amountKcs && form.dryness) {
+			const amountDry = (price(form.amountKcs) * price(form.dryness)) / 100;
+			setForm((prev) => ({
+				...prev,
+				amountDry: convertCoin(amountDry),
+			}));
+		} else {
+			setForm((prev) => ({
+				...prev,
+				amountDry: 0,
+			}));
+		}
+	}, [form.amountKcs, form.dryness]);
+
 	return (
 		<div className={styles.container}>
 			<Loading loading={funcInventoryStorage.isLoading || loading} />
@@ -132,8 +150,8 @@ function FormCreateInventory({onClose, nameStorage}: PropsFormCreateInventory) {
 							type='text'
 							isMoney
 							unit='KG'
-							placeholder='Nhập khối lượng còn lại'
-							label={<span>Khối lượng còn lại</span>}
+							placeholder='Lượng tươi còn lại'
+							label={<span>Lượng tươi còn lại</span>}
 						/>
 
 						<Input
@@ -145,6 +163,17 @@ function FormCreateInventory({onClose, nameStorage}: PropsFormCreateInventory) {
 							blur={true}
 							placeholder='Nhập độ khô'
 							label={<span>Độ khô</span>}
+						/>
+
+						<Input
+							name='amountDry'
+							value={form.amountDry || ''}
+							type='text'
+							isMoney
+							unit='KG'
+							placeholder='Lượng khô tạm tính'
+							label={<span>Lượng khô tạm tính</span>}
+							readOnly={true}
 						/>
 
 						<div className={clsx('mt')}>

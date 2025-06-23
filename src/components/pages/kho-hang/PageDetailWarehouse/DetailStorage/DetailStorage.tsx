@@ -206,7 +206,7 @@ function DetailStorage({}: PropsDetailStorage) {
 							<div className={styles.action}>
 								<PiSealWarningFill size={20} color='#2D74FF' className={styles.icon_warn} />
 								<div className={styles.note}>
-									<span>Dữ liệu lấy theo độ khô chuẩn</span>
+									<span>Dữ liệu lấy theo lần xuất cuối cùng</span>
 								</div>
 							</div>
 						}
