@@ -275,39 +275,22 @@ function FormUpdateStorage({onClose}: PropsFormUpdateStorage) {
 							/>
 							<div>
 								<Input
-									name='amountKcs'
-									value={form.amountKcs || ''}
-									isMoney
-									type='text'
-									unit='KG'
+									name='drynessAvg'
+									value={form.drynessAvg || ''}
+									max={255}
+									type='number'
 									blur={true}
-									placeholder='Nhập tồn đầu kỳ'
 									readOnly={true}
+									unit='%'
+									placeholder='Nhập độ khô trung bình'
 									label={
 										<span>
-											Tồn đầu kỳ <span style={{color: 'red'}}> *</span>
+											Độ khô trung bình <span style={{color: 'red'}}> *</span>
 										</span>
 									}
 								/>
 							</div>
-						</div>
 
-						<div className={clsx('mt', styles.col_2)}>
-							<Input
-								name='drynessAvg'
-								value={form.drynessAvg || ''}
-								max={255}
-								type='number'
-								blur={true}
-								readOnly={true}
-								unit='%'
-								placeholder='Nhập độ khô trung bình'
-								label={
-									<span>
-										Độ khô trung bình <span style={{color: 'red'}}> *</span>
-									</span>
-								}
-							/>
 							<Select
 								isSearch
 								name='productUuid'
@@ -335,36 +318,36 @@ function FormUpdateStorage({onClose}: PropsFormUpdateStorage) {
 									/>
 								))}
 							</Select>
-						</div>
+							<div>
+								<Select
+									isSearch
+									name='qualityUuid'
+									placeholder='Chọn quốc gia'
+									value={form?.qualityUuid}
+									readOnly={true}
+									label={
+										<span>
+											Thuộc quốc gia <span style={{color: 'red'}}>*</span>
+										</span>
+									}
+								>
+									{listQuality?.data?.map((v: any) => (
+										<Option
+											key={v?.uuid}
+											value={v?.uuid}
+											title={v?.name}
+											onClick={() =>
+												setForm((prev: any) => ({
+													...prev,
+													qualityUuid: v.uuid,
+													specificationsUuid: '',
+												}))
+											}
+										/>
+									))}
+								</Select>
+							</div>
 
-						<div className={clsx('mt', styles.col_2)}>
-							<Select
-								isSearch
-								name='qualityUuid'
-								placeholder='Chọn quốc gia'
-								value={form?.qualityUuid}
-								readOnly={true}
-								label={
-									<span>
-										Thuộc quốc gia <span style={{color: 'red'}}>*</span>
-									</span>
-								}
-							>
-								{listQuality?.data?.map((v: any) => (
-									<Option
-										key={v?.uuid}
-										value={v?.uuid}
-										title={v?.name}
-										onClick={() =>
-											setForm((prev: any) => ({
-												...prev,
-												qualityUuid: v.uuid,
-												specificationsUuid: '',
-											}))
-										}
-									/>
-								))}
-							</Select>
 							<div>
 								<Select
 									isSearch
