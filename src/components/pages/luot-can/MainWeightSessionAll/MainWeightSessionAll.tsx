@@ -387,7 +387,7 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={exportExcel.isLoading} />
+			{/* <Loading loading={exportExcel.isLoading} /> */}
 			<div className={styles.header}>
 				<div className={styles.main_search}>
 					<div className={styles.left}>
@@ -576,7 +576,7 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 								}
 							/>
 						</div>
-						<div className={styles.btn}>
+						{/* <div className={styles.btn}>
 							<Button
 								rounded_2
 								w_fit
@@ -589,7 +589,7 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 							>
 								Xuất excel
 							</Button>
-						</div>
+						</div> */}
 					</div>
 				</div>
 			</div>
