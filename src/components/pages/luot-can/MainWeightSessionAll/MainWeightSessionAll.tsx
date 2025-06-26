@@ -4,7 +4,7 @@ import {IWeightSession, PropsMainWeightSessionAll} from './interfaces';
 import styles from './MainWeightSessionAll.module.scss';
 import Search from '~/components/common/Search';
 import FilterCustom from '~/components/common/FilterCustom';
-import {useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery} from '@tanstack/react-query';
 import {httpRequest} from '~/services';
 import {
 	CONFIG_DESCENDING,
@@ -41,6 +41,8 @@ import shipServices from '~/services/shipServices';
 import StateActive from '~/components/common/StateActive';
 import scalesStationServices from '~/services/scalesStationServices';
 import SelectFilterMany from '~/components/common/SelectFilterMany';
+import Button from '~/components/common/Button';
+import Loading from '~/components/common/Loading';
 
 function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 	const router = useRouter();
@@ -68,6 +70,7 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 	const debounceCodeStart = useDebounce(formCode.codeStart, 500);
 	const debounceCodeEnd = useDebounce(formCode.codeEnd, 500);
+	const [openExportExcel, setOpenExportExcel] = useState<boolean>(false);
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang], {
 		queryFn: () =>
@@ -329,8 +332,62 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 		}
 	);
 
+	const exportExcel = useMutation({
+		mutationFn: () => {
+			return httpRequest({
+				http: weightSessionServices.exportExcel({
+					page: Number(_page) || 1,
+					pageSize: Number(_pageSize) || 200,
+					keyword: (_keyword as string) || '',
+					isPaging: CONFIG_PAGING.IS_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.TABLE,
+					isBatch: !!_isBatch ? Number(_isBatch) : null,
+					scalesType: [],
+					storageUuid: (_storageUuid as string) || '',
+					timeStart: _dateFrom ? (_dateFrom as string) : null,
+					timeEnd: _dateTo ? (_dateTo as string) : null,
+					customerUuid: '',
+					listCustomerUuid: customerUuid,
+					productTypeUuid: '',
+					billUuid: '',
+					codeEnd: byFilter && !!debounceCodeEnd ? Number(debounceCodeEnd) : null,
+					codeStart: byFilter && !!debounceCodeStart ? Number(debounceCodeStart) : null,
+					specUuid: !!_specUuid ? (_specUuid as string) : null,
+					// status: !!_status ? [Number(_status)] : [],
+					status: !!_status
+						? [Number(_status)]
+						: [
+								STATUS_WEIGHT_SESSION.UPDATE_SPEC_DONE,
+								STATUS_WEIGHT_SESSION.CAN_LAN_2,
+								STATUS_WEIGHT_SESSION.UPDATE_DRY_DONE,
+								STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
+								STATUS_WEIGHT_SESSION.KCS_XONG,
+						  ],
+					shipUuid: (_shipUuid as string) || '',
+					shift: !!_shift ? Number(_shift) : null,
+					scalesStationUuid: (_scalesStationUuid as string) || '',
+					isHaveSpec: null,
+					truckUuid: '',
+					listTruckUuid: truckUuid,
+				}),
+			});
+		},
+		onSuccess(data) {
+			if (data) {
+				window.open(`${process.env.NEXT_PUBLIC_PATH_EXPORT}/${data}`, '_blank');
+				setOpenExportExcel(false);
+			}
+		},
+	});
+
+	const handleExportExcel = (isHaveSpec: number) => {
+		return exportExcel.mutate();
+	};
+
 	return (
 		<div className={styles.container}>
+			<Loading loading={exportExcel.isLoading} />
 			<div className={styles.header}>
 				<div className={styles.main_search}>
 					<div className={styles.left}>
@@ -518,6 +575,20 @@ function MainWeightSessionAll({}: PropsMainWeightSessionAll) {
 									}))
 								}
 							/>
+						</div>
+						<div className={styles.btn}>
+							<Button
+								rounded_2
+								w_fit
+								p_8_16
+								green
+								bold
+								onClick={() => {
+									exportExcel.mutate();
+								}}
+							>
+								Xuất excel
+							</Button>
 						</div>
 					</div>
 				</div>
