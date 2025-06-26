@@ -51,7 +51,12 @@ function FormUpdateDraftShip({dataUpdate, onClose}: PropsFormUpdateDraftShip) {
 		}
 	};
 
-	const [form, setForm] = useState<{codeBill: string | number; amountDraft: number; totalSample: number | string; dryness: number}>({
+	const [form, setForm] = useState<{
+		codeBill: string | number;
+		amountDraft: number | string;
+		totalSample: number | string;
+		dryness: number;
+	}>({
 		codeBill: '',
 		amountDraft: 0,
 		totalSample: 0,
@@ -163,7 +168,7 @@ function FormUpdateDraftShip({dataUpdate, onClose}: PropsFormUpdateDraftShip) {
 				showMessageSuccess: true,
 				msgSuccess: 'Cập nhật mớn tàu thành công!',
 				http: batchBillServices.updateWeightBillOut({
-					drynessAvg: form.dryness,
+					drynessAvg: Number(form.dryness),
 					paths: body.paths,
 					itemBill: dataRules?.map((item) => ({
 						billUuid: item.uuid,
@@ -264,8 +269,9 @@ function FormUpdateDraftShip({dataUpdate, onClose}: PropsFormUpdateDraftShip) {
 							<Input
 								name='amountDraft'
 								value={form.amountDraft || ''}
-								type='number'
+								type='text'
 								unit='Kg'
+								isMoney
 								step='any'
 								blur={true}
 								label={
@@ -306,9 +312,9 @@ function FormUpdateDraftShip({dataUpdate, onClose}: PropsFormUpdateDraftShip) {
 									<div className={styles.box_input}>
 										<input
 											className={styles.input}
-											type='number'
+											type='text'
 											step='any'
-											value={Number(manualValues[v.uuid]?.toFixed(3))}
+											value={convertCoin(Number(manualValues[v.uuid]?.toFixed(3)))}
 											onChange={(e) => handleChange(v.uuid, parseFloat(e.target.value))}
 											onKeyDown={(e) => handleKeyEnter(e, i)}
 											ref={(el: any) => (inputRefs.current[i] = el)}
@@ -319,8 +325,8 @@ function FormUpdateDraftShip({dataUpdate, onClose}: PropsFormUpdateDraftShip) {
 									<div className={styles.box_input}>
 										<input
 											className={styles.input}
-											type='number'
-											value={Number(((manualValues[v.uuid] * form.dryness) / 100)?.toFixed(3))}
+											type='text'
+											value={convertCoin(Number(((manualValues[v.uuid] * form.dryness) / 100)?.toFixed()))}
 											readOnly={true}
 										/>
 										<div className={styles.unit}>Kg</div>
