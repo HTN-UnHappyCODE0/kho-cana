@@ -28,7 +28,7 @@ import customerServices from '~/services/customerServices';
 import StateActive from '~/components/common/StateActive';
 import wareServices from '~/services/wareServices';
 import shipServices from '~/services/shipServices';
-import {Eye, TickCircle} from 'iconsax-react';
+import {Eye, Play, TickCircle} from 'iconsax-react';
 import IconCustom from '~/components/common/IconCustom';
 import PositionContainer from '~/components/common/PositionContainer';
 import {ISampleSession} from '../../can-mau-quy-cach/MainPageSampleSpec/interfaces';
@@ -45,6 +45,7 @@ function MainPageSampleDryness({}: PropsMainPageSampleDryness) {
 	const [uuidDetail, setUuidDetail] = useState<string>('');
 
 	const [uuidConfirm, setUuidConfirm] = useState<string[]>([]);
+	const [uuidContinueWeighing, setUuidContinueWeighing] = useState<string>('');
 
 	const [getListSampleSession, setListSampleWession] = useState<any[]>([]);
 
@@ -163,6 +164,27 @@ function MainPageSampleDryness({}: PropsMainPageSampleDryness) {
 			if (data) {
 				setUuidConfirm([]);
 				queryClient.invalidateQueries([QUERY_KEY.table_ds_can_mau]);
+			}
+		},
+		onError(error) {
+			console.log({error});
+		},
+	});
+
+	const funcContinueWeighing = useMutation({
+		mutationFn: () =>
+			httpRequest({
+				showMessageFailed: true,
+				showMessageSuccess: true,
+				http: sampleSessionServices.changeStatusSampleSession({
+					uuid: uuidContinueWeighing,
+					status: STATUS_SAMPLE_SESSION.USING,
+				}),
+			}),
+		onSuccess(data) {
+			if (data) {
+				setUuidContinueWeighing('');
+				queryClient.invalidateQueries([QUERY_KEY.table_ds_can_mau_quy_cach]);
 			}
 		},
 		onError(error) {
@@ -397,6 +419,15 @@ function MainPageSampleDryness({}: PropsMainPageSampleDryness) {
 												onClick={() => setUuidConfirm([data?.uuid])}
 											/>
 										) : null}
+										{data?.status == STATUS_SAMPLE_SESSION.FINISH ? (
+											<IconCustom
+												edit
+												icon={<Play size={22} fontWeight={600} />}
+												tooltip='Tiếp tục cân'
+												color='#FDAD73'
+												onClick={() => setUuidContinueWeighing(data?.uuid)}
+											/>
+										) : null}
 										<div>
 											<IconCustom
 												edit
@@ -441,6 +472,13 @@ function MainPageSampleDryness({}: PropsMainPageSampleDryness) {
 				note='Bạn có muốn thực hiện thao tác xác nhận này không?'
 				onClose={() => setUuidConfirm([])}
 				onSubmit={funcConfirm.mutate}
+			/>
+			<Dialog
+				open={!!uuidContinueWeighing}
+				title='Tiếp tục cân'
+				note='Bạn có muốn thực hiện thao tác tiếp tục cân này không?'
+				onClose={() => setUuidContinueWeighing('')}
+				onSubmit={funcContinueWeighing.mutate}
 			/>
 		</div>
 	);
