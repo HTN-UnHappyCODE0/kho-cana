@@ -211,7 +211,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 						isPaging: CONFIG_PAGING.IS_PAGING,
 						isDescending: CONFIG_DESCENDING.IS_DESCENDING,
 						typeFind: CONFIG_TYPE_FIND.TABLE,
-						scalesType: [TYPE_SCALES.CAN_XUAT, TYPE_SCALES.CAN_CHUYEN_KHO],
+						scalesType: [TYPE_SCALES.CAN_XUAT],
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
 						isCreateBatch: null,
 						productTypeUuid: (_productTypeUuid as string) || '',

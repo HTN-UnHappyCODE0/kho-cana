@@ -39,6 +39,44 @@ const weightSessionServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+
+	exportExcel: (
+		data: {
+			pageSize: number;
+			page: number;
+			keyword: string;
+			status: number[];
+			isDescending: CONFIG_DESCENDING;
+			typeFind: CONFIG_TYPE_FIND;
+			isPaging: CONFIG_PAGING;
+			scalesType: number[];
+			billUuid: string;
+			storageUuid: string;
+			isBatch: number | null;
+			timeStart: string | null;
+			timeEnd: string | null;
+			specUuid: string | null;
+			codeStart: number | null;
+			codeEnd: number | null;
+			productTypeUuid?: string | null;
+			shift?: number | null;
+			shipUuid?: string;
+			scalesStationUuid?: string;
+			isHaveSpec?: number | null;
+			isHaveDryness?: number | null;
+			truckUuid: string;
+			listTruckUuid: string[];
+			customerUuid: string;
+			listCustomerUuid: string[];
+			listCompanyUuid?: string[];
+			typeProduct?: number;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/WeightSession/export-excel-weightsession`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 	listTotalWeightsession: (
 		data: {
 			pageSize: number;
