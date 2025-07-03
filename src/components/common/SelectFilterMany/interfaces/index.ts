@@ -3,5 +3,6 @@ export interface PropsSelectFilterMany {
 	name: string;
 	selectedIds: string[];
 	setSelectedIds: React.Dispatch<React.SetStateAction<string[]>>;
+	setSelectedNames?: (names: string[]) => void;
 	listData: {uuid: string; name: string}[];
 }

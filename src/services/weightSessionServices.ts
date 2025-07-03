@@ -261,6 +261,26 @@ const weightSessionServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	exportExcelWsGroupTruck: (
+		data: {
+			pageSize: number;
+			page: number;
+			timeStart: string | null;
+			timeEnd: string | null;
+			companyName: string;
+			scaleStationName: string;
+			shipName: string;
+			productName: string;
+			qualityName: string;
+			storageName: string;
+			billUuids: string[];
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/WeightSession/export-excel-ws-group-truck`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 };
 
 export default weightSessionServices;
