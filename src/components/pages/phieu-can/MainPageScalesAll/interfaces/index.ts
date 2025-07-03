@@ -130,5 +130,6 @@ export interface ITableBillScale {
 		licensePalate: string;
 		uuid: string;
 	};
+
 	isNeedConfirmReject: number;
 }

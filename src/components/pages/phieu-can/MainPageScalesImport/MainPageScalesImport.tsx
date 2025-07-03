@@ -53,6 +53,9 @@ import truckServices from '~/services/truckServices';
 import PopupWeighReject from '../PopupWeighReject';
 import companyServices from '~/services/companyServices';
 import {set} from 'nprogress';
+import Image from 'next/image';
+import icons from '~/constants/images/icons';
+import weightSessionServices from '~/services/weightSessionServices';
 
 function MainPageScalesImport({}: PropsMainPageScalesImport) {
 	const router = useRouter();
@@ -61,8 +64,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 	const [truckUuid, setTruckUuid] = useState<string[]>([]);
 
-	const {_page, _pageSize, _keyword, _isBatch, _productTypeUuid, _shipUuid, _status, _dateFrom, _dateTo, _state, _scalesStationUuid} =
-		router.query;
+	const {_page, _pageSize, _keyword, _isBatch, _status, _dateFrom, _dateTo, _state} = router.query;
 
 	const [uuidPlay, setUuidPlay] = useState<string>('');
 	const [uuidStop, setUuidStop] = useState<string>('');
@@ -72,9 +74,20 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 	const [total, setTotal] = useState<number>(0);
 	const [openWeighReject, setOpenWeighReject] = useState<string | null>(null);
 	const [uuidCompany, setUuidCompany] = useState<string>('');
+
 	const [uuidQuality, setUuidQuality] = useState<string>('');
+	const [nameQuality, setNameQuality] = useState<string>('');
 	const [uuidStorage, setUuidStorage] = useState<string>('');
+	const [nameStorage, setNameStorage] = useState<string>('');
 	const [listCompanyUuid, setListCompanyUuid] = useState<any[]>([]);
+	const [listCompanyName, setListCompanyName] = useState<any[]>([]);
+	const [uuidShip, setUuidShip] = useState<string>('');
+	const [nameShip, setNameShip] = useState<string>('');
+	const [uuidProduct, setUuidProduct] = useState<string>('');
+	const [nameProduct, setNameProduct] = useState<string>('');
+	const [uuidScalesStation, setUuidScalesStation] = useState<string>('');
+	const [nameScalesStation, setNameScalesStation] = useState<string>('');
+	const [dataBatchBillSelect, setDataBatchBillSelect] = useState<any[]>([]);
 
 	const listQuality = useQuery([QUERY_KEY.dropdown_quoc_gia], {
 		queryFn: () =>
@@ -250,15 +263,15 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 			_keyword,
 			_isBatch,
 			customerUuid,
-			_productTypeUuid,
-			_shipUuid,
+			uuidProduct,
+			uuidShip,
 			_status,
 			_dateFrom,
 			_dateTo,
 			_state,
 			uuidQuality,
 			uuidStorage,
-			_scalesStationUuid,
+			uuidScalesStation,
 			isHaveDryness,
 			truckUuid,
 			uuidCompany,
@@ -278,7 +291,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 						scalesType: [TYPE_SCALES.CAN_NHAP],
 						isBatch: !!_isBatch ? Number(_isBatch) : null,
 						isCreateBatch: null,
-						productTypeUuid: (_productTypeUuid as string) || '',
+						productTypeUuid: (uuidProduct as string) || '',
 						specificationsUuid: '',
 						state: !!_state
 							? [Number(_state)]
@@ -304,9 +317,9 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 						warehouseUuid: '',
 						qualityUuid: uuidQuality,
 						transportType: null,
-						shipUuid: (_shipUuid as string) || '',
+						shipUuid: (uuidShip as string) || '',
 						typeCheckDay: 0,
-						scalesStationUuid: (_scalesStationUuid as string) || '',
+						scalesStationUuid: (uuidScalesStation as string) || '',
 						storageUuid: uuidStorage,
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 						truckUuid: truckUuid,
@@ -391,7 +404,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 					listCustomerUuid: customerUuid,
 					isBatch: !!_isBatch ? Number(_isBatch) : null,
 					isCreateBatch: null,
-					productTypeUuid: (_productTypeUuid as string) || '',
+					productTypeUuid: (uuidProduct as string) || '',
 					specificationsUuid: '',
 					state: !!_state
 						? [Number(_state)]
@@ -417,9 +430,9 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 					warehouseUuid: '',
 					qualityUuid: uuidQuality,
 					transportType: null,
-					shipUuid: (_shipUuid as string) || '',
+					shipUuid: (uuidShip as string) || '',
 					typeCheckDay: 0,
-					scalesStationUuid: (_scalesStationUuid as string) || '',
+					scalesStationUuid: (uuidScalesStation as string) || '',
 					documentId: '',
 					storageUuid: uuidStorage,
 					isExportSpec: isHaveSpec,
@@ -438,8 +451,39 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 		},
 	});
 
+	const exportExcelGroupTruck = useMutation({
+			mutationFn: () => {
+				return httpRequest({
+					http: weightSessionServices.exportExcelWsGroupTruck({
+						page: Number(_page) || 1,
+						pageSize: Number(_pageSize) || 200,
+						timeStart: _dateFrom ? (_dateFrom as string) : null,
+						timeEnd: _dateTo ? (_dateTo as string) : null,
+						billUuids: dataBatchBillSelect.map((v: any) => v.uuid),
+						companyName: listCompanyName.join(', '),
+						scaleStationName: nameScalesStation as string,
+						storageName: nameStorage as string,
+						qualityName: nameQuality as string,
+						shipName: nameShip as string,
+						productName: nameProduct as string,
+					}),
+				});
+			},
+			onSuccess(data) {
+				if (data) {
+					window.open(`${process.env.NEXT_PUBLIC_PATH_EXPORT}/${data}`, '_blank');
+					setOpenExportExcel(false);
+				}
+			},
+		});
+
 	const handleExportExcel = (isHaveSpec: number) => {
 		return exportExcel.mutate(isHaveSpec);
+	};
+
+	const handleExportExcelGroupTruck = () => {
+		setDataBatchBillSelect(listBatchBill?.filter((v) => v.isChecked !== false));
+		return exportExcelGroupTruck.mutate();
 	};
 
 	useEffect(() => {
@@ -456,6 +500,21 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 			<Loading loading={funcStartBatchBill.isLoading || funcStopBatchBill.isLoading || exportExcel.isLoading} />
 			<div className={styles.header}>
 				<div className={styles.main_search}>
+					{listBatchBill?.some((x) => x.isChecked !== false) && (
+						<div style={{height: 40}}>
+							<Button
+								className={styles.btn}
+								rounded_2
+								maxHeight
+								green
+								p_4_12
+								icon={<Image alt='icon export' src={icons.export_excel} width={20} height={20} />}
+								onClick={handleExportExcelGroupTruck}
+							>
+								Xuất excel nhóm theo xe
+							</Button>
+						</div>
+					)}
 					<div className={styles.search}>
 						<Search keyName='_keyword' placeholder='Tìm kiếm theo mã lô hàng' />
 					</div>
@@ -463,6 +522,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 					<SelectFilterMany
 						selectedIds={listCompanyUuid}
 						setSelectedIds={setListCompanyUuid}
+						setSelectedNames={setListCompanyName}
 						listData={listCompany?.data?.map((v: any) => ({
 							uuid: v?.uuid,
 							name: v?.name,
@@ -508,24 +568,26 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 						}))}
 						name='Biển số xe'
 					/>
-					<FilterCustom
-						isSearch
-						name='Loại hàng'
-						query='_productTypeUuid'
-						listFilter={listProductType?.data?.map((v: any) => ({
-							id: v?.uuid,
+					<SelectFilterState
+						uuid={uuidProduct}
+						setUuid={setUuidProduct}
+						setName={setNameProduct}
+						listData={listProductType?.data?.map((v: any) => ({
+							uuid: v?.uuid,
 							name: v?.name,
 						}))}
+						placeholder='Loại hàng'
 					/>
 
-					<FilterCustom
-						isSearch
-						name='Mã tàu'
-						query='_shipUuid'
-						listFilter={listShip?.data?.map((v: any) => ({
-							id: v?.uuid,
+					<SelectFilterState
+						uuid={uuidShip}
+						setUuid={setUuidShip}
+						setName={setNameShip}
+						listData={listShip?.data?.map((v: any) => ({
+							uuid: v?.uuid,
 							name: v?.licensePalate,
 						}))}
+						placeholder='Mã tàu'
 					/>
 
 					<FilterCustom
@@ -586,18 +648,20 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 							},
 						]}
 					/>
-					<FilterCustom
-						isSearch
-						name='Trạm cân'
-						query='_scalesStationUuid'
-						listFilter={listScalesStation?.data?.map((v: any) => ({
-							id: v?.uuid,
+					<SelectFilterState
+						uuid={uuidScalesStation}
+						setUuid={setUuidScalesStation}
+						setName={setNameScalesStation}
+						listData={listScalesStation?.data?.map((v: any) => ({
+							uuid: v?.uuid,
 							name: v?.name,
 						}))}
+						placeholder='Trạm cân'
 					/>
 					<SelectFilterState
 						uuid={uuidQuality}
 						setUuid={setUuidQuality}
+						setName={setNameQuality}
 						listData={listQuality?.data?.map((v: any) => ({
 							uuid: v?.uuid,
 							name: v?.name,
@@ -607,6 +671,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 					<SelectFilterState
 						uuid={uuidStorage}
 						setUuid={setUuidStorage}
+						setName={setNameStorage}
 						listData={listStorage?.data?.map((v: any) => ({
 							uuid: v?.uuid,
 							name: v?.name,
@@ -667,6 +732,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 						column={[
 							{
 								title: 'STT',
+								checkBox: true,
 								render: (data: ITableBillScale, index: number) => <>{index + 1}</>,
 							},
 							{
@@ -1039,15 +1105,15 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 							_keyword,
 							_isBatch,
 							customerUuid,
-							_productTypeUuid,
-							_shipUuid,
+							uuidProduct,
+							uuidShip,
 							_status,
 							_dateFrom,
 							_dateTo,
 							_state,
 							uuidQuality,
 							uuidStorage,
-							_scalesStationUuid,
+							uuidScalesStation,
 							isHaveDryness,
 							truckUuid,
 							uuidCompany,
