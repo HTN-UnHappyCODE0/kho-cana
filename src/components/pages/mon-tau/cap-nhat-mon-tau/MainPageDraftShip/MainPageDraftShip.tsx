@@ -44,6 +44,7 @@ import SelectFilterState from '~/components/common/SelectFilterState';
 import SelectFilterMany from '~/components/common/SelectFilterMany';
 import truckServices from '~/services/truckServices';
 import companyServices from '~/services/companyServices';
+import shipServices from '~/services/shipServices';
 
 function MainPageDraftShip({}: PropsMainPageDraftShip) {
 	const router = useRouter();
@@ -62,6 +63,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 		_scalesStationUuid,
 		_state,
 		_typeProduct,
+		_shipUuid,
 	} = router.query;
 
 	const [dataWeightSessionSubmit, setDataWeightSessionSubmit] = useState<any[]>([]);
@@ -106,6 +108,25 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
 					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
 					status: CONFIG_STATUS.HOAT_DONG,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
+	const listShip = useQuery([QUERY_KEY.dropdown_ma_tau], {
+		queryFn: () =>
+			httpRequest({
+				isDropdown: true,
+				http: shipServices.listShip({
+					page: 1,
+					pageSize: 50,
+					keyword: '',
+					status: CONFIG_STATUS.HOAT_DONG,
+					isPaging: CONFIG_PAGING.NO_PAGING,
+					isDescending: CONFIG_DESCENDING.NO_DESCENDING,
+					typeFind: CONFIG_TYPE_FIND.DROPDOWN,
 				}),
 			}),
 		select(data) {
@@ -199,6 +220,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 			truckUuid,
 			uuidCompany,
 			listCompanyUuid,
+			_shipUuid,
 		],
 		{
 			queryFn: () =>
@@ -233,6 +255,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 						listCustomerUuid: customerUuid,
 						companyUuid: uuidCompany,
 						listCompanyUuid: listCompanyUuid,
+						shipUuid: (_shipUuid as string) || '',
 					}),
 				}),
 			onSuccess(data) {
@@ -395,7 +418,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 						/>
 					</div>
 
-					<SelectFilterMany
+					{/* <SelectFilterMany
 						selectedIds={truckUuid}
 						setSelectedIds={setTruckUuid}
 						listData={listTruck?.data?.map((v: any) => ({
@@ -403,6 +426,16 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 							name: v?.licensePalate,
 						}))}
 						name='Biển số xe'
+					/> */}
+
+					<FilterCustom
+						isSearch
+						name='Mã tàu'
+						query='_shipUuid'
+						listFilter={listShip?.data?.map((v: any) => ({
+							id: v?.uuid,
+							name: v?.licensePalate,
+						}))}
 					/>
 
 					<FilterCustom
@@ -652,6 +685,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 						truckUuid,
 						uuidCompany,
 						listCompanyUuid,
+						_shipUuid,
 					]}
 				/>
 			</div>
