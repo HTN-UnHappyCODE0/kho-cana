@@ -63,6 +63,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 		shipUuid: '',
 		portname: '',
 		code: '',
+		dryness: 0,
 	});
 
 	const {data: detailBatchBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_nhap_xuat_ngoai, _id], {
@@ -91,6 +92,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 					shipUuid: data?.batchsUu?.shipUu?.uuid || '',
 					portname: data?.port || '',
 					code: data?.code,
+					dryness: data?.drynessAvg || 0,
 				});
 				setImages(
 					data?.path?.map((v: any) => ({
@@ -275,6 +277,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 					timeStart: form?.timeStart ? timeSubmit(new Date(form?.timeStart!)) : null,
 					descriptionWs: '',
 					paths: body.paths,
+					dryness: Number(form.dryness || 0),
 				}),
 			}),
 		onSuccess(data) {
@@ -312,6 +315,9 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 		}
 		if (!form.weightIntent) {
 			return toastWarn({msg: 'Vui lòng nhập khối lượng cân'});
+		}
+		if (form.dryness < 0 || form.dryness > 100) {
+			return toastWarn({msg: 'Độ khô không hợp lệ!'});
 		}
 		if (tomorrow < timeStart) {
 			return toastWarn({msg: 'Ngày bắt đầu không hợp lệ!'});
@@ -413,7 +419,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 						</div>
 					</div>
 
-					<div className={clsx('mt')}>
+					<div className={clsx('mt', 'col_2')}>
 						<Select
 							isSearch
 							name='toUuid'
@@ -440,6 +446,17 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 								/>
 							))}
 						</Select>
+						<div>
+							<Input
+								name='dryness'
+								value={form.dryness || ''}
+								unit='%'
+								type='number'
+								blur={true}
+								placeholder='Nhập độ khô'
+								label={<span>Độ khô</span>}
+							/>
+						</div>
 					</div>
 
 					<div className={clsx('mt', 'col_2')}>

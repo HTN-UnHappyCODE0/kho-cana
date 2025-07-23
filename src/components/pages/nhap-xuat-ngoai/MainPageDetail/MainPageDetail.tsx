@@ -255,12 +255,19 @@ function MainPageDetail({}: PropsMainPageDetail) {
 								<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.scalesStationUu?.name || '---'}</span>
 							</div>
 						</td>
-						<td rowSpan={2} className={styles.description}>
+						<td rowSpan={3} className={styles.description}>
 							<span>{detailBatchBill?.state == STATE_BILL.QLK_REJECTED ? 'Lý do' : 'Mô tả'} :</span>
 							<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.description || '---'}</span>
 						</td>
 					</tr>
-
+					<tr>
+						<td>
+							<div style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
+								<span>Độ khô: </span>
+								<span style={{marginLeft: '6px', fontWeight: 600}}>{detailBatchBill?.drynessAvg || 0}%</span>
+							</div>
+						</td>
+					</tr>
 					<tr>
 						<td>
 							{/* <div style={{display: 'flex', alignItems: 'center', gap: '5px'}}>

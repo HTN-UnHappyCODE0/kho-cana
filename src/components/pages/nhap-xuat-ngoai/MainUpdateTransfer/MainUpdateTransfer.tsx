@@ -63,6 +63,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 		timeStart: null,
 		timeEnd: null,
 		code: '',
+		dryness: 0,
 	});
 
 	const {data: detailBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -91,6 +92,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 					code: data?.code,
 					timeStart: moment(data.timeStart).format('yyyy-MM-DD'),
 					timeEnd: moment(data.timeEnd).format('yyyy-MM-DD'),
+					dryness: data?.drynessAvg || 0,
 				});
 				setImages(
 					data?.path?.map((v: any) => ({
@@ -328,6 +330,7 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 					paths: body.paths,
 					timeEnd: form?.timeEnd ? timeSubmit(new Date(form?.timeEnd!), true) : null,
 					timeStart: form?.timeStart ? timeSubmit(new Date(form?.timeStart!)) : null,
+					dryness: Number(form.dryness || 0),
 				}),
 			}),
 		onSuccess(data) {
@@ -360,7 +363,9 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 		if (!form.specificationsUuid) {
 			return toastWarn({msg: 'Vui lòng chọn quy cách!'});
 		}
-
+		if (form.dryness < 0 || form.dryness > 100) {
+			return toastWarn({msg: 'Độ khô không hợp lệ!'});
+		}
 		if (form?.fromUuid == form.toUuid) {
 			return toastWarn({msg: 'Trùng kho đích!'});
 		}
@@ -688,6 +693,17 @@ function MainUpdateTransfer({}: PropsMainUpdateTransfer) {
 							}
 							placeholder='Nhập khối lượng hàng'
 						/>
+						<div>
+							<Input
+								name='dryness'
+								value={form.dryness || ''}
+								unit='%'
+								type='number'
+								blur={true}
+								placeholder='Nhập độ khô'
+								label={<span>Độ khô</span>}
+							/>
+						</div>
 					</div>
 
 					<div className={clsx('mt')}>

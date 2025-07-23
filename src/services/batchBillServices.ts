@@ -345,6 +345,7 @@ const batchBillServices = {
 			timeEnd: string | null;
 			descriptionWs: string;
 			paths: string[];
+			dryness?: number;
 		},
 		tokenAxios?: any
 	) => {

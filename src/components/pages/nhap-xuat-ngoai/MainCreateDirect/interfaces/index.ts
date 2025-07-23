@@ -16,6 +16,7 @@ export interface IFormCreateDirect {
 	storageTemporaryUuid: string;
 	timeStart: string | Date;
 	timeEnd: string | Date;
+	dryness: number;
 }
 
 export interface IDetailCustomer {

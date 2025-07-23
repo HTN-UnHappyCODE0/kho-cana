@@ -17,4 +17,5 @@ export interface IFormCreateTransfer {
 	timeStart: string | Date | null;
 	timeEnd: string | Date | null;
 	code: string;
+	dryness: number;
 }

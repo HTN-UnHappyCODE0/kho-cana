@@ -17,4 +17,5 @@ export interface IFormUpdateDirect {
 	batchUuid: string;
 	billUuid: string;
 	code: string;
+	dryness: number;
 }

@@ -635,6 +635,10 @@ function MainPageExport({}: PropsMainPageExport) {
 								),
 							},
 							{
+								title: 'Độ khô (%)',
+								render: (data: any) => <>{data?.drynessAvg || '---'}</>,
+							},
+							{
 								title: 'Quy cách',
 								render: (data: any) => <>{data?.specificationsUu?.name || '---'}</>,
 							},
