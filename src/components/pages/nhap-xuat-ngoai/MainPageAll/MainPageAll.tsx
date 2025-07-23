@@ -711,6 +711,10 @@ function MainPageAll({}: PropsMainPageAll) {
 								render: (data: any) => <>{data?.drynessAvg || '---'}</>,
 							},
 							{
+								title: 'KL quy khô (Tấn)',
+								render: (data: any) => <>{convertWeight(data?.weightBdmt) || '---'}</>,
+							},
+							{
 								title: 'Quy cách',
 								render: (data: any) => <>{data?.specificationsUu?.name || '---'}</>,
 							},
