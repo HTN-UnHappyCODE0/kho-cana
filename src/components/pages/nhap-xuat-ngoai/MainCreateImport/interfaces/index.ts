@@ -16,6 +16,7 @@ export interface IFormCreateImport {
 	documentId: string;
 	portname: string;
 	shipUuid: string;
+	dryness: number;
 }
 
 export interface IDetailCustomer {

@@ -62,6 +62,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 		batchUuid: '',
 		billUuid: '',
 		code: '',
+		dryness: 0,
 	});
 
 	const {data: detailBatchBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_nhap_xuat_ngoai, _id], {
@@ -91,6 +92,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 					timeEnd: moment(data.timeEnd).format('yyyy-MM-DD'),
 					description: data?.description,
 					code: data?.code,
+					dryness: data?.drynessAvg || 0,
 				});
 				setImages(
 					data?.path?.map((v: any) => ({
@@ -285,6 +287,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 					timeStart: form?.timeStart ? timeSubmit(new Date(form?.timeStart!)) : null,
 					descriptionWs: '',
 					paths: body.paths,
+					dryness: Number(form.dryness),
 				}),
 			}),
 		onSuccess(data) {
@@ -326,6 +329,9 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 		}
 		if (!form.toUuid) {
 			return toastWarn({msg: 'Vui lòng chọn khách hàng xuất!'});
+		}
+		if (form.dryness < 0 || form.dryness > 100) {
+			return toastWarn({msg: 'Độ khô không hợp lệ!'});
 		}
 
 		if (!form.weightIntent) {
@@ -431,7 +437,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 						</div>
 					</div>
 
-					<div className={clsx('mt', 'col_2')}>
+					<div className={clsx('mt')}>
 						<Select
 							isSearch
 							name='fromUuid'
@@ -459,6 +465,18 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 								/>
 							))}
 						</Select>
+					</div>
+
+					<div className={clsx('mt', 'col_2')}>
+						<Input
+							name='dryness'
+							value={form.dryness || ''}
+							unit='%'
+							type='number'
+							blur={true}
+							placeholder='Nhập độ khô'
+							label={<span>Độ khô</span>}
+						/>
 
 						<div>
 							<Select

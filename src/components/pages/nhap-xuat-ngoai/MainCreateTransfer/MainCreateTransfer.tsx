@@ -58,6 +58,7 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 		transportType: TYPE_TRANSPORT.DUONG_BO,
 		timeStart: null,
 		timeEnd: null,
+		dryness: 0,
 	});
 
 	const listProductType = useQuery([QUERY_KEY.dropdown_loai_go], {
@@ -284,6 +285,7 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 					paths: body.paths,
 					timeEnd: form?.timeEnd ? timeSubmit(new Date(form?.timeEnd!), true) : null,
 					timeStart: form?.timeStart ? timeSubmit(new Date(form?.timeStart!)) : null,
+					dryness: Number(form.dryness || 0),
 				}),
 			}),
 		onSuccess(data) {
@@ -320,7 +322,9 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 		if (form?.fromUuid == form.toUuid) {
 			return toastWarn({msg: 'Trùng kho đích!'});
 		}
-
+		if (form.dryness < 0 || form.dryness > 100) {
+			return toastWarn({msg: 'Độ khô không hợp lệ!'});
+		}
 		if (!form?.timeStart) {
 			return toastWarn({msg: 'Vui lòng chọn ngày bắt đầu!'});
 		}
@@ -645,6 +649,17 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 							}
 							placeholder='Nhập khối lượng hàng'
 						/>
+						<div>
+							<Input
+								name='dryness'
+								value={form.dryness || ''}
+								unit='%'
+								type='number'
+								blur={true}
+								placeholder='Nhập độ khô'
+								label={<span>Độ khô</span>}
+							/>
+						</div>
 					</div>
 
 					<div className={clsx('mt')}>

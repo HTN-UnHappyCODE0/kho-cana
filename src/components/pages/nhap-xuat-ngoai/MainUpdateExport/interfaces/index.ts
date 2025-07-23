@@ -17,4 +17,5 @@ export interface IFormUpdateExport {
 	shipUuid: string;
 	portname: string;
 	code: string;
+	dryness: number;
 }

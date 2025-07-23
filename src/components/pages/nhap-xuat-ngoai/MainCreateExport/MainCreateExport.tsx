@@ -58,6 +58,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 		documentId: '',
 		shipUuid: '',
 		portname: '',
+		dryness: 0,
 	});
 
 	const listCustomer = useQuery([QUERY_KEY.dropdown_khach_hang_xuat], {
@@ -232,6 +233,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 					timeStart: form?.timeStart ? timeSubmit(new Date(form?.timeStart!)) : null,
 					descriptionWs: '',
 					paths: body.paths,
+					dryness: Number(form.dryness),
 				}),
 			}),
 		onSuccess(data) {
@@ -281,6 +283,9 @@ function MainCreateExport({}: PropsMainCreateExport) {
 
 		if (timeStart > timeEnd) {
 			return toastWarn({msg: 'Ngày kết thúc phải lớn hơn ngày bắt đầu!'});
+		}
+		if (form.dryness < 0 || form.dryness > 100) {
+			return toastWarn({msg: 'Độ khô không hợp lệ!'});
 		}
 		if (imgs.length > 0) {
 			const dataImage = await httpRequest({
@@ -370,7 +375,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 						</div>
 					</div>
 
-					<div className={clsx('mt')}>
+					<div className={clsx('mt', 'col_2')}>
 						<Select
 							isSearch
 							name='toUuid'
@@ -397,6 +402,17 @@ function MainCreateExport({}: PropsMainCreateExport) {
 								/>
 							))}
 						</Select>
+						<div>
+							<Input
+								name='dryness'
+								value={form.dryness || ''}
+								unit='%'
+								type='number'
+								blur={true}
+								placeholder='Nhập độ khô'
+								label={<span>Độ khô</span>}
+							/>
+						</div>
 					</div>
 
 					<div className={clsx('mt', 'col_2')}>

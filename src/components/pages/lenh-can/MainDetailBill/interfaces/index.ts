@@ -133,4 +133,5 @@ export interface IDetailBatchBill {
 		licensePalate: string;
 		uuid: string;
 	};
+	drynessAvg: number;
 }

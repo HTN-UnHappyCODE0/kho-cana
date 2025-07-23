@@ -63,6 +63,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 		portname: '',
 		shipUuid: '',
 		code: '',
+		dryness: 0,
 	});
 
 	const {data: detailBatchBill} = useQuery<IDetailBatchBill>([QUERY_KEY.chi_tiet_lenh_can, _id], {
@@ -91,6 +92,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					portname: data?.port,
 					shipUuid: data?.batchsUu?.shipUu?.uuid || '',
 					code: data?.code,
+					dryness: data?.drynessAvg || 0,
 				});
 				setImages(
 					data?.path?.map((v: any) => ({
@@ -260,6 +262,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					paths: body.paths,
 					timeEnd: form?.timeEnd ? timeSubmit(new Date(form?.timeEnd!), true) : null,
 					timeStart: form?.timeStart ? timeSubmit(new Date(form?.timeStart!)) : null,
+					dryness: Number(form.dryness || 0),
 				}),
 			}),
 		onSuccess(data) {
@@ -298,7 +301,9 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 		if (!form.toUuid) {
 			return toastWarn({msg: 'Vui lòng chọn bãi!'});
 		}
-
+		if (form.dryness < 0 || form.dryness > 100) {
+			return toastWarn({msg: 'Độ khô không hợp lệ!'});
+		}
 		if (tomorrow < timeStart) {
 			return toastWarn({msg: 'Ngày bắt đầu không hợp lệ!'});
 		}
@@ -399,7 +404,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 							</div>
 						</div>
 					</div>
-					<div className={clsx('mt')}>
+					<div className={clsx('mt', 'col_2')}>
 						<Select
 							isSearch
 							name='fromUuid'
@@ -430,6 +435,17 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 								/>
 							))}
 						</Select>
+						<div>
+							<Input
+								name='dryness'
+								value={form.dryness || ''}
+								unit='%'
+								type='number'
+								blur={true}
+								placeholder='Nhập độ khô'
+								label={<span>Độ khô</span>}
+							/>
+						</div>
 					</div>
 					<div className={clsx('mt', 'col_2')}>
 						<Select

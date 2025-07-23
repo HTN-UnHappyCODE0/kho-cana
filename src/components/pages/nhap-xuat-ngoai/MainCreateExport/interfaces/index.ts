@@ -13,4 +13,5 @@ export interface IFormCreateExport {
 	documentId: string;
 	portname: string;
 	shipUuid: string;
+	dryness: number;
 }
