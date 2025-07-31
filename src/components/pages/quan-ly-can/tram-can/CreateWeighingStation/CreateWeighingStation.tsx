@@ -28,7 +28,6 @@ function CreateWeighingStation({}: PropsCreateWeighingStation) {
 		phoneNumber: '',
 		companyUuid: '',
 		provinceId: '',
-		dictrictId: '',
 		townId: '',
 	});
 
@@ -65,36 +64,20 @@ function CreateWeighingStation({}: PropsCreateWeighingStation) {
 		},
 	});
 
-	const listDistrict = useQuery([QUERY_KEY.dropdown_quan_huyen, form?.provinceId], {
-		queryFn: () =>
-			httpRequest({
-				isDropdown: true,
-				http: commonServices.listDistrict({
-					keyword: '',
-					status: null,
-					idParent: form?.provinceId,
-				}),
-			}),
-		select(data) {
-			return data;
-		},
-		enabled: !!form?.provinceId,
-	});
-
-	const listTown = useQuery([QUERY_KEY.dropdown_xa_phuong, form.dictrictId], {
+	const listTown = useQuery([QUERY_KEY.dropdown_xa_phuong, form.provinceId], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
 				http: commonServices.listTown({
 					keyword: '',
 					status: null,
-					idParent: form.dictrictId,
+					idParent: form.provinceId,
 				}),
 			}),
 		select(data) {
 			return data;
 		},
-		enabled: !!form?.dictrictId,
+		enabled: !!form?.provinceId,
 	});
 
 	const funcAddScalesstation = useMutation({
@@ -118,7 +101,6 @@ function CreateWeighingStation({}: PropsCreateWeighingStation) {
 					phoneNumber: '',
 					companyUuid: '',
 					provinceId: '',
-					dictrictId: '',
 					townId: '',
 				});
 				router.replace(PATH.TramCan, undefined, {
@@ -136,15 +118,6 @@ function CreateWeighingStation({}: PropsCreateWeighingStation) {
 	const handleSubmit = async () => {
 		if (!form.companyUuid) {
 			return toastWarn({msg: 'Vui lòng chọn KV cảng xuất khẩu!'});
-		}
-		if (!form.provinceId) {
-			return toastWarn({msg: 'Vui lòng chọn tỉnh/thành phố!'});
-		}
-		if (!form.dictrictId) {
-			return toastWarn({msg: 'Vui lòng chọn quận/huyện!'});
-		}
-		if (!form.townId) {
-			return toastWarn({msg: 'Vui lòng chọn xã/phường!'});
 		}
 
 		return funcAddScalesstation.mutate();
@@ -248,17 +221,13 @@ function CreateWeighingStation({}: PropsCreateWeighingStation) {
 						/>
 					</div>
 
-					<div className={clsx('mt', 'col_3')}>
+					<div className={clsx('mt', 'col_2')}>
 						<Select
 							isSearch
 							name='provinceId'
 							value={form.provinceId}
 							placeholder='Chọn tỉnh/thành phố'
-							label={
-								<span>
-									Tỉnh/Thành phố<span style={{color: 'red'}}>*</span>
-								</span>
-							}
+							label={<span>Tỉnh/Thành phố</span>}
 						>
 							{listProvince?.data?.map((v: any) => (
 								<Option
@@ -269,7 +238,6 @@ function CreateWeighingStation({}: PropsCreateWeighingStation) {
 										setForm((prev: any) => ({
 											...prev,
 											provinceId: v?.matp,
-											dictrictId: '',
 											townId: '',
 										}))
 									}
@@ -277,58 +245,22 @@ function CreateWeighingStation({}: PropsCreateWeighingStation) {
 							))}
 						</Select>
 						<div>
-							<Select
-								isSearch
-								name='dictrictId'
-								value={form.dictrictId}
-								placeholder='Chọn quận/huyện'
-								label={
-									<span>
-										Quận/Huyện<span style={{color: 'red'}}>*</span>
-									</span>
-								}
-							>
-								{listDistrict?.data?.map((v: any) => (
+							<Select isSearch name='townId' value={form.townId} placeholder='Chọn xã/phường' label={<span>Xã/phường</span>}>
+								{listTown?.data?.map((v: any) => (
 									<Option
-										key={v?.maqh}
-										value={v?.maqh}
+										key={v?.xaid}
+										value={v?.xaid}
 										title={v?.name}
 										onClick={() =>
 											setForm((prev: any) => ({
 												...prev,
-												dictrictId: v?.maqh,
-												townId: '',
+												townId: v?.xaid,
 											}))
 										}
 									/>
 								))}
 							</Select>
 						</div>
-						<Select
-							isSearch
-							name='townId'
-							value={form.townId}
-							placeholder='Chọn xã/phường'
-							label={
-								<span>
-									Xã/phường<span style={{color: 'red'}}>*</span>
-								</span>
-							}
-						>
-							{listTown?.data?.map((v: any) => (
-								<Option
-									key={v?.xaid}
-									value={v?.xaid}
-									title={v?.name}
-									onClick={() =>
-										setForm((prev: any) => ({
-											...prev,
-											townId: v?.xaid,
-										}))
-									}
-								/>
-							))}
-						</Select>
 					</div>
 					<div className={clsx('mt')}>
 						<Input

@@ -26,7 +26,7 @@ function FormUpdateShipBill({uuid, onClose}: PropsFormUpdateShipBill) {
 	const {data: listShip = []} = useQuery<
 		{
 			code: string;
-			licensePalate: string;
+			licensePlate: string;
 			uuid: string;
 		}[]
 	>([QUERY_KEY.dropdown_ma_tau], {
@@ -116,14 +116,14 @@ function FormUpdateShipBill({uuid, onClose}: PropsFormUpdateShipBill) {
 			<div className={styles.list}>
 				{listShip?.filter(
 					(v) =>
-						removeVietnameseTones(v.licensePalate)?.includes(keyword ? removeVietnameseTones(keyword) : '') ||
+						removeVietnameseTones(v.licensePlate)?.includes(keyword ? removeVietnameseTones(keyword) : '') ||
 						removeVietnameseTones(v.code)?.includes(keyword ? removeVietnameseTones(keyword) : '')
 				)?.length > 0 ? (
 					<>
 						{listShip
 							?.filter(
 								(v) =>
-									removeVietnameseTones(v.licensePalate)?.includes(keyword ? removeVietnameseTones(keyword) : '') ||
+									removeVietnameseTones(v.licensePlate)?.includes(keyword ? removeVietnameseTones(keyword) : '') ||
 									removeVietnameseTones(v.code)?.includes(keyword ? removeVietnameseTones(keyword) : '')
 							)
 							?.map((v, i) => (
@@ -138,7 +138,7 @@ function FormUpdateShipBill({uuid, onClose}: PropsFormUpdateShipBill) {
 										checked={v.uuid == shipUuid}
 									/>
 									<label htmlFor={`check_item_${i}`} className={clsx(styles.label_check_item)}>
-										{v?.licensePalate} - {v.code}
+										{v?.licensePlate} - {v.code}
 									</label>
 								</div>
 							))}

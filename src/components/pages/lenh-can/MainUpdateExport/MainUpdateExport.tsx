@@ -111,14 +111,14 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 				setListTruckChecked(
 					data?.lstTruck?.map((v: any) => ({
 						uuid: v?.uuid,
-						name: v?.licensePalate,
+						name: v?.licensePlate,
 						code: v?.code,
 					}))
 				);
 				setListTruckBatchBill(
 					data?.lstTruck?.map((v: any) => ({
 						uuid: v?.uuid,
-						name: v?.licensePalate,
+						name: v?.licensePlate,
 						code: v?.code,
 					}))
 				);
@@ -332,10 +332,10 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 					isBatch: TYPE_BATCH.CAN_LO,
 					shipOutUuid: '',
 					scaleStationUuid: form?.scaleStationUuid,
-					lstTruckAddUuid: listTruckChecked
+					lstTruckPlateAdd: listTruckChecked
 						.filter((v) => !listTruckBatchBill.some((x) => v.uuid === x.uuid))
 						?.map((item) => item.uuid),
-					lstTruckRemoveUuid: listTruckBatchBill
+					lstTruckPlateRemove: listTruckBatchBill
 						.filter((v) => !listTruckChecked.some((x) => v.uuid === x.uuid))
 						?.map((item) => item.uuid),
 					reason: form.reason,
@@ -642,7 +642,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 								<Option
 									key={v?.uuid}
 									value={v?.uuid}
-									title={v?.licensePalate}
+									title={v?.licensePlate}
 									onClick={() =>
 										setForm((prev) => ({
 											...prev,
@@ -860,7 +860,7 @@ function MainUpdateExport({}: PropsMainUpdateExport) {
 							dataList={
 								listTruck?.data?.map((v: any) => ({
 									uuid: v?.uuid,
-									name: v?.licensePalate,
+									name: v?.licensePlate,
 									code: v?.code,
 								})) || []
 							}

@@ -135,7 +135,7 @@ function MainPageShip({}: PropsMainPageShip) {
 							{
 								title: 'Mã tàu',
 								fixedLeft: true,
-								render: (data: IShip) => <>{data?.licensePalate || '---'}</>,
+								render: (data: IShip) => <>{data?.licensePlate || '---'}</>,
 							},
 							{
 								title: 'Logo tàu',

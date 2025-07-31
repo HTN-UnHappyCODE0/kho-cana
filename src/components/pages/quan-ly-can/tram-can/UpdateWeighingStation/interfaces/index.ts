@@ -8,6 +8,5 @@ export interface IFormUpdate {
 	phoneNumber: string;
 	companyUuid: string;
 	provinceId: string;
-	dictrictId: string;
 	townId: string;
 }

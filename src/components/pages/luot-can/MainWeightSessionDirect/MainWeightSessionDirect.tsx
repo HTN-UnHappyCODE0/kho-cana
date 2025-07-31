@@ -60,7 +60,7 @@ function MainWeightSessionDirect({}: PropsMainWeightSessionDirect) {
 		_scalesStationUuid,
 	} = router.query;
 
-	const [truckUuid, setTruckUuid] = useState<string[]>([]);
+	const [truckPlate, setTruckPlate] = useState<string[]>([]);
 	const [byFilter, setByFilter] = useState<boolean>(false);
 	const [formCode, setFormCode] = useState<{codeStart: string; codeEnd: string}>({
 		codeStart: '',
@@ -203,7 +203,7 @@ function MainWeightSessionDirect({}: PropsMainWeightSessionDirect) {
 			_page,
 			_pageSize,
 			_keyword,
-			truckUuid,
+			truckPlate,
 			_specUuid,
 			_status,
 			_dateFrom,
@@ -255,8 +255,8 @@ function MainWeightSessionDirect({}: PropsMainWeightSessionDirect) {
 						shift: !!_shift ? Number(_shift) : null,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						isHaveSpec: null,
-						truckUuid: '',
-						listTruckUuid: truckUuid,
+						truckPlate: '',
+						listTruckPlate: truckPlate,
 					}),
 				}),
 			select(data) {
@@ -271,7 +271,7 @@ function MainWeightSessionDirect({}: PropsMainWeightSessionDirect) {
 			_page,
 			_pageSize,
 			_keyword,
-			truckUuid,
+			truckPlate,
 			_specUuid,
 			_status,
 			_dateFrom,
@@ -318,8 +318,8 @@ function MainWeightSessionDirect({}: PropsMainWeightSessionDirect) {
 									STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
 									STATUS_WEIGHT_SESSION.KCS_XONG,
 							  ],
-						truckUuid: '',
-						listTruckUuid: truckUuid,
+						truckPlate: '',
+						listTruckPlate: truckPlate,
 						shift: !!_shift ? Number(_shift) : null,
 						shipUuid: (_shipUuid as string) || '',
 						scalesStationUuid: (_scalesStationUuid as string) || '',
@@ -380,16 +380,16 @@ function MainWeightSessionDirect({}: PropsMainWeightSessionDirect) {
 							query='_shipUuid'
 							listFilter={listShip?.data?.map((v: any) => ({
 								id: v?.uuid,
-								name: v?.licensePalate,
+								name: v?.licensePlate,
 							}))}
 						/>
 
 						<SelectFilterMany
-							selectedIds={truckUuid}
-							setSelectedIds={setTruckUuid}
+							selectedIds={truckPlate}
+							setSelectedIds={setTruckPlate}
 							listData={listTruck?.data?.map((v: any) => ({
 								uuid: v?.uuid,
-								name: v?.licensePalate,
+								name: v?.licensePlate,
 							}))}
 							name='Biển số xe'
 						/>
@@ -557,7 +557,7 @@ function MainWeightSessionDirect({}: PropsMainWeightSessionDirect) {
 							},
 							{
 								title: 'Biển số xe',
-								render: (data: IWeightSession) => <>{data?.truckUu?.licensePalate || '---'}</>,
+								render: (data: IWeightSession) => <>{data?.truckUu?.licensePlate || '---'}</>,
 							},
 							{
 								title: 'Từ',
@@ -681,7 +681,7 @@ function MainWeightSessionDirect({}: PropsMainWeightSessionDirect) {
 					dependencies={[
 						_pageSize,
 						_keyword,
-						truckUuid,
+						truckPlate,
 						_specUuid,
 						_dateFrom,
 						_dateTo,

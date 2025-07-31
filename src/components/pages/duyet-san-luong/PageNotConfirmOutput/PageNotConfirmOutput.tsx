@@ -63,7 +63,7 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 	const [uuidKTKReject, setUuidKTKReject] = useState<string[]>([]);
 
 	const [listBatchBill, setListBatchBill] = useState<any[]>([]);
-	const [truckUuid, setTruckUuid] = useState<string[]>([]);
+	const [truckPlate, setTruckPlate] = useState<string[]>([]);
 	const [total, setTotal] = useState<number>(0);
 	const [uuidCompany, setUuidCompany] = useState<string>('');
 	const [uuidQuality, setUuidQuality] = useState<string>('');
@@ -234,7 +234,7 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 			uuidQuality,
 			uuidStorage,
 			isHaveDryness,
-			truckUuid,
+			truckPlate,
 			uuidCompany,
 			listCompanyUuid,
 		],
@@ -265,7 +265,7 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: uuidStorage,
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
-						truckUuid: truckUuid,
+						truckPlates: truckPlate,
 						customerUuid: '',
 						listCustomerUuid: customerUuid,
 						companyUuid: uuidCompany,
@@ -406,11 +406,11 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 					</div>
 
 					<SelectFilterMany
-						selectedIds={truckUuid}
-						setSelectedIds={setTruckUuid}
+						selectedIds={truckPlate}
+						setSelectedIds={setTruckPlate}
 						listData={listTruck?.data?.map((v: any) => ({
 							uuid: v?.uuid,
-							name: v?.licensePalate,
+							name: v?.licensePlate,
 						}))}
 						name='Biển số xe'
 					/>
@@ -561,13 +561,13 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 							// {
 							// 	title: 'Mã tàu',
 							// 	render: (data: ITableBillScale) => (
-							// 		<p style={{fontWeight: 600}}>{data?.batchsUu?.shipUu?.licensePalate || '---'}</p>
+							// 		<p style={{fontWeight: 600}}>{data?.batchsUu?.shipUu?.licensePlate || '---'}</p>
 							// 	),
 							// },
 							// {
 							// 	title: 'Mã tàu xuất',
 							// 	render: (data: ITableBillScale) => (
-							// 		<p style={{fontWeight: 600}}>{data?.batchsUu?.shipOutUu?.licensePalate || '---'}</p>
+							// 		<p style={{fontWeight: 600}}>{data?.batchsUu?.shipOutUu?.licensePlate || '---'}</p>
 							// 	),
 							// },
 							{
@@ -577,12 +577,12 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>
 										{data?.isBatch == TYPE_BATCH.CAN_LO && (
 											<p style={{fontWeight: 600, color: '#3772FF'}}>
-												{data?.batchsUu?.shipUu?.licensePalate || '---'}
+												{data?.batchsUu?.shipUu?.licensePlate || '---'}
 											</p>
 										)}
 										{data?.isBatch == TYPE_BATCH.CAN_LE && (
 											<p style={{fontWeight: 600, color: '#3772FF'}}>
-												{data?.weightSessionUu?.truckUu?.licensePalate || '---'}
+												{data?.weightSessionUu?.truckUu?.licensePlate || '---'}
 											</p>
 										)}
 									</>
@@ -624,7 +624,7 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.toUu?.name || '---'}</p>
 										<p style={{fontWeight: 600, color: '#3772FF'}}>
-											{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+											{data?.batchsUu?.shipOutUu?.licensePlate || '---'}
 										</p>
 									</>
 								),
@@ -794,7 +794,7 @@ function PageNotConfirmOutput({}: PropsPageNotConfirmOutput) {
 							uuidQuality,
 							uuidStorage,
 							isHaveDryness,
-							truckUuid,
+							truckPlate,
 							uuidCompany,
 							listCompanyUuid,
 						]}

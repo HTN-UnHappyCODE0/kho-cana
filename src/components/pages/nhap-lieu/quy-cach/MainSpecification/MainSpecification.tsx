@@ -259,8 +259,8 @@ function MainSpecification({}: PropsMainSpecification) {
 							STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
 						],
 						isHaveSpec: !!_isHaveSpec ? Number(_isHaveSpec) : null,
-						listTruckUuid: [],
-						truckUuid: '',
+						listTruckPlate: [],
+						truckPlate: '',
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
 						customerUuid: '',
@@ -504,7 +504,7 @@ function MainSpecification({}: PropsMainSpecification) {
 							},
 							{
 								title: 'Số xe',
-								render: (data: IWeightSession) => <>{data?.truckUu?.licensePalate || '---'}</>,
+								render: (data: IWeightSession) => <>{data?.truckUu?.licensePlate || '---'}</>,
 							},
 							{
 								title: 'KL hàng (Tấn)',

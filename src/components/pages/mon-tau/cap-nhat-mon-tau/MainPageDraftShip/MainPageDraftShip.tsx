@@ -69,7 +69,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 	const [dataWeightSessionSubmit, setDataWeightSessionSubmit] = useState<any[]>([]);
 	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
-	const [truckUuid, setTruckUuid] = useState<string[]>([]);
+	const [truckPlate, setTruckPlate] = useState<string[]>([]);
 	const [uuidCompany, setUuidCompany] = useState<string>('');
 	const [uuidQuality, setUuidQuality] = useState<string>('');
 	const [uuidStorage, setUuidStorage] = useState<string>('');
@@ -217,7 +217,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 			uuidStorage,
 			_typeProduct,
 			isHaveDryness,
-			truckUuid,
+			truckPlate,
 			uuidCompany,
 			listCompanyUuid,
 			_shipUuid,
@@ -250,7 +250,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 						storageUuid: uuidStorage,
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 						typeProduct: TYPE_PRODUCT.CONG_TY,
-						truckUuid: truckUuid,
+						truckPlates: truckPlate,
 						customerUuid: '',
 						listCustomerUuid: customerUuid,
 						companyUuid: uuidCompany,
@@ -419,11 +419,11 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 					</div>
 
 					{/* <SelectFilterMany
-						selectedIds={truckUuid}
-						setSelectedIds={setTruckUuid}
+						selectedIds={truckPlate}
+						setSelectedIds={setTruckPlate}
 						listData={listTruck?.data?.map((v: any) => ({
 							uuid: v?.uuid,
-							name: v?.licensePalate,
+							name: v?.licensePlate,
 						}))}
 						name='Biển số xe'
 					/> */}
@@ -434,7 +434,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 						query='_shipUuid'
 						listFilter={listShip?.data?.map((v: any) => ({
 							id: v?.uuid,
-							name: v?.licensePalate,
+							name: v?.licensePlate,
 						}))}
 					/>
 
@@ -584,12 +584,12 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>
 										{data?.isBatch == TYPE_BATCH.CAN_LO && (
 											<p style={{fontWeight: 600, color: '#3772FF'}}>
-												{data?.batchsUu?.shipUu?.licensePalate || '---'}
+												{data?.batchsUu?.shipUu?.licensePlate || '---'}
 											</p>
 										)}
 										{data?.isBatch == TYPE_BATCH.CAN_LE && (
 											<p style={{fontWeight: 600, color: '#3772FF'}}>
-												{data?.weightSessionUu?.truckUu?.licensePalate || '---'}
+												{data?.weightSessionUu?.truckUu?.licensePlate || '---'}
 											</p>
 										)}
 									</>
@@ -601,7 +601,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.toUu?.name || '---'}</p>
 										{/* <p style={{fontWeight: 600, color: '#3772FF'}}>
-											{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+											{data?.batchsUu?.shipOutUu?.licensePlate || '---'}
 										</p> */}
 									</>
 								),
@@ -682,7 +682,7 @@ function MainPageDraftShip({}: PropsMainPageDraftShip) {
 						_state,
 						_typeProduct,
 						isHaveDryness,
-						truckUuid,
+						truckPlate,
 						uuidCompany,
 						listCompanyUuid,
 						_shipUuid,

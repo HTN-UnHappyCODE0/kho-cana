@@ -56,7 +56,7 @@ function TableDetail({}: PropsTableDetail) {
 	} = router.query;
 
 	const [uuidDescription, setUuidDescription] = useState<string>('');
-	const [truckUuid, setTruckUuid] = useState<string[]>([]);
+	const [truckPlate, setTruckPlate] = useState<string[]>([]);
 	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
 	const [byFilter, setByFilter] = useState<boolean>(false);
 	const [formCode, setFormCode] = useState<{codeStart: string; codeEnd: string}>({
@@ -202,7 +202,7 @@ function TableDetail({}: PropsTableDetail) {
 			_page,
 			_pageSize,
 			_keyword,
-			truckUuid,
+			truckPlate,
 			_specUuid,
 			_status,
 			_dateFrom,
@@ -256,8 +256,8 @@ function TableDetail({}: PropsTableDetail) {
 						shift: !!_shift ? Number(_shift) : null,
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						isHaveSpec: null,
-						truckUuid: '',
-						listTruckUuid: truckUuid,
+						truckPlate: '',
+						listTruckPlate: truckPlate,
 					}),
 				}),
 			select(data) {
@@ -330,16 +330,16 @@ function TableDetail({}: PropsTableDetail) {
 								query='_shipUuid'
 								listFilter={listShip?.data?.map((v: any) => ({
 									id: v?.uuid,
-									name: v?.licensePalate,
+									name: v?.licensePlate,
 								}))}
 							/> */}
 
 							<SelectFilterMany
-								selectedIds={truckUuid}
-								setSelectedIds={setTruckUuid}
+								selectedIds={truckPlate}
+								setSelectedIds={setTruckPlate}
 								listData={listCustomer?.data?.map((v: any) => ({
 									uuid: v?.uuid,
-									name: v?.licensePalate,
+									name: v?.licensePlate,
 								}))}
 								name='Biển số xe'
 							/>
@@ -500,7 +500,7 @@ function TableDetail({}: PropsTableDetail) {
 							},
 							{
 								title: 'Số xe',
-								render: (data: IWeightSession) => <>{data?.truckUu?.licensePalate}</>,
+								render: (data: IWeightSession) => <>{data?.truckUu?.licensePlate}</>,
 							},
 							{
 								title: 'Từ',
@@ -611,7 +611,7 @@ function TableDetail({}: PropsTableDetail) {
 						_id,
 						_pageSize,
 						_keyword,
-						truckUuid,
+						truckPlate,
 						_specUuid,
 						_status,
 						_dateFrom,

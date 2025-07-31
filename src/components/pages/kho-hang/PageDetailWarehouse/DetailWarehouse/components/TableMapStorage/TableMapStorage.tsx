@@ -31,17 +31,19 @@ function TableMapStorage({}: PropsTableMapStorage) {
 		onSuccess(data) {
 			if (data) {
 				setArrayDisabledGrid(
-					data?.storage?.map((v: any) => ({
-						uuid: v?.uuid,
-						name: v?.name,
-						code: v?.code,
-						arrayPostion: v?.locationMap ? JSON.parse(v?.locationMap) : [],
-						amountBdmt: v?.amountBdmtDemo + v?.amountBdmt,
-						background: v?.specificationsUu?.colorShow,
-						specificationName: v?.specificationsUu?.name,
-						col: calculateDimensions(v?.locationMap ? JSON.parse(v?.locationMap) : [], 10).numColumns,
-						row: calculateDimensions(v?.locationMap ? JSON.parse(v?.locationMap) : [], 10).numRows,
-					}))
+					data?.storage
+						?.filter((v: any) => v?.status !== 0)
+						?.map((v: any) => ({
+							uuid: v?.uuid,
+							name: v?.name,
+							code: v?.code,
+							arrayPostion: v?.locationMap ? JSON.parse(v?.locationMap) : [],
+							amountBdmt: v?.amountBdmtDemo + v?.amountBdmt,
+							background: v?.specificationsUu?.colorShow,
+							specificationName: v?.specificationsUu?.name,
+							col: calculateDimensions(v?.locationMap ? JSON.parse(v?.locationMap) : [], 10).numColumns,
+							row: calculateDimensions(v?.locationMap ? JSON.parse(v?.locationMap) : [], 10).numRows,
+						}))
 				);
 			}
 		},

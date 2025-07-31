@@ -63,7 +63,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 
 	const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
-	const [truckUuid, setTruckUuid] = useState<string[]>([]);
+	const [truckPlate, setTruckPlate] = useState<string[]>([]);
 	const [listCompanyUuid, setListCompanyUuid] = useState<any[]>([]);
 
 	const {
@@ -229,7 +229,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 			uuidQuality,
 			uuidStorage,
 			isHaveDryness,
-			truckUuid,
+			truckPlate,
 			uuidCompany,
 			listCompanyUuid,
 		],
@@ -261,7 +261,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 						storageUuid: uuidStorage,
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
 						typeProduct: TYPE_PRODUCT.CONG_TY,
-						truckUuid: truckUuid,
+						truckPlates: truckPlate,
 						customerUuid: '',
 						listCustomerUuid: customerUuid,
 						companyUuid: uuidCompany,
@@ -380,11 +380,11 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 						/>
 					</div>
 					<SelectFilterMany
-						selectedIds={truckUuid}
-						setSelectedIds={setTruckUuid}
+						selectedIds={truckPlate}
+						setSelectedIds={setTruckPlate}
 						listData={listTruck?.data?.map((v: any) => ({
 							uuid: v?.uuid,
-							name: v?.licensePalate,
+							name: v?.licensePlate,
 						}))}
 						name='Biển số xe'
 					/>
@@ -536,12 +536,12 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>
 										{data?.isBatch == TYPE_BATCH.CAN_LO && (
 											<p style={{fontWeight: 600, color: '#3772FF'}}>
-												{data?.batchsUu?.shipUu?.licensePalate || '---'}
+												{data?.batchsUu?.shipUu?.licensePlate || '---'}
 											</p>
 										)}
 										{data?.isBatch == TYPE_BATCH.CAN_LE && (
 											<p style={{fontWeight: 600, color: '#3772FF'}}>
-												{data?.weightSessionUu?.truckUu?.licensePalate || '---'}
+												{data?.weightSessionUu?.truckUu?.licensePlate || '---'}
 											</p>
 										)}
 									</>
@@ -553,7 +553,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.toUu?.name || '---'}</p>
 										{/* <p style={{fontWeight: 600, color: '#3772FF'}}>
-											{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+											{data?.batchsUu?.shipOutUu?.licensePlate || '---'}
 										</p> */}
 									</>
 								),
@@ -640,7 +640,7 @@ function MainPageBillUpdate({}: PropsMainPageBillUpdate) {
 						_scalesStationUuid,
 						_state,
 						isHaveDryness,
-						truckUuid,
+						truckPlate,
 						uuidCompany,
 						listCompanyUuid,
 					]}

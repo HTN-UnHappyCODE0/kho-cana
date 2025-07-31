@@ -21,9 +21,8 @@ const truckServices = {
 	},
 	upsertTruck: (
 		data: {
-			uuid: string;
 			code: string;
-			licensePalate: string;
+			licensePlate: string;
 			minWeight: number;
 			maxWeight: number;
 			// weight: number;
@@ -41,7 +40,7 @@ const truckServices = {
 	},
 	changeStatus: (
 		data: {
-			uuid: string;
+			licensePlate: string;
 			status: CONFIG_STATUS;
 		},
 		tokenAxios?: any
@@ -52,7 +51,7 @@ const truckServices = {
 	},
 	getDetail: (
 		data: {
-			uuid: string;
+			licensePlate: string;
 		},
 		tokenAxios?: any
 	) => {

@@ -20,7 +20,7 @@ function MainPageUpdateShip({}: PropsMainPageUpdateShip) {
 	const {_id} = router.query;
 	const [form, setForm] = useState<IFormUpdateShip>({
 		code: '',
-		licensePalate: '',
+		licensePlate: '',
 		description: '',
 	});
 
@@ -34,7 +34,7 @@ function MainPageUpdateShip({}: PropsMainPageUpdateShip) {
 		onSuccess(data) {
 			setForm({
 				code: data?.code,
-				licensePalate: data?.licensePalate,
+				licensePlate: data?.licensePlate,
 				description: data?.description,
 			});
 		},
@@ -50,7 +50,7 @@ function MainPageUpdateShip({}: PropsMainPageUpdateShip) {
 				http: shipServices.upsertShip({
 					uuid: _id as string,
 					code: form?.code,
-					licensePalate: form?.licensePalate,
+					licensePlate: form?.licensePlate,
 					description: form.description,
 				}),
 			}),
@@ -58,7 +58,7 @@ function MainPageUpdateShip({}: PropsMainPageUpdateShip) {
 			if (data) {
 				setForm({
 					code: '',
-					licensePalate: '',
+					licensePlate: '',
 					description: '',
 				});
 				router.replace(PATH.QuanLyTau, undefined, {
@@ -117,8 +117,8 @@ function MainPageUpdateShip({}: PropsMainPageUpdateShip) {
 						/>
 						<div>
 							<Input
-								name='licensePalate'
-								value={form.licensePalate || ''}
+								name='licensePlate'
+								value={form.licensePlate || ''}
 								isRequired
 								max={255}
 								type='text'

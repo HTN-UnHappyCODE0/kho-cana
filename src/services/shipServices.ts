@@ -22,7 +22,7 @@ const shipServices = {
 		data: {
 			uuid: string;
 			code: string;
-			licensePalate: string;
+			licensePlate: string;
 			description: string;
 		},
 		tokenAxios?: any

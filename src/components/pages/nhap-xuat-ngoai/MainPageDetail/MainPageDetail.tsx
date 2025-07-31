@@ -55,17 +55,17 @@ function MainPageDetail({}: PropsMainPageDetail) {
 		return '/nhap-xuat-ngoai/tat-ca';
 	};
 
-	const getlicensePalate = () => {
+	const getlicensePlate = () => {
 		if (detailBatchBill?.transportType == TYPE_TRANSPORT.DUONG_BO) {
-			return `Đường bộ (${detailBatchBill?.weightSessionUu?.truckUu?.licensePalate || '---'})`;
+			return `Đường bộ (${detailBatchBill?.weightSessionUu?.truckUu?.licensePlate || '---'})`;
 		}
 		if (detailBatchBill?.transportType == TYPE_TRANSPORT.DUONG_THUY) {
 			if (detailBatchBill?.scalesType == TYPE_SCALES.CAN_TRUC_TIEP) {
-				return `Đường thủy (${detailBatchBill?.batchsUu?.shipUu?.licensePalate || '---'} - ${
-					detailBatchBill?.batchsUu?.shipOutUu?.licensePalate || '---'
+				return `Đường thủy (${detailBatchBill?.batchsUu?.shipUu?.licensePlate || '---'} - ${
+					detailBatchBill?.batchsUu?.shipOutUu?.licensePlate || '---'
 				})`;
 			} else {
-				return `Đường thủy (${detailBatchBill?.batchsUu?.shipUu?.licensePalate || '---'})`;
+				return `Đường thủy (${detailBatchBill?.batchsUu?.shipUu?.licensePlate || '---'})`;
 			}
 		}
 		return '---';
@@ -154,13 +154,13 @@ function MainPageDetail({}: PropsMainPageDetail) {
 							<span>Vận chuyển:</span>
 							<span style={{marginLeft: '6px', fontWeight: 600}}>
 								{/* {detailBatchBill?.transportType == TYPE_TRANSPORT.DUONG_BO
-									? `Đường bộ (${detailBatchBill?.weightSessionUu?.truckUu?.licensePalate || '---'})`
+									? `Đường bộ (${detailBatchBill?.weightSessionUu?.truckUu?.licensePlate || '---'})`
 									: detailBatchBill?.transportType == TYPE_TRANSPORT.DUONG_THUY
-									? `Đường thủy (${detailBatchBill?.batchsUu?.shipUu?.licensePalate || '---'} - ${
-											detailBatchBill?.batchsUu?.shipOutUu?.licensePalate || '---'
+									? `Đường thủy (${detailBatchBill?.batchsUu?.shipUu?.licensePlate || '---'} - ${
+											detailBatchBill?.batchsUu?.shipOutUu?.licensePlate || '---'
 									  })`
 									: '---'} */}
-								{getlicensePalate()}
+								{getlicensePlate()}
 							</span>
 						</td>
 						<td>
@@ -243,7 +243,7 @@ function MainPageDetail({}: PropsMainPageDetail) {
 							<div style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
 								<span>Tàu trung chuyển: </span>
 								<span style={{marginLeft: '6px', fontWeight: 600}}>
-									{detailBatchBill?.shipTempUu?.licensePalate || '---'}
+									{detailBatchBill?.shipTempUu?.licensePlate || '---'}
 								</span>
 							</div>
 						</td>

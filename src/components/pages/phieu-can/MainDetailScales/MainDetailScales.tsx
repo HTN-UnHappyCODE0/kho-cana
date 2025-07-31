@@ -79,17 +79,17 @@ function MainDetailScales({}: PropsMainDetailScales) {
 		return '/phieu-can/tat-ca';
 	};
 
-	const getlicensePalate = () => {
+	const getlicensePlate = () => {
 		if (detailBatchBill?.transportType == TYPE_TRANSPORT.DUONG_BO) {
-			return `Đường bộ (${detailBatchBill?.weightSessionUu?.truckUu?.licensePalate || '---'})`;
+			return `Đường bộ (${detailBatchBill?.weightSessionUu?.truckUu?.licensePlate || '---'})`;
 		}
 		if (detailBatchBill?.transportType == TYPE_TRANSPORT.DUONG_THUY) {
 			if (detailBatchBill?.scalesType == TYPE_SCALES.CAN_TRUC_TIEP) {
-				return `Đường thủy (${detailBatchBill?.batchsUu?.shipUu?.licensePalate || '---'} - ${
-					detailBatchBill?.batchsUu?.shipOutUu?.licensePalate || '---'
+				return `Đường thủy (${detailBatchBill?.batchsUu?.shipUu?.licensePlate || '---'} - ${
+					detailBatchBill?.batchsUu?.shipOutUu?.licensePlate || '---'
 				})`;
 			} else {
-				return `Đường thủy (${detailBatchBill?.batchsUu?.shipUu?.licensePalate || '---'})`;
+				return `Đường thủy (${detailBatchBill?.batchsUu?.shipUu?.licensePlate || '---'})`;
 			}
 		}
 		return '---';
@@ -125,7 +125,7 @@ function MainDetailScales({}: PropsMainDetailScales) {
 					codeStart: null,
 					codeEnd: null,
 					specUuid: null,
-					truckUuid: '',
+					truckPlate: '',
 					shift: null,
 					isHaveSpec: isHaveSpec,
 				}),
@@ -240,7 +240,7 @@ function MainDetailScales({}: PropsMainDetailScales) {
 					<tr>
 						<td>
 							<span>Vận chuyển:</span>
-							<span style={{marginLeft: '6px', fontWeight: 600}}>{getlicensePalate()}</span>
+							<span style={{marginLeft: '6px', fontWeight: 600}}>{getlicensePlate()}</span>
 						</td>
 						<td>
 							<span>Tổng khối lượng:</span>
@@ -287,7 +287,7 @@ function MainDetailScales({}: PropsMainDetailScales) {
 							<div style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
 								<span>Tàu trung chuyển: </span>
 								<span style={{marginLeft: '6px', fontWeight: 600}}>
-									{detailBatchBill?.shipTempUu?.licensePalate || '---'}
+									{detailBatchBill?.shipTempUu?.licensePlate || '---'}
 								</span>
 							</div>
 						</td>

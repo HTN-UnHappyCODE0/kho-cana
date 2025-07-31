@@ -4,7 +4,7 @@ export interface PropsMainPageCreateTruck {}
 
 export interface IFormCreateTruck {
 	code: string;
-	licensePalate: string;
+	licensePlate: string;
 	minWeight: number;
 	maxWeight: number;
 	averageWeight: number;

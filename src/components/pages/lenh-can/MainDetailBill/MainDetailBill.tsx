@@ -310,7 +310,7 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 						</div>
 						<div className={styles.item_table}>
 							<p>Tàu trung chuyển:</p>
-							<span>{detailBatchBill?.shipTempUu?.licensePalate || '---'}</span>
+							<span>{detailBatchBill?.shipTempUu?.licensePlate || '---'}</span>
 						</div>
 						<div className={styles.item_table}>
 							<p>Ngày dự kiến :</p>
@@ -396,7 +396,7 @@ const MainDetailBill = ({}: PropsMainDetailBill) => {
 							},
 							{
 								title: 'Biển số',
-								render: (data: any) => <>{data?.licensePalate || '---'}</>,
+								render: (data: any) => <>{data?.licensePlate || '---'}</>,
 							},
 							{
 								title: 'RFID',

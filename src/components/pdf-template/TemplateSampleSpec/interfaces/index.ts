@@ -8,7 +8,7 @@ export interface PropsTemplateSampleSpec {
 		date: string;
 		productName: string;
 		code: string;
-		licensePalate: string;
+		licensePlate: string;
 		weightTotal: number;
 		drynessAvg: number;
 		weightBdmt: number;

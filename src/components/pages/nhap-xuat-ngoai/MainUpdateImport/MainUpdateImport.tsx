@@ -254,8 +254,8 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					toUuid: form?.toUuid,
 					isPrint: 0,
 					transportType: form?.transportType,
-					lstTruckAddUuid: [],
-					lstTruckRemoveUuid: [],
+					lstTruckPlateAdd: [],
+					lstTruckPlateRemove: [],
 					scaleStationUuid: '',
 					portname: form.portname,
 					descriptionWs: '',
@@ -464,7 +464,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 								<Option
 									key={v?.uuid}
 									value={v?.uuid}
-									title={v?.licensePalate}
+									title={v?.licensePlate}
 									onClick={() =>
 										setForm((prev) => ({
 											...prev,

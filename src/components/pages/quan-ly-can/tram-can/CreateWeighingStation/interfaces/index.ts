@@ -8,6 +8,5 @@ export interface IFormCreate {
 	phoneNumber: string;
 	companyUuid: string;
 	provinceId: string;
-	dictrictId: string;
 	townId: string;
 }

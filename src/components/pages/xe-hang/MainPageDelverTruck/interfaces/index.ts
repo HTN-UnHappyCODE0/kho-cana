@@ -20,7 +20,7 @@ export interface ITruck {
 	trucktype: string;
 	ownerType: number;
 	code: string;
-	licensePalate: string;
+	licensePlate: string;
 	status: number;
 	uuid: string;
 }

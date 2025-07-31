@@ -36,7 +36,7 @@ function MainPageCreateTruck({}: PropsMainPageCreateTruck) {
 
 	const [form, setForm] = useState<IFormCreateTruck>({
 		code: '',
-		licensePalate: '',
+		licensePlate: '',
 		managerUuid: '',
 		trucktype: '',
 		ownerType: OWNEW_TYPE_TRUCK.XE_CONG_TY,
@@ -116,9 +116,8 @@ function MainPageCreateTruck({}: PropsMainPageCreateTruck) {
 				showMessageSuccess: true,
 				msgSuccess: 'Thêm mới xe thành công!',
 				http: truckServices.upsertTruck({
-					uuid: '',
 					code: form?.code,
-					licensePalate: form?.licensePalate,
+					licensePlate: form?.licensePlate,
 					managerUuid: form?.managerUuid,
 					ownerType: form?.ownerType,
 					rfidUuid: listRFIDChecked?.map((v: any) => v?.uuid) || [],
@@ -132,7 +131,7 @@ function MainPageCreateTruck({}: PropsMainPageCreateTruck) {
 			if (data) {
 				setForm({
 					code: '',
-					licensePalate: '',
+					licensePlate: '',
 					managerUuid: '',
 					trucktype: '',
 					ownerType: OWNEW_TYPE_TRUCK.XE_CONG_TY,
@@ -204,8 +203,8 @@ function MainPageCreateTruck({}: PropsMainPageCreateTruck) {
 						/>
 						<div>
 							<Input
-								name='licensePalate'
-								value={form.licensePalate || ''}
+								name='licensePlate'
+								value={form.licensePlate || ''}
 								isRequired
 								max={255}
 								type='text'

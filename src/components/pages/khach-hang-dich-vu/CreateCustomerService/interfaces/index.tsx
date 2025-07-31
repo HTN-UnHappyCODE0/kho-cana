@@ -9,7 +9,6 @@ export interface ICreateCustomerService {
 	email: string;
 	phoneNumber: string;
 	provinceId: string;
-	districtId: string;
 	partnerUuid: string;
 	townId: string;
 	address: string;

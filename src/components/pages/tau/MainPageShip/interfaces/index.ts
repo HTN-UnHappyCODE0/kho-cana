@@ -4,7 +4,7 @@ export interface IShip {
 	code: string;
 	created: string;
 	description: string;
-	licensePalate: string;
+	licensePlate: string;
 	status: number;
 	updatedTime: string;
 	uuid: string;

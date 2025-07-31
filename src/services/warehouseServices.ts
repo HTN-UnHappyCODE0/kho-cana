@@ -73,7 +73,6 @@ const warehouseServices = {
 			address: string;
 			scaleStationUuid: string | null;
 			provinceId: string;
-			dictrictId: string;
 			townId: string;
 			description: string;
 			companyUuid: string;

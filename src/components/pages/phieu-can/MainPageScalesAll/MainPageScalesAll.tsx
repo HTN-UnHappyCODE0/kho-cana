@@ -61,7 +61,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 	const queryClient = useQueryClient();
 	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
-	const [truckUuid, setTruckUuid] = useState<string[]>([]);
+	const [truckPlate, setTruckPlate] = useState<string[]>([]);
 
 	const [openWeighReject, setOpenWeighReject] = useState<string | null>(null);
 
@@ -273,7 +273,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 			uuidStorage,
 			uuidScalesStation,
 			isHaveDryness,
-			truckUuid,
+			truckPlate,
 			uuidCompany,
 			uuidQuality,
 			listCompanyUuid,
@@ -323,7 +323,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 						scalesStationUuid: (uuidScalesStation as string) || '',
 						storageUuid: uuidStorage,
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
-						truckUuid: truckUuid,
+						truckPlates: truckPlate,
 						customerUuid: '',
 						listCustomerUuid: customerUuid,
 						companyUuid: uuidCompany,
@@ -438,7 +438,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 					storageUuid: uuidStorage,
 					isExportSpec: isHaveSpec,
 					isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
-					truckUuid: truckUuid,
+					truckPlates: truckPlate,
 					companyUuid: uuidCompany,
 					listCompanyUuid: listCompanyUuid,
 				}),
@@ -608,11 +608,11 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 					</div>
 
 					<SelectFilterMany
-						selectedIds={truckUuid}
-						setSelectedIds={setTruckUuid}
+						selectedIds={truckPlate}
+						setSelectedIds={setTruckPlate}
 						listData={listTruck?.data?.map((v: any) => ({
 							uuid: v?.uuid,
-							name: v?.licensePalate,
+							name: v?.licensePlate,
 						}))}
 						name='Biển số xe'
 					/>
@@ -634,7 +634,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 						setName={setNameShip}
 						listData={listShip?.data?.map((v: any) => ({
 							uuid: v?.uuid,
-							name: v?.licensePalate,
+							name: v?.licensePlate,
 						}))}
 						placeholder='Mã tàu'
 					/>
@@ -837,12 +837,12 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 											<>
 												{data?.isBatch == TYPE_BATCH.CAN_LO && (
 													<p style={{fontWeight: 500, color: '#3772FF'}}>
-														{data?.batchsUu?.shipUu?.licensePalate || '---'}
+														{data?.batchsUu?.shipUu?.licensePlate || '---'}
 													</p>
 												)}
 												{data?.isBatch == TYPE_BATCH.CAN_LE && (
 													<p style={{fontWeight: 500, color: '#3772FF'}}>
-														{data?.weightSessionUu?.truckUu?.licensePalate || '---'}
+														{data?.weightSessionUu?.truckUu?.licensePlate || '---'}
 													</p>
 												)}
 											</>
@@ -859,16 +859,16 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 											data?.scalesType == TYPE_SCALES.CAN_XUAT &&
 												(data?.isBatch == TYPE_BATCH.CAN_LO ? (
 													<p style={{fontWeight: 400, color: '#3772FF'}}>
-														{data?.batchsUu?.shipUu?.licensePalate || '---'} . {data?.numShip || '---'}
+														{data?.batchsUu?.shipUu?.licensePlate || '---'} . {data?.numShip || '---'}
 													</p>
 												) : (
 													<p style={{fontWeight: 400, color: '#3772FF'}}>
-														{data?.batchsUu?.shipUu?.licensePalate || '---'}
+														{data?.batchsUu?.shipUu?.licensePlate || '---'}
 													</p>
 												))
 											// (
 											// 	<p style={{fontWeight: 400, color: '#3772FF'}}>
-											// 		{data?.batchsUu?.shipUu?.licensePalate || '---'}
+											// 		{data?.batchsUu?.shipUu?.licensePlate || '---'}
 											// 	</p>
 											// )
 										}
@@ -876,16 +876,16 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 											!(data?.scalesType == TYPE_SCALES.CAN_XUAT) &&
 												(data?.isBatch == TYPE_BATCH.CAN_LO ? (
 													<p style={{fontWeight: 400, color: '#3772FF'}}>
-														{data?.batchsUu?.shipOutUu?.licensePalate || '---'} . {data?.numShip || '---'}
+														{data?.batchsUu?.shipOutUu?.licensePlate || '---'} . {data?.numShip || '---'}
 													</p>
 												) : (
 													<p style={{fontWeight: 400, color: '#3772FF'}}>
-														{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+														{data?.batchsUu?.shipOutUu?.licensePlate || '---'}
 													</p>
 												))
 											// (
 											// 	<p style={{fontWeight: 400, color: '#3772FF'}}>
-											// 		{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+											// 		{data?.batchsUu?.shipOutUu?.licensePlate || '---'}
 											// 	</p>
 											// )
 										}
@@ -929,7 +929,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 							},
 							{
 								title: 'Tàu trung chuyển',
-								render: (data: ITableBillScale) => <>{data?.shipTempUu?.licensePalate || '---'}</>,
+								render: (data: ITableBillScale) => <>{data?.shipTempUu?.licensePlate || '---'}</>,
 							},
 							{
 								title: 'Xác nhận SL',
@@ -1146,7 +1146,7 @@ function MainPageScalesAll({}: PropsMainPageScalesAll) {
 							uuidStorage,
 							uuidScalesStation,
 							isHaveDryness,
-							truckUuid,
+							truckPlate,
 							uuidCompany,
 							uuidQuality,
 							listCompanyUuid,

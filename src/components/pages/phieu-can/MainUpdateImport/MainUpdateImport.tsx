@@ -116,14 +116,14 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 				setListTruckChecked(
 					data?.lstTruck?.map((v: any) => ({
 						uuid: v?.uuid,
-						name: v?.licensePalate,
+						name: v?.licensePlate,
 						code: v?.code,
 					}))
 				);
 				setListTruckBatchBill(
 					data?.lstTruck?.map((v: any) => ({
 						uuid: v?.uuid,
-						name: v?.licensePalate,
+						name: v?.licensePlate,
 						code: v?.code,
 					}))
 				);
@@ -321,11 +321,11 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					toUuid: form?.toUuid,
 					isPrint: form.isPrint,
 					transportType: form?.transportType,
-					lstTruckAddUuid: listTruckChecked
+					lstTruckPlateAdd: listTruckChecked
 						.filter((v) => !listTruckBatchBill.some((x) => v.uuid === x.uuid))
 						?.map((item) => item.uuid),
 
-					lstTruckRemoveUuid: listTruckBatchBill
+					lstTruckPlateRemove: listTruckBatchBill
 						.filter((v) => !listTruckChecked.some((x) => v.uuid === x.uuid))
 						?.map((item) => item.uuid),
 					reason: form.reason,
@@ -661,7 +661,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 								<Option
 									key={v?.uuid}
 									value={v?.uuid}
-									title={v?.licensePalate}
+									title={v?.licensePlate}
 									onClick={() =>
 										setForm((prev) => ({
 											...prev,
@@ -847,7 +847,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 							dataList={
 								listTruck?.data?.map((v: any) => ({
 									uuid: v?.uuid,
-									name: v?.licensePalate,
+									name: v?.licensePlate,
 									code: v?.code,
 								})) || []
 							}

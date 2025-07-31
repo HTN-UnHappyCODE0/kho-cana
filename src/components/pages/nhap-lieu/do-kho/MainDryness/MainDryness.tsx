@@ -278,8 +278,8 @@ function MainDryness({}: PropsMainDryness) {
 							STATUS_WEIGHT_SESSION.KCS_XONG,
 							STATUS_WEIGHT_SESSION.CHOT_KE_TOAN,
 						],
-						truckUuid: '',
-						listTruckUuid: [],
+						truckPlate: '',
+						listTruckPlate: [],
 						timeStart: _dateFrom ? (_dateFrom as string) : null,
 						timeEnd: _dateTo ? (_dateTo as string) : null,
 						customerUuid: '',
@@ -716,7 +716,7 @@ function MainDryness({}: PropsMainDryness) {
 							},
 							{
 								title: 'Số xe',
-								render: (data: IWeightSession) => <>{data?.truckUu?.licensePalate || '---'}</>,
+								render: (data: IWeightSession) => <>{data?.truckUu?.licensePlate || '---'}</>,
 							},
 							{
 								title: 'KL hàng (Tấn)',

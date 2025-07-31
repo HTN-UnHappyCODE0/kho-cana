@@ -80,12 +80,12 @@ function TableListStorage({}: PropsTableListStorage) {
 						// 	title: 'Khách hàng',
 						// 	render: (data: IDataListStorage) => <span>{data?.countCustomer || 0}</span>,
 						// },
-						{
-							title: 'Tổng lượng tươi (Tấn)',
-							render: (data: IDataListStorage) => (
-								<span style={{color: '#2A85FF'}}>{convertWeight(data?.totalAmountMt)}</span>
-							),
-						},
+						// {
+						// 	title: 'Tổng lượng tươi (Tấn)',
+						// 	render: (data: IDataListStorage) => (
+						// 		<span style={{color: '#2A85FF'}}>{convertWeight(data?.totalAmountMt)}</span>
+						// 	),
+						// },
 						{
 							title: 'Tổng lượng quy khô (Tấn)',
 							render: (data: IDataListStorage) => (

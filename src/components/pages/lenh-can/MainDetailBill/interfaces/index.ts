@@ -4,7 +4,7 @@ export interface IDetailBatchBill {
 	numShip: string;
 	lstTruck: {
 		code: string;
-		licensePalate: string;
+		licensePlate: string;
 		status: number;
 		uuid: number;
 	}[];
@@ -44,13 +44,13 @@ export interface IDetailBatchBill {
 		uuid: string;
 		shipUu: {
 			code: string;
-			licensePalate: string;
+			licensePlate: string;
 			status: number;
 			uuid: string;
 		};
 		shipOutUu: {
 			code: string;
-			licensePalate: string;
+			licensePlate: string;
 			status: number;
 			uuid: string;
 		};
@@ -106,9 +106,8 @@ export interface IDetailBatchBill {
 	weightSessionUu: {
 		truckUu: {
 			code: string;
-			licensePalate: string;
+			licensePlate: string;
 			status: number;
-			uuid: string;
 		};
 		status: number;
 		code: string;
@@ -130,7 +129,7 @@ export interface IDetailBatchBill {
 	weightMon: number;
 	shipTempUu: {
 		code: string;
-		licensePalate: string;
+		licensePlate: string;
 		uuid: string;
 	};
 	drynessAvg: number;

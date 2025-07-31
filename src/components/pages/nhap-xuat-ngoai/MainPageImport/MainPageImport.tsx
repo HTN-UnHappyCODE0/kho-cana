@@ -59,7 +59,7 @@ function MainPageImport({}: PropsMainPageImport) {
 	const [billUuidUpdateShip, setBillUuidUpdateShip] = useState<string | null>(null);
 	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
-	const [truckUuid, setTruckUuid] = useState<string[]>([]);
+	const [truckPlate, setTruckPlate] = useState<string[]>([]);
 	const [uuidCompany, setUuidCompany] = useState<string>('');
 	const [uuidQuality, setUuidQuality] = useState<string>('');
 	const [uuidStorage, setUuidStorage] = useState<string>('');
@@ -143,7 +143,7 @@ function MainPageImport({}: PropsMainPageImport) {
 			uuidStorage,
 			_scalesStationUuid,
 			isHaveDryness,
-			truckUuid,
+			truckPlate,
 			uuidCompany,
 			listCompanyUuid,
 		],
@@ -192,7 +192,7 @@ function MainPageImport({}: PropsMainPageImport) {
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: uuidStorage,
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
-						truckUuid: truckUuid,
+						truckPlates: truckPlate,
 						customerUuid: '',
 						listCustomerUuid: customerUuid,
 						companyUuid: uuidCompany,
@@ -343,7 +343,7 @@ function MainPageImport({}: PropsMainPageImport) {
 					documentId: '',
 					isExportSpec: isHaveSpec,
 					isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
-					truckUuid: truckUuid,
+					truckPlates: truckPlate,
 					companyUuid: uuidCompany,
 					listCompanyUuid: listCompanyUuid,
 				}),
@@ -396,11 +396,11 @@ function MainPageImport({}: PropsMainPageImport) {
 					/>
 
 					<SelectFilterMany
-						selectedIds={truckUuid}
-						setSelectedIds={setTruckUuid}
+						selectedIds={truckPlate}
+						setSelectedIds={setTruckPlate}
 						listData={listTruck?.data?.map((v: any) => ({
 							uuid: v?.uuid,
-							name: v?.licensePalate,
+							name: v?.licensePlate,
 						}))}
 						name='Biển số xe'
 					/>
@@ -421,7 +421,7 @@ function MainPageImport({}: PropsMainPageImport) {
 						query='_shipUuid'
 						listFilter={listShip?.data?.map((v: any) => ({
 							id: v?.uuid,
-							name: v?.licensePalate,
+							name: v?.licensePlate,
 						}))}
 					/>
 
@@ -612,7 +612,7 @@ function MainPageImport({}: PropsMainPageImport) {
 										{!(data?.scalesType == TYPE_SCALES.CAN_XUAT) && (
 											<>
 												<p style={{fontWeight: 500, color: '#3772FF'}}>
-													{data?.batchsUu?.shipUu?.licensePalate || '---'}
+													{data?.batchsUu?.shipUu?.licensePlate || '---'}
 												</p>
 											</>
 										)}
@@ -626,16 +626,16 @@ function MainPageImport({}: PropsMainPageImport) {
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.toUu?.name || '---'}</p>
 										{data?.scalesType == TYPE_SCALES.CAN_XUAT && (
 											<p style={{fontWeight: 400, color: '#3772FF'}}>
-												{data?.batchsUu?.shipUu?.licensePalate || '---'}
+												{data?.batchsUu?.shipUu?.licensePlate || '---'}
 											</p>
 										)}
 										{!(data?.scalesType == TYPE_SCALES.CAN_XUAT) && (
 											<p style={{fontWeight: 400, color: '#3772FF'}}>
-												{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+												{data?.batchsUu?.shipOutUu?.licensePlate || '---'}
 											</p>
 										)}
 										{/* <p style={{fontWeight: 600, color: '#3772FF'}}>
-											{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+											{data?.batchsUu?.shipOutUu?.licensePlate || '---'}
 										</p> */}
 									</>
 								),
@@ -676,7 +676,7 @@ function MainPageImport({}: PropsMainPageImport) {
 							},
 							{
 								title: 'Tàu trung chuyển',
-								render: (data: any) => <>{data?.shipTempUu?.licensePalate || '---'}</>,
+								render: (data: any) => <>{data?.shipTempUu?.licensePlate || '---'}</>,
 							},
 							{
 								title: 'Xác nhận SL',
@@ -813,7 +813,7 @@ function MainPageImport({}: PropsMainPageImport) {
 						uuidStorage,
 						_scalesStationUuid,
 						isHaveDryness,
-						truckUuid,
+						truckPlate,
 						uuidCompany,
 						listCompanyUuid,
 					]}

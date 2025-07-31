@@ -19,9 +19,9 @@ export function isShipCode(shipCode: string) {
 	return shipCodeRegex.test(shipCode);
 }
 
-export function isLicensePalate(licensePalate: string) {
-	const licensePalateRegex = /^[0-9]{2}[A-Z]{1}-[0-9]{3}[0-9]{2}$/;
+export function isLicensePlate(licensePlate: string) {
+	const licensePlateRegex = /^[0-9]{2}[A-Z]{1}-[0-9]{3}[0-9]{2}$/;
 	//example: 43A-12345
 
-	return licensePalateRegex.test(licensePalate);
+	return licensePlateRegex.test(licensePlate);
 }
