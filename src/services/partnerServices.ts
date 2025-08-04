@@ -52,7 +52,7 @@ const partnerServices = {
 			phoneNumber: string;
 			email: string;
 			director: string;
-			districtId: string;
+			// districtId: string;
 			provinceId: string;
 			townId: string;
 			address: string;

@@ -76,10 +76,10 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 			const ships = dataUpdateWeigh.flatMap((item) => {
 				const shipArray = [];
 				if (item?.batchUu?.shipUu) {
-					shipArray.push({name: item?.batchUu?.shipUu?.licensePalate, uuid: item?.batchUu?.shipUu?.uuid});
+					shipArray.push({name: item?.batchUu?.shipUu?.licensePlate, uuid: item?.batchUu?.shipUu?.uuid});
 				}
 				if (item?.batchUu?.shipOutUu) {
-					shipArray.push({name: item?.batchUu?.shipOutUu?.licensePalate, uuid: item?.batchUu?.shipOutUu?.uuid});
+					shipArray.push({name: item?.batchUu?.shipOutUu?.licensePlate, uuid: item?.batchUu?.shipOutUu?.uuid});
 				}
 				shipArray.filter((ship, index, self) => index === self.findIndex((c) => c.uuid === ship.uuid));
 				return shipArray;
@@ -321,7 +321,7 @@ function FormUpdateWeigh({onClose, dataUpdateWeigh}: PropsFormUpdateWeigh) {
 							setUuid={setShipUuid}
 							listData={listShip?.map((v: any) => ({
 								uuid: v?.uuid,
-								name: v?.licensePalate,
+								name: v?.licensePlate,
 							}))}
 							placeholder='Tất cả tàu'
 						/>

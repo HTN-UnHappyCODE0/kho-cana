@@ -47,7 +47,8 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 	const {_id} = router.query;
 
 	const [form, setForm] = useState<IFormUpdateImport>({
-		weightIntent: 0,
+		weight1: 0,
+		weight2: 0,
 		specificationsUuid: '',
 		warehouseUuid: '',
 		productTypeUuid: '',
@@ -77,7 +78,8 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 			if (data) {
 				setForm({
 					transportType: data?.transportType,
-					weightIntent: convertCoin(data?.batchsUu?.weightIntent),
+					weight1: convertCoin(data?.weight1),
+					weight2: convertCoin(data?.weight2),
 					specificationsUuid: data?.specificationsUu?.uuid,
 					warehouseUuid: data?.toUu?.parentUu?.uuid || '',
 					productTypeUuid: data?.productTypeUu?.uuid,
@@ -242,7 +244,8 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					isCreateBatch: 1,
 					shipUuid: form.shipUuid,
 					timeIntend: null,
-					weightIntent: price(form?.weightIntent),
+					weight1: price(form?.weight1),
+					weight2: price(form?.weight2),
 					isBatch: TYPE_BATCH.KHONG_CAN,
 					isSift: TYPE_SIFT.KHONG_CAN_SANG,
 					scalesType: TYPE_SCALES.CAN_NHAP,
@@ -254,8 +257,8 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 					toUuid: form?.toUuid,
 					isPrint: 0,
 					transportType: form?.transportType,
-					lstTruckAddUuid: [],
-					lstTruckRemoveUuid: [],
+					lstTruckPlateAdd: [],
+					lstTruckPlateRemove: [],
 					scaleStationUuid: '',
 					portname: form.portname,
 					descriptionWs: '',
@@ -303,6 +306,9 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 		}
 		if (form.dryness < 0 || form.dryness > 100) {
 			return toastWarn({msg: 'Độ khô không hợp lệ!'});
+		}
+		if (Math.abs(Number(form.weight1) - Number(form.weight2)) < 0.01) {
+			return toastWarn({msg: 'Khối lượng cân lần 1 và lần 2 chưa đúng!'});
 		}
 		if (tomorrow < timeStart) {
 			return toastWarn({msg: 'Ngày bắt đầu không hợp lệ!'});
@@ -437,13 +443,12 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 						</Select>
 						<div>
 							<Input
-								name='dryness'
-								value={form.dryness || ''}
-								unit='%'
-								type='number'
-								blur={true}
-								placeholder='Nhập độ khô'
-								label={<span>Độ khô</span>}
+								name='documentId'
+								value={form.documentId || ''}
+								max={255}
+								type='text'
+								label={<span>Số chứng từ</span>}
+								placeholder='Nhập số chứng từ'
 							/>
 						</div>
 					</div>
@@ -464,7 +469,7 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 								<Option
 									key={v?.uuid}
 									value={v?.uuid}
-									title={v?.licensePalate}
+									title={v?.licensePlate}
 									onClick={() =>
 										setForm((prev) => ({
 											...prev,
@@ -600,29 +605,46 @@ function MainUpdateImport({}: PropsMainUpdateImport) {
 							</Select>
 						</div>
 					</div>
-					<div className={clsx('mt', 'col_2')}>
+
+					<div className={clsx('mt', 'col_3')}>
 						<Input
-							name='weightIntent'
-							value={form.weightIntent || ''}
+							name='weight1'
+							value={form.weight1 || ''}
 							type='text'
 							isMoney
 							unit='KG'
 							label={
 								<span>
-									Khối lượng hàng <span style={{color: 'red'}}>*</span>
+									KL cân lần 1 <span style={{color: 'red'}}>*</span>
 								</span>
 							}
-							placeholder='Nhập khối lượng hàng'
+							placeholder='Nhập kL cân lần 1'
 						/>
 
 						<div>
 							<Input
-								name='documentId'
-								value={form.documentId || ''}
-								max={255}
+								name='weight2'
+								value={form.weight2 || ''}
 								type='text'
-								label={<span>Số chứng từ</span>}
-								placeholder='Nhập số chứng từ'
+								isMoney
+								unit='KG'
+								label={
+									<span>
+										KL cân lần 2 <span style={{color: 'red'}}>*</span>
+									</span>
+								}
+								placeholder='Nhập kL cân lần 2'
+							/>
+						</div>
+						<div>
+							<Input
+								name='dryness'
+								value={form.dryness || ''}
+								unit='%'
+								type='number'
+								blur={true}
+								placeholder='Nhập độ khô'
+								label={<span>Độ khô</span>}
 							/>
 						</div>
 					</div>

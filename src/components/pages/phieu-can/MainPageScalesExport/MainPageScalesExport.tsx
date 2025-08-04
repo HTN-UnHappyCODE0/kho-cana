@@ -60,7 +60,7 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 	const queryClient = useQueryClient();
 	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
-	const [truckUuid, setTruckUuid] = useState<string[]>([]);
+	const [truckPlate, setTruckPlate] = useState<string[]>([]);
 	const [uuidQuality, setUuidQuality] = useState<string>('');
 	const [nameQuality, setNameQuality] = useState<string>('');
 	const [uuidStorage, setUuidStorage] = useState<string>('');
@@ -271,7 +271,7 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 			_state,
 			uuidScalesStation,
 			isHaveDryness,
-			truckUuid,
+			truckPlate,
 			uuidCompany,
 			listCompanyUuid,
 		],
@@ -320,7 +320,7 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 						scalesStationUuid: (uuidScalesStation as string) || '',
 						storageUuid: uuidStorage,
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
-						truckUuid: truckUuid,
+						truckPlates: truckPlate,
 						customerUuid: '',
 						listCustomerUuid: customerUuid,
 						companyUuid: uuidCompany,
@@ -435,7 +435,7 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 					storageUuid: uuidStorage,
 					isExportSpec: isHaveSpec,
 					isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
-					truckUuid: truckUuid,
+					truckPlates: truckPlate,
 					companyUuid: uuidCompany,
 					listCompanyUuid: listCompanyUuid,
 				}),
@@ -562,11 +562,11 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 						/>
 					</div>
 					<SelectFilterMany
-						selectedIds={truckUuid}
-						setSelectedIds={setTruckUuid}
+						selectedIds={truckPlate}
+						setSelectedIds={setTruckPlate}
 						listData={listTruck?.data?.map((v: any) => ({
 							uuid: v?.uuid,
-							name: v?.licensePalate,
+							name: v?.licensePlate,
 						}))}
 						name='Biển số xe'
 					/>
@@ -586,7 +586,7 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 						setName={setNameShip}
 						listData={listShip?.data?.map((v: any) => ({
 							uuid: v?.uuid,
-							name: v?.licensePalate,
+							name: v?.licensePlate,
 						}))}
 						placeholder='Mã tàu'
 					/>
@@ -784,12 +784,12 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 											<>
 												{data?.isBatch == TYPE_BATCH.CAN_LO && (
 													<p style={{fontWeight: 500, color: '#3772FF'}}>
-														{data?.batchsUu?.shipUu?.licensePalate || '---'}
+														{data?.batchsUu?.shipUu?.licensePlate || '---'}
 													</p>
 												)}
 												{data?.isBatch == TYPE_BATCH.CAN_LE && (
 													<p style={{fontWeight: 500, color: '#3772FF'}}>
-														{data?.weightSessionUu?.truckUu?.licensePalate || '---'}
+														{data?.weightSessionUu?.truckUu?.licensePlate || '---'}
 													</p>
 												)}
 											</>
@@ -806,16 +806,16 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 											data?.scalesType == TYPE_SCALES.CAN_XUAT &&
 												(data?.isBatch == TYPE_BATCH.CAN_LO ? (
 													<p style={{fontWeight: 400, color: '#3772FF'}}>
-														{data?.batchsUu?.shipUu?.licensePalate || '---'} . {data?.numShip || '---'}
+														{data?.batchsUu?.shipUu?.licensePlate || '---'} . {data?.numShip || '---'}
 													</p>
 												) : (
 													<p style={{fontWeight: 400, color: '#3772FF'}}>
-														{data?.batchsUu?.shipUu?.licensePalate || '---'}
+														{data?.batchsUu?.shipUu?.licensePlate || '---'}
 													</p>
 												))
 											// (
 											// 	<p style={{fontWeight: 400, color: '#3772FF'}}>
-											// 		{data?.batchsUu?.shipUu?.licensePalate || '---'}
+											// 		{data?.batchsUu?.shipUu?.licensePlate || '---'}
 											// 	</p>
 											// )
 										}
@@ -823,27 +823,27 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 											!(data?.scalesType == TYPE_SCALES.CAN_XUAT) &&
 												(data?.isBatch == TYPE_BATCH.CAN_LO ? (
 													<p style={{fontWeight: 400, color: '#3772FF'}}>
-														{data?.batchsUu?.shipOutUu?.licensePalate || '---'} . {data?.numShip || '---'}
+														{data?.batchsUu?.shipOutUu?.licensePlate || '---'} . {data?.numShip || '---'}
 													</p>
 												) : (
 													<p style={{fontWeight: 400, color: '#3772FF'}}>
-														{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+														{data?.batchsUu?.shipOutUu?.licensePlate || '---'}
 													</p>
 												))
 											// (
 											// 	<p style={{fontWeight: 400, color: '#3772FF'}}>
-											// 		{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+											// 		{data?.batchsUu?.shipOutUu?.licensePlate || '---'}
 											// 	</p>
 											// )
 										}
 										{/* {data?.scalesType == TYPE_SCALES.CAN_XUAT && (
 											<p style={{fontWeight: 400, color: '#3772FF'}}>
-												{data?.batchsUu?.shipUu?.licensePalate || '---'}
+												{data?.batchsUu?.shipUu?.licensePlate || '---'}
 											</p>
 										)}
 										{!(data?.scalesType == TYPE_SCALES.CAN_XUAT) && (
 											<p style={{fontWeight: 400, color: '#3772FF'}}>
-												{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+												{data?.batchsUu?.shipOutUu?.licensePlate || '---'}
 											</p>
 										)} */}
 									</>
@@ -894,7 +894,7 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 							},
 							{
 								title: 'Tàu trung chuyển',
-								render: (data: ITableBillScale) => <>{data?.shipTempUu?.licensePalate || '---'}</>,
+								render: (data: ITableBillScale) => <>{data?.shipTempUu?.licensePlate || '---'}</>,
 							},
 							{
 								title: 'Xác nhận SL',
@@ -1112,7 +1112,7 @@ function MainPageScalesExport({}: PropsMainPageScalesExport) {
 							uuidStorage,
 							uuidScalesStation,
 							isHaveDryness,
-							truckUuid,
+							truckPlate,
 							uuidCompany,
 							listCompanyUuid,
 						]}

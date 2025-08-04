@@ -4,7 +4,7 @@ export interface IDataBill {
 	numShip: string;
 	lstTruck: {
 		code: string;
-		licensePalate: string;
+		licensePlate: string;
 		status: number;
 		uuid: number;
 	}[];
@@ -44,13 +44,13 @@ export interface IDataBill {
 		uuid: string;
 		shipUu: {
 			code: string;
-			licensePalate: string;
+			licensePlate: string;
 			status: number;
 			uuid: string;
 		};
 		shipOutUu: {
 			code: string;
-			licensePalate: string;
+			licensePlate: string;
 			status: number;
 			uuid: string;
 		};
@@ -106,7 +106,7 @@ export interface IDataBill {
 	weigth2: number;
 	shipTempUu: {
 		code: string;
-		licensePalate: string;
+		licensePlate: string;
 		uuid: string;
 	};
 }

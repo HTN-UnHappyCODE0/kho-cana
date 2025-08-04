@@ -66,7 +66,7 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 	const [billUuid, setBilldUuid] = useState<string | null>(null);
 	const [billUuidUpdateShip, setBillUuidUpdateShip] = useState<string | null>(null);
 	const [billUuidReStart, setBillUuidReStart] = useState<string | null>(null);
-	const [truckUuid, setTruckUuid] = useState<string[]>([]);
+	const [truckPlate, setTruckPlate] = useState<string[]>([]);
 	const [uuidCompany, setUuidCompany] = useState<string>('');
 	const [uuidQuality, setUuidQuality] = useState<string>('');
 	const [uuidStorage, setUuidStorage] = useState<string>('');
@@ -255,7 +255,7 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 			_scalesStationUuid,
 			isHaveDryness,
 			customerUuid,
-			truckUuid,
+			truckPlate,
 			uuidCompany,
 			listCompanyUuid,
 		],
@@ -286,7 +286,7 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: uuidStorage,
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
-						truckUuid: truckUuid,
+						truckPlates: truckPlate,
 						customerUuid: '',
 						listCustomerUuid: customerUuid,
 						companyUuid: uuidCompany,
@@ -377,11 +377,11 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 					/>
 
 					<SelectFilterMany
-						selectedIds={truckUuid}
-						setSelectedIds={setTruckUuid}
+						selectedIds={truckPlate}
+						setSelectedIds={setTruckPlate}
 						listData={listTruck?.data?.map((v: any) => ({
 							uuid: v?.uuid,
-							name: v?.licensePalate,
+							name: v?.licensePlate,
 						}))}
 						name='Biển số xe'
 					/>
@@ -402,7 +402,7 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 						query='_shipUuid'
 						listFilter={listShip?.data?.map((v: any) => ({
 							id: v?.uuid,
-							name: v?.licensePalate,
+							name: v?.licensePlate,
 						}))}
 					/>
 
@@ -529,7 +529,7 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 										)}
 										{!(data?.scalesType == TYPE_SCALES.CAN_XUAT) && (
 											<p style={{fontWeight: 400, color: '#3772FF'}}>
-												{data?.batchsUu?.shipUu?.licensePalate || '---'}
+												{data?.batchsUu?.shipUu?.licensePlate || '---'}
 											</p>
 										)}
 									</>
@@ -544,16 +544,16 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 											data?.scalesType == TYPE_SCALES.CAN_XUAT &&
 												(data?.isBatch == TYPE_BATCH.CAN_LO ? (
 													<p style={{fontWeight: 400, color: '#3772FF'}}>
-														{data?.batchsUu?.shipUu?.licensePalate || '---'} . {data?.numShip || '---'}
+														{data?.batchsUu?.shipUu?.licensePlate || '---'} . {data?.numShip || '---'}
 													</p>
 												) : (
 													<p style={{fontWeight: 400, color: '#3772FF'}}>
-														{data?.batchsUu?.shipUu?.licensePalate || '---'}
+														{data?.batchsUu?.shipUu?.licensePlate || '---'}
 													</p>
 												))
 											// (
 											// 	<p style={{fontWeight: 400, color: '#3772FF'}}>
-											// 		{data?.batchsUu?.shipUu?.licensePalate || '---'}
+											// 		{data?.batchsUu?.shipUu?.licensePlate || '---'}
 											// 	</p>
 											// )
 										}
@@ -561,16 +561,16 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 											!(data?.scalesType == TYPE_SCALES.CAN_XUAT) &&
 												(data?.isBatch == TYPE_BATCH.CAN_LO ? (
 													<p style={{fontWeight: 400, color: '#3772FF'}}>
-														{data?.batchsUu?.shipOutUu?.licensePalate || '---'} . {data?.numShip || '---'}
+														{data?.batchsUu?.shipOutUu?.licensePlate || '---'} . {data?.numShip || '---'}
 													</p>
 												) : (
 													<p style={{fontWeight: 400, color: '#3772FF'}}>
-														{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+														{data?.batchsUu?.shipOutUu?.licensePlate || '---'}
 													</p>
 												))
 											// (
 											// 	<p style={{fontWeight: 400, color: '#3772FF'}}>
-											// 		{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+											// 		{data?.batchsUu?.shipOutUu?.licensePlate || '---'}
 											// 	</p>
 											// )
 										}
@@ -623,7 +623,7 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 							},
 							{
 								title: 'Tàu trung chuyển',
-								render: (data: IDataBill) => <>{data?.shipTempUu?.licensePalate || '---'}</>,
+								render: (data: IDataBill) => <>{data?.shipTempUu?.licensePlate || '---'}</>,
 							},
 							{
 								title: 'Ngày dự kiến',
@@ -730,7 +730,7 @@ function MainPageBillDirect({}: PropsMainPageBillDirect) {
 						uuidQuality,
 						_scalesStationUuid,
 						isHaveDryness,
-						truckUuid,
+						truckPlate,
 						uuidCompany,
 						uuidStorage,
 						listCompanyUuid,

@@ -151,7 +151,7 @@ function MainPageSampleSession({}: PropsMainPageSampleSession) {
 					</div>
 					<FilterCustom
 						isSearch
-						name='Khách hàng'
+						name='Khách hàng '
 						query='_customerUuid'
 						listFilter={listCustomer?.data?.map((v: any) => ({
 							id: v?.uuid,
@@ -165,7 +165,7 @@ function MainPageSampleSession({}: PropsMainPageSampleSession) {
 						query='_shipUuid'
 						listFilter={listShip?.data?.map((v: any) => ({
 							id: v?.uuid,
-							name: v?.licensePalate,
+							name: v?.licensePlate,
 						}))}
 					/>
 					<div className={styles.filter}>
@@ -303,7 +303,7 @@ function MainPageSampleSession({}: PropsMainPageSampleSession) {
 								render: (data: ISampleSession) => (
 									<>
 										<p>{data?.customerUu?.name || '---'}</p>
-										<p style={{fontWeight: 600}}>{data?.shipUu?.licensePalate || '---'}</p>
+										<p style={{fontWeight: 600}}>{data?.shipUu?.licensePlate || '---'}</p>
 									</>
 								),
 							},

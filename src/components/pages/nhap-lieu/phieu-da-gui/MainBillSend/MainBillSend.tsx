@@ -50,7 +50,7 @@ function MainBillSend({}: PropsMainBillSend) {
 	const router = useRouter();
 	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
-	const [truckUuid, setTruckUuid] = useState<string[]>([]);
+	const [truckPlate, setTruckPlate] = useState<string[]>([]);
 
 	const {_page, _pageSize, _keyword, _isBatch, _isShift, _productTypeUuid, _specUuid, _dateFrom, _dateTo, _scalesStationUuid} =
 		router.query;
@@ -250,7 +250,7 @@ function MainBillSend({}: PropsMainBillSend) {
 			uuidStorage,
 			_scalesStationUuid,
 			isHaveDryness,
-			truckUuid,
+			truckPlate,
 			uuidCompany,
 			listCompanyUuid,
 		],
@@ -283,7 +283,7 @@ function MainBillSend({}: PropsMainBillSend) {
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: uuidStorage,
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
-						truckUuid: truckUuid,
+						truckPlates: truckPlate,
 						customerUuid: '',
 						listCustomerUuid: customerUuid,
 						companyUuid: uuidCompany,
@@ -384,11 +384,11 @@ function MainBillSend({}: PropsMainBillSend) {
 						/>
 					</div>
 					<SelectFilterMany
-						selectedIds={truckUuid}
-						setSelectedIds={setTruckUuid}
+						selectedIds={truckPlate}
+						setSelectedIds={setTruckPlate}
 						listData={listTruck?.data?.map((v: any) => ({
 							uuid: v?.uuid,
-							name: v?.licensePalate,
+							name: v?.licensePlate,
 						}))}
 						name='Biển số xe'
 					/>
@@ -613,7 +613,7 @@ function MainBillSend({}: PropsMainBillSend) {
 							uuidStorage,
 							_scalesStationUuid,
 							isHaveDryness,
-							truckUuid,
+							truckPlate,
 							uuidCompany,
 							listCompanyUuid,
 						]}

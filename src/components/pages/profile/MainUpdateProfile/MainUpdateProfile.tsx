@@ -49,7 +49,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 		linkImage: '',
 		ownerUuid: '',
 		provinceId: '',
-		districtId: '',
+		// districtId: '',
 		townId: '',
 		provinceOwnerId: '',
 	});
@@ -75,7 +75,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 				linkImage: data?.linkImage,
 				ownerUuid: data?.userOwnerUu?.uuid,
 				provinceId: data?.detailAddress?.province?.uuid,
-				districtId: data?.detailAddress?.district?.uuid,
+				// districtId: data?.detailAddress?.district?.uuid,
 				townId: data?.detailAddress?.town?.uuid,
 				provinceOwnerId: data?.provinceOwner || '',
 			});
@@ -100,36 +100,36 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 		},
 	});
 
-	const listDistrict = useQuery([QUERY_KEY.dropdown_quan_huyen, form.provinceId], {
-		queryFn: () =>
-			httpRequest({
-				isDropdown: true,
-				http: commonServices.listDistrict({
-					keyword: '',
-					status: null,
-					idParent: form?.provinceId,
-				}),
-			}),
-		select(data) {
-			return data;
-		},
-		enabled: !!form?.provinceId,
-	});
+	// const listDistrict = useQuery([QUERY_KEY.dropdown_quan_huyen, form.provinceId], {
+	// 	queryFn: () =>
+	// 		httpRequest({
+	// 			isDropdown: true,
+	// 			http: commonServices.listDistrict({
+	// 				keyword: '',
+	// 				status: null,
+	// 				idParent: form?.provinceId,
+	// 			}),
+	// 		}),
+	// 	select(data) {
+	// 		return data;
+	// 	},
+	// 	enabled: !!form?.provinceId,
+	// });
 
-	const listTown = useQuery([QUERY_KEY.dropdown_xa_phuong, form?.districtId], {
+	const listTown = useQuery([QUERY_KEY.dropdown_xa_phuong, form?.provinceId], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
 				http: commonServices.listTown({
 					keyword: '',
 					status: null,
-					idParent: form.districtId,
+					idParent: form.provinceId,
 				}),
 			}),
 		select(data) {
 			return data;
 		},
-		enabled: !!form?.districtId,
+		enabled: !!form?.provinceId,
 	});
 
 	const listRegency = useQuery([QUERY_KEY.dropdown_chuc_vu], {
@@ -199,7 +199,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 							? form.ownerUuid
 							: '',
 					provinceId: form.provinceId,
-					districtId: form.districtId,
+					// districtId: form.districtId,
 					townId: form.townId,
 					provinceOwnerId:
 						form.regencyUuid == listRegency?.data?.find((x: any) => x?.code == REGENCY_NAME['Nhân viên thị trường'])?.uuid ||
@@ -373,17 +373,13 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 						placeholder='Nhập khu vực quản lý'
 					/>
 				</div>
-				<div className={clsx('mt', 'col_3')}>
+				<div className={clsx('mt', 'col_2')}>
 					<Select
 						isSearch
 						name='provinceId'
 						value={form.provinceId}
 						placeholder='Chọn tỉnh/thành phố'
-						label={
-							<span>
-								Tỉnh/Thành phố <span style={{color: 'red'}}>*</span>
-							</span>
-						}
+						label={<span>Tỉnh/Thành phố</span>}
 					>
 						{listProvince?.data?.map((v: any) => (
 							<Option
@@ -394,14 +390,13 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 									setForm((prev: any) => ({
 										...prev,
 										provinceId: v?.matp,
-										districtId: '',
 										townId: '',
 									}))
 								}
 							/>
 						))}
 					</Select>
-					<div>
+					{/* <div>
 						<Select
 							isSearch
 							name='districtId'
@@ -428,32 +423,24 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 								/>
 							))}
 						</Select>
+					</div> */}
+					<div>
+						<Select isSearch name='townId' value={form.townId} placeholder='Chọn xã/phường' label={<span>Xã/phường</span>}>
+							{listTown?.data?.map((v: any) => (
+								<Option
+									key={v?.xaid}
+									value={v?.xaid}
+									title={v?.name}
+									onClick={() =>
+										setForm((prev: any) => ({
+											...prev,
+											townId: v?.xaid,
+										}))
+									}
+								/>
+							))}
+						</Select>
 					</div>
-					<Select
-						isSearch
-						name='townId'
-						value={form.townId}
-						placeholder='Chọn xã/phường'
-						label={
-							<span>
-								Xã/phường <span style={{color: 'red'}}>*</span>
-							</span>
-						}
-					>
-						{listTown?.data?.map((v: any) => (
-							<Option
-								key={v?.xaid}
-								value={v?.xaid}
-								title={v?.name}
-								onClick={() =>
-									setForm((prev: any) => ({
-										...prev,
-										townId: v?.xaid,
-									}))
-								}
-							/>
-						))}
-					</Select>
 				</div>
 				<div className={clsx('mt')}>
 					<Input placeholder='Nhập địa chỉ chi tiết' name='address' max={255} label={<span>Địa chỉ chi tiết</span>} blur={true} />

@@ -42,7 +42,6 @@ function UpdateCustomerService({}: PropsUpdateCustomerService) {
 		email: '',
 		phoneNumber: '',
 		provinceId: '',
-		districtId: '',
 		townId: '',
 		address: '',
 		description: '',
@@ -69,7 +68,6 @@ function UpdateCustomerService({}: PropsUpdateCustomerService) {
 					email: data?.email || '',
 					phoneNumber: data?.phoneNumber || '',
 					provinceId: data?.detailAddress?.province?.uuid || '',
-					districtId: data?.detailAddress?.district?.uuid || '',
 					townId: data?.detailAddress?.town?.uuid || '',
 					address: data?.address || '',
 					description: data?.description || '',
@@ -165,36 +163,20 @@ function UpdateCustomerService({}: PropsUpdateCustomerService) {
 		},
 	});
 
-	const listDistrict = useQuery([QUERY_KEY.dropdown_quan_huyen, form?.provinceId], {
-		queryFn: () =>
-			httpRequest({
-				isDropdown: true,
-				http: commonServices.listDistrict({
-					keyword: '',
-					status: null,
-					idParent: form?.provinceId,
-				}),
-			}),
-		select(data) {
-			return data;
-		},
-		enabled: !!form?.provinceId,
-	});
-
-	const listTown = useQuery([QUERY_KEY.dropdown_xa_phuong, form.districtId], {
+	const listTown = useQuery([QUERY_KEY.dropdown_xa_phuong, form.provinceId], {
 		queryFn: () =>
 			httpRequest({
 				isDropdown: true,
 				http: commonServices.listTown({
 					keyword: '',
 					status: null,
-					idParent: form.districtId,
+					idParent: form.provinceId,
 				}),
 			}),
 		select(data) {
 			return data;
 		},
-		enabled: !!form?.districtId,
+		enabled: !!form?.provinceId,
 	});
 
 	const listWarehouse = useQuery([QUERY_KEY.dropdown_kho_hang_chinh], {
@@ -232,7 +214,6 @@ function UpdateCustomerService({}: PropsUpdateCustomerService) {
 					name: form.name,
 					phoneNumber: form?.phoneNumber,
 					provinceId: form?.provinceId,
-					districtId: form?.districtId,
 					townId: form?.townId,
 					address: form?.address,
 					userUuid: form?.userUuid,
@@ -263,19 +244,11 @@ function UpdateCustomerService({}: PropsUpdateCustomerService) {
 		if (!form.userUuid) {
 			return toastWarn({msg: 'Vui lòng chọn nhân viên quản lý!'});
 		}
-		if (!form.provinceId) {
-			return toastWarn({msg: 'Vui lòng chọn tỉnh/thành phố!'});
-		}
-		if (!form.districtId) {
-			return toastWarn({msg: 'Vui lòng chọn quận/huyện!'});
-		}
+
 		if (!form.partnerUuid) {
 			return toastWarn({
 				msg: `Vui lòng nhập tên khách hàng!`,
 			});
-		}
-		if (!form.townId) {
-			return toastWarn({msg: 'Vui lòng chọn xã/phường!'});
 		}
 
 		return funcUpdateCustomer.mutate();
@@ -464,17 +437,13 @@ function UpdateCustomerService({}: PropsUpdateCustomerService) {
 						</div>
 					</div>
 
-					<div className={clsx('mt', 'col_3')}>
+					<div className={clsx('mt', 'col_2')}>
 						<Select
 							isSearch
 							name='provinceId'
 							value={form.provinceId}
 							placeholder='Chọn tỉnh/thành phố'
-							label={
-								<span>
-									Tỉnh/Thành phố <span style={{color: 'red'}}>*</span>
-								</span>
-							}
+							label={<span>Tỉnh/Thành phố</span>}
 						>
 							{listProvince?.data?.map((v: any) => (
 								<Option
@@ -485,7 +454,6 @@ function UpdateCustomerService({}: PropsUpdateCustomerService) {
 										setForm((prev: any) => ({
 											...prev,
 											provinceId: v?.matp,
-											districtId: '',
 											townId: '',
 											userUuid: '',
 										}))
@@ -494,58 +462,22 @@ function UpdateCustomerService({}: PropsUpdateCustomerService) {
 							))}
 						</Select>
 						<div>
-							<Select
-								isSearch
-								name='districtId'
-								value={form.districtId}
-								placeholder='Chọn quận/huyện'
-								label={
-									<span>
-										Quận/Huyện <span style={{color: 'red'}}>*</span>
-									</span>
-								}
-							>
-								{listDistrict?.data?.map((v: any) => (
+							<Select isSearch name='townId' value={form.townId} placeholder='Chọn xã/phường' label={<span>Xã/phường</span>}>
+								{listTown?.data?.map((v: any) => (
 									<Option
-										key={v?.maqh}
-										value={v?.maqh}
+										key={v?.xaid}
+										value={v?.xaid}
 										title={v?.name}
 										onClick={() =>
 											setForm((prev: any) => ({
 												...prev,
-												districtId: v?.maqh,
-												townId: '',
+												townId: v?.xaid,
 											}))
 										}
 									/>
 								))}
 							</Select>
 						</div>
-						<Select
-							isSearch
-							name='townId'
-							value={form.townId}
-							placeholder='Chọn xã/phường'
-							label={
-								<span>
-									Xã/phường <span style={{color: 'red'}}>*</span>
-								</span>
-							}
-						>
-							{listTown?.data?.map((v: any) => (
-								<Option
-									key={v?.xaid}
-									value={v?.xaid}
-									title={v?.name}
-									onClick={() =>
-										setForm((prev: any) => ({
-											...prev,
-											townId: v?.xaid,
-										}))
-									}
-								/>
-							))}
-						</Select>
 					</div>
 
 					<div className={clsx('mt')}>

@@ -273,8 +273,8 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 					fromUuid: form.fromUuid,
 					toUuid: form?.toUuid,
 					isPrint: form.isPrint,
-					lstTruckAddUuid: listTruckChecked?.map((v) => v.uuid),
-					lstTruckRemoveUuid: [],
+					lstTruckPlateAdd: listTruckChecked?.map((v) => v.uuid),
+					lstTruckPlateRemove: [],
 					scaleStationUuid: form.scaleStationUuid,
 					portname: form.portname,
 				}),
@@ -746,7 +746,7 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 							dataList={
 								listTruck?.data?.map((v: any) => ({
 									uuid: v?.uuid,
-									name: v?.licensePalate,
+									name: v?.licensePlate,
 									code: v?.code,
 								})) || []
 							}

@@ -268,8 +268,8 @@ function MainCreateExport({}: PropsMainCreateExport) {
 					isPrint: form.isPrint,
 					isBatch: TYPE_BATCH.CAN_LO,
 					shipOutUuid: '',
-					lstTruckAddUuid: listTruckChecked?.map((v) => v.uuid),
-					lstTruckRemoveUuid: [],
+					lstTruckPlateAdd: listTruckChecked?.map((v) => v.uuid),
+					lstTruckPlateRemove: [],
 					scaleStationUuid: form?.scaleStationUuid,
 					portname: form.portname,
 					numShip: form?.numShip,
@@ -553,7 +553,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 								<Option
 									key={v?.uuid}
 									value={v?.uuid}
-									title={v?.licensePalate}
+									title={v?.licensePlate}
 									onClick={() =>
 										setForm((prev) => ({
 											...prev,
@@ -769,7 +769,7 @@ function MainCreateExport({}: PropsMainCreateExport) {
 							dataList={
 								listTruck?.data?.map((v: any) => ({
 									uuid: v?.uuid,
-									name: v?.licensePalate,
+									name: v?.licensePlate,
 									code: v?.code,
 								})) || []
 							}

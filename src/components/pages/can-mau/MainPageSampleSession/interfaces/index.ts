@@ -24,7 +24,7 @@ export interface ISampleSession {
 	};
 	shipUu: {
 		code: string;
-		licensePalate: string;
+		licensePlate: string;
 		status: number;
 		uuid: string;
 	};

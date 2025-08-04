@@ -67,7 +67,7 @@ const userServices = {
 			linkImage: string;
 			ownerUuid: string;
 			provinceId: string;
-			districtId: string;
+			// districtId: string;
 			townId: string;
 			provinceOwnerId: string;
 		},

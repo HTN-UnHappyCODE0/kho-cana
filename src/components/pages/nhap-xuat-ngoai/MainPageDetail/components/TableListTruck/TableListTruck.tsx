@@ -42,13 +42,13 @@ function TableListTruck({}: PropsTableListTruck) {
 					storageUuid: '',
 					timeEnd: null,
 					timeStart: null,
-					truckUuid: '',
+					truckPlate: '',
 					customerUuid: '',
 					groupBy: 1,
 					productTypeUuid: '',
 					shift: null,
 					status: [],
-					listTruckUuid: [],
+					listTruckPlate: [],
 				}),
 			}),
 		select(data) {
@@ -81,14 +81,14 @@ function TableListTruck({}: PropsTableListTruck) {
 								title: 'STT',
 								render: (data: any, index: number) => <>{index + 1}</>,
 							},
-							{
-								title: 'Logo xe',
-								fixedLeft: true,
-								render: (data: any) => <>{data?.truckUu?.code}</>,
-							},
+							// {
+							// 	title: 'Logo xe',
+							// 	fixedLeft: true,
+							// 	render: (data: any) => <>{data?.truckUu?.code}</>,
+							// },
 							{
 								title: 'Biển số xe',
-								render: (data: any) => <>{data?.truckUu?.licensePalate}</>,
+								render: (data: any) => <>{data?.truckUu?.licensePlate}</>,
 							},
 							{
 								title: 'Số lượt cân',

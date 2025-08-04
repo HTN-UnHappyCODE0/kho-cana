@@ -61,7 +61,7 @@ function MainPageDelverTruck({}: PropsMainPageDelverTruck) {
 				showMessageSuccess: true,
 				msgSuccess: dataStatus?.status == CONFIG_STATUS.HOAT_DONG ? 'Khóa thành công' : 'Mở khóa thành công',
 				http: truckServices.changeStatus({
-					uuid: dataStatus?.uuid!,
+					licensePlate: dataStatus?.licensePlate!,
 					status: dataStatus?.status! == CONFIG_STATUS.HOAT_DONG ? CONFIG_STATUS.BI_KHOA : CONFIG_STATUS.HOAT_DONG,
 				}),
 			});
@@ -142,7 +142,7 @@ function MainPageDelverTruck({}: PropsMainPageDelverTruck) {
 							},
 							{
 								title: 'Biển số',
-								render: (data: ITruck) => <>{data?.licensePalate || '---'}</>,
+								render: (data: ITruck) => <>{data?.licensePlate || '---'}</>,
 							},
 							{
 								title: 'RFID',

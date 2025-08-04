@@ -83,7 +83,7 @@ const TemplateSampleSpec = forwardRef<HTMLDivElement, PropsTemplateSampleSpec>(
 											<Moment date={v?.date} format='DD/MM/YYYY' />
 										</td>
 										<td>{v?.code}</td>
-										<td>{v?.licensePalate || '---'}</td>
+										<td>{v?.licensePlate || '---'}</td>
 										<td>{convertWeight(v?.weightTotal)}</td>
 										<td>{v?.drynessAvg?.toFixed(2)}</td>
 										<td>{convertWeight(v?.weightBdmt)}</td>

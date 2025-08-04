@@ -53,7 +53,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 	const queryClient = useQueryClient();
 	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
-	const [truckUuid, setTruckUuid] = useState<string[]>([]);
+	const [truckPlate, setTruckPlate] = useState<string[]>([]);
 	const [uuidQuality, setUuidQuality] = useState<string>('');
 	const [uuidStorage, setUuidStorage] = useState<string>('');
 	const {_page, _pageSize, _keyword, _isBatch, _productTypeUuid, _state, _dateFrom, _dateTo, _scalesStationUuid} = router.query;
@@ -228,7 +228,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 			uuidStorage,
 			isHaveDryness,
 			customerUuid,
-			truckUuid,
+			truckPlate,
 			uuidCompany,
 			uuidQuality,
 			listCompanyUuid,
@@ -262,7 +262,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: uuidStorage,
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
-						truckUuid: truckUuid,
+						truckPlates: truckPlate,
 						customerUuid: '',
 						listCustomerUuid: customerUuid,
 						companyUuid: uuidCompany,
@@ -344,7 +344,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 					storageUuid: uuidStorage,
 					isExportSpec: isHaveSpec,
 					isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
-					truckUuid: truckUuid,
+					truckPlates: truckPlate,
 					companyUuid: uuidCompany,
 					listCompanyUuid: listCompanyUuid,
 					typeProduct: TYPE_PRODUCT.CONG_TY,
@@ -447,11 +447,11 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 					/> */}
 
 					<SelectFilterMany
-						selectedIds={truckUuid}
-						setSelectedIds={setTruckUuid}
+						selectedIds={truckPlate}
+						setSelectedIds={setTruckPlate}
 						listData={listTruck?.data?.map((v: any) => ({
 							uuid: v?.uuid,
-							name: v?.licensePalate,
+							name: v?.licensePlate,
 						}))}
 						name='Biển số xe'
 					/>
@@ -615,13 +615,13 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 							// {
 							// 	title: 'Mã tàu',
 							// 	render: (data: ITableBillScale) => (
-							// 		<p style={{fontWeight: 600}}>{data?.batchsUu?.shipUu?.licensePalate || '---'}</p>
+							// 		<p style={{fontWeight: 600}}>{data?.batchsUu?.shipUu?.licensePlate || '---'}</p>
 							// 	),
 							// },
 							// {
 							// 	title: 'Mã tàu xuất',
 							// 	render: (data: ITableBillScale) => (
-							// 		<p style={{fontWeight: 600}}>{data?.batchsUu?.shipOutUu?.licensePalate || '---'}</p>
+							// 		<p style={{fontWeight: 600}}>{data?.batchsUu?.shipOutUu?.licensePlate || '---'}</p>
 							// 	),
 							// },
 							{
@@ -631,12 +631,12 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.fromUu?.name || data?.customerName}</p>
 										{data?.isBatch == TYPE_BATCH.CAN_LO && (
 											<p style={{fontWeight: 600, color: '#3772FF'}}>
-												{data?.batchsUu?.shipUu?.licensePalate || '---'}
+												{data?.batchsUu?.shipUu?.licensePlate || '---'}
 											</p>
 										)}
 										{data?.isBatch == TYPE_BATCH.CAN_LE && (
 											<p style={{fontWeight: 600, color: '#3772FF'}}>
-												{data?.weightSessionUu?.truckUu?.licensePalate || '---'}
+												{data?.weightSessionUu?.truckUu?.licensePlate || '---'}
 											</p>
 										)}
 									</>
@@ -677,7 +677,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 									<>
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.toUu?.name || '---'}</p>
 										<p style={{fontWeight: 600, color: '#3772FF'}}>
-											{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+											{data?.batchsUu?.shipOutUu?.licensePlate || '---'}
 										</p>
 									</>
 								),
@@ -834,7 +834,7 @@ function PageConfirmBill({}: PropsPageConfirmBill) {
 							_scalesStationUuid,
 							uuidStorage,
 							isHaveDryness,
-							truckUuid,
+							truckPlate,
 							uuidCompany,
 							uuidQuality,
 							listCompanyUuid,

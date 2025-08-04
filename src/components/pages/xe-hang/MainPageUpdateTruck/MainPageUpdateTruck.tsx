@@ -38,7 +38,7 @@ function MainPageUpdateTruck({}: PropsMainPageUpdateTruck) {
 	const [listRFIDChecked, setListRFIDChecked] = useState<any[]>([]);
 	const [form, setForm] = useState<IFormUpdateTruck>({
 		code: '',
-		licensePalate: '',
+		licensePlate: '',
 		managerUuid: '',
 		trucktype: '',
 		ownerType: OWNEW_TYPE_TRUCK.XE_CONG_TY,
@@ -52,13 +52,13 @@ function MainPageUpdateTruck({}: PropsMainPageUpdateTruck) {
 		queryFn: () =>
 			httpRequest({
 				http: truckServices.getDetail({
-					uuid: _id as string,
+					licensePlate: _id as string,
 				}),
 			}),
 		onSuccess(data) {
 			setForm({
 				code: data?.code,
-				licensePalate: data?.licensePalate,
+				licensePlate: data?.licensePlate,
 				managerUuid: data?.managerUu?.uuid,
 				trucktype: data?.trucktype,
 				ownerType: data?.ownerType,
@@ -148,9 +148,8 @@ function MainPageUpdateTruck({}: PropsMainPageUpdateTruck) {
 				showMessageSuccess: true,
 				msgSuccess: 'Chỉnh sửa xe thành công!',
 				http: truckServices.upsertTruck({
-					uuid: _id as string,
 					code: form?.code,
-					licensePalate: form?.licensePalate,
+					licensePlate: form?.licensePlate,
 					managerUuid: form?.managerUuid,
 					ownerType: form?.ownerType,
 					rfidUuid: listRFIDChecked?.map((v: any) => v?.uuid) || [],
@@ -225,8 +224,8 @@ function MainPageUpdateTruck({}: PropsMainPageUpdateTruck) {
 						/>
 						<div>
 							<Input
-								name='licensePalate'
-								value={form.licensePalate || ''}
+								name='licensePlate'
+								value={form.licensePlate || ''}
 								isRequired
 								max={255}
 								type='text'

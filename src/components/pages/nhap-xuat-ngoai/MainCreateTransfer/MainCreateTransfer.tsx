@@ -1,5 +1,5 @@
 import {useRouter} from 'next/router';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {IFormCreateTransfer, PropsMainCreateTransfer} from './interfaces';
 import {
 	CONFIG_DESCENDING,
@@ -45,7 +45,8 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 
 	const [form, setForm] = useState<IFormCreateTransfer>({
 		timeIntend: new Date(),
-		weightIntent: 0,
+		weight1: 0,
+		weight2: 0,
 		isSift: TYPE_SIFT.KHONG_CAN_SANG,
 		specificationsUuid: '',
 		warehouseToUuid: '',
@@ -59,6 +60,7 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 		timeStart: null,
 		timeEnd: null,
 		dryness: 0,
+		weightTotal: 0,
 	});
 
 	const listProductType = useQuery([QUERY_KEY.dropdown_loai_go], {
@@ -264,7 +266,8 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 					shipOutUuid: '',
 					transportType: form.transportType,
 					timeIntend: null,
-					weightIntent: price(form?.weightIntent),
+					weight1: price(form?.weight1),
+					weight2: price(form?.weight2),
 					isBatch: TYPE_BATCH.KHONG_CAN,
 					isCreateBatch: 1,
 					isSift: TYPE_SIFT.KHONG_CAN_SANG,
@@ -277,8 +280,8 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 					fromUuid: form.fromUuid,
 					toUuid: form?.toUuid,
 					isPrint: 0,
-					lstTruckAddUuid: [],
-					lstTruckRemoveUuid: [],
+					lstTruckPlateAdd: [],
+					lstTruckPlateRemove: [],
 					scaleStationUuid: '',
 					portname: '',
 					descriptionWs: '',
@@ -298,6 +301,15 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 			return;
 		},
 	});
+
+	useEffect(() => {
+		const {weight1, weight2, dryness} = form;
+
+		if (weight1 != null && weight2 != null && dryness != null) {
+			const total = (Math.abs(weight1 - weight2) * dryness) / 100;
+			setForm((prev) => ({...prev, weightTotal: total}));
+		}
+	}, [form.weight1, form.weight2, form.dryness]);
 
 	const handleSubmit = async () => {
 		const today = new Date(timeSubmit(new Date())!);
@@ -324,6 +336,9 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 		}
 		if (form.dryness < 0 || form.dryness > 100) {
 			return toastWarn({msg: 'Độ khô không hợp lệ!'});
+		}
+		if (Math.abs(Number(form.weight1) - Number(form.weight2)) < 0.01) {
+			return toastWarn({msg: 'Khối lượng cân lần 1 và lần 2 chưa đúng!'});
 		}
 		if (!form?.timeStart) {
 			return toastWarn({msg: 'Vui lòng chọn ngày bắt đầu!'});
@@ -605,6 +620,63 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 							</Select>
 						</div>
 					</div>
+
+					<div className={clsx('mt', 'col_3')}>
+						<Input
+							name='weight1'
+							value={form.weight1 || ''}
+							type='text'
+							isMoney
+							unit='KG'
+							label={
+								<span>
+									KL cân lần 1 <span style={{color: 'red'}}>*</span>
+								</span>
+							}
+							placeholder='Nhập kL cân lần 1'
+						/>
+
+						<div>
+							<Input
+								name='weight2'
+								value={form.weight2 || ''}
+								type='text'
+								isMoney
+								unit='KG'
+								label={
+									<span>
+										KL cân lần 2 <span style={{color: 'red'}}>*</span>
+									</span>
+								}
+								placeholder='Nhập kL cân lần 2'
+							/>
+						</div>
+						<div>
+							<Input
+								name='dryness'
+								value={form.dryness || ''}
+								unit='%'
+								type='number'
+								blur={true}
+								placeholder='Nhập độ khô'
+								label={<span>Độ khô</span>}
+							/>
+						</div>
+						<div>
+							<Input
+								name='weightTotal'
+								value={form.weightTotal || ''}
+								readOnly={true}
+								type='text'
+								isMoney
+								unit='KG'
+								label={<span>KL quy khô</span>}
+								placeholder='Nhập KL quy khô'
+								disabled={true}
+							/>
+						</div>
+					</div>
+
 					<div className={clsx('mt', 'col_2')}>
 						<Input
 							type='date'
@@ -635,7 +707,7 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 							/>
 						</div>
 					</div>
-					<div className={clsx('mt', 'col_2')}>
+					{/* <div className={clsx('mt', 'col_2')}>
 						<Input
 							name='weightIntent'
 							value={form.weightIntent || ''}
@@ -660,7 +732,7 @@ function MainCreateTransfer({}: PropsMainCreateTransfer) {
 								label={<span>Độ khô</span>}
 							/>
 						</div>
-					</div>
+					</div> */}
 
 					<div className={clsx('mt')}>
 						<TextArea name='description' placeholder='Nhập ghi chú' max={5000} blur label={<span>Ghi chú</span>} />

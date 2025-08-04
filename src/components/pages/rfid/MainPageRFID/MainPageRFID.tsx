@@ -134,7 +134,7 @@ function MainPageRFID({}: PropsMainPageRFID) {
 							},
 							{
 								title: 'Xe kết nối',
-								render: (data: IRFID) => <>{data?.truckUu?.licensePalate || '---'}</>,
+								render: (data: IRFID) => <>{data?.truckUu?.licensePlate || '---'}</>,
 							},
 							{
 								title: 'Ghi chú',

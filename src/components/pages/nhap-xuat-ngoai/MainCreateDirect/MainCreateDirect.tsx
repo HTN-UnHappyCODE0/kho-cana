@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {IDetailCustomer, IFormCreateDirect, PropsMainCreateDirect} from './interfaces';
 import styles from './MainCreateDirect.module.scss';
@@ -47,7 +47,8 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 		shipUuid: '',
 		shipOutUuid: '',
 		transportType: TYPE_TRANSPORT.DUONG_THUY,
-		weightIntent: 0,
+		weight1: 0,
+		weight2: 0,
 		specificationsUuid: '',
 		productTypeUuid: '',
 		documentId: '',
@@ -59,6 +60,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 		timeStart: '',
 		timeEnd: '',
 		dryness: 0,
+		weightTotal: 0,
 	});
 
 	const listCustomerFrom = useQuery([QUERY_KEY.dropdown_khach_hang_nhap], {
@@ -219,7 +221,8 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 					shipOutUuid: form?.shipOutUuid,
 					transportType: form?.transportType,
 					timeIntend: null,
-					weightIntent: price(form?.weightIntent),
+					weight1: price(form?.weight1),
+					weight2: price(form?.weight2),
 					customerName: '',
 					billUuid: '',
 					isBatch: TYPE_BATCH.KHONG_CAN,
@@ -237,8 +240,8 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 					scaleStationUuid: '',
 					storageTemporaryUuid: form.storageTemporaryUuid,
 					portname: '',
-					lstTruckAddUuid: [],
-					lstTruckRemoveUuid: [],
+					lstTruckPlateAdd: [],
+					lstTruckPlateRemove: [],
 					timeEnd: form?.timeEnd ? timeSubmit(new Date(form?.timeEnd!), true) : null,
 					timeStart: form?.timeStart ? timeSubmit(new Date(form?.timeStart!)) : null,
 					descriptionWs: '',
@@ -257,6 +260,15 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 		},
 	});
 
+	useEffect(() => {
+		const {weight1, weight2, dryness} = form;
+
+		if (weight1 != null && weight2 != null && dryness != null) {
+			const total = (Math.abs(weight1 - weight2) * dryness) / 100;
+			setForm((prev) => ({...prev, weightTotal: total}));
+		}
+	}, [form.weight1, form.weight2, form.dryness]);
+
 	const handleSubmit = async () => {
 		const today = new Date(timeSubmit(new Date())!);
 		const timeStart = new Date(form.timeStart!);
@@ -274,8 +286,8 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 		if (!form.productTypeUuid) {
 			return toastWarn({msg: 'Vui lòng chọn loại hàng!'});
 		}
-		if (!form.weightIntent) {
-			return toastWarn({msg: 'Vui lòng nhập khối lượng cân'});
+		if (Math.abs(Number(form.weight1) - Number(form.weight2)) < 0.01) {
+			return toastWarn({msg: 'Khối lượng cân lần 1 và lần 2 chưa đúng!'});
 		}
 		if (!form.specificationsUuid) {
 			return toastWarn({msg: 'Vui lòng chọn quy cách!'});
@@ -413,13 +425,12 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 					<div className={clsx('mt', 'col_2')}>
 						<div>
 							<Input
-								name='dryness'
-								value={form.dryness || ''}
-								unit='%'
-								type='number'
-								blur={true}
-								placeholder='Nhập độ khô'
-								label={<span>Độ khô</span>}
+								name='documentId'
+								value={form.documentId || ''}
+								type='text'
+								max={255}
+								label={<span>Chứng từ </span>}
+								placeholder='Nhập chứng từ'
 							/>
 						</div>
 
@@ -443,7 +454,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 										<Option
 											key={v?.uuid}
 											value={v?.uuid}
-											title={v?.licensePalate}
+											title={v?.licensePlate}
 											onClick={() =>
 												setForm((prev) => ({
 													...prev,
@@ -620,7 +631,7 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 										<Option
 											key={v?.uuid}
 											value={v?.uuid}
-											title={v?.licensePalate}
+											title={v?.licensePlate}
 											onClick={() =>
 												setForm((prev) => ({
 													...prev,
@@ -633,28 +644,58 @@ function MainCreateDirect({}: PropsMainCreateDirect) {
 						</div>
 					</div>
 
-					<div className={clsx('mt', 'col_2')}>
+					<div className={clsx('mt', 'col_3')}>
 						<Input
-							name='weightIntent'
-							value={form.weightIntent || ''}
+							name='weight1'
+							value={form.weight1 || ''}
 							type='text'
 							isMoney
 							unit='KG'
-							placeholder='Nhập khối lượng cân'
 							label={
 								<span>
-									Khối lượng cân <span style={{color: 'red'}}>*</span>
+									KL cân lần 1 <span style={{color: 'red'}}>*</span>
 								</span>
 							}
+							placeholder='Nhập kL cân lần 1'
 						/>
+
 						<div>
 							<Input
-								name='documentId'
-								value={form.documentId || ''}
+								name='weight2'
+								value={form.weight2 || ''}
 								type='text'
-								max={255}
-								label={<span>Chứng từ </span>}
-								placeholder='Nhập chứng từ'
+								isMoney
+								unit='KG'
+								label={
+									<span>
+										KL cân lần 2 <span style={{color: 'red'}}>*</span>
+									</span>
+								}
+								placeholder='Nhập kL cân lần 2'
+							/>
+						</div>
+						<div>
+							<Input
+								name='dryness'
+								value={form.dryness || ''}
+								unit='%'
+								type='number'
+								blur={true}
+								placeholder='Nhập độ khô'
+								label={<span>Độ khô</span>}
+							/>
+						</div>
+						<div>
+							<Input
+								name='weightTotal'
+								value={form.weightTotal || ''}
+								readOnly={true}
+								type='text'
+								isMoney
+								unit='KG'
+								label={<span>KL quy khô</span>}
+								placeholder='Nhập KL quy khô'
+								disabled={true}
 							/>
 						</div>
 					</div>

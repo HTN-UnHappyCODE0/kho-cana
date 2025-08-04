@@ -62,7 +62,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 	const queryClient = useQueryClient();
 	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
-	const [truckUuid, setTruckUuid] = useState<string[]>([]);
+	const [truckPlate, setTruckPlate] = useState<string[]>([]);
 
 	const {_page, _pageSize, _keyword, _isBatch, _status, _dateFrom, _dateTo, _state} = router.query;
 
@@ -273,7 +273,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 			uuidStorage,
 			uuidScalesStation,
 			isHaveDryness,
-			truckUuid,
+			truckPlate,
 			uuidCompany,
 			listCompanyUuid,
 		],
@@ -322,7 +322,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 						scalesStationUuid: (uuidScalesStation as string) || '',
 						storageUuid: uuidStorage,
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
-						truckUuid: truckUuid,
+						truckPlates: truckPlate,
 						customerUuid: '',
 						listCustomerUuid: customerUuid,
 						companyUuid: uuidCompany,
@@ -437,7 +437,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 					storageUuid: uuidStorage,
 					isExportSpec: isHaveSpec,
 					isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
-					truckUuid: truckUuid,
+					truckPlates: truckPlate,
 					companyUuid: uuidCompany,
 					listCompanyUuid: listCompanyUuid,
 				}),
@@ -452,30 +452,30 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 	});
 
 	const exportExcelGroupTruck = useMutation({
-			mutationFn: () => {
-				return httpRequest({
-					http: weightSessionServices.exportExcelWsGroupTruck({
-						page: Number(_page) || 1,
-						pageSize: Number(_pageSize) || 200,
-						timeStart: _dateFrom ? (_dateFrom as string) : null,
-						timeEnd: _dateTo ? (_dateTo as string) : null,
-						billUuids: dataBatchBillSelect.map((v: any) => v.uuid),
-						companyName: listCompanyName.join(', '),
-						scaleStationName: nameScalesStation as string,
-						storageName: nameStorage as string,
-						qualityName: nameQuality as string,
-						shipName: nameShip as string,
-						productName: nameProduct as string,
-					}),
-				});
-			},
-			onSuccess(data) {
-				if (data) {
-					window.open(`${process.env.NEXT_PUBLIC_PATH_EXPORT}/${data}`, '_blank');
-					setOpenExportExcel(false);
-				}
-			},
-		});
+		mutationFn: () => {
+			return httpRequest({
+				http: weightSessionServices.exportExcelWsGroupTruck({
+					page: Number(_page) || 1,
+					pageSize: Number(_pageSize) || 200,
+					timeStart: _dateFrom ? (_dateFrom as string) : null,
+					timeEnd: _dateTo ? (_dateTo as string) : null,
+					billUuids: dataBatchBillSelect.map((v: any) => v.uuid),
+					companyName: listCompanyName.join(', '),
+					scaleStationName: nameScalesStation as string,
+					storageName: nameStorage as string,
+					qualityName: nameQuality as string,
+					shipName: nameShip as string,
+					productName: nameProduct as string,
+				}),
+			});
+		},
+		onSuccess(data) {
+			if (data) {
+				window.open(`${process.env.NEXT_PUBLIC_PATH_EXPORT}/${data}`, '_blank');
+				setOpenExportExcel(false);
+			}
+		},
+	});
 
 	const handleExportExcel = (isHaveSpec: number) => {
 		return exportExcel.mutate(isHaveSpec);
@@ -560,11 +560,11 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 						/>
 					</div>
 					<SelectFilterMany
-						selectedIds={truckUuid}
-						setSelectedIds={setTruckUuid}
+						selectedIds={truckPlate}
+						setSelectedIds={setTruckPlate}
 						listData={listTruck?.data?.map((v: any) => ({
 							uuid: v?.uuid,
-							name: v?.licensePalate,
+							name: v?.licensePlate,
 						}))}
 						name='Biển số xe'
 					/>
@@ -585,7 +585,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 						setName={setNameShip}
 						listData={listShip?.data?.map((v: any) => ({
 							uuid: v?.uuid,
-							name: v?.licensePalate,
+							name: v?.licensePlate,
 						}))}
 						placeholder='Mã tàu'
 					/>
@@ -794,12 +794,12 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 											<>
 												{data?.isBatch == TYPE_BATCH.CAN_LO && (
 													<p style={{fontWeight: 500, color: '#3772FF'}}>
-														{data?.batchsUu?.shipUu?.licensePalate || '---'}
+														{data?.batchsUu?.shipUu?.licensePlate || '---'}
 													</p>
 												)}
 												{data?.isBatch == TYPE_BATCH.CAN_LE && (
 													<p style={{fontWeight: 500, color: '#3772FF'}}>
-														{data?.weightSessionUu?.truckUu?.licensePalate || '---'}
+														{data?.weightSessionUu?.truckUu?.licensePlate || '---'}
 													</p>
 												)}
 											</>
@@ -816,16 +816,16 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 											data?.scalesType == TYPE_SCALES.CAN_XUAT &&
 												(data?.isBatch == TYPE_BATCH.CAN_LO ? (
 													<p style={{fontWeight: 400, color: '#3772FF'}}>
-														{data?.batchsUu?.shipUu?.licensePalate || '---'} . {data?.numShip || '---'}
+														{data?.batchsUu?.shipUu?.licensePlate || '---'} . {data?.numShip || '---'}
 													</p>
 												) : (
 													<p style={{fontWeight: 400, color: '#3772FF'}}>
-														{data?.batchsUu?.shipUu?.licensePalate || '---'}
+														{data?.batchsUu?.shipUu?.licensePlate || '---'}
 													</p>
 												))
 											// (
 											// 	<p style={{fontWeight: 400, color: '#3772FF'}}>
-											// 		{data?.batchsUu?.shipUu?.licensePalate || '---'}
+											// 		{data?.batchsUu?.shipUu?.licensePlate || '---'}
 											// 	</p>
 											// )
 										}
@@ -833,27 +833,27 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 											!(data?.scalesType == TYPE_SCALES.CAN_XUAT) &&
 												(data?.isBatch == TYPE_BATCH.CAN_LO ? (
 													<p style={{fontWeight: 400, color: '#3772FF'}}>
-														{data?.batchsUu?.shipOutUu?.licensePalate || '---'} . {data?.numShip || '---'}
+														{data?.batchsUu?.shipOutUu?.licensePlate || '---'} . {data?.numShip || '---'}
 													</p>
 												) : (
 													<p style={{fontWeight: 400, color: '#3772FF'}}>
-														{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+														{data?.batchsUu?.shipOutUu?.licensePlate || '---'}
 													</p>
 												))
 											// (
 											// 	<p style={{fontWeight: 400, color: '#3772FF'}}>
-											// 		{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+											// 		{data?.batchsUu?.shipOutUu?.licensePlate || '---'}
 											// 	</p>
 											// )
 										}
 										{/* {data?.scalesType == TYPE_SCALES.CAN_XUAT && (
 											<p style={{fontWeight: 400, color: '#3772FF'}}>
-												{data?.batchsUu?.shipUu?.licensePalate || '---'}
+												{data?.batchsUu?.shipUu?.licensePlate || '---'}
 											</p>
 										)}
 										{!(data?.scalesType == TYPE_SCALES.CAN_XUAT) && (
 											<p style={{fontWeight: 400, color: '#3772FF'}}>
-												{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+												{data?.batchsUu?.shipOutUu?.licensePlate || '---'}
 											</p>
 										)} */}
 
@@ -896,7 +896,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 							},
 							{
 								title: 'Tàu trung chuyển',
-								render: (data: ITableBillScale) => <>{data?.shipTempUu?.licensePalate || '---'}</>,
+								render: (data: ITableBillScale) => <>{data?.shipTempUu?.licensePlate || '---'}</>,
 							},
 							{
 								title: 'Xác nhận SL',
@@ -1115,7 +1115,7 @@ function MainPageScalesImport({}: PropsMainPageScalesImport) {
 							uuidStorage,
 							uuidScalesStation,
 							isHaveDryness,
-							truckUuid,
+							truckPlate,
 							uuidCompany,
 							listCompanyUuid,
 						]}

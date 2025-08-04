@@ -62,7 +62,7 @@ function MainPageAll({}: PropsMainPageAll) {
 	const [billUuidUpdateShip, setBillUuidUpdateShip] = useState<string | null>(null);
 	const [isHaveDryness, setIsHaveDryness] = useState<string>('');
 	const [customerUuid, setCustomerUuid] = useState<string[]>([]);
-	const [truckUuid, setTruckUuid] = useState<string[]>([]);
+	const [truckPlate, setTruckPlate] = useState<string[]>([]);
 	const [uuidCompany, setUuidCompany] = useState<string>('');
 	const [uuidQuality, setUuidQuality] = useState<string>('');
 	const [uuidStorage, setUuidStorage] = useState<string>('');
@@ -127,7 +127,7 @@ function MainPageAll({}: PropsMainPageAll) {
 			uuidStorage,
 			_scalesStationUuid,
 			isHaveDryness,
-			truckUuid,
+			truckPlate,
 			uuidCompany,
 			listCompanyUuid,
 		],
@@ -176,7 +176,7 @@ function MainPageAll({}: PropsMainPageAll) {
 						scalesStationUuid: (_scalesStationUuid as string) || '',
 						storageUuid: uuidStorage,
 						isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
-						truckUuid: truckUuid,
+						truckPlates: truckPlate,
 						customerUuid: '',
 						listCustomerUuid: customerUuid,
 						companyUuid: uuidCompany,
@@ -355,7 +355,7 @@ function MainPageAll({}: PropsMainPageAll) {
 					documentId: '',
 					isExportSpec: isHaveSpec,
 					isHaveDryness: isHaveDryness ? Number(isHaveDryness) : null,
-					truckUuid: truckUuid,
+					truckPlates: truckPlate,
 					companyUuid: uuidCompany,
 					listCompanyUuid: listCompanyUuid,
 				}),
@@ -409,11 +409,11 @@ function MainPageAll({}: PropsMainPageAll) {
 						name='Khách hàng'
 					/>
 					<SelectFilterMany
-						selectedIds={truckUuid}
-						setSelectedIds={setTruckUuid}
+						selectedIds={truckPlate}
+						setSelectedIds={setTruckPlate}
 						listData={listTruck?.data?.map((v: any) => ({
 							uuid: v?.uuid,
-							name: v?.licensePalate,
+							name: v?.licensePlate,
 						}))}
 						name='Biển số xe'
 					/>
@@ -434,7 +434,7 @@ function MainPageAll({}: PropsMainPageAll) {
 						query='_shipUuid'
 						listFilter={listShip?.data?.map((v: any) => ({
 							id: v?.uuid,
-							name: v?.licensePalate,
+							name: v?.licensePlate,
 						}))}
 					/>
 
@@ -677,7 +677,7 @@ function MainPageAll({}: PropsMainPageAll) {
 										{!(data?.scalesType == TYPE_SCALES.CAN_XUAT) && (
 											<>
 												<p style={{fontWeight: 500, color: '#3772FF'}}>
-													{data?.batchsUu?.shipUu?.licensePalate || '---'}
+													{data?.batchsUu?.shipUu?.licensePlate || '---'}
 												</p>
 											</>
 										)}
@@ -691,16 +691,16 @@ function MainPageAll({}: PropsMainPageAll) {
 										<p style={{marginBottom: 4, fontWeight: 600}}>{data?.toUu?.name || '---'}</p>
 										{data?.scalesType == TYPE_SCALES.CAN_XUAT && (
 											<p style={{fontWeight: 400, color: '#3772FF'}}>
-												{data?.batchsUu?.shipUu?.licensePalate || '---'}
+												{data?.batchsUu?.shipUu?.licensePlate || '---'}
 											</p>
 										)}
 										{!(data?.scalesType == TYPE_SCALES.CAN_XUAT) && (
 											<p style={{fontWeight: 400, color: '#3772FF'}}>
-												{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+												{data?.batchsUu?.shipOutUu?.licensePlate || '---'}
 											</p>
 										)}
 										{/* <p style={{fontWeight: 600, color: '#3772FF'}}>
-											{data?.batchsUu?.shipOutUu?.licensePalate || '---'}
+											{data?.batchsUu?.shipOutUu?.licensePlate || '---'}
 										</p> */}
 									</>
 								),
@@ -743,7 +743,7 @@ function MainPageAll({}: PropsMainPageAll) {
 							},
 							{
 								title: 'Tàu trung chuyển',
-								render: (data: any) => <>{data?.shipTempUu?.licensePalate || '---'}</>,
+								render: (data: any) => <>{data?.shipTempUu?.licensePlate || '---'}</>,
 							},
 							{
 								title: 'Xác nhận SL',
@@ -879,7 +879,7 @@ function MainPageAll({}: PropsMainPageAll) {
 						uuidStorage,
 						_scalesStationUuid,
 						isHaveDryness,
-						truckUuid,
+						truckPlate,
 						uuidCompany,
 						listCompanyUuid,
 					]}

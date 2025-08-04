@@ -52,7 +52,8 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 		toUuid: '',
 		productTypeUuid: '',
 		specificationsUuid: '',
-		weightIntent: 0,
+		weight1: 0,
+		weight2: 0,
 		documentId: '',
 		description: '',
 		warehouseUuid: '',
@@ -86,7 +87,8 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 					storageTemporaryUuid: data?.storageTemporaryUu?.uuid || '', //Bãi trung chuyển
 					toUuid: data?.toUu?.uuid, //Khách hàng xuất
 					shipOutUuid: data?.batchsUu?.shipOutUu?.uuid || '', //Đến tàu
-					weightIntent: convertCoin(data?.batchsUu?.weightIntent), //Khối lượng cân
+					weight1: convertCoin(data?.weight1), //Khối lượng cân lần 1
+					weight2: convertCoin(data?.weight2), //Khối lượng cân lần 2
 					documentId: data?.documentId || '', //Chứng từ
 					timeStart: moment(data.timeStart).format('yyyy-MM-DD'),
 					timeEnd: moment(data.timeEnd).format('yyyy-MM-DD'),
@@ -265,7 +267,8 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 					shipOutUuid: form.shipOutUuid,
 					transportType: form?.transportType,
 					timeIntend: null,
-					weightIntent: price(form?.weightIntent),
+					weight1: price(form?.weight1),
+					weight2: price(form?.weight2),
 					customerName: '',
 					isBatch: TYPE_BATCH.KHONG_CAN,
 					isCreateBatch: 1,
@@ -281,8 +284,8 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 					scaleStationUuid: '',
 					storageTemporaryUuid: form?.storageTemporaryUuid,
 					portname: '',
-					lstTruckAddUuid: [],
-					lstTruckRemoveUuid: [],
+					lstTruckPlateAdd: [],
+					lstTruckPlateRemove: [],
 					timeEnd: form?.timeEnd ? timeSubmit(new Date(form?.timeEnd!), true) : null,
 					timeStart: form?.timeStart ? timeSubmit(new Date(form?.timeStart!)) : null,
 					descriptionWs: '',
@@ -334,8 +337,8 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 			return toastWarn({msg: 'Độ khô không hợp lệ!'});
 		}
 
-		if (!form.weightIntent) {
-			return toastWarn({msg: 'Vui lòng nhập khối lượng cân'});
+		if (Math.abs(Number(form.weight1) - Number(form.weight2)) < 0.01) {
+			return toastWarn({msg: 'Khối lượng cân lần 1 và lần 2 chưa đúng!'});
 		}
 		if (tomorrow < timeStart) {
 			return toastWarn({msg: 'Ngày bắt đầu không hợp lệ!'});
@@ -468,16 +471,16 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 					</div>
 
 					<div className={clsx('mt', 'col_2')}>
-						<Input
-							name='dryness'
-							value={form.dryness || ''}
-							unit='%'
-							type='number'
-							blur={true}
-							placeholder='Nhập độ khô'
-							label={<span>Độ khô</span>}
-						/>
-
+						<div>
+							<Input
+								name='documentId'
+								value={form.documentId || ''}
+								type='text'
+								max={255}
+								label={<span>Chứng từ </span>}
+								placeholder='Nhập chứng từ'
+							/>
+						</div>
 						<div>
 							<Select
 								isSearch
@@ -498,7 +501,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 										<Option
 											key={v?.uuid}
 											value={v?.uuid}
-											title={v?.licensePalate}
+											title={v?.licensePlate}
 											onClick={() =>
 												setForm((prev) => ({
 													...prev,
@@ -674,7 +677,7 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 										<Option
 											key={v?.uuid}
 											value={v?.uuid}
-											title={v?.licensePalate}
+											title={v?.licensePlate}
 											onClick={() =>
 												setForm((prev) => ({
 													...prev,
@@ -687,32 +690,17 @@ function MainUpdateDirect({}: PropsMainUpdateDirect) {
 						</div>
 					</div>
 
-					<div className={clsx('mt', 'col_2')}>
+					<div>
 						<Input
-							name='weightIntent'
-							value={form.weightIntent || ''}
-							type='text'
-							isMoney
-							unit='KG'
-							placeholder='Nhập khối lượng cân'
-							label={
-								<span>
-									Khối lượng cân <span style={{color: 'red'}}>*</span>
-								</span>
-							}
+							name='dryness'
+							value={form.dryness || ''}
+							unit='%'
+							type='number'
+							blur={true}
+							placeholder='Nhập độ khô'
+							label={<span>Độ khô</span>}
 						/>
-						<div>
-							<Input
-								name='documentId'
-								value={form.documentId || ''}
-								type='text'
-								max={255}
-								label={<span>Chứng từ </span>}
-								placeholder='Nhập chứng từ'
-							/>
-						</div>
 					</div>
-
 					<div className={clsx('mt', 'col_2')}>
 						<Input
 							type='date'

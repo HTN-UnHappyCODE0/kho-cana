@@ -17,7 +17,7 @@ function MainPageCreateShip({}: PropsMainPageCreateShip) {
 	const router = useRouter();
 	const [form, setForm] = useState<IFormCreateShip>({
 		code: '',
-		licensePalate: '',
+		licensePlate: '',
 		description: '',
 	});
 
@@ -30,7 +30,7 @@ function MainPageCreateShip({}: PropsMainPageCreateShip) {
 				http: shipServices.upsertShip({
 					uuid: '',
 					code: form?.code,
-					licensePalate: form?.licensePalate,
+					licensePlate: form?.licensePlate,
 					description: form.description,
 				}),
 			}),
@@ -38,7 +38,7 @@ function MainPageCreateShip({}: PropsMainPageCreateShip) {
 			if (data) {
 				setForm({
 					code: '',
-					licensePalate: '',
+					licensePlate: '',
 					description: '',
 				});
 				router.replace(PATH.QuanLyTau, undefined, {
@@ -97,8 +97,8 @@ function MainPageCreateShip({}: PropsMainPageCreateShip) {
 						/>
 						<div>
 							<Input
-								name='licensePalate'
-								value={form.licensePalate || ''}
+								name='licensePlate'
+								value={form.licensePlate || ''}
 								isRequired
 								max={255}
 								type='text'

@@ -26,8 +26,8 @@ const weightSessionServices = {
 			scalesStationUuid?: string;
 			isHaveSpec?: number | null;
 			isHaveDryness?: number | null;
-			truckUuid: string;
-			listTruckUuid: string[];
+			truckPlate: string;
+			listTruckPlate: string[];
 			customerUuid: string;
 			listCustomerUuid: string[];
 			listCompanyUuid?: string[];
@@ -64,8 +64,8 @@ const weightSessionServices = {
 			scalesStationUuid?: string;
 			isHaveSpec?: number | null;
 			isHaveDryness?: number | null;
-			truckUuid: string;
-			listTruckUuid: string[];
+			truckPlate: string;
+			listTruckPlate: string[];
 			customerUuid: string;
 			listCustomerUuid: string[];
 			listCompanyUuid?: string[];
@@ -88,7 +88,7 @@ const weightSessionServices = {
 			isPaging: CONFIG_PAGING;
 			scalesType: number[];
 			billUuid: string;
-			truckUuid: string;
+			truckPlate: string;
 			storageUuid: string;
 			isBatch: number | null;
 			timeStart: string | null;
@@ -168,7 +168,7 @@ const weightSessionServices = {
 			isPaging: CONFIG_PAGING;
 			scalesType: number[];
 			billUuid: string;
-			truckUuid: string;
+			truckPlate: string;
 			storageUuid: string;
 			customerUuid: string;
 			productTypeUuid: string;
@@ -181,7 +181,7 @@ const weightSessionServices = {
 			shift: number | null;
 			groupBy: number | null;
 
-			listTruckUuid: string[];
+			listTruckPlate: string[];
 			listCustomerUuid?: string[];
 			companyUuid?: string;
 			scalesStationUuid?: string;
@@ -207,8 +207,8 @@ const weightSessionServices = {
 			isPaging: CONFIG_PAGING;
 			scalesType: number[];
 			billUuid: string;
-			truckUuid: string;
-			listTruckUuid: string[];
+			truckPlate: string;
+			listTruckPlate: string[];
 			storageUuid: string;
 			productTypeUuid: string;
 			shipUuid: string;
@@ -240,7 +240,7 @@ const weightSessionServices = {
 			isPaging: CONFIG_PAGING;
 			scalesType: number[];
 			billUuid: string;
-			truckUuid: string;
+			truckPlate: string;
 			storageUuid: string;
 			isBatch: number | null;
 			timeStart: string | null;

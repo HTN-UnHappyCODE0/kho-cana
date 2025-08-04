@@ -186,7 +186,7 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 					scalesStationUuid: '',
 					storageUuid: '',
 					isHaveDryness: TYPE_ACTION_AUDIT.HAVE_DRY,
-					truckUuid: [],
+					truckPlates: [],
 					companyUuid: '',
 					listCompanyUuid: [],
 				}),
@@ -454,11 +454,11 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 								code: x?.code,
 								productName: x?.productTypeUu?.name,
 								date: x?.timeEnd,
-								licensePalate:
+								licensePlate:
 									x?.isBatch == TYPE_BATCH.CAN_LO
-										? x?.batchsUu?.shipUu?.licensePalate
+										? x?.batchsUu?.shipUu?.licensePlate
 										: x?.isBatch == TYPE_BATCH.CAN_LE
-										? x?.weightSessionUu?.truckUu?.licensePalate
+										? x?.weightSessionUu?.truckUu?.licensePlate
 										: x?.isBatch == TYPE_BATCH.KHONG_CAN
 										? '---'
 										: '---',
@@ -559,9 +559,9 @@ function PageDetailPartner({}: PropsPageDetailPartner) {
 													<>
 														<p style={{fontWeight: 600, color: '#3772FF'}}>
 															{data?.isBatch == TYPE_BATCH.CAN_LO
-																? data?.batchsUu?.shipUu?.licensePalate
+																? data?.batchsUu?.shipUu?.licensePlate
 																: data?.isBatch == TYPE_BATCH.CAN_LE
-																? data?.weightSessionUu?.truckUu?.licensePalate
+																? data?.weightSessionUu?.truckUu?.licensePlate
 																: data?.isBatch == TYPE_BATCH.KHONG_CAN
 																? '---'
 																: '---'}

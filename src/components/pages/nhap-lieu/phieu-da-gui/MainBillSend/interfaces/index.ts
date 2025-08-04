@@ -10,7 +10,7 @@ export interface IBillSend {
 	weightBdmt: number;
 	lstTruck: {
 		code: string;
-		licensePalate: string;
+		licensePlate: string;
 		status: number;
 		uuid: number;
 	}[];
@@ -60,13 +60,13 @@ export interface IBillSend {
 		timeIntend: string;
 		shipUu: {
 			code: string;
-			licensePalate: string;
+			licensePlate: string;
 			status: number;
 			uuid: string;
 		};
 		shipOutUu: {
 			code: string;
-			licensePalate: string;
+			licensePlate: string;
 			status: number;
 			uuid: string;
 		};
@@ -115,9 +115,8 @@ export interface IBillSend {
 	weightSessionUu: {
 		truckUu: {
 			code: string;
-			licensePalate: string;
+			licensePlate: string;
 			status: number;
-			uuid: string;
 		};
 		status: number;
 		code: string;

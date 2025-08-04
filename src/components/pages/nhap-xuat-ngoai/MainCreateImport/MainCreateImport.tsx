@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {use, useEffect, useState} from 'react';
 
 import {IFormCreateImport, PropsMainCreateImport} from './interfaces';
 import styles from './MainCreateImport.module.scss';
@@ -43,7 +43,8 @@ function MainCreateImport({}: PropsMainCreateImport) {
 	const [images, setImages] = useState<any[]>([]);
 
 	const [form, setForm] = useState<IFormCreateImport>({
-		weightIntent: 0,
+		weight1: 0,
+		weight2: 0,
 		specificationsUuid: '',
 		warehouseUuid: '',
 		productTypeUuid: '',
@@ -57,6 +58,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 		portname: '',
 		shipUuid: '',
 		dryness: 0,
+		weightTotal: 0,
 	});
 
 	const {data: detailCustomer} = useQuery<IDetailCustomer>([QUERY_KEY.chi_tiet_khach_hang, form.fromUuid], {
@@ -195,7 +197,8 @@ function MainCreateImport({}: PropsMainCreateImport) {
 					isCreateBatch: 1,
 					shipUuid: form.shipUuid,
 					timeIntend: null,
-					weightIntent: price(form?.weightIntent),
+					weight1: price(form?.weight1),
+					weight2: price(form?.weight2),
 					isBatch: TYPE_BATCH.KHONG_CAN,
 					isSift: TYPE_SIFT.KHONG_CAN_SANG,
 					scalesType: TYPE_SCALES.CAN_NHAP,
@@ -207,8 +210,8 @@ function MainCreateImport({}: PropsMainCreateImport) {
 					toUuid: form?.toUuid,
 					isPrint: 0,
 					transportType: form?.transportType,
-					lstTruckAddUuid: [],
-					lstTruckRemoveUuid: [],
+					lstTruckPlateAdd: [],
+					lstTruckPlateRemove: [],
 					scaleStationUuid: '',
 					portname: form.portname,
 					descriptionWs: '',
@@ -228,6 +231,17 @@ function MainCreateImport({}: PropsMainCreateImport) {
 			return;
 		},
 	});
+
+	// form.weightTotal = trị tuyệt đối form.weight1 - form.weight2 nhân độ khô;
+
+	useEffect(() => {
+		const {weight1, weight2, dryness} = form;
+
+		if (weight1 != null && weight2 != null && dryness != null) {
+			const total = (Math.abs(weight1 - weight2) * dryness) / 100;
+			setForm((prev) => ({...prev, weightTotal: total}));
+		}
+	}, [form.weight1, form.weight2, form.dryness]);
 
 	const handleSubmit = async () => {
 		const today = new Date(timeSubmit(new Date())!);
@@ -269,6 +283,11 @@ function MainCreateImport({}: PropsMainCreateImport) {
 
 		if (timeStart > timeEnd) {
 			return toastWarn({msg: 'Ngày kết thúc phải lớn hơn ngày bắt đầu!'});
+		}
+
+		// trị tuyệt đối weight1 - weight 2 > 0
+		if (Math.abs(Number(form.weight1) - Number(form.weight2)) < 0.01) {
+			return toastWarn({msg: 'Khối lượng cân lần 1 và lần 2 chưa đúng!'});
 		}
 
 		const imgs = images?.map((v: any) => v?.file);
@@ -427,15 +446,15 @@ function MainCreateImport({}: PropsMainCreateImport) {
 								/>
 							))}
 						</Select>
+
 						<div>
 							<Input
-								name='dryness'
-								value={form.dryness || ''}
-								unit='%'
-								type='number'
-								blur={true}
-								placeholder='Nhập độ khô'
-								label={<span>Độ khô</span>}
+								name='documentId'
+								value={form.documentId || ''}
+								max={255}
+								type='text'
+								label={<span>Số chứng từ</span>}
+								placeholder='Nhập số chứng từ'
 							/>
 						</div>
 					</div>
@@ -456,7 +475,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 								<Option
 									key={v?.uuid}
 									value={v?.uuid}
-									title={v?.licensePalate}
+									title={v?.licensePlate}
 									onClick={() =>
 										setForm((prev) => ({
 											...prev,
@@ -592,7 +611,7 @@ function MainCreateImport({}: PropsMainCreateImport) {
 							</Select>
 						</div>
 					</div>
-					<div className={clsx('mt', 'col_2')}>
+					{/* <div className={clsx('mt', 'col_3')}>
 						<Input
 							name='weightIntent'
 							value={form.weightIntent || ''}
@@ -609,12 +628,68 @@ function MainCreateImport({}: PropsMainCreateImport) {
 
 						<div>
 							<Input
-								name='documentId'
-								value={form.documentId || ''}
-								max={255}
+								name='dryness'
+								value={form.dryness || ''}
+								unit='%'
+								type='number'
+								blur={true}
+								placeholder='Nhập độ khô'
+								label={<span>Độ khô</span>}
+							/>
+						</div>
+					</div> */}
+					<div className={clsx('mt', 'col_4')}>
+						<Input
+							name='weight1'
+							value={form.weight1 || ''}
+							type='text'
+							isMoney
+							unit='KG'
+							label={
+								<span>
+									KL cân lần 1 <span style={{color: 'red'}}>*</span>
+								</span>
+							}
+							placeholder='Nhập kL cân lần 1'
+						/>
+
+						<div>
+							<Input
+								name='weight2'
+								value={form.weight2 || ''}
 								type='text'
-								label={<span>Số chứng từ</span>}
-								placeholder='Nhập số chứng từ'
+								isMoney
+								unit='KG'
+								label={
+									<span>
+										KL cân lần 2 <span style={{color: 'red'}}>*</span>
+									</span>
+								}
+								placeholder='Nhập kL cân lần 2'
+							/>
+						</div>
+						<div>
+							<Input
+								name='dryness'
+								value={form.dryness || ''}
+								unit='%'
+								type='number'
+								blur={true}
+								placeholder='Nhập độ khô'
+								label={<span>Độ khô</span>}
+							/>
+						</div>
+						<div>
+							<Input
+								name='weightTotal'
+								value={form.weightTotal || ''}
+								readOnly={true}
+								type='text'
+								isMoney
+								unit='KG'
+								label={<span>KL quy khô</span>}
+								placeholder='Nhập KL quy khô'
+								disabled={true}
 							/>
 						</div>
 					</div>

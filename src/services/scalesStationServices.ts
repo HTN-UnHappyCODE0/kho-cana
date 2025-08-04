@@ -40,7 +40,6 @@ const scalesStationServices = {
 			phoneNumber: string;
 			companyUuid: string;
 			provinceId: string;
-			dictrictId: string;
 			townId: string;
 		},
 		tokenAxios?: any
