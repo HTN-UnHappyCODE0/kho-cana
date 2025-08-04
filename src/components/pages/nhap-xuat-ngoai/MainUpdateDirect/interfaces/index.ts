@@ -7,7 +7,8 @@ export interface IFormUpdateDirect {
 	toUuid: string;
 	productTypeUuid: string;
 	specificationsUuid: string;
-	weightIntent: number | string;
+	weight1: number | string;
+	weight2: number | string;
 	documentId: string;
 	description: string;
 	warehouseUuid: string;

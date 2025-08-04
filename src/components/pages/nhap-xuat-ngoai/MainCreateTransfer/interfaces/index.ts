@@ -11,9 +11,11 @@ export interface IFormCreateTransfer {
 	warehouseToUuid: string;
 	toUuid: string;
 	timeIntend: string | Date;
-	weightIntent: number;
+	weight1: number;
+	weight2: number;
 	description: string;
 	timeStart: string | Date | null;
 	timeEnd: string | Date | null;
 	dryness: number;
+	weightTotal: number;
 }

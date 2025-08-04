@@ -1,8 +1,10 @@
 import Head from 'next/head';
 import {Fragment, ReactElement} from 'react';
 import BaseLayout from '~/components/layouts/BaseLayout';
+import LayoutPages from '~/components/layouts/LayoutPages';
 import WrapperContainer from '~/components/layouts/WrapperContainer';
-import MainCreateTransfer from '~/components/pages/nhap-xuat-ngoai/MainCreateTransfer';
+import MainCreateTransfer from '~/components/pages/lenh-can/MainCreateTransfer';
+import MainCreateDirect from '~/components/pages/nhap-xuat-ngoai/MainCreateDirect';
 
 export default function Page() {
 	return (

@@ -6,7 +6,8 @@ export interface IFormUpdateImport {
 	specificationsUuid: string;
 	warehouseUuid: string;
 	toUuid: string;
-	weightIntent: number | string;
+	weight1: number | string;
+	weight2: number | string;
 	description: string;
 	timeStart: string | Date | null;
 	timeEnd: string | Date | null;
